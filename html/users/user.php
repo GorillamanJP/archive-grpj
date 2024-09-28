@@ -24,7 +24,8 @@ class User
     # ログイン検証
     public function verify(string $password): bool
     {
-        if (password_verify($password . $this->salt, $this->password_hash)) {
+        $sanitized_password = htmlspecialchars($password, ENT_HTML5, "UTF-8");
+        if (password_verify($sanitized_password . $this->salt, $this->password_hash)) {
             return true;
         } else {
             return false;
@@ -43,7 +44,6 @@ class User
             $this->pdo = new PDO($dsn, "root", $password);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            echo $e->getMessage();
         }
     }
 
@@ -51,16 +51,21 @@ class User
     public function create(string $username, string $password): bool
     {
         try {
-            $salt = substr(uniqid(mt_rand(), true).bin2hex(random_bytes(64)),0,128);
+            # 入力値サニタイズ
+            $sanitized_username = htmlspecialchars($username, ENT_HTML5, "UTF-8");
+            $sanitized_password = htmlspecialchars($password, ENT_HTML5, "UTF-8");
+            # ソルト生成
+            $salt = substr(uniqid(mt_rand(), true) . bin2hex(random_bytes(64)), 0, 128);
+            #SQLクエリ用意
             $sql = "INSERT INTO register_user (username, password_hash, salt) VALUES (:username, :password_hash, :salt)";
             $stmt = $this->pdo->prepare($sql);
-            $stmt->bindValue(":username", $username, PDO::PARAM_STR);
-            $stmt->bindValue(":password_hash", password_hash($password . $salt, PASSWORD_ARGON2ID), PDO::PARAM_STR);
+            $stmt->bindValue(":username", $sanitized_username, PDO::PARAM_STR);
+            # パスワードのハッシュ化
+            $stmt->bindValue(":password_hash", password_hash($sanitized_password . $salt, PASSWORD_ARGON2ID), PDO::PARAM_STR);
             $stmt->bindValue(":salt", $salt, PDO::PARAM_STR);
             $stmt->execute();
             return true;
         } catch (PDOException $e) {
-            echo $e->getMessage();
             return false;
         }
     }
@@ -68,10 +73,11 @@ class User
     # ユーザー名から読み込み
     public function get_from_username(string $username): User|null
     {
+        $sanitized_username = htmlspecialchars($username, ENT_HTML5, "UTF-8");
         try {
             $sql = "SELECT * FROM register_user WHERE username = :username";
             $stmt = $this->pdo->prepare($sql);
-            $stmt->bindValue(":username", $username, PDO::PARAM_STR);
+            $stmt->bindValue(":username", $sanitized_username, PDO::PARAM_STR);
             $stmt->execute();
 
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
