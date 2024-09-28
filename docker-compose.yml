@@ -1,0 +1,52 @@
+# 資料はこれ
+# https://tt-computing.com/docker-nginx1_19-php7_4-mariadb10_5
+version: '3.8'
+
+services:
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      # nginx Config
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      # nginx Logs
+      - ./nginx/log:/var/log/nginx
+      # source folder
+      - .:/var/www
+    depends_on:
+      - php-fpm
+      - mariadb
+
+  php-fpm:
+    build:
+      context: ./php-fpm
+      dockerfile: Dockerfile
+    volumes:
+      # source folder
+      - .:/var/www
+    environment:
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_PASSWORD=${DB_ROOT_PASSWORD}
+
+  mariadb:
+    image: mariadb:latest
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mariadb/init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - MARIADB_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MARIADB_DATABASE=${DB_DATABASE}
+
+  php-myadmin:
+    image: phpmyadmin:latest
+    ports:
+      - "8080:80"
+    environment:
+      - PMA_HOST=mariadb
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+    depends_on:
+      - mariadb

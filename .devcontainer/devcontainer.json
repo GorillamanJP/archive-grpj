@@ -1,0 +1,27 @@
+{
+  "name": "nginx PHP MariaDB Docker Compose",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "nginx",
+  "workspaceFolder": "/var/www",
+  "extensions": [
+    //Docker
+    "ms-azuretools.vscode-docker",
+    //html
+    "esbenp.prettier-vscode",
+    "ecmel.vscode-html-css",
+    "formulahendry.auto-rename-tag",
+    "formulahendry.auto-close-tag",
+    //CSS
+    "Zignd.html-css-class-completion",
+    //PHP
+    "DEVSENSE.phptools-vscode",
+    //JavaScript
+    "VisualStudioExptTeam.vscodeintellicode"
+  ],
+  "settings": {
+    "terminal.integrated.shell.linux": "/bin/bash",
+    "css.enabledLanguages": ["html"],
+    "php.version": "8.3",
+    "php.validate.enable": false
+  }
+}
