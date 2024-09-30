@@ -1,27 +1,33 @@
 <?php
-class Item{
+class Item
+{
     # 商品ID
     private int $id;
-    public function get_id():int{
+    public function get_id(): int
+    {
         return $this->id;
     }
 
     # 商品名
     private string $itemname;
-    public function get_itemname():string{
+    public function get_itemname(): string
+    {
         return $this->itemname;
     }
 
     # 価格
     private int $price;
-    public function get_price():int{
+    public function get_price(): int
+    {
         return $this->price;
     }
 
     # PDOオブジェクト
     private PDO $pdo;
 
-    public function __construct(){
+    # 通常コンストラクタ
+    private function default_construct()
+    {
         try {
             $password = getenv("DB_PASSWORD");
             $db_name = getenv("DB_DATABASE");
@@ -33,8 +39,31 @@ class Item{
         }
     }
 
+    # 商品初期登録コンストラクタ
+    private function add_init_construct(int $id, string $itemname, int $price)
+    {
+        $this->id = $id;
+        $this->itemname = $itemname;
+        $this->price = $price;
+    }
+
+    # コンストラクタ
+    public function __construct()
+    {
+        $args = func_get_args();
+        $args_num = func_num_args();
+        if ($args_num == 0) {
+            $this->default_construct();
+        } else if ($args_num == 3) {
+            $this->add_init_construct($args[0], $args[1], $args[2]);
+        } else {
+            throw new InvalidArgumentException();
+        }
+    }
+
     # 商品登録
-    public function create(string $itemname, int $price):Item|null{
+    public function create(string $itemname, int $price): Item|null
+    {
         try {
             $sanitized_itemname = htmlspecialchars($itemname, encoding: "UTF-8");
             $sql = "INSERT INTO items (itemname, price) VALUES (:itemname, :price)";
@@ -51,15 +80,16 @@ class Item{
     }
 
     # 商品IDから検索
-    public function get_from_id(int $id): Item|null{
-        try{
+    public function get_from_id(int $id): Item|null
+    {
+        try {
             $sql = "SELECT * FROM items WHERE id = :id";
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindValue(":id", $id, PDO::PARAM_INT);
             $stmt->execute();
 
             $item = $stmt->fetch(PDO::FETCH_ASSOC);
-            if($item){
+            if ($item) {
                 $this->id = $item["id"];
                 $this->itemname = $item["itemname"];
                 $this->price = $item["price"];
@@ -67,7 +97,31 @@ class Item{
             } else {
                 return null;
             }
-        } catch (PDOException $e){
+        } catch (PDOException $e) {
+            return null;
+        }
+    }
+
+    #商品すべてを取得
+    public function get_all(): array|null
+    {
+        try {
+            $sql = "SELECT * FROM items";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute();
+
+            $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            if ($items) {
+                $items_array = [];
+                foreach ($items as $item) {
+                    $items_array[] = new Item($item["id"], $item["itemname"], $item["price"]);
+                }
+                return $items_array;
+            } else {
+                return null;
+            }
+        } catch (PDOException $e) {
             return null;
         }
     }
