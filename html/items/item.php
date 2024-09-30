@@ -44,14 +44,16 @@ class Item
     {
         try {
             $sanitized_itemname = htmlspecialchars($itemname, encoding: "UTF-8");
+
             $sql = "INSERT INTO items (itemname, price) VALUES (:itemname, :price)";
+
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindValue(":itemname", $sanitized_itemname, PDO::PARAM_STR);
             $stmt->bindValue(":price", $price, PDO::PARAM_INT);
+
             $stmt->execute();
 
-            $item = new Item();
-            return $item->get_from_id($this->pdo->lastInsertId());
+            return $this->get_from_id($this->pdo->lastInsertId());
         } catch (PDOException $e) {
             return null;
         }
@@ -102,6 +104,43 @@ class Item
             }
         } catch (PDOException $e) {
             return null;
+        }
+    }
+
+    # 商品更新
+    public function update(string $itemname, int $price): Item|null
+    {
+        try {
+            $sanitized_itemname = htmlspecialchars($itemname);
+
+            $sql = "UPDATE items SET itemname = :itemname, price = :price WHERE id = :id";
+
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindValue(":itemname", $sanitized_itemname, PDO::PARAM_STR);
+            $stmt->bindValue(":price", $price, PDO::PARAM_INT);
+            $stmt->bindValue(":id", $this->id, PDO::PARAM_INT);
+
+            $stmt->execute();
+
+            return $this->get_from_id($this->id);
+        } catch (Exception $e) {
+            echo $e->getMessage();
+            return null;
+            //throw $th;
+        }
+    }
+
+    # 商品削除
+    public function delete(): void
+    {
+        try {
+            $sql = "DELETE FROM items WHERE id = :id";
+
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindValue(":id", $this->id, PDO::PARAM_INT);
+
+            $stmt->execute();
+        } catch (PDOException $e) {
         }
     }
 }
