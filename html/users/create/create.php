@@ -6,8 +6,8 @@ function create($username, $password)
 {
     require_once $_SERVER['DOCUMENT_ROOT'] . "/users/user.php";
     $user = new User();
-    $status = $user->create($username, $password);
-    if ($status) {
+    $user = $user->create($username, $password);
+    if (!is_null($user)) {
         header("Location: ./success.html");
     } else {
         header("Location: ./fail.html");

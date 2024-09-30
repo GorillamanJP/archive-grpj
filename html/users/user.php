@@ -22,13 +22,13 @@ class User
     private string $salt;
 
     # ログイン検証
-    public function verify(string $password): bool
+    public function verify(string $password): User|null
     {
-        $sanitized_password = htmlspecialchars($password, ENT_HTML5, "UTF-8");
+        $sanitized_password = htmlspecialchars($password, encoding: "UTF-8");
         if (password_verify($sanitized_password . $this->salt, $this->password_hash)) {
-            return true;
+            return $this;
         } else {
-            return false;
+            return null;
         }
     }
     # PDOオブジェクト
@@ -48,12 +48,12 @@ class User
     }
 
     #ユーザー登録
-    public function create(string $username, string $password): bool
+    public function create(string $username, string $password): User|null
     {
         try {
             # 入力値サニタイズ
-            $sanitized_username = htmlspecialchars($username, ENT_HTML5, "UTF-8");
-            $sanitized_password = htmlspecialchars($password, ENT_HTML5, "UTF-8");
+            $sanitized_username = htmlspecialchars($username, encoding: "UTF-8");
+            $sanitized_password = htmlspecialchars($password, encoding: "UTF-8");
             # ソルト生成
             $salt = substr(uniqid(mt_rand(), true) . bin2hex(random_bytes(64)), 0, 128);
             #SQLクエリ用意
@@ -64,16 +64,18 @@ class User
             $stmt->bindValue(":password_hash", password_hash($sanitized_password . $salt, PASSWORD_ARGON2ID), PDO::PARAM_STR);
             $stmt->bindValue(":salt", $salt, PDO::PARAM_STR);
             $stmt->execute();
-            return true;
+            # ユーザーオブジェクトを生成
+            $user = new User();
+            return $user->get_from_id($this->pdo->lastInsertId());
         } catch (PDOException $e) {
-            return false;
+            return null;
         }
     }
 
     # ユーザー名から読み込み
     public function get_from_username(string $username): User|null
     {
-        $sanitized_username = htmlspecialchars($username, ENT_HTML5, "UTF-8");
+        $sanitized_username = htmlspecialchars($username, encoding: "UTF-8");
         try {
             $sql = "SELECT * FROM register_user WHERE username = :username";
             $stmt = $this->pdo->prepare($sql);
