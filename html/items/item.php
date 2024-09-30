@@ -25,8 +25,8 @@ class Item
     # PDOオブジェクト
     private PDO $pdo;
 
-    # 通常コンストラクタ
-    private function default_construct()
+    # コンストラクタ
+    public function __construct()
     {
         try {
             $password = getenv("DB_PASSWORD");
@@ -36,28 +36,6 @@ class Item
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             //throw $th;
-        }
-    }
-
-    # 商品初期登録コンストラクタ
-    private function add_init_construct(int $id, string $itemname, int $price)
-    {
-        $this->id = $id;
-        $this->itemname = $itemname;
-        $this->price = $price;
-    }
-
-    # コンストラクタ
-    public function __construct()
-    {
-        $args = func_get_args();
-        $args_num = func_num_args();
-        if ($args_num == 0) {
-            $this->default_construct();
-        } else if ($args_num == 3) {
-            $this->add_init_construct($args[0], $args[1], $args[2]);
-        } else {
-            throw new InvalidArgumentException();
         }
     }
 
@@ -106,7 +84,7 @@ class Item
     public function get_all(): array|null
     {
         try {
-            $sql = "SELECT * FROM items";
+            $sql = "SELECT id FROM items";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute();
 
@@ -115,7 +93,8 @@ class Item
             if ($items) {
                 $items_array = [];
                 foreach ($items as $item) {
-                    $items_array[] = new Item($item["id"], $item["itemname"], $item["price"]);
+                    $item_obj = new Item();
+                    $items_array[] = $item_obj->get_from_id($item["id"]);
                 }
                 return $items_array;
             } else {
