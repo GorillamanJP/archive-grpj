@@ -1,7 +1,7 @@
 {
   "name": "nginx PHP MariaDB Docker Compose",
   "dockerComposeFile": "../docker-compose.yml",
-  "service": "nginx",
+  "service": "php-fpm",
   "workspaceFolder": "/var/www",
   "extensions": [
     //Docker
@@ -21,7 +21,6 @@
   "settings": {
     "terminal.integrated.shell.linux": "/bin/bash",
     "css.enabledLanguages": ["html"],
-    "php.version": "8.3",
-    "php.validate.enable": false
+    "php.version": "8.3"
   }
 }
