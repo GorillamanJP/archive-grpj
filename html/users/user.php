@@ -112,6 +112,30 @@ class User
         }
     }
 
+    # ユーザーすべてを取得
+    public function get_all(): array|null{
+        try {
+            $sql = "SELECT id FROM register_user";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute();
+
+            $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            if($users){
+                $users_array = [];
+                foreach ($users as $user) {
+                    $user_obj = new User();
+                    $users_array[] = $user_obj->get_from_id($user["id"]);
+                }
+                return $users_array;
+            } else {
+                return null;
+            }
+        } catch (PDOException $e) {
+            return null;
+        }
+    }
+
     # ユーザー更新
     public function update(string $username, string $password): User|null{
         try {
