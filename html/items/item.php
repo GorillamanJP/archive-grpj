@@ -82,7 +82,7 @@ class Item
         }
     }
 
-    #商品すべてを取得
+    # 商品すべてを取得
     public function get_all(): array|null
     {
         try {
@@ -140,7 +140,8 @@ class Item
             $stmt->bindValue(":id", $this->id, PDO::PARAM_INT);
 
             $stmt->execute();
-        } catch (PDOException $e) {
+        } catch (Throwable $t) {
+            throw $t;
         }
     }
 }
