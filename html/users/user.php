@@ -76,21 +76,13 @@ class User
     {
         $sanitized_username = htmlspecialchars($username, encoding: "UTF-8");
         try {
-            $sql = "SELECT * FROM register_user WHERE username = :username";
+            $sql = "SELECT id FROM register_user WHERE username = :username";
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindValue(":username", $sanitized_username, PDO::PARAM_STR);
             $stmt->execute();
 
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
-            if ($user) {
-                $this->id = $user["id"];
-                $this->username = $user["username"];
-                $this->password_hash = $user["password_hash"];
-                $this->salt = $user["salt"];
-                return $this;
-            } else {
-                return null;
-            }
+            $id = $stmt->fetch(PDO::FETCH_ASSOC)["id"];
+            return $this->get_from_id($id);
         } catch (PDOException $e) {
             return null;
         }
