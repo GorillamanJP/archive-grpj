@@ -64,7 +64,7 @@ class User
             $stmt->bindValue(":password_hash", password_hash($sanitized_password . $salt, PASSWORD_ARGON2ID), PDO::PARAM_STR);
             $stmt->bindValue(":salt", $salt, PDO::PARAM_STR);
             $stmt->execute();
-            
+
             return $this->get_from_id($this->pdo->lastInsertId());
         } catch (PDOException $e) {
             return null;
@@ -76,21 +76,13 @@ class User
     {
         $sanitized_username = htmlspecialchars($username, encoding: "UTF-8");
         try {
-            $sql = "SELECT * FROM register_user WHERE username = :username";
+            $sql = "SELECT id FROM register_user WHERE username = :username";
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindValue(":username", $sanitized_username, PDO::PARAM_STR);
             $stmt->execute();
 
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
-            if ($user) {
-                $this->id = $user["id"];
-                $this->username = $user["username"];
-                $this->password_hash = $user["password_hash"];
-                $this->salt = $user["salt"];
-                return $this;
-            } else {
-                return null;
-            }
+            $id = $stmt->fetch(PDO::FETCH_ASSOC)["id"];
+            return $this->get_from_id($id);
         } catch (PDOException $e) {
             return null;
         }
@@ -120,8 +112,34 @@ class User
         }
     }
 
+    # ユーザーすべてを取得
+    public function get_all(): array|null
+    {
+        try {
+            $sql = "SELECT id FROM register_user";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute();
+
+            $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            if ($users) {
+                $users_array = [];
+                foreach ($users as $user) {
+                    $user_obj = new User();
+                    $users_array[] = $user_obj->get_from_id($user["id"]);
+                }
+                return $users_array;
+            } else {
+                return null;
+            }
+        } catch (PDOException $e) {
+            return null;
+        }
+    }
+
     # ユーザー更新
-    public function update(string $username, string $password): User|null{
+    public function update(string $username, string $password): User|null
+    {
         try {
             # 入力値サニタイズ
             $sanitized_username = htmlspecialchars($username, encoding: "UTF-8");
@@ -144,8 +162,9 @@ class User
         }
     }
 
-    # ユーザー先所
-    public function delete():void{
+    # ユーザー削除
+    public function delete(): void
+    {
         try {
             $sql = "DELETE FROM register_user WHERE id = :id";
 
@@ -153,7 +172,8 @@ class User
             $stmt->bindValue(":id", $this->id);
 
             $stmt->execute();
-        } catch (PDOException $e) {
+        } catch (Throwable $t) {
+            throw $t;
         }
     }
 }
