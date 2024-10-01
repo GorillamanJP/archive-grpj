@@ -124,9 +124,7 @@ class Item
 
             return $this->get_from_id($this->id);
         } catch (Exception $e) {
-            echo $e->getMessage();
             return null;
-            //throw $th;
         }
     }
 
