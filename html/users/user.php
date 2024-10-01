@@ -147,17 +147,19 @@ class User
             # ソルト生成
             $salt = substr(uniqid(mt_rand(), true) . bin2hex(random_bytes(64)), 0, 128);
 
-            $sql = "UPDATE register_user SET username = :username, password_hash = :password_hash, salt = :salt";
+            $sql = "UPDATE register_user SET username = :username, password_hash = :password_hash, salt = :salt WHERE id = :id";
 
             $stmt = $this->pdo->prepare($sql);
+            $stmt->bindValue(":id", $this->id, PDO::PARAM_INT);
             $stmt->bindValue(":username", $sanitized_username, PDO::PARAM_STR);
-            $stmt->bindValue(":password", password_hash($sanitized_password . $salt, PASSWORD_ARGON2ID), PDO::PARAM_STR);
+            $stmt->bindValue(":password_hash", password_hash($sanitized_password . $salt, PASSWORD_ARGON2ID), PDO::PARAM_STR);
             $stmt->bindValue(":salt", $salt, PDO::PARAM_STR);
 
             $stmt->execute();
 
             return $this->get_from_id($this->id);
         } catch (PDOException $e) {
+            echo $e->getMessage();
             return null;
         }
     }
