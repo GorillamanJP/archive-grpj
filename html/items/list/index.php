@@ -27,6 +27,7 @@ $stock_obj = new Stock();
                     <td><?= $item->get_item_name() ?></td>
                     <td><?= $item->get_price() ?></td>
                     <td><?= $stock_obj->get_from_item_id($item->get_id())->get_quantity() ?></td>
+                    <td><img src="data:image/jpeg;base64,<?= $item->get_item_image() ?>" alt="商品画像　ID<?= $item->get_id() ?>番"></td>
                     <td>
                         <form action="../update/" method="post">
                             <input type="hidden" name="id" id="id" value="<?= $item->get_id() ?>">

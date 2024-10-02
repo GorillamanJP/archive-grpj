@@ -22,6 +22,41 @@ class Item
         return $this->price;
     }
 
+    # 商品画像
+    private string $item_image;
+    public function get_item_image(): string
+    {
+        return $this->item_image;
+    }
+    private function resize_image(string $image): string
+    {
+        # 画像データの加工
+        # 画像サイズ
+        list($width, $height) = getimagesize($image);
+        # 縮小目標サイズ
+        $new_width = 400;
+        $new_height = intval(($height / $width) * $new_width);
+        # 加工後画像サイズ
+        $thumb = imagecreatetruecolor($new_width, $new_height);
+        # 画像オブジェクト生成
+        $source = imagecreatefromjpeg($image);
+
+        # 画像リサイズ(というか縮小コピー)
+        # $thumbに出力される
+        imagecopyresampled($thumb, $source, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
+
+        # 内部バッファを使う
+        ob_start();
+        # バッファ内にjpeg画像を吐き出す
+        imagejpeg($thumb);
+        # バッファに入ったjpegをstring化して保存
+        $image_data = ob_get_contents();
+        # バッファを開放
+        ob_end_clean();
+        # 画像データの加工　ここまで
+
+        return $image_data;
+    }
     # PDOオブジェクト
     private PDO $pdo;
 
@@ -40,16 +75,18 @@ class Item
     }
 
     # 商品登録
-    public function create(string $item_name, int $price): Item|null
+    public function create(string $item_name, int $price, string $item_image): Item|null
     {
         try {
             $sanitized_item_name = htmlspecialchars($item_name, encoding: "UTF-8");
 
-            $sql = "INSERT INTO items (item_name, price) VALUES (:item_name, :price)";
+            $sql = "INSERT INTO items (item_name, price, item_image) VALUES (:item_name, :price, :item_image)";
 
             $stmt = $this->pdo->prepare($sql);
+
             $stmt->bindValue(":item_name", $sanitized_item_name, PDO::PARAM_STR);
             $stmt->bindValue(":price", $price, PDO::PARAM_INT);
+            $stmt->bindValue(":item_image", $this->resize_image($item_image), PDO::PARAM_LOB);
 
             $stmt->execute();
 
@@ -74,6 +111,7 @@ class Item
                 $this->id = $item["id"];
                 $this->item_name = $item["item_name"];
                 $this->price = $item["price"];
+                $this->item_image = base64_encode($item["item_image"]);
                 return $this;
             } else {
                 return null;
@@ -133,17 +171,18 @@ class Item
     }
 
     # 商品更新
-    public function update(string $item_name, int $price): Item|null
+    public function update(string $item_name, int $price, string $item_image): Item|null
     {
         try {
             $sanitized_item_name = htmlspecialchars($item_name);
 
-            $sql = "UPDATE items SET item_name = :item_name, price = :price WHERE id = :id";
+            $sql = "UPDATE items SET item_name = :item_name, price = :price, item_image = :item_image WHERE id = :id";
 
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindValue(":item_name", $sanitized_item_name, PDO::PARAM_STR);
             $stmt->bindValue(":price", $price, PDO::PARAM_INT);
             $stmt->bindValue(":id", $this->id, PDO::PARAM_INT);
+            $stmt->bindValue(":item_image", $this->resize_image($item_image), PDO::PARAM_LOB);
 
             $stmt->execute();
 

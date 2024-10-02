@@ -12,7 +12,8 @@ CREATE TABLE IF NOT EXISTS users(
 CREATE TABLE IF NOT EXISTS items(
     id INT AUTO_INCREMENT PRIMARY KEY,
     item_name VARCHAR(255) NOT NULL UNIQUE,
-    price INT NOT NULL
+    price INT NOT NULL,
+    item_image LONGBLOB NOT NULL
 );
 
 -- 在庫テーブル

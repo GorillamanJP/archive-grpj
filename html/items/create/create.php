@@ -1,13 +1,13 @@
 <?php
 $item_name = htmlspecialchars($_POST["itenmane"]);
 $price = htmlspecialchars($_POST["price"]);
-
+$item_image = $_FILES["item_image"]["tmp_name"];
 $quantity = htmlspecialchars($_POST["quantity"]);
 
 # 商品
 require_once $_SERVER['DOCUMENT_ROOT'] . "/items/item.php";
 $item = new Item();
-$item = $item->create($item_name, $price);
+$item = $item->create($item_name, $price, $item_image);
 
 # 在庫
 require_once $_SERVER['DOCUMENT_ROOT'] . "/stocks/stock.php";
