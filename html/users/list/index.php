@@ -22,7 +22,18 @@ $users = $user_obj->get_all();
                 <tr>
                     <td><a href="../update/?id=<?= $user->get_id() ?>">ID: <?= $user->get_id() ?></a></td>
                     <td><?= $user->get_user_name() ?></td>
-                    <td><a href="../delete/?id=<?= $user->get_id() ?>">削除</a></td>
+                    <td>
+                        <form action="../update/" method="post">
+                            <input type="hidden" name="id" value="<?= $user->get_id() ?>">
+                            <input type="submit" value="更新">
+                        </form>
+                    </td>
+                    <td>
+                        <form action="../delete/" method="post">
+                            <input type="hidden" name="id" value="<?= $user->get_id() ?>">
+                            <input type="submit" value="削除">
+                        </form>
+                    </td>
                 </tr>
             <?php endforeach ?>
         </table>
