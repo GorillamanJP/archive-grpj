@@ -1,5 +1,5 @@
 <?php
-$id = htmlspecialchars($_GET["id"]);
+$id = htmlspecialchars($_POST["id"]);
 require_once $_SERVER['DOCUMENT_ROOT'] . "/items/item.php";
 
 $item = new Item();
