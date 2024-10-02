@@ -55,6 +55,7 @@ class Item
 
             return $this->get_from_id($this->pdo->lastInsertId());
         } catch (PDOException $e) {
+            error_log($e);
             return null;
         }
     }
@@ -78,6 +79,7 @@ class Item
                 return null;
             }
         } catch (PDOException $e) {
+            error_log($e);
             return null;
         }
     }
@@ -99,6 +101,7 @@ class Item
             $id = $stmt->fetch(PDO::FETCH_ASSOC)["id"];
             return $this->get_from_id($id);
         } catch (PDOException $e) {
+            error_log($e);
             return null;
         }
     }
@@ -124,6 +127,7 @@ class Item
                 return null;
             }
         } catch (PDOException $e) {
+            error_log($e);
             return null;
         }
     }

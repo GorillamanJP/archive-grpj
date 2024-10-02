@@ -52,6 +52,7 @@ class Stock
 
             return $this->get_from_id($this->pdo->lastInsertId());
         } catch (PDOException $e) {
+            error_log($e);
             return null;
         }
     }
@@ -78,6 +79,7 @@ class Stock
                 return null;
             }
         } catch (PDOException $e) {
+            error_log($e);
             return null;
         }
     }
@@ -97,6 +99,7 @@ class Stock
 
             return $this->get_from_id($id);
         } catch (PDOException $e) {
+            error_log($e);
             return null;
         }
     }
@@ -123,6 +126,7 @@ class Stock
                 return null;
             }
         } catch (PDOException $e) {
+            error_log($e);
             return null;
         }
     }
@@ -141,6 +145,7 @@ class Stock
 
             return $this->get_from_id($this->id);
         } catch (PDOException $e) {
+            error_log($e);
             return null;
         }
     }
