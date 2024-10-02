@@ -1,18 +1,133 @@
-.container {
-    width: 90%;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .main-contents {
-    width: 100%;
-    padding: 10px;
-    background-color: #ccc;
-  }
-  
-  .side-menu {
-    width: 30%;
-    padding: 10px;
-    background-color: rgb(228, 255, 170);
-  }
+* {
+
+}
+
+.app {
+  margin: 0;
+  width: auto;
+  height: 700px;
+  display: grid;
+  grid-template-columns: auto auto auto auto auto;
+  grid-template-rows: auto auto auto auto;
+  grid-template-areas: "side side con1 con1 con1"
+                       "side side con1 con1 con1"
+                       "side side con1 con1 con1"
+                       "side side con2 con2 con3";
+} 
+
+/* .header {
+  height: 48px;
+  background-color: lightcyan;
+  box-sizing: border-box;
+  border: 8px solid blue;
+} */
+
+/* .main {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+} */
+
+.sidebar {
+  width: auto;
+  background-color: rgb(218, 248, 255); 
+  box-sizing: border-box;
+  border: 2px solid rgb(173, 173, 173);
+  grid-area: side;
+
+}
+
+/* .content {
+  display: flex;
+  flex-direction: column;
+} */
+
+.content1 {
+  text-align: center;
+
+  background-color: rgb(231, 231, 231);
+  box-sizing: border-box;
+  border: 2px solid rgb(173, 173, 173);
+  grid-area: con1;
+
+}
+
+.content2 {
+  text-align: center;
+  background-color: rgb(231, 231, 231);
+  box-sizing: border-box;
+  border: 2px solid rgb(173, 173, 173);
+  grid-area: con2;
+
+}
+
+.content3 {
+  /* width: 20%;
+  padding: auto; */
+  text-align: center;
+  background-color: #faa;
+  border: 2px solid rgb(173, 173, 173);
+  grid-area: con3;
+}
+
+table{
+  width: 100%;
+  border-collapse:separate;
+  border-spacing: 0;
+}
+
+table th:first-child{
+  border-radius: 5px 0 0 0;
+}
+
+table th:last-child{
+  border-radius: 0 5px 0 0;
+  border-right: 1px solid #3c6690;
+}
+
+table th{
+  text-align: center;
+  color:white;
+  background: linear-gradient(#829ebc,#225588);
+  border-left: 1px solid #3c6690;
+  border-top: 1px solid #3c6690;
+  border-bottom: 1px solid #3c6690;
+  box-shadow: 0px 1px 1px rgba(255,255,255,0.3) inset;
+  width: 25%;
+  padding: 10px 0;
+}
+
+table td{
+  text-align: center;
+  border-left: 1px solid #a8b7c5;
+  border-bottom: 1px solid #a8b7c5;
+  border-top:none;
+  box-shadow: 0px -3px 5px 1px #eee inset;
+  width: 25%;
+  padding: 10px 0;
+}
+
+table td:last-child{
+  border-right: 1px solid #a8b7c5;
+}
+
+table tr:last-child td:first-child {
+  border-radius: 0 0 0 5px;
+}
+
+table tr:last-child td:last-child {
+  border-radius: 0 0 5px 0;
+}
+
+button{
+  width: 100px;
+  height: 30px;
+}
+.butt {
+    width: 8em;
+    height:4em;
+}
+
+.imgA {
+
+}
