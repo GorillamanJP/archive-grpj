@@ -21,7 +21,7 @@ $items = $item_obj->get_all();
             <? foreach ($items as $item): ?>
                 <tr>
                     <td><a href="../update/?id=<?= $item->get_id() ?>">ID: <?= $item->get_id() ?></a></td>
-                    <td><?= $item->get_itemname() ?></td>
+                    <td><?= $item->get_item_name() ?></td>
                     <td><?= $item->get_price() ?></td>
                     <td><a href="../delete/?id=<?= $item->get_id() ?>">削除</a></td>
                 </tr>

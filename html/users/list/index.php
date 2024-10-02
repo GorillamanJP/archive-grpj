@@ -21,7 +21,7 @@ $users = $user_obj->get_all();
             <? foreach ($users as $user): ?>
                 <tr>
                     <td><a href="../update/?id=<?= $user->get_id() ?>">ID: <?= $user->get_id() ?></a></td>
-                    <td><?= $user->get_username() ?></td>
+                    <td><?= $user->get_user_name() ?></td>
                     <td><a href="../delete/?id=<?= $user->get_id() ?>">削除</a></td>
                 </tr>
             <?php endforeach ?>

@@ -9,10 +9,10 @@ class Item
     }
 
     # 商品名
-    private string $itemname;
-    public function get_itemname(): string
+    private string $item_name;
+    public function get_item_name(): string
     {
-        return $this->itemname;
+        return $this->item_name;
     }
 
     # 価格
@@ -40,15 +40,15 @@ class Item
     }
 
     # 商品登録
-    public function create(string $itemname, int $price): Item|null
+    public function create(string $item_name, int $price): Item|null
     {
         try {
-            $sanitized_itemname = htmlspecialchars($itemname, encoding: "UTF-8");
+            $sanitized_item_name = htmlspecialchars($item_name, encoding: "UTF-8");
 
-            $sql = "INSERT INTO items (itemname, price) VALUES (:itemname, :price)";
+            $sql = "INSERT INTO items (item_name, price) VALUES (:item_name, :price)";
 
             $stmt = $this->pdo->prepare($sql);
-            $stmt->bindValue(":itemname", $sanitized_itemname, PDO::PARAM_STR);
+            $stmt->bindValue(":item_name", $sanitized_item_name, PDO::PARAM_STR);
             $stmt->bindValue(":price", $price, PDO::PARAM_INT);
 
             $stmt->execute();
@@ -71,7 +71,7 @@ class Item
             $item = $stmt->fetch(PDO::FETCH_ASSOC);
             if ($item) {
                 $this->id = $item["id"];
-                $this->itemname = $item["itemname"];
+                $this->item_name = $item["item_name"];
                 $this->price = $item["price"];
                 return $this;
             } else {
@@ -108,15 +108,15 @@ class Item
     }
 
     # 商品更新
-    public function update(string $itemname, int $price): Item|null
+    public function update(string $item_name, int $price): Item|null
     {
         try {
-            $sanitized_itemname = htmlspecialchars($itemname);
+            $sanitized_item_name = htmlspecialchars($item_name);
 
-            $sql = "UPDATE items SET itemname = :itemname, price = :price WHERE id = :id";
+            $sql = "UPDATE items SET item_name = :item_name, price = :price WHERE id = :id";
 
             $stmt = $this->pdo->prepare($sql);
-            $stmt->bindValue(":itemname", $sanitized_itemname, PDO::PARAM_STR);
+            $stmt->bindValue(":item_name", $sanitized_item_name, PDO::PARAM_STR);
             $stmt->bindValue(":price", $price, PDO::PARAM_INT);
             $stmt->bindValue(":id", $this->id, PDO::PARAM_INT);
 

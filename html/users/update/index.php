@@ -15,7 +15,7 @@ $user = $user->get_from_id($id);
 <body>
     <form action="update.php" method="post">
         <input type="hidden" name="id" value="<?= $user->get_id() ?>"></p>
-        <p><input type="text" name="username" id="username" value="<?= $user->get_username() ?>">ユーザー名</p>
+        <p><input type="text" name="user_name" id="user_name" value="<?= $user->get_user_name() ?>">ユーザー名</p>
         <p><input type="password" name="password" id="password">新しいパスワード</p>
         <p>パスワードはそのままの場合でも入力しなおしてください。</p>
         <input type="submit" value="更新">
