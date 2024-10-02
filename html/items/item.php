@@ -110,7 +110,7 @@ class Item
     public function get_all(): array|null
     {
         try {
-            $sql = "SELECT id FROM items";
+            $sql = "SELECT id FROM items ORDER BY id ASC";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute();
 

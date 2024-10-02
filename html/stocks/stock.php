@@ -107,7 +107,7 @@ class Stock
     public function get_all(): array|null
     {
         try {
-            $sql = "SELECT id FROM stocks";
+            $sql = "SELECT id FROM stocks ORDER BY id ASC";
 
             $stmt = $this->pdo->prepare($sql);
 

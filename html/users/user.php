@@ -119,7 +119,7 @@ class User
     public function get_all(): array|null
     {
         try {
-            $sql = "SELECT id FROM users";
+            $sql = "SELECT id FROM users ORDER BY id ASC";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute();
 
