@@ -2,6 +2,10 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . "/items/item.php";
 $item_obj = new Item();
 $items = $item_obj->get_all();
+
+require_once $_SERVER['DOCUMENT_ROOT'] . "/stocks/stock.php";
+$stock_obj = new Stock();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,10 +24,16 @@ $items = $item_obj->get_all();
         <table>
             <? foreach ($items as $item): ?>
                 <tr>
-                    <td><a href="../update/?id=<?= $item->get_id() ?>">ID: <?= $item->get_id() ?></a></td>
-                    <td><?= $item->get_item_name() ?></td>
-                    <td><?= $item->get_price() ?></td>
-                    <td><a href="../delete/?id=<?= $item->get_id() ?>">削除</a></td>
+                    <form action="../delete/" method="post">
+                        <td><a href="../update/?id=<?= $item->get_id() ?>">ID: <?= $item->get_id() ?></a></td>
+                        <td><?= $item->get_item_name() ?></td>
+                        <td><?= $item->get_price() ?></td>
+                        <td><?= $stock_obj->get_from_item_id($item->get_id())->get_quantity() ?></td>
+                        <td>
+                            <input type="hidden" name="id" id="id" value="<?= $item->get_id() ?>">
+                            <input type="submit" value="削除">
+                        </td>
+                    </form>
                 </tr>
             <?php endforeach ?>
         </table>
