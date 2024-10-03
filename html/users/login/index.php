@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +11,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 </head>
 <body>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>ログインに失敗しました。</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
     <div id="login">
         <h3 class="text-center text-white pt-5">Login form</h3>
         <div class="container">
@@ -17,8 +24,8 @@
                         <form id="login-form" class="form" action="./login.php" method="post">
                             <h3 class="text-center">レジログイン</h3>
                             <div class="form-group">
-                                <label for="username">ユーザー名</label><br>
-                                <input type="text" name="username" id="username" class="form-control" required>
+                                <label for="user_name">ユーザー名</label><br>
+                                <input type="text" name="user_name" id="user_name" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label for="password">Password</label><br>
