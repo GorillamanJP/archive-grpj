@@ -136,8 +136,12 @@ class Item
 
             $stmt->execute();
 
-            $id = $stmt->fetch(PDO::FETCH_ASSOC)["id"];
-            return $this->get_from_id($id);
+            $item = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($item != false) {
+                return $this->get_from_id($item["id"]);
+            } else {
+                return null;
+            }
         } catch (PDOException $e) {
             error_log($e);
             return null;
