@@ -1,15 +1,16 @@
 <?php
 $user_name = $_POST["user_name"];
 $password = $_POST["password"];
-create($user_name, $password);
-function create($user_name, $password)
+if (create($user_name, $password)) {
+}
+function create($user_name, $password): bool
 {
     require_once $_SERVER['DOCUMENT_ROOT'] . "/users/user.php";
     $user = new User();
     $user = $user->create($user_name, $password);
     if (!is_null($user)) {
-        header("Location: ./success.html");
+        return true;
     } else {
-        header("Location: ./fail.html");
+        return false;
     }
 }
