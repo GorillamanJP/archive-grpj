@@ -181,7 +181,7 @@ class Item
     }
 
     # 商品すべてを取得
-    public function get_all(): array
+    public function get_all(): array|null
     {
         try {
             $sql = "SELECT id FROM items ORDER BY id ASC";
@@ -198,11 +198,11 @@ class Item
                 }
                 return $items_array;
             } else {
-                throw new Exception();
+                return null;
             }
         } catch (PDOException $e) {
             $this->rollback();
-            throw new Exception($e->getMessage());
+            return null;
         }
     }
 

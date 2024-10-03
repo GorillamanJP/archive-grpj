@@ -19,47 +19,45 @@ class Product
         $this->item = new Item();
         $this->stock = new Stock();
     }
-    public function create(string $item_name, int $price, string $item_image, int $quantity): Product|null
+    public function create(string $item_name, int $price, string $item_image, int $quantity): Product
     {
         try {
             $this->item = $this->item->create($item_name, $price, $item_image);
             $this->stock = $this->stock->create($this->item->get_id(), $quantity);
             return $this;
         } catch (Exception $e) {
-            error_log($e);
-            return null;
+            throw new Exception($e->getMessage());
         }
     }
-    public function get_from_item_id(int $item_id): Product|null
+    public function get_from_item_id(int $item_id): Product
     {
         try {
             $this->item = $this->item->get_from_id($item_id);
             $this->stock = $this->stock->get_from_item_id($this->item->get_id());
             return $this;
         } catch (Exception $e) {
-            error_log($e);
-            return null;
+            throw new Exception($e->getMessage());
         }
     }
-    public function get_from_item_name(string $item_name): Product|null
+    public function get_from_item_name(string $item_name): Product
     {
         try {
             $this->item = $this->item->get_from_item_name($item_name);
             $this->stock = $this->stock->get_from_item_id($this->item->get_id());
             return $this;
         } catch (Exception $e) {
-            error_log($e);
-            return null;
+            throw new Exception($e->getMessage());
+
         }
     }
-    public function get_from_stock_id(int $stock_id): Product|null{
+    public function get_from_stock_id(int $stock_id): Product
+    {
         try {
             $this->stock = $this->stock->get_from_id($stock_id);
             $this->item = $this->item->get_from_id($this->stock->get_item_id());
             return $this;
         } catch (PDOException $e) {
-            error_log($e->getMessage());
-            return null;
+            throw new Exception($e->getMessage());
         }
     }
     public function get_all(): array|null
@@ -77,19 +75,17 @@ class Product
                 return null;
             }
         } catch (Exception $e) {
-            error_log($e);
             return null;
         }
     }
-    public function update(string $item_name, int $price, string $item_image, int $quantity): Product|null
+    public function update(string $item_name, int $price, string $item_image, int $quantity): Product
     {
         try {
             $this->item = $this->item->update($item_name, $price, $item_image);
             $this->stock = $this->stock->update($quantity);
             return $this;
         } catch (Exception $e) {
-            error_log($e);
-            return null;
+            throw new Exception($e->getMessage());
         }
     }
     public function delete(): void
