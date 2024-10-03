@@ -1,12 +1,12 @@
 <?php
-$username = $_POST["username"];
+$user_name = $_POST["user_name"];
 $password = $_POST["password"];
-create($username, $password);
-function create($username, $password)
+create($user_name, $password);
+function create($user_name, $password)
 {
     require_once $_SERVER['DOCUMENT_ROOT'] . "/users/user.php";
     $user = new User();
-    $user = $user->create($username, $password);
+    $user = $user->create($user_name, $password);
     if (!is_null($user)) {
         header("Location: ./success.html");
     } else {

@@ -16,7 +16,10 @@
     //PHP
     "DEVSENSE.phptools-vscode",
     //JavaScript
-    "VisualStudioExptTeam.vscodeintellicode"
+    "VisualStudioExptTeam.vscodeintellicode",
+    // Other Extension
+    "MS-CEINTL.vscode-language-pack-ja",
+    "streetsidesoftware.code-spell-checker"
   ],
   "settings": {
     "terminal.integrated.shell.linux": "/bin/bash",

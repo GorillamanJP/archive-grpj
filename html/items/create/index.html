@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品登録</title>
+</head>
+<body>
+    <h1>商品登録</h1>
+    <form action="./create.php" method="post" enctype="multipart/form-data">
+        <p><input type="text" name="itenmane" id="itenmane"><span>商品名</span></p>
+        <p><input type="number" name="price" id="price"><span>価格</span></p>
+        <p><input type="number" name="quantity" id="quantity"><span>在庫数</span></p>
+        <p><input type="file" name="item_image" id="item_image" accept="image/jpeg"></p>
+        <input type="submit" value="登録">
+    </form>
+</body>
+</html>
