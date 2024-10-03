@@ -7,9 +7,12 @@ function login($user_name, $password):bool
 {
     require_once $_SERVER['DOCUMENT_ROOT'] . "/users/user.php";
     $user = new User();
-    if (!is_null($user->get_from_user_name($user_name)->verify($password))) {
-        return true;
-    } else {
-        return false;
+    $user = $user->get_from_user_name($user_name);
+    if (!is_null($user)) {
+        $user = $user->verify($password);
+        if (!is_null($user->verify($password))) {
+            return true;
+        }
     }
+    return false;
 }

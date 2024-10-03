@@ -82,8 +82,12 @@ class User
             $stmt->bindValue(":user_name", $sanitized_user_name, PDO::PARAM_STR);
             $stmt->execute();
 
-            $id = $stmt->fetch(PDO::FETCH_ASSOC)["id"];
-            return $this->get_from_id($id);
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($user != false) {
+                return $this->get_from_id($user["id"]);
+            } else {
+                return null;
+            }
         } catch (PDOException $e) {
             error_log($e);
             return null;
