@@ -2,9 +2,12 @@
 $id = htmlspecialchars($_POST["id"]);
 $item_name = htmlspecialchars($_POST["item_name"]);
 $price = htmlspecialchars($_POST["price"]);
-$item_image = $_FILES["item_image"]["tmp_name"];
+$item_image = $_FILES["new_item_image"]["tmp_name"];
 
 if (update($id, $item_name, $price, $item_image)) {
+    echo "OK";
+} else {
+    echo "NG";
 }
 
 function update($id, $item_name, $price, $item_image): bool
