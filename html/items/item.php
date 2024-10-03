@@ -70,7 +70,39 @@ class Item
             $this->pdo = new PDO($dsn, "root", $password);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            //throw $th;
+            error_log($e->getMessage());
+        }
+    }
+
+    # トランザクション開始
+    public function start_transaction()
+    {
+        try {
+            $this->pdo->beginTransaction();
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+        }
+    }
+    # ロールバック
+    public function rollback()
+    {
+        try {
+            if ($this->pdo->inTransaction()) {
+                $this->pdo->rollBack();
+            }
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+        }
+    }
+    # コミット
+    public function commit()
+    {
+        try {
+            if ($this->pdo->inTransaction()) {
+                $this->pdo->commit();
+            }
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
         }
     }
 

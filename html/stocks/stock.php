@@ -38,6 +38,38 @@ class Stock
         }
     }
 
+    # トランザクション開始
+    public function start_transaction()
+    {
+        try {
+            $this->pdo->beginTransaction();
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+        }
+    }
+    # ロールバック
+    public function rollback()
+    {
+        try {
+            if ($this->pdo->inTransaction()) {
+                $this->pdo->rollBack();
+            }
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+        }
+    }
+    # コミット
+    public function commit()
+    {
+        try {
+            if ($this->pdo->inTransaction()) {
+                $this->pdo->commit();
+            }
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+        }
+    }
+
     public function create(int $item_id, int $quantity): Stock|null
     {
         try {
