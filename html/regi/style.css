@@ -1,33 +1,24 @@
-* {
+/* body {
+  width: 1000;
+} */
 
-}
 
 .app {
-  margin: 0;
-  width: auto;
+  width: 1500x;
   height: 700px;
+  margin-right: auto;
+  margin-left: auto;
   display: grid;
   grid-template-columns: auto auto auto auto auto;
   grid-template-rows: auto auto auto auto;
-  grid-template-areas: "side side con1 con1 con1"
-                       "side side con1 con1 con1"
-                       "side side con1 con1 con1"
-                       "side side con2 con2 con3";
+  grid-template-areas: "side con1 con1 con1 con1"
+                       "side con1 con1 con1 con1"
+                       "side con1 con1 con1 con1"
+                       "side con2 con2 con2 con3";
+  border: 3px solid rgb(173, 173, 173);
 } 
 
-/* .header {
-  height: 48px;
-  background-color: lightcyan;
-  box-sizing: border-box;
-  border: 8px solid blue;
-} */
-
-/* .main {
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-} */
-
+/* サイドメニュー */
 .sidebar {
   width: auto;
   background-color: rgb(218, 248, 255); 
@@ -37,14 +28,10 @@
 
 }
 
-/* .content {
-  display: flex;
-  flex-direction: column;
-} */
 
+/* 商品一覧 */
 .content1 {
   text-align: center;
-
   background-color: rgb(231, 231, 231);
   box-sizing: border-box;
   border: 2px solid rgb(173, 173, 173);
@@ -52,6 +39,8 @@
 
 }
 
+
+/* 選択商品 */
 .content2 {
   text-align: center;
   background-color: rgb(231, 231, 231);
@@ -61,30 +50,22 @@
 
 }
 
+
+/* 会計 */
 .content3 {
-  /* width: 20%;
-  padding: auto; */
   text-align: center;
   background-color: #faa;
   border: 2px solid rgb(173, 173, 173);
   grid-area: con3;
 }
 
+
+/* 選択商品テーブルデザイン */
 table{
   width: 100%;
   border-collapse:separate;
   border-spacing: 0;
 }
-
-table th:first-child{
-  border-radius: 5px 0 0 0;
-}
-
-table th:last-child{
-  border-radius: 0 5px 0 0;
-  border-right: 1px solid #3c6690;
-}
-
 table th{
   text-align: center;
   color:white;
@@ -96,7 +77,6 @@ table th{
   width: 25%;
   padding: 10px 0;
 }
-
 table td{
   text-align: center;
   border-left: 1px solid #a8b7c5;
@@ -107,27 +87,55 @@ table td{
   padding: 10px 0;
 }
 
-table td:last-child{
-  border-right: 1px solid #a8b7c5;
-}
 
-table tr:last-child td:first-child {
-  border-radius: 0 0 0 5px;
-}
-
-table tr:last-child td:last-child {
-  border-radius: 0 0 5px 0;
-}
-
+/* 選択商品の削除ボタン調整 */
 button{
   width: 100px;
   height: 30px;
 }
+
+
+/* 会計ボタンサイズ調整 */
 .butt {
     width: 8em;
     height:4em;
 }
 
-.imgA {
 
-}
+/* 商品画像の配置 */
+p.imgs img {
+  width: 150px;
+  }
+
+
+/* 会計テーブルデザイン */
+  .sum {
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border-spacing: 0;
+   }
+   .sum tr:last-child {
+    background: #fafafb;
+    border-top: double 3px #666666;
+    font-weight: bold;
+    color: #eb3b5a;
+   }
+   .sum th {
+    padding: 10px;
+    background: #778ca3;
+    border: solid 1px #666666;
+    color: #ffffff;
+   }
+   .sum td {
+    padding: 10px;
+    border: solid 1px #666666;
+   }
+   
+
+/* アカウント名、ログアウトボタンの配置 */
+   p.user {
+    position: absolute;
+    bottom: 25px;
+    margin: 8px
+  }
