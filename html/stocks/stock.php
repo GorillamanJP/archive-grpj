@@ -34,7 +34,7 @@ class Stock
             $this->pdo = new PDO($dsn, "root", $password);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            //throw $th;
+            throw new Exception($e->getMessage());
         }
     }
 
@@ -44,7 +44,7 @@ class Stock
         try {
             $this->pdo->beginTransaction();
         } catch (PDOException $e) {
-            error_log($e->getMessage());
+            throw new Exception($e->getMessage());
         }
     }
     # ロールバック
@@ -55,7 +55,7 @@ class Stock
                 $this->pdo->rollBack();
             }
         } catch (PDOException $e) {
-            error_log($e->getMessage());
+            throw new Exception($e->getMessage());
         }
     }
     # コミット
@@ -66,11 +66,11 @@ class Stock
                 $this->pdo->commit();
             }
         } catch (PDOException $e) {
-            error_log($e->getMessage());
+            throw new Exception($e->getMessage());
         }
     }
 
-    public function create(int $item_id, int $quantity): Stock|null
+    public function create(int $item_id, int $quantity): Stock
     {
         try {
             $sql = "INSERT INTO stocks (item_id, quantity) VALUES (:item_id, :quantity)";
@@ -84,12 +84,12 @@ class Stock
 
             return $this->get_from_id($this->pdo->lastInsertId());
         } catch (PDOException $e) {
-            error_log($e);
-            return null;
+            $this->rollback();
+            throw new Exception($e->getMessage());
         }
     }
 
-    public function get_from_id(int $id): Stock|null
+    public function get_from_id(int $id): Stock
     {
         try {
             $sql = "SELECT * FROM stocks WHERE id = :id";
@@ -108,15 +108,15 @@ class Stock
                 $this->quantity = $stock["quantity"];
                 return $this;
             } else {
-                return null;
+                throw new Exception("ID: {$id} has not found.");
             }
         } catch (PDOException $e) {
-            error_log($e);
-            return null;
+            $this->rollback();
+            throw new Exception($e->getMessage());
         }
     }
 
-    public function get_from_item_id(int $item_id): Stock|null
+    public function get_from_item_id(int $item_id): Stock
     {
         try {
             $sql = "SELECT id FROM stocks WHERE item_id = :item_id";
@@ -131,12 +131,12 @@ class Stock
 
             return $this->get_from_id($id);
         } catch (PDOException $e) {
-            error_log($e);
-            return null;
+            $this->rollback();
+            throw new Exception($e->getMessage());
         }
     }
 
-    public function get_all(): array|null
+    public function get_all(): array
     {
         try {
             $sql = "SELECT id FROM stocks ORDER BY id ASC";
@@ -155,15 +155,15 @@ class Stock
                 }
                 return $stocks_array;
             } else {
-                return null;
+                throw new Exception();
             }
         } catch (PDOException $e) {
-            error_log($e);
-            return null;
+            $this->rollback();
+            throw new Exception($e->getMessage());
         }
     }
 
-    public function update(int $quantity): Stock|null
+    public function update(int $quantity): Stock
     {
         try {
             $sql = "UPDATE stocks SET quantity = :quantity WHERE id = :id";
@@ -177,8 +177,8 @@ class Stock
 
             return $this->get_from_id($this->id);
         } catch (PDOException $e) {
-            error_log($e);
-            return null;
+            $this->rollback();
+            throw new Exception($e->getMessage());
         }
     }
 
@@ -193,6 +193,7 @@ class Stock
 
             $stmt->execute();
         } catch (Throwable $t) {
+            $this->rollback();
             throw $t;
         }
     }

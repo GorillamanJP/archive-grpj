@@ -52,6 +52,16 @@ class Product
             return null;
         }
     }
+    public function get_from_stock_id(int $stock_id): Product|null{
+        try {
+            $this->stock = $this->stock->get_from_id($stock_id);
+            $this->item = $this->item->get_from_id($this->stock->get_item_id());
+            return $this;
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            return null;
+        }
+    }
     public function get_all(): array|null
     {
         try {

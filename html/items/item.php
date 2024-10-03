@@ -70,7 +70,7 @@ class Item
             $this->pdo = new PDO($dsn, "root", $password);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            error_log($e->getMessage());
+            throw new Exception($e->getMessage());
         }
     }
 
@@ -80,7 +80,7 @@ class Item
         try {
             $this->pdo->beginTransaction();
         } catch (PDOException $e) {
-            error_log($e->getMessage());
+            throw new Exception($e->getMessage());
         }
     }
     # ロールバック
@@ -91,7 +91,7 @@ class Item
                 $this->pdo->rollBack();
             }
         } catch (PDOException $e) {
-            error_log($e->getMessage());
+            throw new Exception($e->getMessage());
         }
     }
     # コミット
@@ -102,12 +102,12 @@ class Item
                 $this->pdo->commit();
             }
         } catch (PDOException $e) {
-            error_log($e->getMessage());
+            throw new Exception($e->getMessage());
         }
     }
 
     # 商品登録
-    public function create(string $item_name, int $price, string $item_image): Item|null
+    public function create(string $item_name, int $price, string $item_image): Item
     {
         try {
             $sanitized_item_name = htmlspecialchars($item_name, encoding: "UTF-8");
@@ -124,13 +124,13 @@ class Item
 
             return $this->get_from_id($this->pdo->lastInsertId());
         } catch (PDOException $e) {
-            error_log($e);
-            return null;
+            $this->rollback();
+            throw new Exception($e->getMessage());
         }
     }
 
     # 商品IDから検索
-    public function get_from_id(int $id): Item|null
+    public function get_from_id(int $id): Item
     {
         try {
             $sql = "SELECT * FROM items WHERE id = :id";
@@ -146,16 +146,16 @@ class Item
                 $this->item_image = base64_encode($item["item_image"]);
                 return $this;
             } else {
-                return null;
+                throw new Exception("ID: {$id} has not found.");
             }
         } catch (PDOException $e) {
-            error_log($e);
-            return null;
+            $this->rollback();
+            throw new Exception($e->getMessage());
         }
     }
 
     # 商品名から検索
-    public function get_from_item_name(string $item_name): Item|null
+    public function get_from_item_name(string $item_name): Item
     {
         try {
             $sanitized_item_name = htmlspecialchars($item_name);
@@ -172,16 +172,16 @@ class Item
             if ($item != false) {
                 return $this->get_from_id($item["id"]);
             } else {
-                return null;
+                throw new Exception("Name: {$item_name} has not found.");
             }
         } catch (PDOException $e) {
-            error_log($e);
-            return null;
+            $this->rollback();
+            throw new Exception($e->getMessage());
         }
     }
 
     # 商品すべてを取得
-    public function get_all(): array|null
+    public function get_all(): array
     {
         try {
             $sql = "SELECT id FROM items ORDER BY id ASC";
@@ -198,16 +198,16 @@ class Item
                 }
                 return $items_array;
             } else {
-                return null;
+                throw new Exception();
             }
         } catch (PDOException $e) {
-            error_log($e);
-            return null;
+            $this->rollback();
+            throw new Exception($e->getMessage());
         }
     }
 
     # 商品更新
-    public function update(string $item_name, int $price, string $item_image): Item|null
+    public function update(string $item_name, int $price, string $item_image): Item
     {
         try {
             $sanitized_item_name = htmlspecialchars($item_name);
@@ -223,8 +223,9 @@ class Item
             $stmt->execute();
 
             return $this->get_from_id($this->id);
-        } catch (Exception $e) {
-            return null;
+        } catch (PDOException $e) {
+            $this->rollback();
+            throw new Exception($e->getMessage());
         }
     }
 
@@ -239,6 +240,7 @@ class Item
 
             $stmt->execute();
         } catch (Throwable $t) {
+            $this->rollback();
             throw $t;
         }
     }

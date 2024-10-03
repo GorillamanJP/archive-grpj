@@ -34,7 +34,7 @@ $products = $product_obj->get_all();
                     <td>
                         <form action="../update/stock/" method="post">
                             <input type="hidden" name="id" id="id" value="<?= $product->get_stock()->get_id() ?>">
-                            <input type="submit" value="在庫更新">
+                            <input type="submit" value="入荷処理">
                         </form>
                     </td>
                     <td>
