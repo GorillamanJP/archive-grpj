@@ -1,22 +1,13 @@
 <?php
 $id = htmlspecialchars($_POST["id"]);
-$quantity = htmlspecialchars($_POST["quantity"]);
+$add_quantity = htmlspecialchars($_POST["add_quantity"]);
 
-if (update($id, $quantity)) {
-    echo "OK";
-} else {
-    echo "NG";
-}
+require_once $_SERVER['DOCUMENT_ROOT'] . "/stocks/stock.php";
+$stock = new Stock();
+$stock->start_transaction();
+$stock = $stock->get_from_id($id);
+$now_quantity = $stock->get_quantity();
+$stock = $stock->update($now_quantity + $add_quantity);
+$stock->commit();
 
-function update($id, $quantity): bool
-{
-    require_once $_SERVER['DOCUMENT_ROOT'] . "/stocks/stock.php";
-    $stock = new Stock();
-    $stock = $stock->get_from_id($id);
-    $stock = $stock->update($quantity);
-    if (!is_null($stock)) {
-        return true;
-    } else {
-        return false;
-    }
-}
+echo "OK";
