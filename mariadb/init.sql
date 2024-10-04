@@ -23,3 +23,21 @@ CREATE TABLE IF NOT EXISTS stocks(
     quantity INT NOT NULL,
     FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE
 );
+
+-- 会計テーブル
+CREATE TABLE IF NOT EXISTS accountants(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    date DATETIME NOT NULL,
+    total_amount INT NOT NULL
+);
+
+-- 会計詳細テーブル
+CREATE TABLE IF NOT EXISTS details(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    accountant_id INT NOT NULL UNIQUE,
+    item_id INT NOT NULL UNIQUE,
+    quantity INT NOT NULL,
+    item_price INT NOT NULL,
+    FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE,
+    FOREIGN KEY (accountant_id) REFERENCES accountants(id) ON DELETE CASCADE
+);
