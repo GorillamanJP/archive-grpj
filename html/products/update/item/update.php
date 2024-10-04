@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 $id = htmlspecialchars($_POST["id"]);
 $item_name = htmlspecialchars($_POST["item_name"]);
 $price = htmlspecialchars($_POST["price"]);
@@ -10,8 +12,13 @@ try {
     $item = new Item();
     $item = $item->get_from_id($id);
     $item = $item->update($item_name, $price, $item_image);
+    // 成功時のメッセージをセッションに保存
+    $_SESSION['message'] = "商品情報が正常に更新されました。";
+    $_SESSION['message_type'] = "success";  // 成功メッセージ用
 } catch (Exception $e) {
-    echo $e->getMessage();
-    echo "NG";
+    // 失敗時のメッセージをセッションに保存
+    $_SESSION['message'] = "エラーが発生しました: " . $e->getMessage();
+    $_SESSION['message_type'] = "error";  // エラーメッセージ用
 }
-echo "OK";
+header("Location: /products/list/index.php");
+exit();
