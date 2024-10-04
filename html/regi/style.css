@@ -139,3 +139,24 @@ p.imgs img {
     bottom: 25px;
     margin: 8px
   }
+
+  .img1 {
+    text-align: center; /* 中央揃え */
+    margin-bottom: 10px;
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.imgs {
+    display: flex; /* フレックスボックスで横並び */
+    justify-content: center; /* 中央揃え */
+    gap: 10px; /* 画像間のスペース */
+}
+
+.imgs img {
+    width: 150px; /* 画像の幅を150pxに設定 */
+    height: auto; /* アスペクト比を維持 */
+}
+
