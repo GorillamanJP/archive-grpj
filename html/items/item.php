@@ -70,7 +70,7 @@ class Item
             $this->pdo = new PDO($dsn, "root", $password);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            throw new Exception($e->getMessage());
+            throw new Exception(previous:$e);
         }
     }
 
@@ -80,7 +80,7 @@ class Item
         try {
             $this->pdo->beginTransaction();
         } catch (PDOException $e) {
-            throw new Exception($e->getMessage());
+            throw new Exception(previous:$e);
         }
     }
     # ロールバック
@@ -91,7 +91,7 @@ class Item
                 $this->pdo->rollBack();
             }
         } catch (PDOException $e) {
-            throw new Exception($e->getMessage());
+            throw new Exception(previous:$e);
         }
     }
     # コミット
@@ -102,7 +102,7 @@ class Item
                 $this->pdo->commit();
             }
         } catch (PDOException $e) {
-            throw new Exception($e->getMessage());
+            throw new Exception(previous:$e);
         }
     }
 
@@ -125,7 +125,7 @@ class Item
             return $this->get_from_id($this->pdo->lastInsertId());
         } catch (PDOException $e) {
             $this->rollback();
-            throw new Exception($e->getMessage());
+            throw new Exception(previous:$e);
         }
     }
 
@@ -150,7 +150,7 @@ class Item
             }
         } catch (PDOException $e) {
             $this->rollback();
-            throw new Exception($e->getMessage());
+            throw new Exception(previous:$e);
         }
     }
 
@@ -176,7 +176,7 @@ class Item
             }
         } catch (PDOException $e) {
             $this->rollback();
-            throw new Exception($e->getMessage());
+            throw new Exception(previous:$e);
         }
     }
 
@@ -225,7 +225,7 @@ class Item
             return $this->get_from_id($this->id);
         } catch (PDOException $e) {
             $this->rollback();
-            throw new Exception($e->getMessage());
+            throw new Exception(previous:$e);
         }
     }
 
