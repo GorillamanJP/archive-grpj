@@ -1,5 +1,5 @@
 <?php
-$username = "root";
+$user_name = "root";
 $password = getenv("DB_PASSWORD");
 $db_name = getenv("DB_DATABASE");
 $dsn = "mysql:host=mariadb;dbname=".$db_name;
@@ -19,7 +19,7 @@ $dsn = "mysql:host=mariadb;dbname=".$db_name;
     <?php
     $pdo = null;
     try {
-        $pdo = new PDO($dsn, $username, $password);
+        $pdo = new PDO($dsn, $user_name, $password);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         ?>
         <p>データベースに接続できました。</p>
@@ -74,7 +74,7 @@ $dsn = "mysql:host=mariadb;dbname=".$db_name;
     <table>
         <?php
         try {
-            $pdo = new PDO($dsn, $username, $password);
+            $pdo = new PDO($dsn, $user_name, $password);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             $sql = "SELECT id, name, email FROM test";

@@ -1,7 +1,11 @@
 FROM php:fpm
 
-RUN docker-php-ext-install pdo_mysql
+RUN apt-get update && apt-get install git zlib1g-dev libpng-dev libjpeg62-turbo-dev -y
 
-RUN apt-get update && apt-get install git -y
+RUN docker-php-ext-configure gd --with-jpeg
+
+RUN docker-php-ext-install -j$(nproc) gd
+
+RUN docker-php-ext-install pdo_mysql
 
 RUN git config --global --add safe.directory /var/www
