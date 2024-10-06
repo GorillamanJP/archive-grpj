@@ -34,8 +34,8 @@ CREATE TABLE IF NOT EXISTS accountants(
 -- 会計詳細テーブル
 CREATE TABLE IF NOT EXISTS details(
     id INT AUTO_INCREMENT PRIMARY KEY,
-    accountant_id INT NOT NULL UNIQUE,
-    item_id INT NOT NULL UNIQUE,
+    accountant_id INT NOT NULL,
+    item_id INT NOT NULL,
     quantity INT NOT NULL,
     item_price INT NOT NULL,
     FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE,

@@ -58,7 +58,19 @@ class Detail
             throw new Exception(previous: $e);
         }
     }
-
+    # コンストラクタ
+    public function __construct()
+    {
+        try {
+            $password = getenv("DB_PASSWORD");
+            $db_name = getenv("DB_DATABASE");
+            $dsn = "mysql:host=mariadb;dbname={$db_name}";
+            $this->pdo = new PDO($dsn, "root", $password);
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
     public function create(int $accountant_id, int $item_id, int $quantity, int $item_price): Detail
     {
         try {
@@ -83,11 +95,11 @@ class Detail
     public function get_from_id(int $detail_id): Detail
     {
         try {
-            $sql = "SELECT * FROM details WHERE detail_id = :detail_id";
+            $sql = "SELECT * FROM details WHERE id = :id";
 
             $stmt = $this->pdo->prepare($sql);
 
-            $stmt->bindValue(":detail_id", $detail_id, PDO::PARAM_INT);
+            $stmt->bindValue(":id", $detail_id, PDO::PARAM_INT);
 
             $stmt->execute();
 
@@ -104,7 +116,7 @@ class Detail
             }
         } catch (Exception $e) {
             $this->rollback();
-            throw new Exception($e->getMessage());
+            throw new Exception(previous: $e);
         }
     }
 

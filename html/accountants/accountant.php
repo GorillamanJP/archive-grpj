@@ -48,6 +48,19 @@ class Accountant
             throw new Exception($e->getMessage());
         }
     }
+    # コンストラクタ
+    public function __construct()
+    {
+        try {
+            $password = getenv("DB_PASSWORD");
+            $db_name = getenv("DB_DATABASE");
+            $dsn = "mysql:host=mariadb;dbname={$db_name}";
+            $this->pdo = new PDO($dsn, "root", $password);
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
 
     public function create(string $date, int $total_amount):Accountant{
         try {
