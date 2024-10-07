@@ -26,6 +26,11 @@ class Detail
     {
         return $this->item_price;
     }
+    private int $subtotal;
+    public function get_subtotal(): int
+    {
+        return $this->subtotal;
+    }
     private PDO $pdo;
     # トランザクション開始
     public function start_transaction()
@@ -71,10 +76,10 @@ class Detail
             throw new Exception($e->getMessage());
         }
     }
-    public function create(int $accountant_id, int $item_id, int $quantity, int $item_price): Detail
+    public function create(int $accountant_id, int $item_id, int $quantity, int $item_price, int $subtotal): Detail
     {
         try {
-            $sql = "INSERT INTO details (accountant_id, item_id, quantity, item_price) VALUES (:accountant_id, :item_id, :quantity, :item_price)";
+            $sql = "INSERT INTO details (accountant_id, item_id, quantity, item_price, subtotal) VALUES (:accountant_id, :item_id, :quantity, :item_price, :subtotal)";
 
             $stmt = $this->pdo->prepare($sql);
 
@@ -82,6 +87,7 @@ class Detail
             $stmt->bindValue(":item_id", $item_id, PDO::PARAM_INT);
             $stmt->bindValue(":quantity", $quantity, PDO::PARAM_INT);
             $stmt->bindValue(":item_price", $item_price, PDO::PARAM_INT);
+            $stmt->bindValue(":subtotal", $subtotal, PDO::PARAM_INT);
 
             $stmt->execute();
 
@@ -110,6 +116,7 @@ class Detail
                 $this->item_id = $detail["item_id"];
                 $this->quantity = $detail["quantity"];
                 $this->item_price = $detail["item_price"];
+                $this->subtotal = $detail["subtotal"];
                 return $this;
             } else {
                 throw new Exception("ID {$detail_id} has not found.");

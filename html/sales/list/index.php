@@ -33,10 +33,12 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/items/item.php";
                                     <td><?= $item->get_item_name() ?></td>
                                     <td><?= $detail->get_item_price() ?></td>
                                     <td><?= $detail->get_quantity() ?></td>
+                                    <td><?= $detail->get_subtotal() ?></td>
                                 </tr>
                             <?php endforeach ?>
                         </table>
                     </td>
+                    <td><?= $sale->get_accountant()->get_total_price() ?></td>
                     <td><?= $sale->get_accountant()->get_total_amount() ?></td>
                 </tr>
             <?php endforeach ?>

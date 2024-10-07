@@ -16,6 +16,11 @@ class Accountant
     {
         return $this->total_amount;
     }
+    private int $total_price;
+    public function get_total_price(): int
+    {
+        return $this->total_price;
+    }
     private PDO $pdo;
     # トランザクション開始
     public function start_transaction()
@@ -62,14 +67,16 @@ class Accountant
         }
     }
 
-    public function create(string $date, int $total_amount):Accountant{
+    public function create(int $total_amount, int $total_price): Accountant
+    {
         try {
-            $sql = "INSERT INTO accountants (date, total_amount) VALUES (:date, :total_amount)";
+            $sql = "INSERT INTO accountants (date, total_amount, total_price) VALUES (:date, :total_amount, :total_price)";
 
             $stmt = $this->pdo->prepare($sql);
 
-            $stmt->bindValue(":date", $date, PDO::PARAM_STR);
+            $stmt->bindValue(":date", date("Y-m-d H:i:s"), PDO::PARAM_STR);
             $stmt->bindValue(":total_amount", $total_amount, PDO::PARAM_INT);
+            $stmt->bindValue(":total_price", $total_price, PDO::PARAM_INT);
 
             $stmt->execute();
 
@@ -80,18 +87,20 @@ class Accountant
         }
     }
 
-    public function get_from_id(int $id):Accountant{
+    public function get_from_id(int $id): Accountant
+    {
         try {
             $sql = "SELECT * FROM accountants WHERE id = :id";
             $stmt = $this->pdo->prepare($sql);
-            $stmt->bindValue(":id",$id, PDO::PARAM_INT);
+            $stmt->bindValue(":id", $id, PDO::PARAM_INT);
             $stmt->execute();
 
             $accountant = $stmt->fetch(PDO::FETCH_ASSOC);
-            if($accountant){
+            if ($accountant) {
                 $this->id = $accountant["id"];
                 $this->date = $accountant["date"];
                 $this->total_amount = $accountant["total_amount"];
+                $this->total_price = $accountant["total_price"];
                 return $this;
             } else {
                 throw new Exception("ID {$id} has not found.");
@@ -102,7 +111,8 @@ class Accountant
         }
     }
 
-    public function get_all():array|null{
+    public function get_all(): array|null
+    {
         try {
             $sql = "SELECT id FROM accountants ORDER BY id ASC";
 
@@ -111,9 +121,9 @@ class Accountant
             $stmt->execute();
 
             $accountants = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            if($accountants){
+            if ($accountants) {
                 $accountants_array = [];
-                foreach($accountants as $accountant){
+                foreach ($accountants as $accountant) {
                     $accountant_obj = new Accountant();
                     $accountants_array[] = $accountant_obj->get_from_id($accountant["id"]);
                 }

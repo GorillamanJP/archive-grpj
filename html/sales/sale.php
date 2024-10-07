@@ -26,16 +26,22 @@ class Sale
         require_once $_SERVER['DOCUMENT_ROOT'] . "/products/product.php";
         try {
             $total_amount = 0;
-            for ($i = 0; $i < count($quantities); $i++) {
-                $total_amount += $quantities[$i];
-            }
-            $this->accountant = $this->accountant->create(date("Y-m-d H:i:s"), $total_amount);
-            $accountant_id = $this->accountant->get_id();
+            $total_price = 0;
+            $buy_items = [];
             for ($i = 0; $i < count($product_ids); $i++) {
                 $product = new Product();
                 $product = $product->get_from_item_id($product_ids[$i]);
+                $total_amount += $quantities[$i];
+                $total_price += $product->get_item()->get_price() * $quantities[$i];
+                $buy_items[] = $product;
+            }
+            $this->accountant = $this->accountant->create($total_amount, $total_price);
+            $accountant_id = $this->accountant->get_id();
+            $qi = 0;
+            foreach ($buy_items as $item) {
                 $detail = new Detail();
-                $this->details[] = $detail->create($accountant_id, $product->get_item()->get_id(), $quantities[$i], $product->get_item()->get_price());
+                $this->details[] = $detail->create($accountant_id, $item->get_item()->get_id(), $quantities[$qi], $item->get_item()->get_price(), $item->get_item()->get_price() * $quantities[$qi]);
+                $qi++;
             }
             return $this;
         } catch (Exception $e) {
@@ -55,14 +61,15 @@ class Sale
         }
     }
 
-    public function get_all():array|null{
+    public function get_all(): array|null
+    {
         try {
             $accountants = $this->accountant->get_all();
-            if(is_null($accountants)){
+            if (is_null($accountants)) {
                 return null;
             }
             $sales_array = [];
-            foreach($accountants as $accountant){
+            foreach ($accountants as $accountant) {
                 $sale_obj = new Sale();
                 $sales_array[] = $sale_obj->get_from_accountant_id($accountant->get_id());
             }
