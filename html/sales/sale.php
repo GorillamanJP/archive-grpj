@@ -54,4 +54,21 @@ class Sale
             throw new Exception(previous: $e);
         }
     }
+
+    public function get_all():array|null{
+        try {
+            $accountants = $this->accountant->get_all();
+            if(is_null($accountants)){
+                return null;
+            }
+            $sales_array = [];
+            foreach($accountants as $accountant){
+                $sale_obj = new Sale();
+                $sales_array[] = $sale_obj->get_from_accountant_id($accountant->get_id());
+            }
+            return $sales_array;
+        } catch (Exception $e) {
+            throw new Exception(previous: $e);
+        }
+    }
 }

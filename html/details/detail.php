@@ -123,7 +123,7 @@ class Detail
     public function gets_from_accountant_id(int $accountant_id): array
     {
         try {
-            $sql = "SELECT detail_id FROM details WHERE accountant_id = :accountant_id";
+            $sql = "SELECT id FROM details WHERE accountant_id = :accountant_id";
 
             $stmt = $this->pdo->prepare($sql);
 
