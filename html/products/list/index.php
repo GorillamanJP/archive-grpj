@@ -11,6 +11,11 @@ $products = $product_obj->get_all();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -18,35 +23,45 @@ $products = $product_obj->get_all();
     <?php if (is_null($products)): ?>
         <p>商品はありません</p>
     <?php else: ?>
-        <table>
+        <table class="table">
+            <tr>
+                <th class="align-middle">商品名</th>
+                <th class="align-middle">価格</th>
+                <th class="align-middle">在庫数</th>
+                <th class="align-middle">商品イメージ</th>
+                <th class="align-middle"></th>
+                <th class="align-middle"></th>
+                <th class="align-middle"></th>
+            </tr>
             <? foreach ($products as $product): ?>
                 <tr>
-                    <td><?= $product->get_item()->get_item_name() ?></td>
-                    <td><?= $product->get_item()->get_price() ?></td>
-                    <td><?= $product->get_stock()->get_quantity() ?></td>
-                    <td><img src="data:image/jpeg;base64,<?= $product->get_item()->get_item_image() ?>" alt="商品画像　ID<?= $product->get_item()->get_id() ?>番"></td>
-                    <td>
+                    <td class="align-middle"><?= $product->get_item()->get_item_name() ?></td>
+                    <td class="align-middle"><?= $product->get_item()->get_price() ?></td>
+                    <td class="align-middle"><?= $product->get_stock()->get_quantity() ?></td>
+                    <td class="align-middle"><img src="data:image/jpeg;base64,<?= $product->get_item()->get_item_image() ?>" alt="商品画像　ID<?= $product->get_item()->get_id() ?>番"></td>
+                    <td class="align-middle">
                         <form action="../update/item/" method="post">
                             <input type="hidden" name="id" id="id" value="<?= $product->get_item()->get_id() ?>">
-                            <input type="submit" value="商品更新">
+                            <input type="submit" value="商品更新" class="btn btn-outline-primary">
                         </form>
                     </td>
-                    <td>
+                    <td class="align-middle">
                         <form action="../update/stock/" method="post">
                             <input type="hidden" name="id" id="id" value="<?= $product->get_stock()->get_id() ?>">
-                            <input type="submit" value="入荷処理">
+                            <input type="submit" value="入荷処理" btn class="btn btn-outline-success">
                         </form>
                     </td>
-                    <td>
+                    <td class="align-middle">
                         <form action="../delete/" method="post">
                             <input type="hidden" name="id" id="id" value="<?= $product->get_item()->get_id() ?>">
-                            <input type="submit" value="削除">
+                            <input type="submit" value="削除" class="btn btn-outline-danger">
                         </form>
                     </td>
                 </tr>
             <?php endforeach ?>
         </table>
     <?php endif ?>
+    <input type="submit" name="submit" onclick="location.href='../create/'" class="btn btn-primary" value="登録画面へ">
 </body>
 
 </html>
