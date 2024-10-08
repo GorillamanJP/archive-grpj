@@ -25,6 +25,16 @@ $products = $product_obj->get_all();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous"></script>
+    <script>
+    // 削除ボタンを押したときに確認ダイアログを表示
+    function confirmDelete(form) {
+        if (confirm('本当に削除しますか？')) {
+            form.submit();  // 確認された場合、フォームを送信
+        } else {
+            return false;  // キャンセルされた場合、削除処理を中断
+        }
+    }
+    </script>
 </head>
 
 <body>
@@ -67,7 +77,7 @@ $products = $product_obj->get_all();
                         </form>
                     </td>
                     <td class="align-middle">
-                        <form action="../delete/" method="post">
+                        <form action="../delete/" method="post" onsubmit="return confirmDelete(this)">
                             <input type="hidden" name="id" id="id" value="<?= $product->get_item()->get_id() ?>">
                             <input type="submit" value="削除" class="btn btn-outline-danger">
                         </form>
