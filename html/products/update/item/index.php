@@ -44,6 +44,7 @@ $product = $product->get_from_item_id($id);
         </table>
         <div class="text-center">
             <input type="submit" value="更新" class="btn btn-primary">
+            <a href="../../list/index.php" class="btn btn-secondary">戻る</a>
         </div>
     </form>
 </div>
