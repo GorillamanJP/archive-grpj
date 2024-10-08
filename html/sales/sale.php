@@ -43,7 +43,7 @@ class Sale
             $stock = new Stock();
             $stock->start_transaction();
             for ($i = 0; $i < count($buy_items); $i++) {
-                if ($stock->get_from_item_id($buy_items[$i]->get_id())->get_quantity() - $quantities[$i] <= 0) {
+                if ($stock->get_from_item_id($buy_items[$i]->get_id())->get_quantity() - $quantities[$i] < 0) {
                     throw new Exception("在庫不足");
                 }
                 $this->details[] = $detail->create($accountant_id, $buy_items[$i]->get_id(), $quantities[$i], $buy_items[$i]->get_price(), $buy_items[$i]->get_price() * $quantities[$i]);
