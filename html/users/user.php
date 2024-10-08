@@ -22,13 +22,13 @@ class User
     private string $salt;
 
     # ログイン検証
-    public function verify(string $password): User|null
+    public function verify(string $password): User
     {
         $sanitized_password = htmlspecialchars($password, encoding: "UTF-8");
         if (password_verify($sanitized_password . $this->salt, $this->password_hash)) {
             return $this;
         } else {
-            return null;
+            throw new Exception("Invalid Username or Password.");
         }
     }
     # PDOオブジェクト
@@ -44,11 +44,12 @@ class User
             $this->pdo = new PDO($dsn, "root", $password);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
+            throw new Exception($e->getMessage());
         }
     }
 
     #ユーザー登録
-    public function create(string $user_name, string $password): User|null
+    public function create(string $user_name, string $password): User
     {
         try {
             # 入力値サニタイズ
@@ -67,13 +68,12 @@ class User
 
             return $this->get_from_id($this->pdo->lastInsertId());
         } catch (PDOException $e) {
-            error_log($e);
-            return null;
+            throw new Exception($e->getMessage());
         }
     }
 
     # ユーザー名から読み込み
-    public function get_from_user_name(string $user_name): User|null
+    public function get_from_user_name(string $user_name): User
     {
         $sanitized_user_name = htmlspecialchars($user_name, encoding: "UTF-8");
         try {
@@ -83,19 +83,18 @@ class User
             $stmt->execute();
 
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
-            if ($user != false) {
+            if ($user) {
                 return $this->get_from_id($user["id"]);
             } else {
-                return null;
+                throw new Exception("Name {$user_name} has not found.");
             }
         } catch (PDOException $e) {
-            error_log($e);
-            return null;
+            throw new Exception($e->getMessage());
         }
     }
 
     # ユーザーIDから読み込み
-    public function get_from_id(int $id): User|null
+    public function get_from_id(int $id): User
     {
         try {
             $sql = "SELECT * FROM users WHERE id = :id";
@@ -111,11 +110,10 @@ class User
                 $this->salt = $user["salt"];
                 return $this;
             } else {
-                return null;
+                throw new Exception("ID {$id} has not found.");
             }
         } catch (PDOException $e) {
-            error_log($e);
-            return null;
+            throw new Exception($e->getMessage());
         }
     }
 
@@ -140,13 +138,12 @@ class User
                 return null;
             }
         } catch (PDOException $e) {
-            error_log($e);
             return null;
         }
     }
 
     # ユーザー更新
-    public function update(string $user_name, string $password): User|null
+    public function update(string $user_name, string $password): User
     {
         try {
             # 入力値サニタイズ
@@ -167,8 +164,7 @@ class User
 
             return $this->get_from_id($this->id);
         } catch (PDOException $e) {
-            echo $e->getMessage();
-            return null;
+            throw new Exception($e->getMessage());
         }
     }
 
