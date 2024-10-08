@@ -34,7 +34,7 @@ class Stock
             $this->pdo = new PDO($dsn, "root", $password);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            throw new Exception(previous:$e);
+            throw new Exception(previous: $e);
         }
     }
 
@@ -44,7 +44,7 @@ class Stock
         try {
             $this->pdo->beginTransaction();
         } catch (PDOException $e) {
-            throw new Exception(previous:$e);
+            throw new Exception(previous: $e);
         }
     }
     # ロールバック
@@ -55,7 +55,7 @@ class Stock
                 $this->pdo->rollBack();
             }
         } catch (PDOException $e) {
-            throw new Exception(previous:$e);
+            throw new Exception(previous: $e);
         }
     }
     # コミット
@@ -66,7 +66,7 @@ class Stock
                 $this->pdo->commit();
             }
         } catch (PDOException $e) {
-            throw new Exception(previous:$e);
+            throw new Exception(previous: $e);
         }
     }
 
@@ -85,7 +85,7 @@ class Stock
             return $this->get_from_id($this->pdo->lastInsertId());
         } catch (PDOException $e) {
             $this->rollback();
-            throw new Exception(previous:$e);
+            throw new Exception(previous: $e);
         }
     }
 
@@ -112,7 +112,7 @@ class Stock
             }
         } catch (PDOException $e) {
             $this->rollback();
-            throw new Exception(previous:$e);
+            throw new Exception(previous: $e);
         }
     }
 
@@ -132,7 +132,31 @@ class Stock
             return $this->get_from_id($id);
         } catch (PDOException $e) {
             $this->rollback();
-            throw new Exception(previous:$e);
+            throw new Exception(previous: $e);
+        }
+    }
+
+    public function get_remaining_stock(): int
+    {
+        try {
+            $sql = "SELECT GREATEST(s.quantity - IFNULL(SUM(d.quantity), 0), 0) AS remaining_stock FROM stocks s LEFT JOIN details d ON s.item_id = d.item_id WHERE s.item_id = :item_id GROUP BY s.quantity";
+
+            $stmt = $this->pdo->prepare($sql);
+
+            $stmt->bindValue(":id", $this->id, PDO::PARAM_INT);
+
+            $stmt->execute();
+
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($result) {
+                return $result["remaining_stock"];
+            } else {
+                throw new Exception("Remaining Stock Fetch Error");
+            }
+
+        } catch (PDOException $e) {
+            throw new Exception(previous: $e);
         }
     }
 
@@ -178,7 +202,7 @@ class Stock
             return $this->get_from_id($this->id);
         } catch (PDOException $e) {
             $this->rollback();
-            throw new Exception(previous:$e);
+            throw new Exception(previous: $e);
         }
     }
 
