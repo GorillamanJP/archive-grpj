@@ -4,7 +4,7 @@ $user_obj = new User();
 $users = $user_obj->get_all();
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 
 <head>
     <meta charset="UTF-8">

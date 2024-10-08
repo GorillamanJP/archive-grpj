@@ -7,8 +7,16 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/products/product.php";
 try {
     $product = new Product();
     $product->create($item_name, $price, $item_image, 0);
+
+    // 成功メッセージをセッションに保存
+    $_SESSION['message'] = '商品が正常に登録されました。';
+    $_SESSION['message_type'] = 'success';
+
 } catch (Exception $e) {
-    echo $e->getMessage();
-    echo "NG";
+    // エラーメッセージをセッションに保存
+    $_SESSION['message'] = 'エラーが発生しました: ' . $e->getMessage();
+    $_SESSION['message_type'] = 'danger';
 }
-echo "OK";
+// 商品一覧ページへリダイレクト
+header('Location: /products/list/index.php');
+exit();
