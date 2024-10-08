@@ -34,7 +34,7 @@ class Stock
             $this->pdo = new PDO($dsn, "root", $password);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            throw new Exception(previous: $e);
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
 
@@ -44,7 +44,7 @@ class Stock
         try {
             $this->pdo->beginTransaction();
         } catch (PDOException $e) {
-            throw new Exception(previous: $e);
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
     # ロールバック
@@ -55,7 +55,7 @@ class Stock
                 $this->pdo->rollBack();
             }
         } catch (PDOException $e) {
-            throw new Exception(previous: $e);
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
     # コミット
@@ -66,7 +66,7 @@ class Stock
                 $this->pdo->commit();
             }
         } catch (PDOException $e) {
-            throw new Exception(previous: $e);
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
 
@@ -85,7 +85,7 @@ class Stock
             return $this->get_from_id($this->pdo->lastInsertId());
         } catch (PDOException $e) {
             $this->rollback();
-            throw new Exception(previous: $e);
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
 
@@ -112,7 +112,7 @@ class Stock
             }
         } catch (PDOException $e) {
             $this->rollback();
-            throw new Exception(previous: $e);
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
 
@@ -132,7 +132,7 @@ class Stock
             return $this->get_from_id($id);
         } catch (PDOException $e) {
             $this->rollback();
-            throw new Exception(previous: $e);
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
 
@@ -178,7 +178,7 @@ class Stock
             return $this->get_from_id($this->id);
         } catch (PDOException $e) {
             $this->rollback();
-            throw new Exception(previous: $e);
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
 

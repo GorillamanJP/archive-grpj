@@ -135,4 +135,19 @@ class Accountant
             return null;
         }
     }
+    public function delete(): void
+    {
+        try {
+            $sql = "DELETE FROM accountants WHERE id = :id";
+
+            $stmt = $this->pdo->prepare($sql);
+
+            $stmt->bindValue(":id", $this->id, PDO::PARAM_INT);
+
+            $stmt->execute();
+        } catch (Throwable $t) {
+            $this->rollback();
+            throw $t;
+        }
+    }
 }

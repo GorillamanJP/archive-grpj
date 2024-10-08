@@ -60,7 +60,7 @@ class Detail
                 $this->pdo->commit();
             }
         } catch (PDOException $e) {
-            throw new Exception(previous: $e);
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
     # コンストラクタ
@@ -94,7 +94,7 @@ class Detail
             return $this->get_from_id($this->pdo->lastInsertId());
         } catch (PDOException $e) {
             $this->rollback();
-            throw new Exception(previous: $e);
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
 
@@ -123,7 +123,7 @@ class Detail
             }
         } catch (Exception $e) {
             $this->rollback();
-            throw new Exception(previous: $e);
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
 
@@ -152,7 +152,7 @@ class Detail
             }
         } catch (PDOException $e) {
             $this->rollback();
-            throw new Exception(previous: $e);
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
 }

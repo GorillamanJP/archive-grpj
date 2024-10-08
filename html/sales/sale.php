@@ -38,20 +38,27 @@ class Sale
             }
             $this->accountant = $this->accountant->create($total_amount, $total_price);
             $accountant_id = $this->accountant->get_id();
+            $detail = new Detail();
+            $detail->start_transaction();
+            $stock = new Stock();
+            $stock->start_transaction();
             for ($i = 0; $i < count($buy_items); $i++) {
-                $detail = new Detail();
+                if ($stock->get_from_item_id($buy_items[$i]->get_id())->get_quantity() - $quantities[$i] <= 0) {
+                    throw new Exception("在庫不足");
+                }
                 $this->details[] = $detail->create($accountant_id, $buy_items[$i]->get_id(), $quantities[$i], $buy_items[$i]->get_price(), $buy_items[$i]->get_price() * $quantities[$i]);
-                var_dump($detail);
-                $stock = new Stock();
                 $stock = $stock->get_from_item_id($buy_items[$i]->get_id());
-                $stock->start_transaction();
                 $now_quantity = $stock->get_quantity();
                 $stock = $stock->update($now_quantity - $quantities[$i]);
-                $stock->commit();
             }
+            $detail->commit();
+            $stock->commit();
             return $this;
         } catch (Exception $e) {
-            throw new Exception(previous: $e);
+            $detail->rollback();
+            $stock->rollback();
+            $this->accountant->delete();
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
 
@@ -63,7 +70,7 @@ class Sale
             $this->details = $detail->gets_from_accountant_id($accountant_id);
             return $this;
         } catch (Exception $e) {
-            throw new Exception(previous: $e);
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
 
@@ -81,7 +88,7 @@ class Sale
             }
             return $sales_array;
         } catch (Exception $e) {
-            throw new Exception(previous: $e);
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
 }
