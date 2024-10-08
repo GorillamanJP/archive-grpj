@@ -26,19 +26,19 @@ $product = $product->get_from_item_id($id);
     <form action="update.php" method="post" enctype="multipart/form-data">
         <input type="hidden" name="id" value="<?= $product->get_item()->get_id() ?>"></p>
         <tr class="form-group">
-            <th class="aligin-middle">商品名</th>
+            <th class="align-middle">商品名</th>
             <td><input type="text" name="item_name" id="item_name" value="<?= $product->get_item()->get_item_name() ?>" class="form-control"></td>
         </tr>
         <tr class="form-group">
-            <th class="aligin-middle">価格</th>
+            <th class="align-middle">価格</th>
             <td><input type="number" name="price" id="price" value="<?= $product->get_item()->get_price() ?>" class="form-control"></td>
         </tr>
         <tr class="form-group">
-            <th class="aligin-middle">商品イメージ</th>
-            <td><img src="data:image/jpeg;base64,<?= $product->get_item()->get_item_image() ?>" alt="商品画像　ID<?= $product->get_item()->get_id() ?>番" id="now_item_image"></td>
+            <th class="align-middle">商品イメージ</th>
+            <td><img src="data:image/jpeg;base64,<?= $product->get_item()->get_item_image() ?>" alt="商品画像　ID<?= $product->get_item()->get_id() ?>番" id="now_item_image" style="width: 200px;"></td>
         </tr>
         <tr class="form-group">
-            <th class="aligin-middle">画像選択</th>
+            <th class="align-middle">画像選択</th>
             <td><input type="file" name="new_item_image" id="new_item_image" accept="image/jpeg" class="uploadfile"></td>
         </tr>
         </table>
