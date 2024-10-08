@@ -8,7 +8,7 @@ $product = new Product();
 $product = $product->get_from_item_id($id);
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,7 +20,7 @@ $product = $product->get_from_item_id($id);
         crossorigin="anonymous"></script>
 </head>
 <body>
-<h1 class="text-center">商品登録</h1>
+<h1 class="text-center">商品更新</h1>
 <div class="col-7 mx-auto">
 <table class="table table-info table-hover ">
     <form action="update.php" method="post" enctype="multipart/form-data">

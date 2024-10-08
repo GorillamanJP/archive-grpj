@@ -6,7 +6,7 @@ $product = new Product();
 $product = $product->get_from_stock_id($id);
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 
 <head>
     <meta charset="UTF-8">

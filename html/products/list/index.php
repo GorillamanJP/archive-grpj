@@ -14,7 +14,7 @@ $products = $product_obj->get_all();
 
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 
 <head>
     <meta charset="UTF-8">
@@ -48,6 +48,7 @@ $products = $product_obj->get_all();
     <?php if (is_null($products)): ?>
         <p>商品はありません</p>
     <?php else: ?>
+        <input type="submit" name="submit" onclick="location.href='../create/'" class="btn btn-primary" value="商品登録">
         <table class="table">
             <tr>
                 <th class="align-middle">商品名</th>
@@ -86,6 +87,5 @@ $products = $product_obj->get_all();
             <?php endforeach ?>
         </table>
     <?php endif ?>
-    <input type="submit" name="submit" onclick="location.href='../create/'" class="btn btn-primary" value="登録画面へ">
 </body>
 </html>
