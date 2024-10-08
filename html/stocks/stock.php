@@ -143,7 +143,7 @@ class Stock
 
             $stmt = $this->pdo->prepare($sql);
 
-            $stmt->bindValue(":id", $this->id, PDO::PARAM_INT);
+            $stmt->bindValue(":item_id", $this->id, PDO::PARAM_INT);
 
             $stmt->execute();
 
