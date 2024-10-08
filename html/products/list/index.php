@@ -66,7 +66,7 @@ $products = $product_obj->get_all();
                     <tr>
                         <td class="align-middle"><?= $product->get_item()->get_item_name() ?></td>
                         <td class="align-middle"><?= $product->get_item()->get_price() ?></td>
-                        <td class="align-middle"><?= $product->get_stock()->get_remaining_stock() ?></td>
+                        <td class="align-middle"><?= $product->get_stock()->get_quantity() ?></td>
                         <td class="align-middle"><img src="data:image/jpeg;base64,<?= $product->get_item()->get_item_image() ?>"
                                 alt="商品画像　ID<?= $product->get_item()->get_id() ?>番" style="width: 150px; height: auto;"></td>
                         <td class="align-middle">

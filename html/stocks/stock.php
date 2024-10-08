@@ -136,30 +136,6 @@ class Stock
         }
     }
 
-    public function get_remaining_stock(): int
-    {
-        try {
-            $sql = "SELECT GREATEST(s.quantity - IFNULL(SUM(d.quantity), 0), 0) AS remaining_stock FROM stocks s LEFT JOIN details d ON s.item_id = d.item_id WHERE s.item_id = :item_id GROUP BY s.quantity";
-
-            $stmt = $this->pdo->prepare($sql);
-
-            $stmt->bindValue(":item_id", $this->id, PDO::PARAM_INT);
-
-            $stmt->execute();
-
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if ($result) {
-                return $result["remaining_stock"];
-            } else {
-                throw new Exception("Remaining Stock Fetch Error");
-            }
-
-        } catch (PDOException $e) {
-            throw new Exception(previous: $e);
-        }
-    }
-
     public function get_all(): array|null
     {
         try {
