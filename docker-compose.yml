@@ -9,7 +9,7 @@ services:
       - "80:80"
     volumes:
       # nginx Config
-      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/conf.d/50-my-config.conf:/etc/nginx/conf.d/50-my-config.conf
       # nginx Logs
       - ./nginx/log:/var/log/nginx
       # source folder
@@ -25,6 +25,8 @@ services:
     volumes:
       # source folder
       - .:/var/www
+      # php-fpm Config
+      - ./php-fpm/conf.d/50-my-config.ini:/usr/local/etc/php/conf.d/50-my-config.ini
     environment:
       - DB_DATABASE=${DB_DATABASE}
       - DB_PASSWORD=${DB_ROOT_PASSWORD}
