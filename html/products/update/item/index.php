@@ -22,7 +22,7 @@ $product = $product->get_from_item_id($id);
 <body>
 <h1 class="text-center">商品更新</h1>
 <div class="container">
-<table border="1" class="table table-info table-hover ">
+<table class="table table-bordered table-info table-hover ">
     <form action="update.php" method="post" enctype="multipart/form-data">
         <input type="hidden" name="id" value="<?= $product->get_item()->get_id() ?>"></p>
         <tr class="form-group">
@@ -43,8 +43,8 @@ $product = $product->get_from_item_id($id);
         </tr>
         </table>
         <div class="text-center">
-            <input type="submit" value="更新" class="btn btn-outline-primary btn-lg">
-            <a href="../../list/index.php" class="btn btn-outline-secondary btn-lg">戻る</a>
+            <input type="submit" value="更新" class="btn btn-outline-primary">
+            <a href="../../list/index.php" class="btn btn-outline-secondary">戻る</a>
         </div>
     </form>
 </div>

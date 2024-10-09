@@ -48,9 +48,9 @@ $products = $product_obj->get_all();
     <?php if (is_null($products)): ?>
         <p>商品はありません</p>
     <?php else: ?>
-        <div class="text-center">
-            <a href="../create/" class="btn btn-outline-primary p-2">商品登録</a>
-            <a href="" class="btn btn-outline-success p-2">レジ画面へ</a>
+        <div class="text-center my-3">
+            <a href="../create/" class="btn btn-outline-primary btn-lg p-2">商品登録</a>
+            <a href="" class="btn btn-outline-success btn-lg p-2">レジ画面へ</a>
         </div>
         <div class="table-responsive container">
             <table class="table table-bordered text-center align-middle">

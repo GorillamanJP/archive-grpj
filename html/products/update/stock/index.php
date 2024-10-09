@@ -23,7 +23,7 @@ $product = $product->get_from_stock_id($id);
     <h1 class="text-center">入荷処理</h1>
     <div class="container">
         <form action="update.php" method="post">
-            <table border="1" class="table table-info table-hover">
+            <table class="table table-bordered table-info table-hover">
                 <tr class="form-group">
                     <th class="align-middle">商品名</th>
                     <td><?= $product->get_item()->get_item_name() ?></td>
@@ -39,8 +39,8 @@ $product = $product->get_from_stock_id($id);
             </table>
             <input type="hidden" name="id" value="<?= $product->get_stock()->get_id() ?>"></p>
             <div class="text-center">
-            <input type="submit" value="更新" class="btn btn-outline-primary btn-lg">
-            <a href="../../list/index.php" class="btn btn-outline-secondary btn-lg">戻る</a>
+            <input type="submit" value="更新" class="btn btn-outline-primary">
+            <a href="../../list/index.php" class="btn btn-outline-secondary">戻る</a>
             </div>
         </form>
     </div>
