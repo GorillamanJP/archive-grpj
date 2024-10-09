@@ -21,7 +21,7 @@ $product = $product->get_from_item_id($id);
 </head>
 <body>
 <h1 class="text-center">商品更新</h1>
-<div class="col-7 mx-auto">
+<div class="container">
 <table border="1" class="table table-info table-hover ">
     <form action="update.php" method="post" enctype="multipart/form-data">
         <input type="hidden" name="id" value="<?= $product->get_item()->get_id() ?>"></p>

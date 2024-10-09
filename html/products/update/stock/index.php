@@ -21,7 +21,7 @@ $product = $product->get_from_stock_id($id);
 
 <body>
     <h1 class="text-center">入荷処理</h1>
-    <div class="col-7 mx-auto">
+    <div class="container">
         <form action="update.php" method="post">
             <table border="1" class="table table-info table-hover">
                 <tr class="form-group">
