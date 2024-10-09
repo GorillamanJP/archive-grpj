@@ -24,7 +24,11 @@
                     <td><input type="number" name="price" id="price" class="form-control" required></td>
                 </tr>
                 <tr class="form-group">
-                    <th class="aligin-middle">商品イメージ</th>
+                    <th class="align-middle">商品イメージ</th>
+                    <td><img id="image_preview" src="#" alt="商品画像プレビュー" style="display:none; width: 200px;"></td>
+                </tr>
+                <tr class="form-group">
+                    <th class="aligin-middle">画像選択</th>
                     <td><input type="file" name="item_image" id="item_image" accept="image/jpeg" class="uploadfile" required></td>
                 </tr>
         </table>
@@ -33,6 +37,20 @@
         <input type="submit" name="submit" class="btn btn-outline-primary btn-lg" value="登録">
         <a href="../list/index.php" class="btn btn-outline-secondary btn-lg">戻る</a>
     </div>
-    </form>    
+    </form>
+    <script>
+        document.getElementById('item_image').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('image_preview');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>    
 </body>
 </html>
