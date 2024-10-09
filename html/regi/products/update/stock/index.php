@@ -1,6 +1,6 @@
 <?php
 $id = htmlspecialchars($_POST["id"]);
-require_once $_SERVER['DOCUMENT_ROOT'] . "/products/product.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/products/product.php";
 
 $product = new Product();
 $product = $product->get_from_stock_id($id);

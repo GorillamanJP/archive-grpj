@@ -3,7 +3,7 @@ session_start();
 
 $id = htmlspecialchars($_POST["id"]);
 
-require_once $_SERVER['DOCUMENT_ROOT'] . "/products/product.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/products/product.php";
 
 try {
     $product = new Product();

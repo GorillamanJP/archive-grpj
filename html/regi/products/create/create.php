@@ -3,7 +3,7 @@ $item_name = htmlspecialchars($_POST["item_name"]);
 $price = htmlspecialchars($_POST["price"]);
 $item_image = $_FILES["item_image"]["tmp_name"];
 
-require_once $_SERVER['DOCUMENT_ROOT'] . "/products/product.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/products/product.php";
 session_start();
 try {
     $product = new Product();

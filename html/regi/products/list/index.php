@@ -8,7 +8,7 @@ $message_type = isset($_SESSION['message_type']) ? $_SESSION['message_type'] : '
 unset($_SESSION['message']);
 unset($_SESSION['message_type']);
 
-require_once $_SERVER['DOCUMENT_ROOT'] . "/products/product.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/products/product.php";
 $product_obj = new Product();
 $products = $product_obj->get_all();
 

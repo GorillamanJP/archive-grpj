@@ -6,7 +6,7 @@ $item_name = htmlspecialchars($_POST["item_name"]);
 $price = htmlspecialchars($_POST["price"]);
 $item_image = $_FILES["new_item_image"]["tmp_name"];
 
-require_once $_SERVER['DOCUMENT_ROOT'] . "/items/item.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
 
 try {
     $item = new Item();

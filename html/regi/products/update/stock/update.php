@@ -2,7 +2,7 @@
 $id = htmlspecialchars($_POST["id"]);
 $add_quantity = htmlspecialchars($_POST["add_quantity"]);
 
-require_once $_SERVER['DOCUMENT_ROOT'] . "/stocks/stock.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/stocks/stock.php";
 
 session_start();
 
