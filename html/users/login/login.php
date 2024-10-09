@@ -2,7 +2,7 @@
 $user_name = htmlspecialchars($_POST["user_name"], encoding: "UTF-8");
 $password = htmlspecialchars($_POST["password"], encoding: "UTF-8");
 
-require_once $_SERVER['DOCUMENT_ROOT'] . "/users/user.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/user.php";
 try {
     $user = new User();
     $user = $user->get_from_user_name($user_name);
