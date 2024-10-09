@@ -56,23 +56,23 @@ $products = $product_obj->get_all();
             <table class="table table-bordered text-center align-middle">
                 <thead>
                     <tr>
+                        <th>商品イメージ</th>
                         <th>商品名</th>
                         <th>価格</th>
                         <th>在庫数</th>
-                        <th>商品イメージ</th>
-                        <th></th>
+                        <th>操作</th>
                     </tr>
                 </thead>
                 <tbody>
                     <? foreach ($products as $product): ?>
                         <tr>
-                            <td><?= $product->get_item()->get_item_name() ?></td>
-                            <td><?= $product->get_item()->get_price() ?></td>
-                            <td><?= $product->get_stock()->get_quantity() ?></td>
                             <td>
                                 <img src="data:image/jpeg;base64,<?= $product->get_item()->get_item_image() ?>"
                                     alt="商品画像　ID<?= $product->get_item()->get_id() ?>番" class="img-fluid img-thumbnail">
                             </td>
+                            <td><?= $product->get_item()->get_item_name() ?></td>
+                            <td><?= $product->get_item()->get_price() ?></td>
+                            <td><?= $product->get_stock()->get_quantity() ?></td>
                             <td>
                                 <table class="container">
                                     <tr>
