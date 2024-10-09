@@ -45,13 +45,14 @@ $products = $product_obj->get_all();
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     <?php endif; ?>
-    <?php if (is_null($products)): ?>
-        <p>商品はありません</p>
-    <?php else: ?>
-        <div class="text-center my-3">
+    <div class="text-center my-3">
             <a href="../create/" class="btn btn-outline-primary btn-lg p-2">商品登録</a>
             <a href="" class="btn btn-outline-success btn-lg p-2">レジ画面へ</a>
         </div>
+    <?php if (is_null($products)): ?>
+        <h2 class="text-center">商品はありません。</h2>
+        <p class="text-center"><a href="../create/">新たに商品を登録しましょう！</a></p>
+    <?php else: ?>
         <div class="table-responsive container">
             <table class="table table-bordered table-hover text-center align-middle">
                 <thead class="table-info">

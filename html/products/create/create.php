@@ -4,6 +4,7 @@ $price = htmlspecialchars($_POST["price"]);
 $item_image = $_FILES["item_image"]["tmp_name"];
 
 require_once $_SERVER['DOCUMENT_ROOT'] . "/products/product.php";
+session_start();
 try {
     $product = new Product();
     $product->create($item_name, $price, $item_image, 0);
@@ -18,5 +19,5 @@ try {
     $_SESSION['message_type'] = 'danger';
 }
 // 商品一覧ページへリダイレクト
-header('Location: /products/list/index.php');
+header('Location: /products/list/');
 exit();
