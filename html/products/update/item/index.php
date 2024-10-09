@@ -12,7 +12,7 @@ $product = $product->get_from_item_id($id);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>商品更新</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
@@ -22,7 +22,7 @@ $product = $product->get_from_item_id($id);
 <body>
 <h1 class="text-center">商品更新</h1>
 <div class="col-7 mx-auto">
-<table class="table table-info table-hover ">
+<table border="1" class="table table-info table-hover ">
     <form action="update.php" method="post" enctype="multipart/form-data">
         <input type="hidden" name="id" value="<?= $product->get_item()->get_id() ?>"></p>
         <tr class="form-group">
@@ -43,8 +43,8 @@ $product = $product->get_from_item_id($id);
         </tr>
         </table>
         <div class="text-center">
-            <input type="submit" value="更新" class="btn btn-primary">
-            <a href="../../list/index.php" class="btn btn-secondary">戻る</a>
+            <input type="submit" value="更新" class="btn btn-outline-primary btn-lg">
+            <a href="../../list/index.php" class="btn btn-outline-secondary btn-lg">戻る</a>
         </div>
     </form>
 </div>

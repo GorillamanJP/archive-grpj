@@ -49,7 +49,8 @@ $products = $product_obj->get_all();
         <p>商品はありません</p>
     <?php else: ?>
         <div class="text-center">
-        <a href="../create/" class="btn btn-primary">商品登録</a>
+        <a href="../create/" class="btn btn-outline-primary btn-lg">商品登録</a>
+        <a href="" class="btn btn-outline-success btn-lg">レジ画面へ</a>
         </div>
         <div class="col-10 mx-auto">
             <table border="1" class="table">
@@ -76,7 +77,7 @@ $products = $product_obj->get_all();
                                         <form action="../update/item/" method="post">
                                             <input type="hidden" name="id" id="id"
                                                 value="<?= $product->get_item()->get_id() ?>">
-                                            <input type="submit" value="商品更新" class="btn btn-outline-primary">
+                                            <input type="submit" value="商品更新" class="btn btn-outline-primary btn-lg">
                                         </form>
                                     </td>
                                 </tr>
@@ -85,7 +86,7 @@ $products = $product_obj->get_all();
                                         <form action="../update/stock/" method="post">
                                             <input type="hidden" name="id" id="id"
                                                 value="<?= $product->get_stock()->get_id() ?>">
-                                            <input type="submit" value="入荷処理" btn class="btn btn-outline-success">
+                                            <input type="submit" value="入荷処理" btn class="btn btn-outline-success btn-lg">
                                         </form>
                                     </td>
                                 </tr>
@@ -94,7 +95,7 @@ $products = $product_obj->get_all();
                                         <form action="../delete/" method="post" onsubmit="return confirmDelete(this)">
                                             <input type="hidden" name="id" id="id"
                                                 value="<?= $product->get_item()->get_id() ?>">
-                                            <input type="submit" value="商品削除" class="btn btn-outline-danger">
+                                            <input type="submit" value="商品削除" class="btn btn-outline-danger btn-lg">
                                         </form>
                                     </td>
                                 </tr>
