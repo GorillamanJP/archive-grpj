@@ -1,6 +1,6 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . "/accountants/accountant.php";
-require_once $_SERVER['DOCUMENT_ROOT'] . "/details/detail.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/accountants/accountant.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/details/detail.php";
 class Sale
 {
     private Accountant $accountant;
@@ -23,8 +23,8 @@ class Sale
 
     public function create(array $product_ids, array $quantities): Sale
     {
-        require_once $_SERVER['DOCUMENT_ROOT'] . "/items/item.php";
-        require_once $_SERVER['DOCUMENT_ROOT'] . "/stocks/stock.php";
+        require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
+        require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/stocks/stock.php";
         try {
             $total_amount = 0;
             $total_price = 0;
