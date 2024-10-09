@@ -53,8 +53,8 @@ $products = $product_obj->get_all();
             <a href="" class="btn btn-outline-success btn-lg p-2">レジ画面へ</a>
         </div>
         <div class="table-responsive container">
-            <table class="table table-bordered text-center align-middle">
-                <thead>
+            <table class="table table-bordered table-hover text-center align-middle">
+                <thead class="table-dark">
                     <tr>
                         <th>商品イメージ</th>
                         <th>商品名</th>
@@ -63,7 +63,7 @@ $products = $product_obj->get_all();
                         <th>操作</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="table-light">
                     <? foreach ($products as $product): ?>
                         <tr>
                             <td>
