@@ -20,5 +20,5 @@ try {
     $_SESSION['message'] = "エラーが発生しました: " . $e->getMessage();
     $_SESSION['message_type'] = "error";  // エラーメッセージ用
 }
-header("Location: /products/list/index.php");
+header("Location: /regi/products/list/index.php");
 exit();
