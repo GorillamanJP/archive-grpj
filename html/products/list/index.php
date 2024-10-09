@@ -54,7 +54,7 @@ $products = $product_obj->get_all();
         </div>
         <div class="table-responsive container">
             <table class="table table-bordered table-hover text-center align-middle">
-                <thead class="table-dark">
+                <thead class="table-info">
                     <tr>
                         <th>商品イメージ</th>
                         <th>商品名</th>

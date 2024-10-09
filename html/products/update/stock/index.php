@@ -26,15 +26,15 @@ $product = $product->get_from_stock_id($id);
             <table class="table table-bordered table-info table-hover">
                 <tr class="form-group">
                     <th class="align-middle">商品名</th>
-                    <td><?= $product->get_item()->get_item_name() ?></td>
+                    <td class="table-secondary"><?= $product->get_item()->get_item_name() ?></td>
                 </tr>
                 <tr class="form-group">
                     <th>現在の在庫数</th>
-                    <td><?= $product->get_stock()->get_quantity() ?></td>
+                    <td class="table-secondary"><?= $product->get_stock()->get_quantity() ?></td>
                 </tr>
                 <tr class="form-group">
                     <th class="align-middle">入荷数</th>
-                    <td><input type="number" name="add_quantity" id="add_quantity" min="0" value="0" class="form-control"></td>
+                    <td class="table-secondary"><input type="number" name="add_quantity" id="add_quantity" min="0" class="form-control"></td>
                 </tr>
             </table>
             <input type="hidden" name="id" value="<?= $product->get_stock()->get_id() ?>"></p>
