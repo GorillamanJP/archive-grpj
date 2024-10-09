@@ -1,5 +1,5 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . "/users/user.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/user.php";
 $user_obj = new User();
 $users = $user_obj->get_all();
 ?>
