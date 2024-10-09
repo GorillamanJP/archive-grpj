@@ -17,16 +17,9 @@ document
   .addEventListener("change", function (event) {
     const file = event.target.files[0];
     if (file) {
-      // 画像ファイルの種類をチェック (JPEG, PNG など)
-      const validImageTypes = ["image/jpeg", "image/png", "image/gif"];
-      if (!validImageTypes.includes(file.type)) {
-        alert("対応している画像形式は JPEG, PNG, GIF です。");
-        return;
-      }
-
       const reader = new FileReader();
       reader.onload = function (e) {
-        document.getElementById("now_item_image").src = e.target.result + '?t=' + new Date().getTime();
+        document.getElementById("now_item_image").src = e.target.result;
       };
       reader.readAsDataURL(file);
     }
