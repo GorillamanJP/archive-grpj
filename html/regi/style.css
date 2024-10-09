@@ -1,0 +1,169 @@
+.app {
+    width: 1500px;
+    height: 700px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: auto 1fr 1fr 1fr; /* 各カラムの幅を設定 */
+    grid-template-rows: auto 1fr; /* 行の高さを設定 */
+}
+
+.sidebar {
+  width: 250px; /* 新しい幅を設定 (例: 300px) */
+  grid-column: 1; /* 1列目 */
+  grid-row: 1 / span 4; /* 1行目から4行目まで */
+  background-color: rgb(218, 248, 255); 
+  box-sizing: border-box;
+  border: 2px solid rgb(173, 173, 173);
+}
+
+.content1 {
+    grid-column: 2 / span 3; /* 2列目から3列目を使用 */
+    grid-row: 1 / span 3; /* 1行目から3行目まで */
+    text-align: center;
+    background-color: rgb(231, 231, 231);
+    box-sizing: border-box;
+    border: 2px solid rgb(173, 173, 173);
+    min-height: 410px; /* 最小の高さを設定 */
+    overflow-y: auto; /* 縦方向のスクロールを許可 */
+}
+
+.content2 {
+  grid-column: 2 / span 2; /* 2列目 */
+  grid-row: 4; /* 4行目 */
+  text-align: center;
+  background-color: rgb(231, 231, 231);
+  box-sizing: border-box;
+  border: 2px solid rgb(173, 173, 173);
+  min-height: 300px; /* 選択商品ブロックの最小の高さを大きく設定 */
+  overflow-y: auto; /* 縦方向のスクロールを許可 */
+}
+
+.content3 {
+  grid-column: 4; /* 3列目から4列目を使用 */
+  grid-row: 4; /* 4行目 */
+  text-align: center;
+  background-color: #faa;
+  border: 2px solid rgb(173, 173, 173);
+  min-height: 200px; /* 会計ブロックの最小の高さを小さく設定 */
+}
+
+/* 選択商品テーブルデザイン */
+table {
+  width: 100%; /* テーブルを100%の幅に設定 */
+  border-collapse: collapse; /* ボーダーを重ねる */
+}
+
+table th, table td {
+  border: 1px solid rgb(173, 173, 173); /* 固定ボーダー */
+  width: 25%; /* 各列の幅を均等に設定 */
+  box-sizing: border-box; /* パディングを含めた幅の計算 */
+}
+
+table th {
+  text-align: center;
+  color: white;
+  background: linear-gradient(#829ebc, #225588);
+  padding: 10px 0;
+}
+
+table td {
+  text-align: center;
+  padding: 10px 0;
+}
+
+
+/* 選択商品の削除ボタン調整 */
+button{
+  width: 100px;
+  height: 30px;
+}
+
+/* + と - ボタンのスタイル */
+button.quantity-button {
+  width: 30px; /* 幅を指定 */
+  height: 30px; /* 高さを指定 */
+  font-size: 16px; /* フォントサイズを指定 */
+  margin: 0 5px; /* ボタン間のマージン */
+}
+
+
+/* 会計ボタンサイズ調整 */
+.butt {
+    width: 8em;
+    height:4em;
+}
+
+
+/* 商品画像の配置 */
+p.imgs img {
+  width: 150px;
+  }
+
+
+/* 会計テーブルデザイン */
+  .sum {
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    border-spacing: 0;
+   }
+   .sum tr:last-child {
+    background: #fafafb;
+    border-top: double 3px #666666;
+    font-weight: bold;
+    color: #eb3b5a;
+   }
+   .sum th {
+    padding: 10px;
+    background: #778ca3;
+    border: solid 1px #666666;
+    color: #ffffff;
+   }
+   .sum td {
+    padding: 10px;
+    border: solid 1px #666666;
+   }
+   
+
+/* アカウント名、ログアウトボタンの配置 */
+   p.user {
+    position: absolute;
+    bottom: 25px;
+    margin: 8px
+  }
+
+.img1 {
+    text-align: center; /* 中央揃え */
+    /* margin-bottom: 100px; */
+    background: white;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s; /* アニメーションの追加 */
+}
+
+.img1:hover {
+  transform: scale(1.05); /* 少し拡大 */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); /* 影を強調 */
+}
+
+.price {
+  margin: 0;
+}
+
+
+.imgs {
+  margin: 8px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr); /* 6列に設定 */
+  gap: 8px; /* 各アイテムの間隔を設定 */
+}
+
+
+.imgs img {
+    width: 150px; /* 画像の幅を150pxに設定 */
+    height: auto; /* アスペクト比を維持 */
+}
+
+button:hover {
+  background-color: #d0e7f0; /* ホバー効果 */
+}
