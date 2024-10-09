@@ -24,7 +24,7 @@ $product = $product->get_from_item_id($id);
 <div class="container">
 <table class="table table-bordered table-info table-hover ">
     <form action="update.php" method="post" enctype="multipart/form-data">
-        <input type="hidden" name="id" value="<?= $product->get_item()->get_id() ?>"></p>
+        <input type="hidden" name="id" value="<?= $product->get_item()->get_id() ?>">
         <tr class="form-group">
             <th class="align-middle">商品名</th>
             <td><input type="text" name="item_name" id="item_name" value="<?= $product->get_item()->get_item_name() ?>" class="form-control"></td>
