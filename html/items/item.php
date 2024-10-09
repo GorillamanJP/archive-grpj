@@ -12,7 +12,7 @@ class Item
     private string $item_name;
     public function get_item_name(): string
     {
-        return $this->item_name;
+        return htmlspecialchars_decode($this->item_name);
     }
 
     # 価格
