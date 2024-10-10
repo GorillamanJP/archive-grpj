@@ -11,13 +11,19 @@ try {
     $stock->start_transaction();
     $stock = $stock->get_from_id($id);
     $now_quantity = $stock->get_quantity();
-    $stock = $stock->update($now_quantity + $add_quantity);
+    // 在庫が0未満にならないようにチェック
+    $new_quantity = $now_quantity + $add_quantity;
+    if ($new_quantity < 0) {
+        throw new Exception("在庫が0未満になるため、更新できません。");
+    }
+
+    $stock = $stock->update($new_quantity);
     $stock->commit();
     $_SESSION["message"] = "在庫が追加されました。";
     $_SESSION["message_type"] = "success";
     header("Location: /regi/products/list/index.php");
 } catch (Exception $e) {
-    $_SESSION["message"] = "在庫の追加に失敗しました。";
-    $_SESSION["message_type"] = "error";
+    $_SESSION["message"] = $e->getMessage();
+    $_SESSION["message_type"] = "danger";
     header("Location: /regi/products/list/index.php");
 }

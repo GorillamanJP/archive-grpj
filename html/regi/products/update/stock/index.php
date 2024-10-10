@@ -34,13 +34,14 @@ $product = $product->get_from_stock_id($id);
                 </tr>
                 <tr class="form-group">
                     <th class="align-middle">入荷数</th>
-                    <td class="table-secondary"><input type="number" name="add_quantity" id="add_quantity" min="0" class="form-control"></td>
+                    <td class="table-secondary"><input type="number" name="add_quantity" id="add_quantity"
+                            class="form-control"></td>
                 </tr>
             </table>
             <input type="hidden" name="id" value="<?= $product->get_stock()->get_id() ?>"></p>
             <div class="text-center">
-            <input type="submit" value="更新" class="btn btn-outline-primary">
-            <a href="../../list/index.php" class="btn btn-outline-secondary">戻る</a>
+                <input type="submit" value="更新" class="btn btn-outline-primary">
+                <a href="../../list/index.php" class="btn btn-outline-secondary">戻る</a>
             </div>
         </form>
     </div>
