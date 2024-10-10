@@ -1,8 +1,8 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . "/sales/sale.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/sales/sale.php";
 $sale_obj = new Sale();
 $sales = $sale_obj->get_all();
-require_once $_SERVER['DOCUMENT_ROOT'] . "/items/item.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
