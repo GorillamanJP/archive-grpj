@@ -1,4 +1,7 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT']."/regi/users/login_check.php";
+?>
+<?php
 session_start();
 // メッセージとメッセージタイプがある場合に取得
 $message = isset($_SESSION['message']) ? $_SESSION['message'] : '';

@@ -19,5 +19,6 @@ function login_check()
         header("Location: /users/login/");
         exit();
     }
+    session_write_close();
 }
 login_check();
