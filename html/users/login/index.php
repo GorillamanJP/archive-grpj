@@ -19,40 +19,36 @@ session_start();
     <?php if (isset($_SESSION["error"])): ?>
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <strong><?= $_SESSION["error"]["message"] ?></strong>
-            <?php unset($_SESSION["error"]);?>
+            <?php unset($_SESSION["error"]); ?>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     <?php endif ?>
-    <div id="login">
-        <h3 class="text-center text-white pt-5">Login form</h3>
-        <div class="container">
-            <div id="login-row" class="row justify-content-center align-items-center">
-                <div id="login-column" class="col-md-6">
-                    <div id="login-box" class="col-md-12">
-                        <form id="login-form" class="form" action="./login.php" method="post">
-                            <h3 class="text-center">レジログイン</h3>
-                            <div class="form-group">
-                                <label for="user_name">ユーザー名</label><br>
-                                <input type="text" name="user_name" id="user_name" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="password">Password</label><br>
-                                <input type="password" name="password" id="password" class="form-control" required>
-                            </div>
-                            <div>
-                                <input type="submit" name="submit" class="btn btn-primary" value="ログイン">
-                            </div>
-                        </form>
-                    </div>
+    <div class="text-center">
+        <a href="../create/" class="btn btn-outline-success btn-lg mt-3">ユーザー登録はこちらから</a>
+    </div>
+    <div class="container">
+        <div id="login-row" class="row justify-content-center align-items-center">
+            <div id="login-column" class="col-md-6">
+                <table class="table table-bordered table-info table-hover ">
+                    <form id="login-form" class="form" action="./login.php" method="post">
+                        <h1 class="text-center mt-3">レジログイン</h1>
+                        <tr class="form-group">
+                            <th class="align-middle text-center">ユーザー名</th>
+                            <td class="table-secondary"><input type="text" name="user_name" id="user_name"
+                                    class="form-control" required></td>
+                        </tr>
+                        <tr class="form-group">
+                            <th class="align-middle text-center">パスワード</th>
+                            <td class="table-secondary"><input type="password" name="password" id="password"
+                                    class="form-control" required></td>
+                        </tr>
+                </table>
+                <div class="text-center">
+                    <input type="submit" name="submit" class="btn btn-primary btn-lg" value="ログイン">
                 </div>
+                </form>
             </div>
         </div>
     </div>
-    <section>
-        <div class="text-center">
-            <button class="btn btn-success">レジ登録</button>
-        </div>
-    </section>
 </body>
-
 </html>
