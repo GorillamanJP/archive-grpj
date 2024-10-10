@@ -31,16 +31,6 @@ $products = $product_obj->get_all();
             /* 文字サイズを1.3倍にする */
         }
     </style>
-    <script>
-        // 削除ボタンを押したときに確認ダイアログを表示
-        function confirmDelete(form) {
-            if (confirm('本当に削除しますか？')) {
-                form.submit();  // 確認された場合、フォームを送信
-            } else {
-                return false;  // キャンセルされた場合、削除処理を中断
-            }
-        }
-    </script>
 </head>
 
 <body>
@@ -104,11 +94,12 @@ $products = $product_obj->get_all();
                                         </tr>
                                         <tr>
                                             <td>
-                                                <form action="../delete/" method="post" onsubmit="return confirmDelete(this)">
-                                                    <input type="hidden" name="id" id="id"
-                                                        value="<?= $product->get_item()->get_id() ?>">
-                                                    <input type="submit" value="削除" class="btn btn-outline-danger">
-                                                </form>
+                                                <!-- 削除ボタン -->
+                                                <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
+                                                    data-bs-target="#deleteModal"
+                                                    data-id="<?= $product->get_item()->get_id() ?>">
+                                                    削除
+                                                </button>
                                             </td>
                                         </tr>
                                     </table>
@@ -120,6 +111,51 @@ $products = $product_obj->get_all();
             </div>
         <?php endif ?>
     </div>
+
+    <!-- 削除確認モーダル -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">削除の確認</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
+                </div>
+                <div class="modal-body">
+                    本当に削除しますか？
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">削除</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let deleteId;  // 削除する商品のIDを保持する変数
+
+        // モーダルが表示されたときに、削除する商品のIDを設定
+        document.getElementById('deleteModal').addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            deleteId = button.getAttribute('data-id');
+        });
+
+        // 「削除」ボタンが押されたら、フォームを作成して送信
+        document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
+            const form = document.createElement('form');
+            form.method = 'post';
+            form.action = '../delete/';
+
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'id';
+            input.value = deleteId;
+
+            form.appendChild(input);
+            document.body.appendChild(form);
+            form.submit();
+        });
+    </script>
 </body>
 
 </html>
