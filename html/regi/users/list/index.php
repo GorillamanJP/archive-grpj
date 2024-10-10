@@ -1,4 +1,7 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT']."/regi/users/login_check.php";
+?>
+<?php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/user.php";
 $user_obj = new User();
 $users = $user_obj->get_all();

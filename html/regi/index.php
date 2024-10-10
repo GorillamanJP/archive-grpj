@@ -1,3 +1,6 @@
+<?php
+require_once $_SERVER['DOCUMENT_ROOT']."/regi/users/login_check.php";
+?>
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -6,18 +9,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>レジトップ</title>
     <link href="style.css" rel="stylesheet" type="text/css" />
+    <!-- アイコン -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     </head>
 
 <body>
     <div class="app">
         <div class="sidebar">
-            <a href="#"><p>モバイルオーダー</p></a>
-            <a href="#"><p>売上一覧</p></a>
-            <a href="#"><p>商品管理</p></a>
-            <br><br><br><br>
+            <a href="#"><i class="fas fa-shopping-cart"></i><p>モバイルオーダー</p></a>
+            <a href="#"><i class="fas fa-list-alt"></i><p>売上一覧</p></a>
+            <a href="#"><i class="fas fa-cubes"></i><p>商品管理</p></a>
             <div class="sidefoot">
-                <p class="user">XX XX(アカウント名)<br><br><button>ログアウト</button></p>
+                <p class="useracc">XX XX(アカウント名)</p>
+                <button>ログアウト</button>
             </div>
+            
         </div>
 
         <div class="content1">
