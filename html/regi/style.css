@@ -142,14 +142,6 @@ p.imgs img {
     padding: 10px;
     border: solid 1px #666666;
    }
-   
-
-/* アカウント名、ログアウトボタンの配置 */
-   p.user {
-    position: absolute;
-    bottom: 25px;
-    margin: 8px
-  }
 
 .img1 {
     text-align: center; /* 中央揃え */
@@ -185,4 +177,13 @@ p.imgs img {
 
 button:hover {
   background-color: #d0e7f0; /* ホバー効果 */
+}
+
+.sidebar a {
+  display: flex; /* フレックスボックスで配置 */
+  align-items: center; /* アイコンとテキストを中央揃え */
+}
+
+.sidebar a i {
+  margin-right: 10px; /* アイコンとテキストの間に余白を追加 */
 }
