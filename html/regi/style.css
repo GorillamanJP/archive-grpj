@@ -14,7 +14,26 @@
   background-color: rgb(218, 248, 255); 
   box-sizing: border-box;
   border: 2px solid rgb(173, 173, 173);
+
+  display: flex;
+  flex-direction: column; /* 縦に配置 */
+  justify-content: space-between; /* 上下に余白を調整 */
+  height: 100%; /* サイドバーの高さを100%に */
+  text-align: left;
+
 }
+
+.sidefoot {
+  margin-top: auto; /* 下に配置 */
+  padding: 10px; /* 周囲にパディングを追加 */
+
+}
+
+.useracc {
+  margin-bottom: 5px; /* アカウント名とボタンの間に余白を追加 */
+
+}
+
 
 .content1 {
     grid-column: 2 / span 3; /* 2列目から3列目を使用 */
@@ -123,14 +142,6 @@ p.imgs img {
     padding: 10px;
     border: solid 1px #666666;
    }
-   
-
-/* アカウント名、ログアウトボタンの配置 */
-   p.user {
-    position: absolute;
-    bottom: 25px;
-    margin: 8px
-  }
 
 .img1 {
     text-align: center; /* 中央揃え */
@@ -166,4 +177,13 @@ p.imgs img {
 
 button:hover {
   background-color: #d0e7f0; /* ホバー効果 */
+}
+
+.sidebar a {
+  display: flex; /* フレックスボックスで配置 */
+  align-items: center; /* アイコンとテキストを中央揃え */
+}
+
+.sidebar a i {
+  margin-right: 10px; /* アイコンとテキストの間に余白を追加 */
 }
