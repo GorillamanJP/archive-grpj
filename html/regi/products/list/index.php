@@ -113,6 +113,9 @@ $products = $product_obj->get_all();
                 </table>
             </div>
         <?php endif ?>
+        <div class="text-center my-3">
+        <a href="../../../users/login/" class="btn btn-outline-primary btn-lg p-2">ログアウト</a>
+        </div>
     </div>
 
     <!-- 削除確認モーダル -->
