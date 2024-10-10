@@ -19,5 +19,5 @@ try {
     $_SESSION['message_type'] = 'danger';
 }
 // 商品一覧ページへリダイレクト
-header('Location: /products/list/');
+header('Location: /regi/products/list/');
 exit();
