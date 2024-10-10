@@ -33,7 +33,7 @@ try {
             header("Location: " . $_SESSION["login"]["after"]["url"]);
         }
     } else {
-        header("Location: ./regi/");
+        header("Location: /regi/");
     }
     exit();
 } catch (Exception $e) {
