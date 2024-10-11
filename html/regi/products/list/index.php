@@ -54,7 +54,7 @@ $products = $product_obj->get_all();
             <h2 class="text-center">商品はありません。</h2>
             <p class="text-center"><a href="../create/">新たに商品を登録しましょう！</a></p>
         <?php else: ?>
-            <div class="table-responsive">
+            <div class="table-responsive my-5">
                 <table class="table table-bordered table-hover text-center align-middle">
                     <thead class="table-info">
                         <tr>
@@ -113,9 +113,6 @@ $products = $product_obj->get_all();
                 </table>
             </div>
         <?php endif ?>
-        <div class="text-center my-3">
-        <a href="../../../users/login/" class="btn btn-outline-primary btn-lg p-2">ログアウト</a>
-        </div>
     </div>
 
     <!-- 削除確認モーダル -->
