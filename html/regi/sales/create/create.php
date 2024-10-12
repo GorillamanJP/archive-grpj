@@ -7,7 +7,7 @@ try {
     $sale = new Sale();
     $sale->create($product_ids, $quantities);
     echo "OK";
-} catch (Exception $e) {
+} catch (\Throwable $e) {
     echo "NG";
     echo $e->getMessage();
 }

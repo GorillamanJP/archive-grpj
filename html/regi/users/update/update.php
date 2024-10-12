@@ -8,7 +8,7 @@ try {
     $user = $user->get_from_id($id);
     $user = $user->update($user_name, $password);
     echo "OK";
-} catch (Exception $e) {
+} catch (\Throwable $e) {
     echo $e->getMessage();
     echo "NG";
 }

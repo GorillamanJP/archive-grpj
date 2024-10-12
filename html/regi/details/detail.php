@@ -121,7 +121,7 @@ class Detail
             } else {
                 throw new Exception("ID {$detail_id} has not found.");
             }
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             $this->rollback();
             throw new Exception($e->getMessage(), $e->getCode(), $e);
         }

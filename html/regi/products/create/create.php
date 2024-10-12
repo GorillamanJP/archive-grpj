@@ -14,7 +14,7 @@ if (isset($_POST["item_name"], $_POST["price"], $_FILES["item_image"]["tmp_name"
         $_SESSION['message'] = '商品が正常に登録されました。';
         $_SESSION['message_type'] = 'success';
 
-    } catch (Exception $e) {
+    } catch (\Throwable $e) {
         // エラーメッセージをセッションに保存
         $_SESSION['message'] = 'エラーが発生しました: ' . $e->getMessage();
         $_SESSION['message_type'] = 'danger';

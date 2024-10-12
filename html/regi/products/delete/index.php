@@ -12,7 +12,7 @@ try {
     // 成功メッセージをセッションに保存
     $_SESSION['message'] = '商品が正常に削除されました。';
     $_SESSION['message_type'] = 'success';
-}catch(Exception $e){
+}catch(\Throwable $e){
     // エラーメッセージをセッションに保存
     $_SESSION['message'] = 'エラーが発生しました: ' . $e->getMessage();
     $_SESSION['message_type'] = 'danger';

@@ -36,7 +36,7 @@ try {
         header("Location: /regi/");
     }
     exit();
-} catch (Exception $e) {
+} catch (\Throwable $e) {
     $_SESSION["error"]["message"] = "ユーザー名またはパスワードが違います。";
     header("Location: ./");
 }

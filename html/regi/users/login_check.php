@@ -7,7 +7,7 @@ function login_check()
         try {
             $user = new User();
             $user = $user->get_from_id($_SESSION["login"]["user_id"]);
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             $_SESSION["error"]["message"] = "セッションエラー: ログインしなおしてください。";
             $_SESSION["login"]["after"]["url"] = $_SERVER['REQUEST_URI'];
             if (isset($_POST)) {

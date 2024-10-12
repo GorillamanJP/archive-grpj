@@ -54,7 +54,7 @@ class Sale
             $detail->commit();
             $stock->commit();
             return $this;
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             $detail->rollback();
             $stock->rollback();
             $this->accountant->delete();
@@ -69,7 +69,7 @@ class Sale
             $detail = new Detail();
             $this->details = $detail->gets_from_accountant_id($accountant_id);
             return $this;
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
@@ -87,7 +87,7 @@ class Sale
                 $sales_array[] = $sale_obj->get_from_accountant_id($accountant->get_id());
             }
             return $sales_array;
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
