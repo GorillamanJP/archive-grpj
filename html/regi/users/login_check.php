@@ -9,13 +9,19 @@ function login_check()
             $user = $user->get_from_id($_SESSION["login"]["user_id"]);
         } catch (Exception $e) {
             $_SESSION["error"]["message"] = "セッションエラー: ログインしなおしてください。";
-            $_SESSION["login"]["after"] = $_SERVER['REQUEST_URI'];
+            $_SESSION["login"]["after"]["url"] = $_SERVER['REQUEST_URI'];
+            if (isset($_POST)) {
+                $_SESSION["login"]["after"]["post_data"] = $_POST;
+            }
             header("Location: /users/login/");
             exit();
         }
     } else {
         $_SESSION["error"]["message"] = "このページを表示するには、ログインが必要です。";
-        $_SESSION["login"]["after"] = $_SERVER['REQUEST_URI'];
+        $_SESSION["login"]["after"]["url"] = $_SERVER['REQUEST_URI'];
+        if (isset($_POST)) {
+            $_SESSION["login"]["after"]["post_data"] = $_POST;
+        }
         header("Location: /users/login/");
         exit();
     }
