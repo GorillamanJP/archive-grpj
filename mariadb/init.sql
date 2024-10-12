@@ -13,7 +13,8 @@ CREATE TABLE IF NOT EXISTS items(
     id INT AUTO_INCREMENT PRIMARY KEY,
     item_name VARCHAR(255) NOT NULL UNIQUE,
     price INT NOT NULL,
-    item_image LONGBLOB NOT NULL
+    item_image LONGBLOB NOT NULL,
+    last_update DATETIME NOT NULL
 );
 
 -- 在庫テーブル
@@ -21,6 +22,7 @@ CREATE TABLE IF NOT EXISTS stocks(
     id INT AUTO_INCREMENT PRIMARY KEY,
     item_id INT NOT NULL UNIQUE,
     quantity INT NOT NULL,
+    last_update DATETIME NOT NULL,
     FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE
 );
 

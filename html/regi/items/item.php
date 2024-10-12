@@ -57,6 +57,14 @@ class Item
 
         return $image_data;
     }
+
+    # 最終更新時刻
+    private string $last_update;
+    public function get_last_update(): string
+    {
+        return $this->last_update;
+    }
+
     # PDOオブジェクト
     private PDO $pdo;
 
@@ -70,7 +78,7 @@ class Item
             $this->pdo = new PDO($dsn, "root", $password);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            throw new Exception(previous:$e);
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
 
@@ -80,7 +88,7 @@ class Item
         try {
             $this->pdo->beginTransaction();
         } catch (PDOException $e) {
-            throw new Exception(previous:$e);
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
     # ロールバック
@@ -91,7 +99,7 @@ class Item
                 $this->pdo->rollBack();
             }
         } catch (PDOException $e) {
-            throw new Exception(previous:$e);
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
     # コミット
@@ -102,7 +110,7 @@ class Item
                 $this->pdo->commit();
             }
         } catch (PDOException $e) {
-            throw new Exception(previous:$e);
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
 
@@ -112,20 +120,21 @@ class Item
         try {
             $sanitized_item_name = htmlspecialchars($item_name, encoding: "UTF-8");
 
-            $sql = "INSERT INTO items (item_name, price, item_image) VALUES (:item_name, :price, :item_image)";
+            $sql = "INSERT INTO items (item_name, price, item_image, last_update) VALUES (:item_name, :price, :item_image, :last_update)";
 
             $stmt = $this->pdo->prepare($sql);
 
             $stmt->bindValue(":item_name", $sanitized_item_name, PDO::PARAM_STR);
             $stmt->bindValue(":price", $price, PDO::PARAM_INT);
             $stmt->bindValue(":item_image", $this->resize_image($item_image), PDO::PARAM_LOB);
+            $stmt->bindValue(":last_update", date("Y-m-d H:i:s"), PDO::PARAM_STR);
 
             $stmt->execute();
 
             return $this->get_from_id($this->pdo->lastInsertId());
         } catch (PDOException $e) {
             $this->rollback();
-            throw new Exception(previous:$e);
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
 
@@ -144,13 +153,14 @@ class Item
                 $this->item_name = $item["item_name"];
                 $this->price = $item["price"];
                 $this->item_image = base64_encode($item["item_image"]);
+                $this->last_update = $item["last_update"];
                 return $this;
             } else {
                 throw new Exception("ID: {$id} has not found.");
             }
         } catch (PDOException $e) {
             $this->rollback();
-            throw new Exception(previous:$e);
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
 
@@ -176,7 +186,7 @@ class Item
             }
         } catch (PDOException $e) {
             $this->rollback();
-            throw new Exception(previous:$e);
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
 
@@ -212,20 +222,21 @@ class Item
         try {
             $sanitized_item_name = htmlspecialchars($item_name);
 
-            $sql = "UPDATE items SET item_name = :item_name, price = :price, item_image = :item_image WHERE id = :id";
+            $sql = "UPDATE items SET item_name = :item_name, price = :price, item_image = :item_image, last_update = :last_update WHERE id = :id";
 
             $stmt = $this->pdo->prepare($sql);
+            $stmt->bindValue(":id", $this->id, PDO::PARAM_INT);
             $stmt->bindValue(":item_name", $sanitized_item_name, PDO::PARAM_STR);
             $stmt->bindValue(":price", $price, PDO::PARAM_INT);
-            $stmt->bindValue(":id", $this->id, PDO::PARAM_INT);
             $stmt->bindValue(":item_image", $this->resize_image($item_image), PDO::PARAM_LOB);
+            $stmt->bindValue(":last_update", date("Y-m-d H:i:s"), PDO::PARAM_STR);
 
             $stmt->execute();
 
             return $this->get_from_id($this->id);
         } catch (PDOException $e) {
             $this->rollback();
-            throw new Exception(previous:$e);
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
 
