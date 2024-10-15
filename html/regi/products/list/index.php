@@ -39,7 +39,7 @@ $products = $product_obj->get_all();
 <body>
     <div class="container">
         <h1 class="text-center mt-3">商品一覧</h1>
-        <p class="text-end">最終更新時刻:<span id="last-update"><?= date("Y/m/d H:i:s") ?></span></p>
+        <p class="text-center my-3" style="font-size: 1.2em;">最終更新時刻:<span id="last-update"><?= date("Y/m/d H:i:s") ?></span></p>
         <?php if ($message): ?>
             <div class="alert alert-<?= htmlspecialchars($message_type) ?> alert-dismissible fade show" role="alert">
                 <?= htmlspecialchars($message) ?>
