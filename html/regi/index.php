@@ -1,6 +1,20 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT']."/regi/users/login_check.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
+session_start();
+
+// メッセージとメッセージタイプを取得
+$message = isset($_SESSION['message']) ? $_SESSION['message'] : '';
+$message_type = isset($_SESSION['message_type']) ? $_SESSION['message_type'] : '';
+
+// メッセージ表示後、セッションから削除
+unset($_SESSION['message']);
+unset($_SESSION['message_type']);
+
+require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/products/product.php";
+$product_obj = new Product();
+$products = $product_obj->get_all();
 ?>
+
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -9,64 +23,45 @@ require_once $_SERVER['DOCUMENT_ROOT']."/regi/users/login_check.php";
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>レジトップ</title>
     <link href="style.css" rel="stylesheet" type="text/css" />
-    <!-- アイコン -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-    </head>
+</head>
 
 <body>
     <div class="app">
         <div class="sidebar">
-            <a href="#"><i class="fas fa-shopping-cart"></i><p>モバイルオーダー</p></a>
-            <a href="#"><i class="fas fa-list-alt"></i><p>売上一覧</p></a>
-            <a href="#"><i class="fas fa-cubes"></i><p>商品管理</p></a>
+            <a href="#"><i class="fas fa-shopping-cart"></i>
+                <p>モバイルオーダー</p>
+            </a>
+            <a href="#"><i class="fas fa-list-alt"></i>
+                <p>売上一覧</p>
+            </a>
+            <a href="#"><i class="fas fa-cubes"></i>
+                <p>商品管理</p>
+            </a>
             <div class="sidefoot">
                 <p class="useracc">XX XX(アカウント名)</p>
                 <button>ログアウト</button>
             </div>
-            
         </div>
 
         <div class="content1">
             <h1>商品一覧</h1>
             <section class="image-text-block">
                 <div class="imgs">
-                    <div class="img1" onclick="addToCart('商品A', 100)">
-                        <img src="sampleA.jpg" alt="Sample A">
-                        <p class="price">１００円</p>
-                    </div>
-                    <div class="img1" onclick="addToCart('商品B', 200)">
-                        <img src="sampleB.jpg" alt="Sample B">
-                        <p class="price">２００円</p>
-                    </div>
-                    <div class="img1" onclick="addToCart('商品C', 300)">
-                        <img src="sampleC.jpg" alt="Sample C">
-                        <p class="price">３００円</p>
-                    </div>
-                    <div class="img1" onclick="addToCart('商品D', 400)">
-                        <img src="sampleA.jpg" alt="Sample D">
-                        <p class="price">４００円</p>
-                    </div>
-                    <div class="img1" onclick="addToCart('商品E', 500)">
-                        <img src="sampleA.jpg" alt="Sample D">
-                        <p class="price">５００円</p>
-                    </div>
-                    <div class="img1" onclick="addToCart('商品D', 400)">
-                        <img src="sampleA.jpg" alt="Sample D">
-                        <p class="price">４００円</p>
-                    </div>
-                    <div class="img1" onclick="addToCart('商品D', 400)">
-                        <img src="sampleA.jpg" alt="Sample D">
-                        <p class="price">４００円</p>
-                    </div>
-                    <div class="img1" onclick="addToCart('商品D', 400)">
-                        <img src="sampleA.jpg" alt="Sample D">
-                        <p class="price">４００円</p>
-                    </div>
-                    <div class="img1" onclick="addToCart('商品D', 400)">
-                        <img src="sampleA.jpg" alt="Sample D">
-                        <p class="price">４００円</p>
-                    </div>
+                    <?php if (empty($products)): ?>
+                        <p>なにも登録されていません</p>
+                    <?php else: ?>
+                        <?php foreach ($products as $product): ?>
+                            <div class="img1"
+                                onclick="addToCart('<?= htmlspecialchars($product->get_item()->get_item_name()) ?>', <?= $product->get_item()->get_price() ?>)">
+                                <img src="data:image/jpeg;base64,<?= $product->get_item()->get_item_image() ?>"
+                                    alt="<?= htmlspecialchars($product->get_item()->get_item_name()) ?>">
+                                <p class="product-name"><?= htmlspecialchars($product->get_item()->get_item_name()) ?></p>
+                                <p class="price"><?= $product->get_item()->get_price() ?>円</p>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </div>
             </section>
         </div>
 
@@ -107,7 +102,6 @@ require_once $_SERVER['DOCUMENT_ROOT']."/regi/users/login_check.php";
                     const cartTable = document.getElementById('cart-table');
                     let existingRow = null;
 
-                    // 既存の商品を探す
                     for (let row of cartTable.rows) {
                         if (row.cells[0] && row.cells[0].innerText === productName) {
                             existingRow = row;
@@ -116,10 +110,8 @@ require_once $_SERVER['DOCUMENT_ROOT']."/regi/users/login_check.php";
                     }
 
                     if (existingRow) {
-                        // 既にカートにある場合、個数を増やす
                         changeQuantity(existingRow.cells[2].children[1], 1);
                     } else {
-                        // 新しい商品を追加
                         const row = document.createElement('tr');
                         row.innerHTML = `
                             <td>${productName}</td>
@@ -132,63 +124,49 @@ require_once $_SERVER['DOCUMENT_ROOT']."/regi/users/login_check.php";
                             <td><button onclick="removeFromCart(this)">削除</button></td>
                         `;
                         cartTable.appendChild(row);
-
-                        // 合計の更新
                         updateTotals(price, 1);
                     }
                 }
 
                 function updateTotals(price, quantity) {
-                    // 合計を更新
                     totalCount += quantity;
                     totalPrice += price;
 
-                    // 表示を更新
                     const totalCountCell = document.getElementById('total-count');
                     const totalPriceCell = document.getElementById('total-price');
 
-                    totalCountCell.innerText = `${Math.max(totalCount, 0)}個`; // 最小0にする
-                    totalPriceCell.innerText = `${Math.max(totalPrice, 0)}円`; // 最小0にする
+                    totalCountCell.innerText = `${Math.max(totalCount, 0)}個`;
+                    totalPriceCell.innerText = `${Math.max(totalPrice, 0)}円`;
                 }
 
                 function removeFromCart(button) {
-                    const row = button.parentNode.parentNode; // ボタンの親の親は行
-                    const price = parseInt(row.children[1].innerText); // 価格を取得
-                    const quantity = parseInt(row.children[2].children[1].innerText); // 現在の数量を取得
+                    const row = button.parentNode.parentNode;
+                    const price = parseInt(row.children[1].innerText);
+                    const quantity = parseInt(row.children[2].children[1].innerText);
 
-                    // 行を削除
                     row.remove();
-
-                    // 合計の更新
                     updateTotals(-price * quantity, -quantity);
                 }
 
                 function changeQuantity(button, change) {
-                    const quantityCell = button.parentNode.children[1]; // 個数を表示するセル
+                    const quantityCell = button.parentNode.children[1];
                     let currentQuantity = parseInt(quantityCell.innerText);
 
-                    // 個数を変更
-                    const price = parseInt(button.parentNode.parentNode.cells[1].innerText); // 価格を取得
-                    const oldQuantity = currentQuantity;
+                    const price = parseInt(button.parentNode.parentNode.cells[1].innerText);
 
                     currentQuantity += change;
 
-                    // 最小個数を1に制限
                     if (currentQuantity < 1) {
-                        currentQuantity = 1;
+                        currentQuantity = 1; // 最小個数を1に制限
                     }
 
                     quantityCell.innerText = `${currentQuantity}個`;
+                    const priceDifference = (currentQuantity - (currentQuantity - change)) * price;
 
-                    // 合計の更新
-                    const priceDifference = (currentQuantity - oldQuantity) * price;
-
-                    // 合計を更新
-                    updateTotals(priceDifference, currentQuantity - oldQuantity);
+                    updateTotals(priceDifference, change);
                 }
             </script>
         </div>
     </div>
 </body>
-
 </html>
