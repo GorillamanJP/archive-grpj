@@ -30,6 +30,10 @@ class Item
     }
     private function resize_image(string $image): string
     {
+        # MIMEタイプのチェック
+        if(getimagesize($image)["mime"] !== "image/jpeg"){
+            throw new Exception("jpeg画像以外の画像がアップロードされました。");
+        }
         # 画像データの加工
         # 画像サイズ
         list($width, $height) = getimagesize($image);
