@@ -31,7 +31,8 @@ if (isset($_POST["add_quantity"])) {
         $_SESSION["message_type"] = "success";
         header("Location: ../../list/");
     } catch (\Throwable $e) {
-        $_SESSION["message"] = "エラーが発生しました: " . $e->getMessage();
+        $_SESSION["message"] = "エラーが発生しました。入荷数が入力されていません。";
+        $_SESSION["message_details"] = $e->getMessage();
         $_SESSION["message_type"] = "danger";
     }
 }

@@ -1,5 +1,5 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT']."/regi/users/login_check.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
 ?>
 <?php
 session_start();
@@ -34,9 +34,16 @@ $product = $product->get_from_stock_id($id);
 <body>
     <h1 class="text-center">入荷処理</h1>
     <div class="container">
-    <?php if ($message): ?>
+        <?php if ($message): ?>
             <div class="alert alert-<?= htmlspecialchars($message_type) ?> alert-dismissible fade show" role="alert">
-                <?= htmlspecialchars($message) ?>
+                <p class="m-0">
+                    <?= htmlspecialchars($message) ?>
+                    <u data-bs-toggle="collapse" data-bs-target="#details" aria-expanded="false"
+                        aria-controls="details"><b>詳細</b></u>
+                </p>
+                <div class="collapse" id="details">
+                    <?= $message_details ?>
+                </div>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <?php endif; ?>

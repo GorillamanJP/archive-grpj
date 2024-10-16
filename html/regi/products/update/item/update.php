@@ -9,7 +9,7 @@ if (!isset($_POST["id"])) {
 
 $id = htmlspecialchars($_POST["id"]);
 
-if (isset($_POST["item_name"], $_POST["price"], $_FILES["new_item_image"]["tmp_name"])) {
+if (isset($_POST["item_name"], $_POST["price"], $_FILES["new_item_image"]["tmp_name"]) && !(empty($item_name) || empty($price))) {
     $item_name = htmlspecialchars($_POST["item_name"]);
     $price = htmlspecialchars($_POST["price"]);
     $item_image = $_FILES["new_item_image"]["tmp_name"];
