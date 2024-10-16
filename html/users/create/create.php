@@ -11,12 +11,17 @@ if (isset($_POST["user_name"], $_POST["password"])) {
         // 成功メッセージをセッションに保存
         $_SESSION['message'] = 'ユーザーが正常に登録されました。';
         $_SESSION['message_type'] = 'success';
+        
+    header('Location: /users/login/');
+    exit();
     } catch (\Throwable $e) {
         // エラーメッセージをセッションに保存
-        $_SESSION['message'] = 'エラーが発生しました: ' . $e->getMessage();
+        $_SESSION['message'] = 'エラーが発生しました ' . $e->getMessage();
         $_SESSION['message_type'] = 'danger';
     }
-    // 商品一覧ページへリダイレクト
-    header('Location: /users/login/index.php');
-    exit();
+} else {
+    $_SESSION["message"] = "入力内容が空です。";
+    $_SESSION["message_type"] = "danger";
 }
+header("Location: ./");
+exit();
