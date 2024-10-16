@@ -14,6 +14,8 @@ services:
       - ./nginx/log:/var/log/nginx
       # source folder
       - .:/var/www
+    environment:
+      - MAX_FILESIZE=${MAX_FILESIZE}
     depends_on:
       - php-fpm
       - mariadb
@@ -30,6 +32,8 @@ services:
     environment:
       - DB_DATABASE=${DB_DATABASE}
       - DB_PASSWORD=${DB_ROOT_PASSWORD}
+      - TIMEZONE=${TIMEZONE}
+      - MAX_FILESIZE=${MAX_FILESIZE}
 
   mariadb:
     image: mariadb:latest

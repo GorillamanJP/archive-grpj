@@ -8,7 +8,7 @@ function check_update(string $last_update)
         $pdo = new PDO($dsn, "root", $password);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $sql_items = "SELECT COUNT(*) FROM items WHERE last_update > :input_last_update";
+        $sql_items = "SELECT COUNT(*) FROM items WHERE last_update >= :input_last_update";
 
         $stmt_items = $pdo->prepare($sql_items);
         $stmt_items->bindValue(":input_last_update", $last_update, PDO::PARAM_STR);
@@ -16,7 +16,7 @@ function check_update(string $last_update)
 
         $update_items = $stmt_items->fetchColumn();
 
-        $sql_stocks = "SELECT COUNT(*) FROM stocks WHERE last_update > :input_last_update";
+        $sql_stocks = "SELECT COUNT(*) FROM stocks WHERE last_update >= :input_last_update";
 
         $stmt_stocks = $pdo->prepare($sql_stocks);
         $stmt_stocks->bindValue(":input_last_update", $last_update, PDO::PARAM_STR);
