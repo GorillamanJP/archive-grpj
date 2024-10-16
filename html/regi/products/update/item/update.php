@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (empty($_POST["id"])) {
+if ($_POST["id"] === "") {
     $_SESSION["message"] = "商品のIDが指定されていません。\nこのメッセージが出る場合、内部のバグの可能性がありますので、「何を」「どのように」したらエラーが出たのかを開発者までお伝えください。\nご不便をおかけして申し訳ありませんが、ご協力をお願いします。";
     $_SESSION["message_type"] = "danger";
     header("Location ../../");
