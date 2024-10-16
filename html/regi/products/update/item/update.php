@@ -43,7 +43,7 @@ if ($ok) {
         $_SESSION['message_type'] = "success";  // 成功メッセージ用
         header("Location: ../../list/");
         exit();
-    } catch (\Throwable $e) {
+    } catch (Throwable $e) {
         // 失敗時のメッセージをセッションに保存
         $_SESSION['message'] = "エラーが発生しました。";
         $_SESSION["message_details"] = $e->getMessage();

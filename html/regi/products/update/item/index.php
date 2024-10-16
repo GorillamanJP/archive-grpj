@@ -5,10 +5,12 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
 session_start();
 // メッセージとメッセージタイプがある場合に取得
 $message = isset($_SESSION['message']) ? $_SESSION['message'] : '';
+$message_details = isset($_SESSION["message_details"]) ? $_SESSION["message_details"] : "";
 $message_type = isset($_SESSION['message_type']) ? $_SESSION['message_type'] : '';
 
 // メッセージ表示後、セッションから削除
 unset($_SESSION['message']);
+unset($_SESSION["message_details"]);
 unset($_SESSION['message_type']);
 
 $id = htmlspecialchars($_POST["id"]);
@@ -36,7 +38,14 @@ $product = $product->get_from_item_id($id);
     <div class="container">
         <?php if ($message): ?>
             <div class="alert alert-<?= htmlspecialchars($message_type) ?> alert-dismissible fade show" role="alert">
-                <?= htmlspecialchars($message) ?>
+                <p class="m-0">
+                    <?= htmlspecialchars($message) ?>
+                    <u data-bs-toggle="collapse" data-bs-target="#details" aria-expanded="false"
+                        aria-controls="details"><b>詳細</b></u>
+                </p>
+                <div class="collapse" id="details">
+                    <?= $message_details ?>
+                </div>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <?php endif; ?>
@@ -46,12 +55,12 @@ $product = $product->get_from_item_id($id);
                 <tr class="form-group">
                     <th class="align-middle">商品名</th>
                     <td class="table-secondary"><input type="text" name="item_name" id="item_name"
-                            value="<?= $product->get_item()->get_item_name() ?>" class="form-control"></td>
+                            value="<?= $product->get_item()->get_item_name() ?>" class="form-control" required></td>
                 </tr>
                 <tr class="form-group">
                     <th class="align-middle">価格</th>
                     <td class="table-secondary"><input type="number" name="price" id="price"
-                            value="<?= $product->get_item()->get_price() ?>" class="form-control"></td>
+                            value="<?= $product->get_item()->get_price() ?>" class="form-control" required></td>
                 </tr>
                 <tr class="form-group">
                     <th class="align-middle">商品イメージ</th>
@@ -63,7 +72,7 @@ $product = $product->get_from_item_id($id);
                 <tr class="form-group">
                     <th class="align-middle">画像選択</th>
                     <td class="table-secondary"><input type="file" name="new_item_image" id="new_item_image"
-                            accept="image/jpeg" class="form-control"></td>
+                            accept="image/jpeg" class="form-control" required></td>
                 </tr>
         </table>
         <div class="text-center">
