@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_POST["id"]) && $_POST["id"] === "") {
+if (!isset($_POST["id"]) || $_POST["id"] === "") {
     $_SESSION["message"] = "商品のIDが指定されていません。\nこのメッセージが出る場合、内部のバグの可能性がありますので、「何を」「どのように」したらエラーが出たのかを開発者までお伝えください。\nご不便をおかけして申し訳ありませんが、ご協力をお願いします。";
     $_SESSION["message_type"] = "danger";
     header("Location ../../");
@@ -9,7 +9,14 @@ if (!isset($_POST["id"]) && $_POST["id"] === "") {
 
 $id = htmlspecialchars($_POST["id"]);
 
-if (isset($_POST["add_quantity"]) && $_POST["add_quantity"] !== "") {
+$ok = true;
+$_SESSION["message"] = "";
+if (!isset($_POST["add_quantity"]) || $_POST["add_quantity"] === "") {
+    $_SESSION["message"] .= "「入荷数」";
+    $ok = false;
+}
+
+if ($ok) {
     $add_quantity = htmlspecialchars($_POST["add_quantity"]);
 
     require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/stocks/stock.php";
@@ -30,13 +37,14 @@ if (isset($_POST["add_quantity"]) && $_POST["add_quantity"] !== "") {
         $_SESSION["message"] = "在庫が追加されました。";
         $_SESSION["message_type"] = "success";
         header("Location: ../../list/");
+        exit();
     } catch (\Throwable $e) {
-        $_SESSION["message"] = "エラーが発生しました。入荷数が入力されていません。";
+        $_SESSION["message"] = "エラーが発生しました。";
         $_SESSION["message_details"] = $e->getMessage();
         $_SESSION["message_type"] = "danger";
     }
 } else {
-    $_SESSION["message"] = "入荷数を入力してください。";
+    $_SESSION["message"] .= "の項目が空になっています。";
     $_SESSION["message_type"] = "danger";
 }
 ?>
