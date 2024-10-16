@@ -15,7 +15,7 @@ if (isset($_POST["id"], $_POST["item_name"], $_POST["price"], $_FILES["new_item_
         // 成功時のメッセージをセッションに保存
         $_SESSION['message'] = "商品情報が正常に更新されました。";
         $_SESSION['message_type'] = "success";  // 成功メッセージ用
-    } catch (Exception $e) {
+    } catch (\Throwable $e) {
         // 失敗時のメッセージをセッションに保存
         $_SESSION['message'] = "エラーが発生しました: " . $e->getMessage();
         $_SESSION['message_type'] = "error";  // エラーメッセージ用

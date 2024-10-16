@@ -22,6 +22,13 @@ class Stock
         return $this->quantity;
     }
 
+    # 最終更新時刻
+    private string $last_update;
+    public function get_last_update(): string
+    {
+        return $this->last_update;
+    }
+
     # PDOオブジェクト
     private PDO $pdo;
 
@@ -73,12 +80,13 @@ class Stock
     public function create(int $item_id, int $quantity): Stock
     {
         try {
-            $sql = "INSERT INTO stocks (item_id, quantity) VALUES (:item_id, :quantity)";
+            $sql = "INSERT INTO stocks (item_id, quantity, last_update) VALUES (:item_id, :quantity, :last_update)";
 
             $stmt = $this->pdo->prepare($sql);
 
             $stmt->bindValue(":item_id", $item_id, PDO::PARAM_INT);
             $stmt->bindValue(":quantity", $quantity, PDO::PARAM_INT);
+            $stmt->bindValue(":last_update", date("Y-m-d H:i:s"), PDO::PARAM_STR);
 
             $stmt->execute();
 
@@ -106,6 +114,7 @@ class Stock
                 $this->id = $stock["id"];
                 $this->item_id = $stock["item_id"];
                 $this->quantity = $stock["quantity"];
+                $this->last_update = $stock["last_update"];
                 return $this;
             } else {
                 throw new Exception("ID: {$id} has not found.");
@@ -166,12 +175,13 @@ class Stock
     public function update(int $quantity): Stock
     {
         try {
-            $sql = "UPDATE stocks SET quantity = :quantity WHERE id = :id";
+            $sql = "UPDATE stocks SET quantity = :quantity, last_update = :last_update WHERE id = :id";
 
             $stmt = $this->pdo->prepare($sql);
 
-            $stmt->bindValue(":quantity", $quantity, PDO::PARAM_INT);
             $stmt->bindValue(":id", $this->id, PDO::PARAM_INT);
+            $stmt->bindValue(":quantity", $quantity, PDO::PARAM_INT);
+            $stmt->bindValue(":last_update", date("Y-m-d H:i:s"), PDO::PARAM_STR);
 
             $stmt->execute();
 

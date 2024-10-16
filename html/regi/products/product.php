@@ -25,8 +25,8 @@ class Product
             $this->item = $this->item->create($item_name, $price, $item_image);
             $this->stock = $this->stock->create($this->item->get_id(), $quantity);
             return $this;
-        } catch (Exception $e) {
-            throw new Exception(previous:$e);
+        } catch (\Throwable $e) {
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
     public function get_from_item_id(int $item_id): Product
@@ -35,8 +35,8 @@ class Product
             $this->item = $this->item->get_from_id($item_id);
             $this->stock = $this->stock->get_from_item_id($this->item->get_id());
             return $this;
-        } catch (Exception $e) {
-            throw new Exception(previous:$e);
+        } catch (\Throwable $e) {
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
     public function get_from_item_name(string $item_name): Product
@@ -45,8 +45,8 @@ class Product
             $this->item = $this->item->get_from_item_name($item_name);
             $this->stock = $this->stock->get_from_item_id($this->item->get_id());
             return $this;
-        } catch (Exception $e) {
-            throw new Exception(previous:$e);
+        } catch (\Throwable $e) {
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
 
         }
     }
@@ -57,7 +57,7 @@ class Product
             $this->item = $this->item->get_from_id($this->stock->get_item_id());
             return $this;
         } catch (PDOException $e) {
-            throw new Exception(previous:$e);
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
     public function get_all(): array|null
@@ -74,7 +74,7 @@ class Product
             } else {
                 return null;
             }
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             return null;
         }
     }
@@ -84,8 +84,8 @@ class Product
             $this->item = $this->item->update($item_name, $price, $item_image);
             $this->stock = $this->stock->update($quantity);
             return $this;
-        } catch (Exception $e) {
-            throw new Exception(previous:$e);
+        } catch (\Throwable $e) {
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
     public function delete(): void

@@ -22,7 +22,7 @@ try {
     $_SESSION["message"] = "在庫が追加されました。";
     $_SESSION["message_type"] = "success";
     header("Location: /regi/products/list/index.php");
-} catch (Exception $e) {
+} catch (\Throwable $e) {
     $_SESSION["message"] = $e->getMessage();
     $_SESSION["message_type"] = "danger";
     header("Location: /regi/products/list/index.php");

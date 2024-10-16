@@ -7,7 +7,7 @@ try {
     $user = $user->get_from_id($id);
     $user->delete();
     echo "OK";
-}catch (Exception $e){
+}catch (\Throwable $e){
     echo $e->getMessage();
     echo "NG";
 }

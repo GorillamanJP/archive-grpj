@@ -7,7 +7,7 @@ try {
     $user = new User();
     $user = $user->create($user_name, $password);
     echo "OK";
-} catch (Exception $e) {
+} catch (\Throwable $e) {
     echo $e->getMessage();
     echo "NG";
 }
