@@ -8,7 +8,8 @@ function login_check()
             $user = new User();
             $user = $user->get_from_id($_SESSION["login"]["user_id"]);
         } catch (\Throwable $e) {
-            $_SESSION["error"]["message"] = "セッションエラー: ログインしなおしてください。";
+            $_SESSION["message"] = "セッションエラー: ログインしなおしてください。";
+            $_SESSION["message_type"] = "danger";
             $_SESSION["login"]["after"]["url"] = $_SERVER['REQUEST_URI'];
             if (isset($_POST)) {
                 $_SESSION["login"]["after"]["post_data"] = $_POST;
@@ -17,7 +18,8 @@ function login_check()
             exit();
         }
     } else {
-        $_SESSION["error"]["message"] = "このページを表示するには、ログインが必要です。";
+        $_SESSION["message"] = "このページを表示するには、ログインが必要です。";
+        $_SESSION["message_type"] = "warning";
         $_SESSION["login"]["after"]["url"] = $_SERVER['REQUEST_URI'];
         if (isset($_POST)) {
             $_SESSION["login"]["after"]["post_data"] = $_POST;
