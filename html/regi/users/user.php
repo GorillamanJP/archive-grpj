@@ -44,7 +44,7 @@ class User
             $this->pdo = new PDO($dsn, "root", $password);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            throw new Exception($e->getMessage());
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
 
@@ -68,7 +68,7 @@ class User
 
             return $this->get_from_id($this->pdo->lastInsertId());
         } catch (PDOException $e) {
-            throw new Exception($e->getMessage());
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
 
@@ -89,7 +89,7 @@ class User
                 throw new Exception("Name {$user_name} has not found.");
             }
         } catch (PDOException $e) {
-            throw new Exception($e->getMessage());
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
 
@@ -113,7 +113,7 @@ class User
                 throw new Exception("ID {$id} has not found.");
             }
         } catch (PDOException $e) {
-            throw new Exception($e->getMessage());
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
 
@@ -164,7 +164,7 @@ class User
 
             return $this->get_from_id($this->id);
         } catch (PDOException $e) {
-            throw new Exception($e->getMessage());
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
 
