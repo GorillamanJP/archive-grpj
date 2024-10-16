@@ -35,7 +35,7 @@ $products = $product_obj->get_all();
             <a href="#"><i class="fas fa-list-alt"></i>
                 <p>売上一覧</p>
             </a>
-            <a href="#"><i class="fas fa-cubes"></i>
+            <a href="products/list"><i class="fas fa-cubes"></i>
                 <p>商品管理</p>
             </a>
             <div class="sidefoot">
@@ -52,12 +52,14 @@ $products = $product_obj->get_all();
                         <p>なにも登録されていません</p>
                     <?php else: ?>
                         <?php foreach ($products as $product): ?>
-                            <div class="img1"
-                                onclick="addToCart('<?= htmlspecialchars($product->get_item()->get_item_name()) ?>', <?= $product->get_item()->get_price() ?>)">
+                            <div class="img1" id="product-<?= $product->get_item()->get_id() ?>"
+                                onclick="addToCart('<?= htmlspecialchars($product->get_item()->get_item_name()) ?>', <?= $product->get_item()->get_price() ?>, <?= $product->get_stock()->get_quantity() ?>, <?= $product->get_item()->get_id() ?>)">
                                 <img src="data:image/jpeg;base64,<?= $product->get_item()->get_item_image() ?>"
                                     alt="<?= htmlspecialchars($product->get_item()->get_item_name()) ?>">
                                 <p class="product-name"><?= htmlspecialchars($product->get_item()->get_item_name()) ?></p>
                                 <p class="price"><?= $product->get_item()->get_price() ?>円</p>
+                                <p id="stock-<?= $product->get_item()->get_id() ?>">
+                                    【残<?= $product->get_stock()->get_quantity() ?>個】</p>
                             </div>
                         <?php endforeach; ?>
                     <?php endif; ?>
@@ -98,10 +100,11 @@ $products = $product_obj->get_all();
                 let totalCount = 0; // 合計品数
                 let totalPrice = 0; // 合計金額
 
-                function addToCart(productName, price) {
+                function addToCart(productName, price, stockQuantity, productId) {
                     const cartTable = document.getElementById('cart-table');
                     let existingRow = null;
 
+                    // 既存の商品を確認
                     for (let row of cartTable.rows) {
                         if (row.cells[0] && row.cells[0].innerText === productName) {
                             existingRow = row;
@@ -110,22 +113,38 @@ $products = $product_obj->get_all();
                     }
 
                     if (existingRow) {
-                        changeQuantity(existingRow.cells[2].children[1], 1);
+                        const currentQuantity = parseInt(existingRow.cells[2].children[1].innerText);
+                        if (currentQuantity < stockQuantity) {
+                            changeQuantity(existingRow.cells[2].children[1], 1, productId, stockQuantity);
+                        } else {
+                            alert('在庫が足りません。');
+                        }
                     } else {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${productName}</td>
-                            <td>${price}円</td>
-                            <td>
-                                <button class="quantity-button" onclick="changeQuantity(this, -1)">－</button>
-                                <span>1個</span>
-                                <button class="quantity-button" onclick="changeQuantity(this, 1)">＋</button>
-                            </td>
-                            <td><button onclick="removeFromCart(this)">削除</button></td>
-                        `;
-                        cartTable.appendChild(row);
-                        updateTotals(price, 1);
+                        if (stockQuantity > 0) {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${productName}</td>
+                                <td>${price}円</td>
+                                <td>
+                                    <button class="quantity-button" onclick="changeQuantity(this, -1, ${productId}, ${stockQuantity})">－</button>
+                                    <span>1個</span>
+                                    <button class="quantity-button" onclick="changeQuantity(this, 1, ${productId}, ${stockQuantity})">＋</button>
+                                </td>
+                                <td><button onclick="removeFromCart(this, ${price}, ${productId})">削除</button></td>
+                            `;
+                            cartTable.appendChild(row);
+                            updateTotals(price, 1);
+                            updateStockDisplay(productId, -1);
+                        } else {
+                            alert('在庫が足りません。');
+                        }
                     }
+                }
+
+                function updateStockDisplay(productId, change) {
+                    const stockElement = document.getElementById(`stock-${productId}`);
+                    const currentStock = parseInt(stockElement.innerText.match(/\d+/)[0]);
+                    stockElement.innerText = `【残${currentStock + change}個】`;
                 }
 
                 function updateTotals(price, quantity) {
@@ -139,34 +158,35 @@ $products = $product_obj->get_all();
                     totalPriceCell.innerText = `${Math.max(totalPrice, 0)}円`;
                 }
 
-                function removeFromCart(button) {
+                function removeFromCart(button, price, productId) {
                     const row = button.parentNode.parentNode;
-                    const price = parseInt(row.children[1].innerText);
-                    const quantity = parseInt(row.children[2].children[1].innerText);
-
+                    const quantity = parseInt(row.cells[2].children[1].innerText);
                     row.remove();
                     updateTotals(-price * quantity, -quantity);
+                    updateStockDisplay(productId, quantity); // 在庫を戻す
                 }
 
-                function changeQuantity(button, change) {
+                function changeQuantity(button, change, productId, stockQuantity) {
                     const quantityCell = button.parentNode.children[1];
                     let currentQuantity = parseInt(quantityCell.innerText);
-
                     const price = parseInt(button.parentNode.parentNode.cells[1].innerText);
 
-                    currentQuantity += change;
+                    const newQuantity = currentQuantity + change;
 
-                    if (currentQuantity < 1) {
-                        currentQuantity = 1; // 最小個数を1に制限
+                    if (newQuantity < 1) {
+                        return; // 最小個数を1に制限
+                    } else if (newQuantity > stockQuantity) {
+                        alert('在庫が足りません。');
+                        return;
                     }
 
-                    quantityCell.innerText = `${currentQuantity}個`;
-                    const priceDifference = (currentQuantity - (currentQuantity - change)) * price;
-
-                    updateTotals(priceDifference, change);
+                    quantityCell.innerText = `${newQuantity}個`;
+                    updateTotals(change * price, change);
+                    updateStockDisplay(productId, -change); // 在庫数を更新
                 }
             </script>
         </div>
     </div>
 </body>
+
 </html>
