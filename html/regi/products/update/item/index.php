@@ -7,6 +7,10 @@ session_start();
 $message = isset($_SESSION['message']) ? $_SESSION['message'] : '';
 $message_type = isset($_SESSION['message_type']) ? $_SESSION['message_type'] : '';
 
+// メッセージ表示後、セッションから削除
+unset($_SESSION['message']);
+unset($_SESSION['message_type']);
+
 $id = htmlspecialchars($_POST["id"]);
 require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/products/product.php";
 
