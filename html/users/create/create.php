@@ -16,7 +16,8 @@ if (isset($_POST["user_name"], $_POST["password"])) {
     exit();
     } catch (\Throwable $e) {
         // エラーメッセージをセッションに保存
-        $_SESSION['message'] = 'エラーが発生しました ' . $e->getMessage();
+        $_SESSION['message'] = 'エラーが発生しました。おそらく、入力したユーザー名はすでに使用されています。';
+        $_SESSION["message_details"] = $e->getMessage();
         $_SESSION['message_type'] = 'danger';
     }
 } else {

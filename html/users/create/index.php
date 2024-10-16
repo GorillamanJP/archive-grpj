@@ -2,9 +2,11 @@
 session_start();
 // メッセージとメッセージタイプがある場合に取得
 $message = isset($_SESSION['message']) ? $_SESSION['message'] : '';
+$message_details = isset($_SESSION["message_details"]) ? $_SESSION["message_details"] : "";
 $message_type = isset($_SESSION['message_type']) ? $_SESSION['message_type'] : '';
 // メッセージ表示後、セッションから削除
 unset($_SESSION['message']);
+unset($_SESSION["message_details"]);
 unset($_SESSION['message_type']);
 ?>
 <!DOCTYPE html>
@@ -26,7 +28,14 @@ unset($_SESSION['message_type']);
     <div class="container">
         <?php if ($message): ?>
             <div class="alert alert-<?= htmlspecialchars($message_type) ?> alert-dismissible fade show" role="alert">
-                <?= htmlspecialchars($message) ?>
+                <p class="m-0">
+                    <?= htmlspecialchars($message) ?>
+                    <u data-bs-toggle="collapse" data-bs-target="#details" aria-expanded="false"
+                        aria-controls="details"><b>詳細</b></u>
+                </p>
+                <div class="collapse" id="details">
+                    <?= $message_details ?>
+                </div>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <?php endif; ?>
