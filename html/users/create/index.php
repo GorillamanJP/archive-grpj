@@ -1,3 +1,14 @@
+<?php
+session_start();
+// メッセージとメッセージタイプがある場合に取得
+$message = isset($_SESSION['message']) ? $_SESSION['message'] : '';
+$message_details = isset($_SESSION["message_details"]) ? $_SESSION["message_details"] : "";
+$message_type = isset($_SESSION['message_type']) ? $_SESSION['message_type'] : '';
+// メッセージ表示後、セッションから削除
+unset($_SESSION['message']);
+unset($_SESSION["message_details"]);
+unset($_SESSION['message_type']);
+?>
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -15,7 +26,19 @@
 <body>
     <h1 class="text-center mt-3">ユーザー登録</h1>
     <div class="container">
-
+        <?php if ($message): ?>
+            <div class="alert alert-<?= htmlspecialchars($message_type) ?> alert-dismissible fade show" role="alert">
+                <p class="m-0">
+                    <?= htmlspecialchars($message) ?>
+                    <u data-bs-toggle="collapse" data-bs-target="#details" aria-expanded="false"
+                        aria-controls="details"><b>詳細</b></u>
+                </p>
+                <div class="collapse" id="details">
+                    <?= $message_details ?>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
         <form action="./create.php" method="post">
             <table class="table table-bordered table-info table-hover ">
                 <tr class="form-group">
