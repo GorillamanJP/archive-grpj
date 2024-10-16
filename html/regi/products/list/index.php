@@ -48,7 +48,7 @@ $products = $product_obj->get_all();
         <?php endif; ?>
         <div class="text-center my-3">
             <a href="../create/" class="btn btn-outline-primary btn-lg p-2">商品登録</a>
-            <a href="" class="btn btn-outline-success btn-lg p-2">レジ画面へ</a>
+            <a href="../../index.php" class="btn btn-outline-success btn-lg p-2">レジ画面へ</a>
         </div>
         <?php if (is_null($products)): ?>
             <h2 class="text-center">商品はありません。</h2>
