@@ -35,7 +35,7 @@ $user = $user->get_from_id($id);
 </head>
 
 <body>
-    <h1>ユーザー情報更新</h1>
+    <h1 class="text-center mt-3">ユーザー情報更新</h1>
     <div class="container">
         <?php if ($message): ?>
             <div class="alert alert-<?= htmlspecialchars($message_type) ?> alert-dismissible fade show" role="alert">
@@ -52,12 +52,28 @@ $user = $user->get_from_id($id);
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <?php endif; ?>
-        <form action="update.php" method="post">
-            <input type="hidden" name="id" value="<?= $user->get_id() ?>"></p>
-            <p><input type="text" name="user_name" id="user_name" value="<?= $user->get_user_name() ?>">ユーザー名</p>
-            <p><input type="password" name="password" id="password">新しいパスワード</p>
-            <p>パスワードはそのままの場合でも入力しなおしてください。</p>
-            <input type="submit" value="更新">
+        <table class="table table-bordered table-info table-hover">
+            <form action="update.php" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="id" value="<?= $user->get_id() ?>"></p>
+                <tr class="form-group">
+                    <th class="align-middle">ユーザー名</th>
+                    <td class="table-secondary">
+                        <input type="text" name="user_name" id="user_name" value="<?= $user->get_user_name() ?>"
+                            class="form-control" required>
+                    </td>
+                </tr>
+                <tr class="form-group">
+                    <th class="align-middle">新しいパスワード</th>
+                    <td class="table-secondary">
+                        <input type="password" name="password" id="password" class="form-control" required>
+                    </td>
+                </tr>
+                <p class="text-center">パスワードはそのままの場合でも入力しなおしてください。</p>
+        </table>
+        <div class="text-center">
+            <input type="submit" value="更新" class="btn btn-outline-primary">
+            <a href="../list/index.php" class="btn btn-outline-secondary">戻る</a>
+        </div>
         </form>
     </div>
 </body>
