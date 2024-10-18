@@ -27,6 +27,12 @@ $users = $user_obj->get_all();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous"></script>
+    <style>
+        td {
+            font-size: 1.3em;
+            /* 文字サイズを1.3倍にする */
+        }
+    </style>
 </head>
 
 <body>
@@ -58,7 +64,7 @@ $users = $user_obj->get_all();
                     <tbody class="table-light">
                         <? foreach ($users as $user): ?>
                             <tr>
-                                <td><a href="../update/?id=<?= $user->get_id() ?>">ID: <?= $user->get_id() ?></a></td>
+                                <td><?= $user->get_id() ?></a></td>
                                 <td><?= $user->get_user_name() ?></td>
                                 <td>
                                     <form action="../update/" method="post">
