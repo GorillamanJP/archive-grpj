@@ -45,7 +45,7 @@ $users = $user_obj->get_all();
         <?php if (is_null($users)): ?>
             <p>ユーザーはいません</p>
         <?php else: ?>
-            <div class="table-responsive my-5">
+            <div class="table-responsive my-4">
                 <table class="table table-bordered table-hover text-center align-middle">
                     <thead class="table-info">
                         <tr>
