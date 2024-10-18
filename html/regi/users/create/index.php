@@ -1,4 +1,6 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
+
 session_start();
 // メッセージとメッセージタイプがある場合に取得
 $message = isset($_SESSION['message']) ? $_SESSION['message'] : '';
@@ -57,7 +59,7 @@ unset($_SESSION['message_type']);
 
             <div class="text-center">
                 <input type="submit" class="btn btn-outline-primary btn-lg" value="登録">
-                <a href="../login/index.php" class="btn btn-outline-secondary btn-lg">戻る</a>
+                <a href="/users/login/" class="btn btn-outline-secondary btn-lg">戻る</a>
             </div>
 
         </form>
