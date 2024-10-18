@@ -68,7 +68,11 @@ $user = $user->get_from_id($id);
                         <input type="password" name="password" id="password" class="form-control" required>
                     </td>
                 </tr>
-                <p class="text-center">パスワードはそのままの場合でも入力しなおしてください。</p>
+                <div class="text-center">
+                    <div class="alert alert-warning" role="alert">
+                        ※パスワードはそのままの場合でも入力しなおしてください。
+                    </div>
+                </div>
         </table>
         <div class="text-center">
             <input type="submit" value="更新" class="btn btn-outline-primary">
