@@ -1,5 +1,5 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT']."/regi/users/login_check.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
 ?>
 <?php
 session_start();
@@ -29,6 +29,38 @@ $products = $product_obj->get_all();
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous"></script>
     <style>
+        body {
+            background-color: #f8f9fa;
+            /* 背景色を変更 */
+        }
+
+        h1 {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .table {
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn {
+            border-radius: 25px;
+        }
+
+        .btn-primary,
+        .btn-success {
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.4);
+        }
+
+        .btn-lg-custom {
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 1.2em;
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.4);
+        }
+
         td {
             font-size: 1.3em;
             /* 文字サイズを1.3倍にする */
@@ -39,7 +71,8 @@ $products = $product_obj->get_all();
 <body>
     <div class="container">
         <h1 class="text-center mt-3">商品一覧</h1>
-        <p class="text-center my-3" style="font-size: 1.2em;">最終更新時刻:<span id="last-update"><?= date("Y/m/d H:i:s") ?></span></p>
+        <p class="text-center my-3" style="font-size: 1.2em;">最終更新時刻:<span
+                id="last-update"><?= date("Y/m/d H:i:s") ?></span></p>
         <?php if ($message): ?>
             <div class="alert alert-<?= htmlspecialchars($message_type) ?> alert-dismissible fade show" role="alert">
                 <?= htmlspecialchars($message) ?>
@@ -47,9 +80,9 @@ $products = $product_obj->get_all();
             </div>
         <?php endif; ?>
         <div class="text-center my-3">
-            <a href="../create/" class="btn btn-outline-primary btn-lg p-2">商品登録</a>
-            <a href="../../index.php" class="btn btn-outline-success btn-lg p-2">レジ画面へ</a>
-            <a href="../../users/list/index.php" class="btn btn-outline-success btn-lg p-2">ユーザー一覧へ</a>
+            <a href="../create/" class="btn btn-outline-primary btn-lg-custom p-2">商品登録</a>
+            <a href="../../index.php" class="btn btn-outline-success btn-lg-custom p-2">レジ画面へ</a>
+            <a href="../../users/list/index.php" class="btn btn-outline-success btn-lg-custom p-2">ユーザー一覧へ</a>
         </div>
         <?php if (is_null($products)): ?>
             <h2 class="text-center">商品はありません。</h2>
