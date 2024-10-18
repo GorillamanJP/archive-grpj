@@ -1,5 +1,5 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT']."/regi/users/login_check.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
 ?>
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/sales/sale.php";
@@ -43,6 +43,12 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
                     </td>
                     <td><?= $sale->get_accountant()->get_total_price() ?></td>
                     <td><?= $sale->get_accountant()->get_total_amount() ?></td>
+                    <td>
+                        <form action="../show/" method="post">
+                            <input type="hidden" name="id" id="id" value="<?= $sale->get_accountant()->get_id() ?>">
+                            <input type="submit" value="詳細表示">
+                        </form>
+                    </td>
                 </tr>
             <?php endforeach ?>
         </table>
