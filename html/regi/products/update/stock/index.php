@@ -34,7 +34,7 @@ $product = $product->get_from_stock_id($id);
 </head>
 
 <body>
-    <h1 class="text-center">入荷処理</h1>
+    <h1 class="text-center mt-3 my-3">入荷処理</h1>
     <div class="container">
         <?php if ($message): ?>
             <div class="alert alert-<?= htmlspecialchars($message_type) ?> alert-dismissible fade show" role="alert">
