@@ -25,7 +25,7 @@ if ($ok) {
         $_SESSION['message'] = 'ユーザーが正常に登録されました。';
         $_SESSION['message_type'] = 'success';
 
-        header('Location: /users/login/');
+        header('Location: /regi/users/login/');
         exit();
     } catch (\Throwable $e) {
         // エラーメッセージをセッションに保存

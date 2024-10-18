@@ -59,7 +59,7 @@ unset($_SESSION['message_type']);
 
             <div class="text-center">
                 <input type="submit" class="btn btn-outline-primary btn-lg" value="登録">
-                <a href="/users/login/" class="btn btn-outline-secondary btn-lg">戻る</a>
+                <a href="../login/" class="btn btn-outline-secondary btn-lg">戻る</a>
             </div>
 
         </form>

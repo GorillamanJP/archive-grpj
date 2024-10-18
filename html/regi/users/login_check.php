@@ -14,7 +14,7 @@ function login_check()
             if (isset($_POST)) {
                 $_SESSION["login"]["after"]["post_data"] = $_POST;
             }
-            header("Location: /users/login/");
+            header("Location: /regi/users/login/");
             exit();
         }
     } else {
@@ -24,7 +24,7 @@ function login_check()
         if (isset($_POST)) {
             $_SESSION["login"]["after"]["post_data"] = $_POST;
         }
-        header("Location: /users/login/");
+        header("Location: /regi/users/login/");
         exit();
     }
     session_write_close();

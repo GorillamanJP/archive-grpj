@@ -45,7 +45,7 @@ $users = $user_obj->get_all();
             </div>
         <?php endif; ?>
         <div class="text-center my-3">
-            <a href="../../../users/create/index.php" class="btn btn-outline-primary btn-lg p-2">ユーザー登録</a>
+            <a href="../create/" class="btn btn-outline-primary btn-lg p-2">ユーザー登録</a>
             <a href="../../products/list/index.php" class="btn btn-outline-success btn-lg p-2">商品一覧へ</a>
         </div>
         <?php if (is_null($users)): ?>

@@ -24,6 +24,11 @@ if ($ok) {
         $_SESSION["login"]["user_id"] = $user->get_id();
         $_SESSION["message"] = "ログインしました。";
         $_SESSION["message_type"] = "info";
+        # ユーザーIDが1(初期ユーザーのadmin)の場合は警告メッセージを出す
+        if($user->get_id() == 1){
+            $_SESSION["message"] .= "このユーザーは初期ユーザーです。使用者のユーザーを新たに作成したうえで、このアカウントは早急に削除してください。";
+            $_SESSION["message_type"] = "danger";
+        }
         # ログイン後にリダイレクトがある場合
         if (isset($_SESSION["login"]["after"])) {
             $after = $_SESSION["login"]["after"];
