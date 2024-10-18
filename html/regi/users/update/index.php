@@ -41,8 +41,10 @@ $user = $user->get_from_id($id);
             <div class="alert alert-<?= htmlspecialchars($message_type) ?> alert-dismissible fade show" role="alert">
                 <p class="m-0">
                     <?= htmlspecialchars($message) ?>
-                    <u data-bs-toggle="collapse" data-bs-target="#details" aria-expanded="false"
-                        aria-controls="details"><b>詳細</b></u>
+                    <?php if ($message_details !== ""): ?>
+                        <u data-bs-toggle="collapse" data-bs-target="#details" aria-expanded="false"
+                            aria-controls="details"><b>詳細</b></u>
+                    <?php endif ?>
                 </p>
                 <div class="collapse" id="details">
                     <?= $message_details ?>
