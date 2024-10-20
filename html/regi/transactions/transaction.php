@@ -133,7 +133,7 @@ class Transaction
     public function get_from_accountant_id(int $accountant_id): Transaction
     {
         try {
-            $sql = "SELECT id FROM transaction WHERE accountant_id = :accountant_id";
+            $sql = "SELECT id FROM transactions WHERE accountant_id = :accountant_id";
 
             $stmt = $this->pdo->prepare($sql);
 
