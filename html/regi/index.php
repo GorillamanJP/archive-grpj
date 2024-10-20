@@ -92,13 +92,15 @@ $products = $product_obj->get_all();
                 </tr>
             </table>
             <br><br>
-            <button class="butt">支払いへ進む→</button>
+            <form action="./sales/create/create.php" method="post" id="form">
+                <input type="submit" value="支払いへ進む→" class="butt">
+            </form>
         </div>
 
         <div class="purchase-form">
-            <script>
-                let totalCount = 0; // 合計品数
+            <script>let totalCount = 0; // 合計品数
                 let totalPrice = 0; // 合計金額
+                let productCounter = 0; // 商品の連番
 
                 function addToCart(productName, price, stockQuantity, productId) {
                     const cartTable = document.getElementById('cart-table');
@@ -123,22 +125,58 @@ $products = $product_obj->get_all();
                         if (stockQuantity > 0) {
                             const row = document.createElement('tr');
                             row.innerHTML = `
-                                <td>${productName}</td>
-                                <td>${price}円</td>
-                                <td>
-                                    <button class="quantity-button" onclick="changeQuantity(this, -1, ${productId}, ${stockQuantity})">－</button>
-                                    <span>1個</span>
-                                    <button class="quantity-button" onclick="changeQuantity(this, 1, ${productId}, ${stockQuantity})">＋</button>
-                                </td>
-                                <td><button onclick="removeFromCart(this, ${price}, ${productId})">削除</button></td>
-                            `;
+                <td>${productName}</td>
+                <td>${price}円</td>
+                <td>
+                    <button class="quantity-button" onclick="changeQuantity(this, -1, ${productId}, ${stockQuantity})">－</button>
+                    <span>1個</span>
+                    <button class="quantity-button" onclick="changeQuantity(this, 1, ${productId}, ${stockQuantity})">＋</button>
+                </td>
+                <td><button onclick="removeFromCart(this, ${price}, ${productId})">削除</button></td>
+            `;
                             cartTable.appendChild(row);
                             updateTotals(price, 1);
                             updateStockDisplay(productId, -1);
+                            addHiddenInputs(productId, 1); // 新しい商品をカートに追加
                         } else {
                             alert('在庫が足りません。');
                         }
                     }
+                }
+
+                function addHiddenInputs(productId, quantity) {
+                    const form = document.getElementById('form');
+                    productCounter++;
+
+                    const productIdInput = document.createElement('input');
+                    productIdInput.type = 'hidden';
+                    productIdInput.name = 'product_id[]';
+                    productIdInput.id = `product_id_${productCounter}`;
+                    productIdInput.value = productId;
+
+                    const quantityInput = document.createElement('input');
+                    quantityInput.type = 'hidden';
+                    quantityInput.name = 'quantity[]';
+                    quantityInput.id = `quantity_${productCounter}`;
+                    quantityInput.value = quantity;
+
+                    form.appendChild(productIdInput);
+                    form.appendChild(quantityInput);
+                }
+
+                function updateForm(productId, quantity) {
+                    const productIdInputs = document.getElementsByName('product_id[]');
+                    const quantityInputs = document.getElementsByName('quantity[]');
+
+                    for (let i = 0; i < productIdInputs.length; i++) {
+                        if (productIdInputs[i].value == productId) {
+                            quantityInputs[i].value = quantity;
+                            return;
+                        }
+                    }
+
+                    // 新しいinput:hiddenを追加
+                    addHiddenInputs(productId, quantity);
                 }
 
                 function updateStockDisplay(productId, change) {
@@ -164,7 +202,40 @@ $products = $product_obj->get_all();
                     row.remove();
                     updateTotals(-price * quantity, -quantity);
                     updateStockDisplay(productId, quantity); // 在庫を戻す
+
+                    // フォーム要素を削除
+                    const productIdInputs = document.getElementsByName('product_id[]');
+                    const quantityInputs = document.getElementsByName('quantity[]');
+                    for (let i = 0; i < productIdInputs.length; i++) {
+                        if (productIdInputs[i].value == productId) {
+                            productIdInputs[i].remove();
+                            quantityInputs[i].remove();
+                            break;
+                        }
+                    }
                 }
+
+
+                function addHiddenInputs(productId, quantity) {
+                    const form = document.getElementById('form');
+                    productCounter++;
+
+                    const productIdInput = document.createElement('input');
+                    productIdInput.type = 'hidden';
+                    productIdInput.name = 'product_id[]';
+                    productIdInput.id = `product_id_${productCounter}`;
+                    productIdInput.value = productId;
+
+                    const quantityInput = document.createElement('input');
+                    quantityInput.type = 'hidden';
+                    quantityInput.name = 'quantity[]';
+                    quantityInput.id = `quantity_${productCounter}`;
+                    quantityInput.value = quantity;
+
+                    form.appendChild(productIdInput);
+                    form.appendChild(quantityInput);
+                }
+
 
                 function changeQuantity(button, change, productId, stockQuantity) {
                     const quantityCell = button.parentNode.children[1];
@@ -183,7 +254,9 @@ $products = $product_obj->get_all();
                     quantityCell.innerText = `${newQuantity}個`;
                     updateTotals(change * price, change);
                     updateStockDisplay(productId, -change); // 在庫数を更新
+                    updateForm(productId, newQuantity); // フォームを更新
                 }
+
             </script>
         </div>
     </div>
