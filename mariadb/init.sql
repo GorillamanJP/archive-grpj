@@ -34,16 +34,6 @@ CREATE TABLE IF NOT EXISTS accountants(
     total_price INT NOT NULL
 );
 
--- 取引記録テーブル
-CREATE TABLE IF NOT EXISTS transactions(
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    accountant_id INT NOT NULL,
-    total_price INT NOT NULL,
-    received_amount INT NOT NULL,
-    change INT NOT NULL,
-    FOREIGN KEY (accountant_id) REFERENCES accountants(id) ON DELETE CASCADE
-);
-
 -- 会計詳細テーブル
 CREATE TABLE IF NOT EXISTS details(
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -53,6 +43,16 @@ CREATE TABLE IF NOT EXISTS details(
     quantity INT NOT NULL,
     subtotal INT NOT NULL,
     FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE,
+    FOREIGN KEY (accountant_id) REFERENCES accountants(id) ON DELETE CASCADE
+);
+
+-- 取引記録テーブル
+CREATE TABLE IF NOT EXISTS transactions(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    accountant_id INT NOT NULL,
+    total_price INT NOT NULL,
+    received_price INT NOT NULL,
+    returned_price INT NOT NULL,
     FOREIGN KEY (accountant_id) REFERENCES accountants(id) ON DELETE CASCADE
 );
 

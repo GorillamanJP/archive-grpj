@@ -1,6 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/accountants/accountant.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/details/detail.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/transactions/transaction.php";
 class Sale
 {
     private Accountant $accountant;
@@ -15,42 +16,51 @@ class Sale
         return $this->details;
     }
 
+    private Transaction $transaction;
+    public function get_transaction(): Transaction
+    {
+        return $this->transaction;
+    }
+
     public function __construct()
     {
         $this->accountant = new Accountant();
         $this->details = [];
+        $this->transaction = new Transaction();
     }
 
-    public function create(array $product_ids, array $quantities): Sale
+    public function create(array $product_ids, array $product_prices, array $quantities, array $subtotals, int $total_amount, int $total_price, int $received_price, int $returned_price): Sale
     {
         require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
         require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/stocks/stock.php";
         try {
-            $total_amount = 0;
-            $total_price = 0;
-            $buy_items = [];
-            for ($i = 0; $i < count($product_ids); $i++) {
-                $item = new Item();
-                $item = $item->get_from_id($product_ids[$i]);
-                $total_amount += $quantities[$i];
-                $total_price += $item->get_price() * $quantities[$i];
-                $buy_items[] = $item;
-            }
             $this->accountant = $this->accountant->create($total_amount, $total_price);
             $accountant_id = $this->accountant->get_id();
             $detail = new Detail();
             $detail->start_transaction();
             $stock = new Stock();
             $stock->start_transaction();
-            for ($i = 0; $i < count($buy_items); $i++) {
-                if ($stock->get_from_item_id($buy_items[$i]->get_id())->get_quantity() - $quantities[$i] < 0) {
-                    throw new Exception("在庫不足");
+
+            for($i = 0; $i < count($product_ids); $i++){
+                // 配列バラしゾーン
+                $id = $product_ids[$i];
+                $price = $product_prices[$i];
+                $quantity = $quantities[$i];
+                $subtotal = $subtotals[$i];
+
+                // 在庫チェック
+                $stock = $stock->get_from_item_id($id);
+                $quantity_left = $stock->get_quantity();
+                if($quantity_left - $quantity < 0){
+                    throw new Exception("在庫が不足しています。");
                 }
-                $this->details[] = $detail->create($accountant_id, $buy_items[$i]->get_id(), $quantities[$i], $buy_items[$i]->get_price(), $buy_items[$i]->get_price() * $quantities[$i]);
-                $stock = $stock->get_from_item_id($buy_items[$i]->get_id());
-                $now_quantity = $stock->get_quantity();
-                $stock = $stock->update($now_quantity - $quantities[$i]);
+
+                $this->details[] = $detail->create($accountant_id, $id, $quantity, $price, $subtotal);
+
+                $stock->update($quantity_left - $quantity);
             }
+
+            $this->transaction = $this->transaction->create($accountant_id, $total_price, $received_price, $returned_price);
             $detail->commit();
             $stock->commit();
             return $this;
@@ -58,6 +68,7 @@ class Sale
             $detail->rollback();
             $stock->rollback();
             $this->accountant->delete();
+            $this->transaction->delete();
             throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
@@ -68,6 +79,7 @@ class Sale
             $this->accountant = $this->accountant->get_from_id($accountant_id);
             $detail = new Detail();
             $this->details = $detail->gets_from_accountant_id($accountant_id);
+            $this->transaction = $this->transaction->get_from_accountant_id($accountant_id);
             return $this;
         } catch (\Throwable $e) {
             throw new Exception($e->getMessage(), $e->getCode(), $e);

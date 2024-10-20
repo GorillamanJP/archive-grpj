@@ -1,41 +1,152 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT']."/regi/users/login_check.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
 ?>
-<!DOCTYPE html>
+<?php
+session_start();
+
+$ok = true;
+if (!isset($_POST["product_id"]) || $_POST["product_id"] === "") {
+    $_SESSION["message"] = "商品が選ばれていません。";
+    $_SESSION["message_type"] = "danger";
+    $ok = false;
+}
+
+if (!isset($_POST["quantity"]) || $_POST["quantity"] === "") {
+    $_SESSION["message"] = "購入数が0の商品があります。";
+    $_SESSION["message_type"] = "danger";
+    $ok = false;
+}
+
+if (!$ok) {
+    header("Location: ../../");
+}
+
+$product_ids = $_POST["product_id"];
+$quantities = $_POST["quantity"];
+
+$total_price = 0;
+$total_amount = 0;
+
+require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
+?>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
-    <title>商品購入フォーム</title>
+    <title>お支払い</title>
 </head>
+
 <body>
-    <h1>商品購入フォーム</h1>
-    <h1>TODO: 会計テーブルに合計金額を、詳細テーブルに小計を書く</h1>
+    <h1>お支払い</h1>
     <form action="./create.php" method="post">
-        <div id="items">
-            <div>
-                <label for="product_id_1">商品ID:</label>
-                <input type="number" name="product_id[]" id="product_id_1" required>
-                <label for="quantity_1">購入数:</label>
-                <input type="number" name="quantity[]" id="quantity_1" required>
-            </div>
+        <div class="left-side">
+            <h2>会計詳細</h2>
+            <table>
+                <tr>
+                    <th>商品名</th>
+                    <th>価格</th>
+                    <th>購入数</th>
+                    <th>小計</th>
+                </tr>
+                <?php for ($i = 0; $i < count($product_ids); $i++): ?>
+                    <?php
+                    $item = new Item();
+                    $item = $item->get_from_id($product_ids[$i]);
+
+                    $item_name = $item->get_item_name();
+                    $price = $item->get_price();
+                    $quantity = $quantities[$i];
+                    $subtotal = $price * $quantity;
+                    $total_price += $subtotal;
+                    $total_amount += $quantity;
+                    ?>
+                    <tr>
+                        <input type="hidden" name="product_id[]" value="<?= $item->get_id() ?>">
+                        <td>
+                            <span><?= $item_name ?></span>
+                            <input type="hidden" name="product_name[]" value="<?= $item_name ?>">
+                        </td>
+                        <td>
+                            <span><?= $price ?></span>
+                            <input type="hidden" name="product_price[]" value="<?= $price ?>">
+                        </td>
+                        <td>
+                            <span><?= $quantity ?></span>
+                            <input type="hidden" name="quantity[]" value="<?= $quantity ?>">
+                        </td>
+                        <td>
+                            <span><?= $subtotal ?></span>
+                            <input type="hidden" name="subtotal[]" value="<?= $subtotal ?>">
+                        </td>
+                    </tr>
+                <?php endfor; ?>
+            </table>
+            <table>
+                <tr>
+                    <th>合計購入数</th>
+                    <td><span id="total_amount"></span>個</td>
+                    <input type="hidden" name="total_amount" value="<?= $total_amount ?>">
+                </tr>
+                <tr>
+                    <th>合計金額</th>
+                    <td><span id="total_price"><?= $total_price ?></span>円</td>
+                    <input type="hidden" name="total_price" value="<?= $total_price ?>">
+                </tr>
+                <tr>
+                    <th>お預かり</th>
+                    <td><span id="received_price_disp">0</span>円</td>
+                    <input type="hidden" name="received_price" id="received_price" value="0">
+                </tr>
+                <tr>
+                    <th>お釣り</th>
+                    <td><span id="returned_price_disp">0</span>円</td>
+                    <input type="hidden" name="returned_price" id="returned_price" value="0">
+                </tr>
+            </table>
         </div>
-        <button type="button" onclick="addItem()">商品を追加</button>
-        <button type="submit">送信</button>
+        <div class="right-side">
+            <table>
+                <tr>
+                    <td id="numpad_7" class="numpads">7</td>
+                    <td id="numpad_8" class="numpads">8</td>
+                    <td id="numpad_9" class="numpads">9</td>
+                </tr>
+                <tr>
+                    <td id="numpad_4" class="numpads">4</td>
+                    <td id="numpad_5" class="numpads">5</td>
+                    <td id="numpad_6" class="numpads">6</td>
+                </tr>
+                <tr>
+                    <td id="numpad_1" class="numpads">1</td>
+                    <td id="numpad_2" class="numpads">2</td>
+                    <td id="numpad_3" class="numpads">3</td>
+                </tr>
+                <tr>
+                    <td id="numpad_0" class="numpads">0</td>
+                    <td id="numpad_00" class="numpads">00</td>
+                    <td id="submit"><input type="submit" value="支払い"></td>
+                </tr>
+            </table>
+        </div>
     </form>
 
     <script>
-        let itemCount = 1;
-        function addItem() {
-            itemCount++;
-            const newItem = document.createElement('div');
-            newItem.innerHTML = `
-                <label for="product_id_${itemCount}">商品ID:</label>
-                <input type="number" name="product_id[]" id="product_id_${itemCount}" required>
-                <label for="quantity_${itemCount}">購入数:</label>
-                <input type="number" name="quantity[]" id="quantity_${itemCount}" required>
-            `;
-            document.getElementById('items').appendChild(newItem);
-        }
+        const numpads = document.querySelectorAll(".numpads");
+        numpads.forEach(element => {
+            element.addEventListener("click", function (event) {
+                const received_price_disp = document.getElementById("received_price_disp");
+                if (received_price_disp.innerText == "0") {
+                    received_price_disp.innerText = "";
+                }
+                received_price_disp.innerText += element.innerText;
+                const received_price_value = parseInt(received_price_disp.innerText);
+                document.getElementById("received_price").value = received_price_value;
+                const returned_price_disp = document.getElementById("returned_price_disp");
+                returned_price_disp.innerText = received_price_value - parseInt(document.getElementById("total_price").innerText);
+                document.getElementById("returned_price").value = returned_price_disp.innerText;
+            })
+        });
     </script>
 </body>
+
 </html>

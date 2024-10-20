@@ -92,7 +92,7 @@ $products = $product_obj->get_all();
                 </tr>
             </table>
             <br><br>
-            <form action="./sales/create/create.php" method="post" id="form">
+            <form action="./sales/create/" method="post" id="form">
                 <input type="submit" value="支払いへ進む→" class="butt">
             </form>
         </div>

@@ -30,10 +30,10 @@ class Transaction
     }
 
     # お釣り
-    private int $change;
-    public function get_change(): int
+    private int $returned_price;
+    public function get_returned_price(): int
     {
-        return $this->change;
+        return $this->returned_price;
     }
 
     private PDO $pdo;
@@ -82,20 +82,19 @@ class Transaction
         }
     }
 
-    public function create(int $accountant_id, int $total_price, int $received_price, int $change)
+    public function create(int $accountant_id, int $total_price, int $received_price, int $returned_price): Transaction
     {
         try {
-            $sql = "INSERT INTO transactions (accountant_id, total_price, received_price, change) VALUES (:accountant_id, :total_price, :received_price, :change)";
+            $sql = "INSERT INTO transactions (accountant_id, total_price, received_price, returned_price) VALUES (:accountant_id, :total_price, :received_price, :returned_price)";
 
             $stmt = $this->pdo->prepare($sql);
 
             $stmt->bindValue(":accountant_id", $accountant_id, PDO::PARAM_INT);
             $stmt->bindValue(":total_price", $total_price, PDO::PARAM_INT);
             $stmt->bindValue(":received_price", $received_price, PDO::PARAM_INT);
-            $stmt->bindValue(":change", $change, PDO::PARAM_INT);
+            $stmt->bindValue(":returned_price", $returned_price, PDO::PARAM_INT);
 
             $stmt->execute();
-
             return $this->get_from_id($this->pdo->lastInsertId());
         } catch (PDOException $e) {
             $this->rollback();
@@ -120,7 +119,7 @@ class Transaction
                 $this->accountant_id = $transaction["accountant_id"];
                 $this->total_price = $transaction["total_price"];
                 $this->received_price = $transaction["received_price"];
-                $this->change = $transaction["change"];
+                $this->returned_price = $transaction["returned_price"];
                 return $this;
             } else {
                 throw new Exception("ID {$transaction_id} has not found.");
@@ -151,6 +150,22 @@ class Transaction
             }
         } catch (\Throwable $e) {
             throw new Exception($e->getMessage(), $e->getCode(), $e);
+        }
+    }
+
+    public function delete(): void
+    {
+        try {
+            $sql = "DELETE FROM transactions WHERE id = :id";
+
+            $stmt = $this->pdo->prepare($sql);
+
+            $stmt->bindValue(":id", $this->id, PDO::PARAM_INT);
+
+            $stmt->execute();
+        } catch (Throwable $t) {
+            $this->rollback();
+            throw $t;
         }
     }
 }
