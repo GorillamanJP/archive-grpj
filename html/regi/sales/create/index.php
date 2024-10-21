@@ -120,22 +120,22 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
                         $total_amount += $quantity;
                         ?>
                         <tr>
-                            <input type="hidden" name="product_id[]" value="<?= $item->get_id() ?>">
+                            <input type="hidden" name="product_id[]" value="<?= $item->get_id() ?>" required>
                             <td>
                                 <span><?= $item_name ?></span>
-                                <input type="hidden" name="product_name[]" value="<?= $item_name ?>">
+                                <input type="hidden" name="product_name[]" value="<?= $item_name ?>" required>
                             </td>
                             <td>
                                 <span><?= $price ?></span>
-                                <input type="hidden" name="product_price[]" value="<?= $price ?>">
+                                <input type="hidden" name="product_price[]" value="<?= $price ?>" required>
                             </td>
                             <td>
                                 <span><?= $quantity ?></span>
-                                <input type="hidden" name="quantity[]" value="<?= $quantity ?>">
+                                <input type="hidden" name="quantity[]" value="<?= $quantity ?>" required>
                             </td>
                             <td>
                                 <span><?= $subtotal ?></span>
-                                <input type="hidden" name="subtotal[]" value="<?= $subtotal ?>">
+                                <input type="hidden" name="subtotal[]" value="<?= $subtotal ?>" required>
                             </td>
                         </tr>
                     <?php endfor; ?>
@@ -145,22 +145,22 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
                 <tr>
                     <th>合計購入数</th>
                     <td><span id="total_amount_disp"><?= $total_amount ?></span>個</td>
-                    <input type="hidden" name="total_amount" value="<?= $total_amount ?>">
+                    <input type="hidden" name="total_amount" value="<?= $total_amount ?>" required>
                 </tr>
                 <tr>
                     <th>合計金額</th>
                     <td><span id="total_price_disp"><?= $total_price ?></span>円</td>
-                    <input type="hidden" name="total_price" id="total_price" value="<?= $total_price ?>">
+                    <input type="hidden" name="total_price" id="total_price" value="<?= $total_price ?>" required>
                 </tr>
                 <tr>
                     <th>お預かり</th>
-                    <td><input type="number" name="received_price_disp" id="received_price_disp">円</td>
-                    <input type="hidden" name="received_price" id="received_price" value="0">
+                    <td><input type="number" name="received_price_disp" id="received_price_disp" required>円</td>
+                    <input type="hidden" name="received_price" id="received_price" value="0" required>
                 </tr>
                 <tr>
                     <th>お釣り</th>
                     <td><span id="returned_price_disp">0</span>円</td>
-                    <input type="hidden" name="returned_price" id="returned_price" value="0">
+                    <input type="hidden" name="returned_price" id="returned_price" value="0" required>
                 </tr>
             </table>
             <div class="text-center mt-4">
