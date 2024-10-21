@@ -31,7 +31,7 @@ $products = $product_obj->get_all();
 </head>
 
 <body>
-    <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; // アラートのスクリプト ?>
+    <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
     <div class="app">
         <div class="sidebar">
             <a href="#"><i class="fas fa-shopping-cart"></i>
