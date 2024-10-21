@@ -5,19 +5,22 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
 session_start();
 
 $ok = true;
+$message = "";
+
 if (!isset($_POST["product_id"]) || $_POST["product_id"] === "") {
-    $_SESSION["message"] = "商品が選ばれていません。";
-    $_SESSION["message_type"] = "danger";
+    $message .= "「商品」";
     $ok = false;
 }
 
 if (!isset($_POST["quantity"]) || $_POST["quantity"] === "") {
-    $_SESSION["message"] = "購入数が0の商品があります。";
-    $_SESSION["message_type"] = "danger";
+    $message .= "「購入数」";
     $ok = false;
 }
 
 if (!$ok) {
+    $message .= "の項目が空になっています。";
+    $_SESSION["message"] = $message;
+    $_SESSION["message_type"] = "danger";
     session_write_close();
     header("Location: /regi/");
 }
@@ -30,10 +33,10 @@ $total_amount = 0;
 
 require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/stocks/stock.php";
 // 在庫チェック
-for ($i = 0; $i < count($quantities); $i++){
+for ($i = 0; $i < count($quantities); $i++) {
     $stock = new Stock();
     $stock = $stock->get_from_id($product_ids[$i]);
-    if($stock->get_quantity() - $quantities[$i] < 0){
+    if ($stock->get_quantity() - $quantities[$i] < 0) {
         $_SESSION["message"] = "在庫がなくなったため、購入処理ができませんでした。";
         $_SESSION["message_type"] = "danger";
         session_write_close();
@@ -196,15 +199,15 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
         document.getElementById("received_price_disp").addEventListener("input", calc_and_disp_transaction);
 
         // お預かり金額が少なくないかチェック
-        function check_received_price(){
+        function check_received_price() {
             const received_price = document.getElementById("returned_price").value;
-            if(received_price < 0){
+            if (received_price < 0) {
                 alert("お預かり金額が不足しています。");
                 return false;
             } else {
-                if(received_price > 0){
-                    let stat = confirm("おつり"+received_price+"円を渡してください。");
-                    if(stat == false){
+                if (received_price > 0) {
+                    let stat = confirm("おつり" + received_price + "円を渡してください。");
+                    if (stat == false) {
                         return false;
                     }
                 }
