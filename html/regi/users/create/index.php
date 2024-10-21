@@ -35,7 +35,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
 
             <div class="text-center">
                 <input type="submit" class="btn btn-outline-primary btn-lg" value="登録">
-                <a href="../login/" class="btn btn-outline-secondary btn-lg">戻る</a>
+                <a href="../list/" class="btn btn-outline-secondary btn-lg">戻る</a>
             </div>
 
         </form>
