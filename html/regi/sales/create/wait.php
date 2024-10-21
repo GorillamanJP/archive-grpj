@@ -16,6 +16,7 @@ $quantities = $_SESSION["quantity"];
 </head>
 <body>
     <h2>ほかの端末が支払いを完了するのを待っています…</h2>
+    <p><span id="second">5</span>秒後にリトライします…</p>
     <form action="./" method="post" id="form">
         <?php foreach ($product_ids as $product_id) : ?>
             <input type="hidden" name="product_id[]" value="<?= $product_id ?>">
@@ -23,12 +24,19 @@ $quantities = $_SESSION["quantity"];
         <?php foreach ($quantities as $quantity) : ?>
             <input type="hidden" name="quantity[]" value="<?= $quantity ?>">
         <?php endforeach; ?>
+        <input type="submit" value="今すぐリトライ">
     </form>
     <a href="/regi/">戻る</a>
 </body>
 <script>
-    setTimeout(function(){
-        document.getElementById("form").submit();
-    }, 10000);
+    // リトライ待機処理
+    // 秒数は"span#second"の値がそのまま待ち時間になります
+    setInterval(() => {
+        const second = document.getElementById("second");
+        second.innerText -= 1;
+        if(second.innerText <= 0){
+            document.getElementById("form").submit();
+        }
+    }, 1000);
 </script>
 </html>
