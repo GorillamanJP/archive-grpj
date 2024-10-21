@@ -114,7 +114,7 @@ class Accountant
     public function get_all(): array|null
     {
         try {
-            $sql = "SELECT id FROM accountants ORDER BY id ASC";
+            $sql = "SELECT id FROM accountants ORDER BY id DESC";
 
             $stmt = $this->pdo->prepare($sql);
 
