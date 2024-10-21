@@ -57,14 +57,6 @@ $total_price = $_POST["total_price"];
 $received_price = $_POST["received_price"];
 $returned_price = $_POST["returned_price"];
 
-if ($returned_price < 0) {
-    $_SESSION["message"] = "お預かり金額が不足しています。";
-    $_SESSION["message_type"] = "warning";
-    session_write_close();
-    header("Location: ./");
-    exit();
-}
-
 try {
     require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/sales/sale.php";
     $sale = new Sale();
