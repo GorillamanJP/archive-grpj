@@ -62,7 +62,6 @@ $products = $product_obj->get_all();
         <div class="text-center my-3">
             <a href="../create/" class="btn btn-outline-primary btn-lg-custom p-2 mx-1">商品登録</a>
             <a href="../../index.php" class="btn btn-outline-success btn-lg-custom p-2 mx-1">レジ画面へ</a>
-            <a href="../../users/list/index.php" class="btn btn-outline-success btn-lg-custom p-2 mx-1">ユーザー一覧へ</a>
         </div>
         <?php if (is_null($products)): ?>
             <h2 class="text-center">商品はありません。</h2>

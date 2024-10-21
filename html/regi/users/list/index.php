@@ -25,7 +25,7 @@ $users = $user_obj->get_all();
         }
 
         .container {
-            padding-top: 20px;
+            padding-top: 1.5em;
         }
 
         h1 {
@@ -36,11 +36,11 @@ $users = $user_obj->get_all();
         .table {
             border-radius: 5px;
             overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0.3em 0.6em rgba(0, 0, 0, 0.1);
         }
 
-        .btn {
-            border-radius: 25px;
+        .round-button {
+            border-radius: 2em;
         }
     </style>
 </head>
@@ -50,8 +50,8 @@ $users = $user_obj->get_all();
         <h1 class="text-center mt-3">ユーザー一覧</h1>
         <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
         <div class="text-center my-3">
-            <a href="../create/" class="btn btn-outline-primary btn-lg p-2">ユーザー登録</a>
-            <a href="../../products/list/index.php" class="btn btn-outline-success btn-lg p-2">商品一覧へ</a>
+            <a href="../create/" class="btn btn-outline-primary btn-lg p-2 mx-1">ユーザー登録</a>
+            <a href="../../" class="btn btn-outline-success btn-lg p-2 mx-1">レジ画面へ</a>
         </div>
         <?php if (is_null($users)): ?>
             <p>ユーザーはいません</p>
@@ -74,12 +74,12 @@ $users = $user_obj->get_all();
                                 <td>
                                     <form action="../update/" method="post">
                                         <input type="hidden" name="id" value="<?= $user->get_id() ?>">
-                                        <input type="submit" value="更新" class="btn btn-outline-primary">
+                                        <input type="submit" value="更新" class="btn btn-outline-primary round-button">
                                     </form>
                                 </td>
                                 <td>
                                     <!-- 削除ボタン -->
-                                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
+                                    <button type="button" class="btn btn-outline-danger round-button" data-bs-toggle="modal"
                                         data-bs-target="#deleteModal" data-id="<?= $user->get_id() ?>">
                                         削除
                                     </button>
