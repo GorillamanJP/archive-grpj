@@ -43,12 +43,13 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .btn {
-            border-radius: 25px;
+        .round-button{
+            border-radius: 2em;
         }
 
-        .btn-primary {
-            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.4);
+        .btn-lg-custom {
+            padding: 1em 2em;
+            font-size: 1.2em;
         }
     </style>
 </head>
@@ -56,6 +57,9 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
 <body>
     <div class="container">
         <h1 class="text-center">会計リスト</h1>
+        <div class="text-center my-3">
+            <a href="../../index.php" class="btn btn-outline-success btn-lg-custom p-2 mx-1">レジ画面へ</a>
+        </div>
         <?php if (is_null($sales)): ?>
             <p class="text-center">会計記録はありません</p>
         <?php else: ?>
@@ -104,7 +108,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
                                 <td>
                                     <form action="../show/" method="post">
                                         <input type="hidden" name="id" id="id" value="<?= $sale->get_accountant()->get_id() ?>">
-                                        <input type="submit" value="詳細表示" class="btn btn-outline-primary">
+                                        <input type="submit" value="詳細表示" class="btn btn-outline-primary round-button">
                                     </form>
                                 </td>
                             </tr>
@@ -115,4 +119,5 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
         <?php endif ?>
     </div>
 </body>
+
 </html>
