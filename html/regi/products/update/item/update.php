@@ -3,6 +3,7 @@ session_start();
 if (!isset($_POST["id"]) || $_POST["id"] === "") {
     $_SESSION["message"] = "商品のIDが指定されていません。\nこのメッセージが出る場合、内部のバグの可能性がありますので、「何を」「どのように」したらエラーが出たのかを開発者までお伝えください。\nご不便をおかけして申し訳ありませんが、ご協力をお願いします。";
     $_SESSION["message_type"] = "danger";
+    session_write_close();
     header("Location ../../");
     exit();
 }
@@ -41,6 +42,7 @@ if ($ok) {
         // 成功時のメッセージをセッションに保存
         $_SESSION['message'] = "商品情報が正常に更新されました。";
         $_SESSION['message_type'] = "success";  // 成功メッセージ用
+        session_write_close();
         header("Location: ../../list/");
         exit();
     } catch (Throwable $e) {
@@ -53,6 +55,7 @@ if ($ok) {
     $_SESSION["message"] .= "の項目が空になっています。";
     $_SESSION["message_type"] = "danger";
 }
+session_write_close();
 ?>
 <form action="./" method="post" id="post_form">
     <input type="hidden" name="id" id="id" value="<?= $id ?>">

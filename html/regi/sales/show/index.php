@@ -7,6 +7,7 @@ if (!isset($_POST["id"]) || $_POST["id"] === "") {
     $_SESSION["message"] = "会計番号が指定されていません。";
     $_SESSION["message_details"] = "このメッセージが出る場合、内部のバグの可能性がありますので、「何を」「どのように」したらエラーが出たのかを開発者までお伝えください。\nご不便をおかけして申し訳ありませんが、ご協力をお願いします。";
     $_SESSION["message_type"] = "danger";
+    session_write_close();
     header("Location ../list/");
     exit();
 }

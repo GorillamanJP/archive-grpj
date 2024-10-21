@@ -30,6 +30,7 @@ if ($ok) {
         // 成功メッセージをセッションに保存
         $_SESSION['message'] = '商品が正常に登録されました。';
         $_SESSION['message_type'] = 'success';
+        session_write_close();
         header("Location: ../list/");
         exit();
     } catch (\Throwable $e) {
@@ -42,4 +43,5 @@ if ($ok) {
     $_SESSION["message"] = "の項目が空になっています。";
     $_SESSION["message_type"] = "danger";
 }
+session_write_close();
 header("Location: ./");

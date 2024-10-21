@@ -33,7 +33,6 @@ $products = $product_obj->get_all();
 </head>
 
 <body>
-    <?php var_dump($_SESSION); ?>
     <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
     <div class="app">
         <div class="sidebar">

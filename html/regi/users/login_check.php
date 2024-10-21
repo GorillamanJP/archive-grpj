@@ -12,6 +12,7 @@ if (isset($_SESSION["login"]["user_id"])) {
         if (isset($_POST)) {
             $_SESSION["login"]["after"]["post_data"] = $_POST;
         }
+        session_write_close();
         header("Location: /regi/users/login/");
         exit();
     }
@@ -22,6 +23,7 @@ if (isset($_SESSION["login"]["user_id"])) {
     if (isset($_POST)) {
         $_SESSION["login"]["after"]["post_data"] = $_POST;
     }
+    session_write_close();
     header("Location: /regi/users/login/");
     exit();
 }

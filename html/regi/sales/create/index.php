@@ -18,7 +18,8 @@ if (!isset($_POST["quantity"]) || $_POST["quantity"] === "") {
 }
 
 if (!$ok) {
-    header("Location: ../../");
+    session_write_close();
+    header("Location: /regi/");
 }
 
 $product_ids = $_POST["product_id"];
@@ -43,6 +44,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
 </head>
 
 <body>
+    <?php var_dump($_SESSION) ?>
     <h1>お支払い</h1>
     <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
     <form action="./create.php" method="post" id="form">
