@@ -45,6 +45,9 @@ $products = $product_obj->get_all();
             <a href="./products/list/"><i class="fas fa-cubes"></i>
                 <p>商品管理</p>
             </a>
+            <a href="./users/list/"><i class="fas fa-user"></i>
+                <p>ユーザー管理</p>
+            </a>
             <div class="sidefoot">
                 <p class="useracc"><?= $user->get_user_name() ?></p>
                 <button><a href="./users/logout/">ログアウト</a></button>
