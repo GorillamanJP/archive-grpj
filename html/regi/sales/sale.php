@@ -37,7 +37,6 @@ class Sale
             $this->accountant = $this->accountant->create($total_amount, $total_price);
             $accountant_id = $this->accountant->get_id();
             $detail = new Detail();
-            $detail->start_transaction();
             $stock = new Stock();
             $stock->start_transaction();
 
@@ -60,15 +59,12 @@ class Sale
                 $stock->update($quantity_left - $quantity);
             }
 
-            $this->transaction = $this->transaction->create($accountant_id, $total_price, $received_price, $returned_price);
-            $detail->commit();
             $stock->commit();
+            $this->transaction = $this->transaction->create($accountant_id, $total_price, $received_price, $returned_price);
             return $this;
         } catch (\Throwable $e) {
-            $detail->rollback();
             $stock->rollback();
             $this->accountant->delete();
-            $this->transaction->delete();
             throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }

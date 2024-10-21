@@ -63,12 +63,11 @@ try {
     $sale->create($product_ids, $product_prices, $quantities, $subtotals, $total_amount, $total_price, $received_price, $returned_price);
     $_SESSION["message"] = "購入処理を正常に受け付けました。";
     $_SESSION["message_type"] = "success";
-    session_write_close();
-    header("Location: ../../");
 } catch (\Throwable $e) {
     $_SESSION["message"] = "エラーが発生しました。";
     $_SESSION["message_details"] = $e->getMessage();
     $_SESSION["message_type"] = "danger";
-    session_write_close();
-    header("./");
 }
+session_write_close();
+header("Location: /regi/");
+exit();

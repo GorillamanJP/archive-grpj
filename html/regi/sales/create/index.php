@@ -28,6 +28,19 @@ $quantities = $_POST["quantity"];
 $total_price = 0;
 $total_amount = 0;
 
+require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/stocks/stock.php";
+// 在庫チェック
+for ($i = 0; $i < count($quantities); $i++){
+    $stock = new Stock();
+    $stock = $stock->get_from_id($product_ids[$i]);
+    if($stock->get_quantity() - $quantities[$i] < 0){
+        $_SESSION["message"] = "在庫がなくなったため、購入処理ができませんでした。";
+        $_SESSION["message_type"] = "danger";
+        session_write_close();
+        header("Location: /regi/");
+        exit();
+    }
+}
 require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
 ?>
 <html lang="ja">
