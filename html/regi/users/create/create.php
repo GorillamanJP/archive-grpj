@@ -25,6 +25,7 @@ if ($ok) {
         $_SESSION['message'] = 'ユーザーが正常に登録されました。';
         $_SESSION['message_type'] = 'success';
 
+        session_write_close();
         header('Location: /regi/users/login/');
         exit();
     } catch (\Throwable $e) {
@@ -37,5 +38,6 @@ if ($ok) {
     $_SESSION["message"] .= "の項目が空になっています。";
     $_SESSION["message_type"] = "danger";
 }
+session_write_close();
 header("Location: ./");
 exit();

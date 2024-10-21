@@ -1,7 +1,4 @@
 <?php
-if (!isset($_SESSION)) {
-    session_start();
-}
 // メッセージとメッセージタイプがある場合に取得
 $message = htmlspecialchars(isset($_SESSION['message']) ? $_SESSION['message'] : '');
 $message_details = htmlspecialchars(isset($_SESSION['message_details']) ? $_SESSION['message_details'] : '');

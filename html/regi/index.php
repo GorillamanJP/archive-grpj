@@ -1,7 +1,9 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
 ?>
-
+<?php
+session_start();
+?>
 <?php
 $user = new User();
 $user = $user->get_from_id($_SESSION["login"]["user_id"]);

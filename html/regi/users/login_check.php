@@ -1,8 +1,6 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/user.php";
-if (!isset($_SESSION)) {
-    session_start();
-}
+session_start();
 if (isset($_SESSION["login"]["user_id"])) {
     try {
         $user = new User();
@@ -14,6 +12,7 @@ if (isset($_SESSION["login"]["user_id"])) {
         if (isset($_POST)) {
             $_SESSION["login"]["after"]["post_data"] = $_POST;
         }
+        session_write_close();
         header("Location: /regi/users/login/");
         exit();
     }
@@ -24,6 +23,8 @@ if (isset($_SESSION["login"]["user_id"])) {
     if (isset($_POST)) {
         $_SESSION["login"]["after"]["post_data"] = $_POST;
     }
+    session_write_close();
     header("Location: /regi/users/login/");
     exit();
 }
+session_write_close();

@@ -44,9 +44,11 @@ if ($ok) {
                 <script>document.getElementById("post_form").submit();</script>
                 <?php
             } else {
+                session_write_close();
                 header("Location: " . $after["url"]);
             }
         } else {
+            session_write_close();
             header("Location: /regi/");
         }
         exit();
@@ -54,10 +56,12 @@ if ($ok) {
         $_SESSION["message"] = "ユーザー名またはパスワードが違います。";
         $_SESSION["message_details"] = $e->getMessage();
         $_SESSION["message_type"] = "danger";
+        session_write_close();
         header("Location: ./");
     }
 } else {
     $_SESSION["message"] .= "の項目が空になっています。";
     $_SESSION["message_type"] = "danger";
 }
+session_write_close();
 header("Location: ./");

@@ -2,9 +2,7 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
 ?>
 <?php
-if (!isset($_SESSION)) {
-    session_start();
-}
+session_start();
 
 $ok = true;
 if (!isset($_POST["product_id"]) || $_POST["product_id"] === "") {
@@ -20,7 +18,8 @@ if (!isset($_POST["quantity"]) || $_POST["quantity"] === "") {
 }
 
 if (!$ok) {
-    header("Location: ../../");
+    session_write_close();
+    header("Location: /regi/");
 }
 
 $product_ids = $_POST["product_id"];
