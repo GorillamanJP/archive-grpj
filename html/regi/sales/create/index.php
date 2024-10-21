@@ -2,7 +2,9 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
 ?>
 <?php
-session_start();
+if (!isset($_SESSION)) {
+    session_start();
+}
 
 $ok = true;
 if (!isset($_POST["product_id"]) || $_POST["product_id"] === "") {

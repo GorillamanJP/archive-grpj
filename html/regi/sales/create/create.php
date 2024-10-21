@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (!isset($_SESSION)) {
+    session_start();
+}
 
 if (!isset($_SESSION["product_id"]) || $_SESSION["product_id"] === "") {
     $_SESSION["message"] = "商品が選ばれていません。";
