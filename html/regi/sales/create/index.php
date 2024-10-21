@@ -46,7 +46,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
 <body>
     <h1>お支払い</h1>
     <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
-    <form action="./create.php" method="post" id="form">
+    <form action="./create.php" method="post" id="form" onsubmit="return check_received_price()">
         <div class="container">
             <h2>会計詳細</h2>
             <table>
@@ -134,6 +134,23 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
                 event.preventDefault();
             }
         });
+
+        // お預かり金額が少なくないかチェック
+        function check_received_price(){
+            const received_price = document.getElementById("returned_price").value;
+            if(received_price < 0){
+                alert("お預かり金額が不足しています。");
+                return false;
+            } else {
+                if(received_price > 0){
+                    let stat = confirm("おつり"+received_price+"円を渡してください。");
+                    if(stat == false){
+                        return false;
+                    }
+                }
+                return confirm("支払いを確定します。よろしいですか？");
+            }
+        }
     </script>
 </body>
 
