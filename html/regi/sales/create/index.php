@@ -23,6 +23,7 @@ if (!$ok) {
     $_SESSION["message_type"] = "danger";
     session_write_close();
     header("Location: /regi/");
+    exit();
 }
 
 $product_ids = $_POST["product_id"];
@@ -36,14 +37,55 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/stocks/stock.php";
 for ($i = 0; $i < count($quantities); $i++) {
     $stock = new Stock();
     $stock = $stock->get_from_id($product_ids[$i]);
-    if ($stock->get_quantity() - $quantities[$i] < 0) {
-        $_SESSION["message"] = "在庫がなくなったため、購入処理ができませんでした。";
+    $after_quantity = $stock->get_quantity() - $quantities[$i];
+    if ($after_quantity < 0) {
+        $_SESSION["message"] = "購入数に対し在庫が不足するため、購入処理ができませんでした。";
         $_SESSION["message_type"] = "danger";
         session_write_close();
         header("Location: /regi/");
         exit();
     }
 }
+
+// ファイルロックを使って決済画面は一つの端末で一つのタブしかアクセスできない状態を作り出す
+$lockfile_path = "/tmp/sales_create.lock";
+$lockfile = fopen($lockfile_path, "c+");
+
+// ファイルロックを取得
+if (flock($lockfile, LOCK_EX)) {
+    // ファイルポインタをリセット
+    fseek($lockfile, 0);
+    $status = fread($lockfile, 1);
+
+    if ($status == "0" || $status == "") {
+        // ロック可能
+        unset($_SESSION["product_id"]);
+        unset($_SESSION["quantity"]);
+        // ロックをかける
+        ftruncate($lockfile, 0);
+        fwrite($lockfile, "1");
+        fflush($lockfile);
+        flock($lockfile, LOCK_UN);
+        fclose($lockfile);
+    } else {
+        // ロック失敗(すでにロック済み)
+        $_SESSION["product_id"] = $_POST["product_id"];
+        $_SESSION["quantity"] = $_POST["quantity"];
+        session_write_close();
+        fclose($lockfile);
+        header("Location: ./wait.php");
+        exit();
+    }
+} else {
+    // ロック取得失敗
+    fclose($lockfile);
+    $_SESSION["message"] = "決済処理の準備に失敗しました。";
+    $_SESSION["message_details"] = "ロックの取得に失敗しました。";
+    $_SESSION["message_type"] = "danger";
+    header("Location: /regi/");
+    exit();
+}
+
 require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
 ?>
 <html lang="ja">
@@ -109,9 +151,9 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
 
 <body>
     <h1 class="text-center">お支払い</h1>
-    <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
     <form action="./create.php" method="post" id="form" onsubmit="return check_received_price()">
         <div class="container">
+            <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
             <h2>会計詳細</h2>
             <table class="table table-striped">
                 <thead>
@@ -180,7 +222,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
                 </tr>
             </table>
             <div class="text-center mt-4">
-                <input type="submit" value="支払い" class="btn btn-primary btn-lg">
+                <input type="submit" value="購入確定" class="btn btn-primary btn-lg">
             </div>
         </div>
     </form>

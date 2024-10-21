@@ -42,7 +42,7 @@ if (!$ok) {
     $_SESSION["message"] = $message;
     $_SESSION["message_type"] = "danger";
     session_write_close();
-    header("Location: ./");
+    header("Location: /regi/");
     exit();
 }
 
@@ -68,6 +68,18 @@ try {
     $_SESSION["message_details"] = $e->getMessage();
     $_SESSION["message_type"] = "danger";
 }
+
+// ロック解除
+$lockfile_path = "/tmp/sales_create.lock";
+$lockfile = fopen($lockfile_path,"c+");
+
+flock($lockfile, LOCK_EX);
+ftruncate($lockfile,0);
+fwrite($lockfile,"0");
+fflush($lockfile);
+flock($lockfile, LOCK_UN);
+fclose($lockfile);
+
 session_write_close();
 header("Location: /regi/");
 exit();
