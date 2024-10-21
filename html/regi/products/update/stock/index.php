@@ -54,6 +54,13 @@ $product = $product->get_from_stock_id($id);
         <form action="update.php" method="post">
             <table class="table table-bordered table-info table-hover">
                 <tr class="form-group">
+                    <th class="align-middle">商品イメージ</th>
+                    <td class="table-secondary"><img
+                            src="data:image/jpeg;base64,<?= $product->get_item()->get_item_image() ?>"
+                            alt="商品画像　ID<?= $product->get_item()->get_id() ?>番" id="now_item_image"
+                            style="width: 200px;"></td>
+                </tr>
+                <tr class="form-group">
                     <th class="align-middle">商品名</th>
                     <td class="table-secondary"><?= $product->get_item()->get_item_name() ?></td>
                 </tr>
