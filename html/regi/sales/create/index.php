@@ -42,55 +42,107 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous"></script>
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        h1 {
+            font-weight: bold;
+            color: #333;
+            margin-top: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .table {
+            margin-top: 20px;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn {
+            border-radius: 25px;
+        }
+
+        .btn-primary,
+        .btn-success {
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.4);
+        }
+
+        .form-container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .form-section {
+            flex: 1 1 100%;
+        }
+
+        .input-number {
+            width: 100px;
+        }
+    </style>
+
 </head>
 
 <body>
-    <h1>お支払い</h1>
+    <h1 class="text-center">お支払い</h1>
     <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
     <form action="./create.php" method="post" id="form">
         <div class="container">
             <h2>会計詳細</h2>
-            <table>
-                <tr>
-                    <th>商品名</th>
-                    <th>価格</th>
-                    <th>購入数</th>
-                    <th>小計</th>
-                </tr>
-                <?php for ($i = 0; $i < count($product_ids); $i++): ?>
-                    <?php
-                    $item = new Item();
-                    $item = $item->get_from_id($product_ids[$i]);
-
-                    $item_name = $item->get_item_name();
-                    $price = $item->get_price();
-                    $quantity = $quantities[$i];
-                    $subtotal = $price * $quantity;
-                    $total_price += $subtotal;
-                    $total_amount += $quantity;
-                    ?>
+            <table class="table table-striped">
+                <thead>
                     <tr>
-                        <input type="hidden" name="product_id[]" value="<?= $item->get_id() ?>">
-                        <td>
-                            <span><?= $item_name ?></span>
-                            <input type="hidden" name="product_name[]" value="<?= $item_name ?>">
-                        </td>
-                        <td>
-                            <span><?= $price ?></span>
-                            <input type="hidden" name="product_price[]" value="<?= $price ?>">
-                        </td>
-                        <td>
-                            <span><?= $quantity ?></span>
-                            <input type="hidden" name="quantity[]" value="<?= $quantity ?>">
-                        </td>
-                        <td>
-                            <span><?= $subtotal ?></span>
-                            <input type="hidden" name="subtotal[]" value="<?= $subtotal ?>">
-                        </td>
+                        <th>商品名</th>
+                        <th>価格</th>
+                        <th>購入数</th>
+                        <th>小計</th>
                     </tr>
-                <?php endfor; ?>
+                </thead>
+                <tbody>
+                    <?php for ($i = 0; $i < count($product_ids); $i++): ?>
+                        <?php
+                        $item = new Item();
+                        $item = $item->get_from_id($product_ids[$i]);
+
+                        $item_name = $item->get_item_name();
+                        $price = $item->get_price();
+                        $quantity = $quantities[$i];
+                        $subtotal = $price * $quantity;
+                        $total_price += $subtotal;
+                        $total_amount += $quantity;
+                        ?>
+                        <tr>
+                            <input type="hidden" name="product_id[]" value="<?= $item->get_id() ?>">
+                            <td>
+                                <span><?= $item_name ?></span>
+                                <input type="hidden" name="product_name[]" value="<?= $item_name ?>">
+                            </td>
+                            <td>
+                                <span><?= $price ?></span>
+                                <input type="hidden" name="product_price[]" value="<?= $price ?>">
+                            </td>
+                            <td>
+                                <span><?= $quantity ?></span>
+                                <input type="hidden" name="quantity[]" value="<?= $quantity ?>">
+                            </td>
+                            <td>
+                                <span><?= $subtotal ?></span>
+                                <input type="hidden" name="subtotal[]" value="<?= $subtotal ?>">
+                            </td>
+                        </tr>
+                    <?php endfor; ?>
+                </tbody>
             </table>
-            <table>
+            <table class="table mt-3">
                 <tr>
                     <th>合計購入数</th>
                     <td><span id="total_amount_disp"><?= $total_amount ?></span>個</td>
@@ -112,7 +164,9 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
                     <input type="hidden" name="returned_price" id="returned_price" value="0">
                 </tr>
             </table>
-            <input type="submit" value="支払い">
+            <div class="text-center mt-4">
+                <input type="submit" value="支払い" class="btn btn-primary btn-lg">
+            </div>
         </div>
     </form>
 
