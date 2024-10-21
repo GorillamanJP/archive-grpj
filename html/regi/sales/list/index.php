@@ -8,7 +8,7 @@ $sales = $sale_obj->get_all();
 require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 
 <head>
     <meta charset="UTF-8">
