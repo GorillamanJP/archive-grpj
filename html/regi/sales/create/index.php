@@ -182,13 +182,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
         calc_and_disp_transaction();
         document.getElementById("received_price_disp").addEventListener("input", calc_and_disp_transaction);
 
-        // Enter妨害
-        document.getElementById("received_price_disp").addEventListener("keydown", function (event) {
-            if (event.key === "Enter") {
-                event.preventDefault();
-            }
-        });
-
         // お預かり金額が少なくないかチェック
         function check_received_price(){
             const received_price = document.getElementById("returned_price").value;
