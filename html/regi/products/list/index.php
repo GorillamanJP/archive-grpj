@@ -32,25 +32,18 @@ $products = $product_obj->get_all();
         }
 
         .table {
-            border-radius: 5px;
+            border-radius: 0.5em;
             overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0.3em 0.6em rgba(0, 0, 0, 0.1);
         }
 
-        .btn {
-            border-radius: 25px;
-        }
-
-        .btn-primary,
-        .btn-success {
-            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.4);
+        .round-button{
+            border-radius: 2em;
         }
 
         .btn-lg-custom {
-            padding: 10px 20px;
-            border-radius: 50px;
+            padding: 1em 2em;
             font-size: 1.2em;
-            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.4);
         }
 
         td {
@@ -67,9 +60,9 @@ $products = $product_obj->get_all();
                 id="last-update"><?= date("Y/m/d H:i:s") ?></span></p>
         <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
         <div class="text-center my-3">
-            <a href="../create/" class="btn btn-outline-primary btn-lg-custom p-2">商品登録</a>
-            <a href="../../index.php" class="btn btn-outline-success btn-lg-custom p-2">レジ画面へ</a>
-            <a href="../../users/list/index.php" class="btn btn-outline-success btn-lg-custom p-2">ユーザー一覧へ</a>
+            <a href="../create/" class="btn btn-outline-primary btn-lg-custom p-2 mx-1">商品登録</a>
+            <a href="../../index.php" class="btn btn-outline-success btn-lg-custom p-2 mx-1">レジ画面へ</a>
+            <a href="../../users/list/index.php" class="btn btn-outline-success btn-lg-custom p-2 mx-1">ユーザー一覧へ</a>
         </div>
         <?php if (is_null($products)): ?>
             <h2 class="text-center">商品はありません。</h2>
@@ -103,7 +96,7 @@ $products = $product_obj->get_all();
                                                 <form action="../update/item/" method="post">
                                                     <input type="hidden" name="id" id="id"
                                                         value="<?= $product->get_item()->get_id() ?>">
-                                                    <input type="submit" value="更新" class="btn btn-outline-primary">
+                                                    <input type="submit" value="更新" class="btn btn-outline-primary round-button">
                                                 </form>
                                             </td>
                                         </tr>
@@ -112,14 +105,14 @@ $products = $product_obj->get_all();
                                                 <form action="../update/stock/" method="post">
                                                     <input type="hidden" name="id" id="id"
                                                         value="<?= $product->get_stock()->get_id() ?>">
-                                                    <input type="submit" value="入荷" btn class="btn btn-outline-success">
+                                                    <input type="submit" value="入荷" btn class="btn btn-outline-success round-button">
                                                 </form>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 <!-- 削除ボタン -->
-                                                <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
+                                                <button type="button" class="btn btn-outline-danger round-button" data-bs-toggle="modal"
                                                     data-bs-target="#deleteModal"
                                                     data-id="<?= $product->get_item()->get_id() ?>">
                                                     削除
