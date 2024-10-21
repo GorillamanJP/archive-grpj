@@ -47,8 +47,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
 <body>
     <h1>お支払い</h1>
     <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
-    <form action="./create.php" method="post">
-        <div class="left-side">
+    <form action="./create.php" method="post" id="form">
+        <div class="container">
             <h2>会計詳細</h2>
             <table>
                 <tr>
@@ -93,17 +93,17 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
             <table>
                 <tr>
                     <th>合計購入数</th>
-                    <td><span id="total_amount"><?= $total_amount ?></span>個</td>
+                    <td><span id="total_amount_disp"><?= $total_amount ?></span>個</td>
                     <input type="hidden" name="total_amount" value="<?= $total_amount ?>">
                 </tr>
                 <tr>
                     <th>合計金額</th>
-                    <td><span id="total_price"><?= $total_price ?></span>円</td>
-                    <input type="hidden" name="total_price" value="<?= $total_price ?>">
+                    <td><span id="total_price_disp"><?= $total_price ?></span>円</td>
+                    <input type="hidden" name="total_price" id="total_price" value="<?= $total_price ?>">
                 </tr>
                 <tr>
                     <th>お預かり</th>
-                    <td><span id="received_price_disp">0</span>円</td>
+                    <td><input type="number" name="received_price_disp" id="received_price_disp">円</td>
                     <input type="hidden" name="received_price" id="received_price" value="0">
                 </tr>
                 <tr>
@@ -112,48 +112,28 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
                     <input type="hidden" name="returned_price" id="returned_price" value="0">
                 </tr>
             </table>
-        </div>
-        <div class="right-side">
-            <table>
-                <tr>
-                    <td><button type="button" id="numpad_7" class="numpads">7</button></td>
-                    <td><button type="button" id="numpad_8" class="numpads">8</button></td>
-                    <td><button type="button" id="numpad_9" class="numpads">9</button></td>
-                </tr>
-                <tr>
-                    <td><button type="button" id="numpad_4" class="numpads">4</button></td>
-                    <td><button type="button" id="numpad_5" class="numpads">5</button></td>
-                    <td><button type="button" id="numpad_6" class="numpads">6</button></td>
-                </tr>
-                <tr>
-                    <td><button type="button" id="numpad_1" class="numpads">1</button></td>
-                    <td><button type="button" id="numpad_2" class="numpads">2</button></td>
-                    <td><button type="button" id="numpad_3" class="numpads">3</button></td>
-                </tr>
-                <tr>
-                    <td><button type="button" id="numpad_0" class="numpads">0</button></td>
-                    <td><button type="button" id="numpad_00" class="numpads">00</button></td>
-                    <td id="submit"><input type="submit" value="支払い"></td>
-                </tr>
-            </table>
+            <input type="submit" value="支払い">
         </div>
     </form>
 
     <script>
-        const numpads = document.querySelectorAll(".numpads");
-        numpads.forEach(element => {
-            element.addEventListener("click", function (event) {
-                const received_price_disp = document.getElementById("received_price_disp");
-                if (received_price_disp.innerText == "0") {
-                    received_price_disp.innerText = "";
-                }
-                received_price_disp.innerText += element.innerText;
-                const received_price_value = parseInt(received_price_disp.innerText);
-                document.getElementById("received_price").value = received_price_value;
-                const returned_price_disp = document.getElementById("returned_price_disp");
-                returned_price_disp.innerText = received_price_value - parseInt(document.getElementById("total_price").innerText);
-                document.getElementById("returned_price").value = returned_price_disp.innerText;
-            })
+        // お釣り計算周りの処理
+        function calc_and_disp_transaction() {
+            document.getElementById("received_price").value = document.getElementById("received_price_disp").value;
+
+            const input = document.getElementById("received_price").value;
+            const returned_price_value = input - document.getElementById("total_price").value;
+            document.getElementById("returned_price").value = returned_price_value;
+            document.getElementById("returned_price_disp").innerText = returned_price_value;
+        }
+        calc_and_disp_transaction();
+        document.getElementById("received_price_disp").addEventListener("input", calc_and_disp_transaction);
+
+        // Enter妨害
+        document.getElementById("received_price_disp").addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+            }
         });
     </script>
 </body>
