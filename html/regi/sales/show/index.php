@@ -81,31 +81,31 @@ $item_obj = new Item();
                 <td><?= $sale->get_accountant()->get_date() ?></td>
             </tr>
             <tr>
-                <th>詳細</th>
-                <td>
-                    <?php foreach ($sale->get_details() as $detail): ?>
-                        <table class="table table-bordered">
-                            <?php $item = $item_obj->get_from_id($detail->get_item_id()); ?>
+                <th colspan="2">購入一覧</th>
+            </tr>
+            <div class="table-responsive">
+                <tr>
+                    <td colspan="2">
+                        <table class="table details-table">
                             <tr>
                                 <th>商品名</th>
-                                <td><?= $item->get_item_name() ?></td>
-                            </tr>
-                            <tr>
                                 <th>価格</th>
-                                <td><?= $detail->get_item_price() ?></td>
-                            </tr>
-                            <tr>
                                 <th>購入数</th>
-                                <td><?= $detail->get_quantity() ?></td>
-                            </tr>
-                            <tr>
                                 <th>小計</th>
-                                <td><?= $detail->get_subtotal() ?></td>
                             </tr>
+                            <?php foreach ($sale->get_details() as $detail): ?>
+                                <?php $item = $item_obj->get_from_id($detail->get_item_id()); ?>
+                                <tr>
+                                    <td><?= $item->get_item_name() ?></td>
+                                    <td><?= $detail->get_item_price() ?></td>
+                                    <td><?= $detail->get_quantity() ?></td>
+                                    <td><?= $detail->get_subtotal() ?></td>
+                                </tr>
+                            <?php endforeach; ?>
                         </table>
-                    <?php endforeach; ?>
-                </td>
-            </tr>
+                    </td>
+                </tr>
+            </div>
             <tr>
                 <th>合計購入数</th>
                 <td><?= $sale->get_accountant()->get_total_amount() ?></td>
@@ -124,7 +124,7 @@ $item_obj = new Item();
             </tr>
         </table>
         <div class="text-center">
-            <a href="../list/index.php" class="btn btn-outline-secondary btn-lg">戻る</a>
+            <a href="../list/index.php" class="btn btn-outline-secondary btn-lg mb-4">戻る</a>
         </div>
     </div>
 </body>
