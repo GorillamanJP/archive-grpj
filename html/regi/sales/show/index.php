@@ -2,7 +2,9 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
 ?>
 <?php
-session_start();
+if (!isset($_SESSION)) {
+    session_start();
+}
 if (!isset($_POST["id"]) || $_POST["id"] === "") {
     $_SESSION["message"] = "会計番号が指定されていません。";
     $_SESSION["message_details"] = "このメッセージが出る場合、内部のバグの可能性がありますので、「何を」「どのように」したらエラーが出たのかを開発者までお伝えください。\nご不便をおかけして申し訳ありませんが、ご協力をお願いします。";
@@ -21,7 +23,7 @@ $item_obj = new Item();
 
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 
 <head>
     <meta charset="UTF-8">
@@ -31,6 +33,7 @@ $item_obj = new Item();
 
 <body>
     <h1>会計情報</h1>
+    <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
     <table>
         <tr>
             <th>会計番号</th>
@@ -73,6 +76,14 @@ $item_obj = new Item();
         <tr>
             <th>合計</th>
             <td><?= $sale->get_accountant()->get_total_price() ?></td>
+        </tr>
+        <tr>
+            <th>お預かり</th>
+            <td><?= $sale->get_transaction()->get_received_price() ?></td>
+        </tr>
+        <tr>
+            <th>お釣り</th>
+            <td><?= $sale->get_transaction()->get_returned_price() ?></td>
         </tr>
     </table>
 </body>
