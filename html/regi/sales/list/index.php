@@ -22,11 +22,28 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
         <p>会計記録はありません</p>
     <?php else: ?>
         <table>
+            <tr>
+                <th>ID</th>
+                <th>購入日</th>
+                <th>
+                    <span>詳細</span>
+                    <table>
+                        <tr>
+                            <th>商品名</th>
+                            <th>価格</th>
+                            <th>購入数</th>
+                            <th>小計</th>
+                        </tr>
+                    </table>
+                </th>
+                <th>合計金額</th>
+                <th>合計購入数</th>
+                <th></th>
+            </tr>
             <?php foreach ($sales as $sale): ?>
                 <tr>
-                    <th>ID: <?= $sale->get_accountant()->get_id() ?></th>
+                    <td><?= $sale->get_accountant()->get_id() ?></td>
                     <td><?= $sale->get_accountant()->get_date() ?></td>
-                    <td>詳細→</td>
                     <td>
                         <table>
                             <?php foreach ($sale->get_details() as $detail): ?>

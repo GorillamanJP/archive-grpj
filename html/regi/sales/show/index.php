@@ -77,6 +77,14 @@ $item_obj = new Item();
             <th>合計</th>
             <td><?= $sale->get_accountant()->get_total_price() ?></td>
         </tr>
+        <tr>
+            <th>お預かり</th>
+            <td><?= $sale->get_transaction()->get_received_price() ?></td>
+        </tr>
+        <tr>
+            <th>お釣り</th>
+            <td><?= $sale->get_transaction()->get_returned_price() ?></td>
+        </tr>
     </table>
 </body>
 
