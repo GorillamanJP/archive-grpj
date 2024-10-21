@@ -33,11 +33,18 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>お支払い</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
 </head>
 
 <body>
     <h1>お支払い</h1>
+    <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
     <form action="./create.php" method="post">
         <div class="left-side">
             <h2>会計詳細</h2>
@@ -84,7 +91,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
             <table>
                 <tr>
                     <th>合計購入数</th>
-                    <td><span id="total_amount"></span>個</td>
+                    <td><span id="total_amount"><?= $total_amount ?></span>個</td>
                     <input type="hidden" name="total_amount" value="<?= $total_amount ?>">
                 </tr>
                 <tr>
@@ -107,23 +114,23 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
         <div class="right-side">
             <table>
                 <tr>
-                    <td id="numpad_7" class="numpads">7</td>
-                    <td id="numpad_8" class="numpads">8</td>
-                    <td id="numpad_9" class="numpads">9</td>
+                    <td><button type="button" id="numpad_7" class="numpads">7</button></td>
+                    <td><button type="button" id="numpad_8" class="numpads">8</button></td>
+                    <td><button type="button" id="numpad_9" class="numpads">9</button></td>
                 </tr>
                 <tr>
-                    <td id="numpad_4" class="numpads">4</td>
-                    <td id="numpad_5" class="numpads">5</td>
-                    <td id="numpad_6" class="numpads">6</td>
+                    <td><button type="button" id="numpad_4" class="numpads">4</button></td>
+                    <td><button type="button" id="numpad_5" class="numpads">5</button></td>
+                    <td><button type="button" id="numpad_6" class="numpads">6</button></td>
                 </tr>
                 <tr>
-                    <td id="numpad_1" class="numpads">1</td>
-                    <td id="numpad_2" class="numpads">2</td>
-                    <td id="numpad_3" class="numpads">3</td>
+                    <td><button type="button" id="numpad_1" class="numpads">1</button></td>
+                    <td><button type="button" id="numpad_2" class="numpads">2</button></td>
+                    <td><button type="button" id="numpad_3" class="numpads">3</button></td>
                 </tr>
                 <tr>
-                    <td id="numpad_0" class="numpads">0</td>
-                    <td id="numpad_00" class="numpads">00</td>
+                    <td><button type="button" id="numpad_0" class="numpads">0</button></td>
+                    <td><button type="button" id="numpad_00" class="numpads">00</button></td>
                     <td id="submit"><input type="submit" value="支払い"></td>
                 </tr>
             </table>

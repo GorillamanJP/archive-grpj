@@ -2,15 +2,6 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
 ?>
 <?php
-session_start();
-// メッセージとメッセージタイプがある場合に取得
-$message = isset($_SESSION['message']) ? $_SESSION['message'] : '';
-$message_type = isset($_SESSION['message_type']) ? $_SESSION['message_type'] : '';
-
-// メッセージ表示後、セッションから削除
-unset($_SESSION['message']);
-unset($_SESSION['message_type']);
-
 require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/products/product.php";
 $product_obj = new Product();
 $products = $product_obj->get_all();
@@ -73,12 +64,7 @@ $products = $product_obj->get_all();
         <h1 class="text-center mt-3">商品一覧</h1>
         <p class="text-center my-3" style="font-size: 1.2em;">最終更新時刻:<span
                 id="last-update"><?= date("Y/m/d H:i:s") ?></span></p>
-        <?php if ($message): ?>
-            <div class="alert alert-<?= htmlspecialchars($message_type) ?> alert-dismissible fade show" role="alert">
-                <?= htmlspecialchars($message) ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        <?php endif; ?>
+        <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
         <div class="text-center my-3">
             <a href="../create/" class="btn btn-outline-primary btn-lg-custom p-2">商品登録</a>
             <a href="../../index.php" class="btn btn-outline-success btn-lg-custom p-2">レジ画面へ</a>

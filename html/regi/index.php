@@ -1,15 +1,13 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
-session_start();
+?>
 
-// メッセージとメッセージタイプを取得
-$message = isset($_SESSION['message']) ? $_SESSION['message'] : '';
-$message_type = isset($_SESSION['message_type']) ? $_SESSION['message_type'] : '';
+<?php
+$user = new User();
+$user = $user->get_from_id($_SESSION["login"]["user_id"]);
+?>
 
-// メッセージ表示後、セッションから削除
-unset($_SESSION['message']);
-unset($_SESSION['message_type']);
-
+<?php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/products/product.php";
 $product_obj = new Product();
 $products = $product_obj->get_all();
@@ -24,23 +22,30 @@ $products = $product_obj->get_all();
     <title>レジトップ</title>
     <link href="style.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+
 </head>
 
 <body>
+    <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; // アラートのスクリプト ?>
     <div class="app">
         <div class="sidebar">
             <a href="#"><i class="fas fa-shopping-cart"></i>
                 <p>モバイルオーダー</p>
             </a>
-            <a href="#"><i class="fas fa-list-alt"></i>
+            <a href="./sales/list/"><i class="fas fa-list-alt"></i>
                 <p>売上一覧</p>
             </a>
-            <a href="products/list"><i class="fas fa-cubes"></i>
+            <a href="./products/list/"><i class="fas fa-cubes"></i>
                 <p>商品管理</p>
             </a>
             <div class="sidefoot">
-                <p class="useracc">XX XX(アカウント名)</p>
-                <button>ログアウト</button>
+                <p class="useracc"><?= $user->get_user_name() ?></p>
+                <button><a href="./users/logout/">ログアウト</a></button>
             </div>
         </div>
 

@@ -1,16 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
-
-session_start();
-
-// メッセージとメッセージタイプがある場合に取得
-$message = isset($_SESSION['message']) ? $_SESSION['message'] : '';
-$message_type = isset($_SESSION['message_type']) ? $_SESSION['message_type'] : '';
-
-// メッセージ表示後、セッションから削除
-unset($_SESSION['message']);
-unset($_SESSION['message_type']);
-
+?>
+<?php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/user.php";
 $user_obj = new User();
 $users = $user_obj->get_all();
@@ -57,12 +48,7 @@ $users = $user_obj->get_all();
 <body>
     <div class="container">
         <h1 class="text-center mt-3">ユーザー一覧</h1>
-        <?php if ($message): ?>
-            <div class="alert alert-<?= htmlspecialchars($message_type) ?> alert-dismissible fade show" role="alert">
-                <?= htmlspecialchars($message) ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        <?php endif; ?>
+        <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
         <div class="text-center my-3">
             <a href="../create/" class="btn btn-outline-primary btn-lg p-2">ユーザー登録</a>
             <a href="../../products/list/index.php" class="btn btn-outline-success btn-lg p-2">商品一覧へ</a>
