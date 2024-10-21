@@ -1,37 +1,44 @@
 <?php
-if (!isset($_SESSION)) {
-    session_start();
-}
+session_start();
 
 $ok = true;
 $message = "";
 
-if(!isset($_POST["product_id"]) || $_POST["product_id"] === ""){
+if (!isset($_POST["product_id"]) || $_POST["product_id"] === "") {
     $message .= "「商品ID」";
+    $ok = false;
 }
-if(!isset($_POST["product_price"]) || $_POST["product_price"] === ""){
+if (!isset($_POST["product_price"]) || $_POST["product_price"] === "") {
     $message .= "「価格」";
+    $ok = false;
 }
-if(!isset($_POST["quantity"]) || $_POST["quantity"] === ""){
+if (!isset($_POST["quantity"]) || $_POST["quantity"] === "") {
     $message .= "「購入数」";
+    $ok = false;
 }
-if(!isset($_POST["subtotal"]) || $_POST["subtotal"] === ""){
+if (!isset($_POST["subtotal"]) || $_POST["subtotal"] === "") {
     $message .= "「小計」";
+    $ok = false;
 }
-if(!isset($_POST["total_amount"]) || $_POST["total_amount"] === ""){
+if (!isset($_POST["total_amount"]) || $_POST["total_amount"] === "") {
     $message .= "「合計購入数」";
+    $ok = false;
 }
-if(!isset($_POST["total_price"]) || $_POST["total_price"] === ""){
+if (!isset($_POST["total_price"]) || $_POST["total_price"] === "") {
     $message .= "「合計金額」";
+    $ok = false;
 }
-if(!isset($_POST["received_price"]) || $_POST["received_price"] === ""){
+if (!isset($_POST["received_price"]) || $_POST["received_price"] === "") {
     $message .= "「お預かり」";
+    $ok = false;
 }
-if(!isset($_POST["returned_price"]) || $_POST["returned_price"] === ""){
+if (!isset($_POST["returned_price"]) || $_POST["returned_price"] === "") {
     $message .= "「お釣り」";
+    $ok = false;
 }
 
-if(!$ok){
+if (!$ok) {
+    $message .= "の入力項目が空になっています。";
     $_SESSION["message"] = $message;
     $_SESSION["message_type"] = "danger";
     header("Location: /regi/");
@@ -49,7 +56,7 @@ $total_price = $_POST["total_price"];
 $received_price = $_POST["received_price"];
 $returned_price = $_POST["returned_price"];
 
-if($returned_price < 0){
+if ($returned_price < 0) {
     $_SESSION["message"] = "お預かり金額が不足しています。";
     $_SESSION["message_type"] = "warning";
     header("Location: ./");

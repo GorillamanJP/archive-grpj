@@ -1,8 +1,6 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/user.php";
-if (!isset($_SESSION)) {
-    session_start();
-}
+session_start();
 if (isset($_SESSION["login"]["user_id"])) {
     try {
         $user = new User();
@@ -27,3 +25,4 @@ if (isset($_SESSION["login"]["user_id"])) {
     header("Location: /regi/users/login/");
     exit();
 }
+session_write_close();
