@@ -21,16 +21,6 @@ $products = $product_obj->get_all();
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/common/list.css">
-    <style>
-        @media (min-width: 1024px) {
-
-            th,
-            td {
-                font-size: 1.3rem;
-                /* 文字サイズを1.3倍にする */
-            }
-        }
-    </style>
 </head>
 
 <body>
