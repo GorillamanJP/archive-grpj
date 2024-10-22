@@ -34,6 +34,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
 
 <body>
     <div class="container">
+        <?php require_once $_SERVER['DOCUMENT_ROOT']."/common/alert.php"; ?>
         <h1 class="text-center">会計リスト</h1>
         <div class="text-center my-3">
             <a href="../../" class="btn btn-outline-success btn-lg-custom p-2 mx-1">レジ画面へ</a>
