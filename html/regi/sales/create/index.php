@@ -256,6 +256,11 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
                 return confirm("支払いを確定します。よろしいですか？");
             }
         }
+
+        // ロック解除スクリプト
+        window.addEventListener("beforeunload", function(){
+            navigator.sendBeacon("./unlock.php");
+        });
     </script>
 </body>
 
