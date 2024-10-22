@@ -19,37 +19,15 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous"></script>
-
+    <link rel="stylesheet" href="/common/list.css">
     <style>
-        body {
-            background-color: #f8f9fa;
-        }
+        @media (min-width: 1024px) {
 
-        h1 {
-            font-weight: bold;
-            color: #333;
-            margin-top: 20px;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: auto;
-        }
-
-        .table {
-            margin-top: 20px;
-            border-radius: 5px;
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .round-button{
-            border-radius: 2em;
-        }
-
-        .btn-lg-custom {
-            padding: 1em 2em;
-            font-size: 1.2em;
+            th,
+            td {
+                font-size: 1.3rem;
+                /* 文字サイズを1.3倍にする */
+            }
         }
     </style>
 </head>
@@ -108,7 +86,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
                                 <td>
                                     <form action="../show/" method="post">
                                         <input type="hidden" name="id" id="id" value="<?= $sale->get_accountant()->get_id() ?>">
-                                        <input type="submit" value="詳細表示" class="btn btn-outline-primary round-button">
+                                        <input type="submit" value="詳細" class="btn btn-outline-primary round-button">
                                     </form>
                                 </td>
                             </tr>

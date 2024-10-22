@@ -18,29 +18,15 @@ $users = $user_obj->get_all();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/common/list.css">
     <style>
-        body {
-            background-color: #f8f9fa;
-            /* 背景色 */
-        }
+        @media (min-width: 1024px) {
 
-        .container {
-            padding-top: 1.5em;
-        }
-
-        h1 {
-            font-weight: bold;
-            color: #333;
-        }
-
-        .table {
-            border-radius: 5px;
-            overflow: hidden;
-            box-shadow: 0 0.3em 0.6em rgba(0, 0, 0, 0.1);
-        }
-
-        .round-button {
-            border-radius: 2em;
+            th,
+            td {
+                font-size: 1.3rem;
+                /* 文字サイズを1.3倍にする */
+            }
         }
     </style>
 </head>
