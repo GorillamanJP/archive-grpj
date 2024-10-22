@@ -39,50 +39,41 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
         <?php if (is_null($sales)): ?>
             <p class="text-center">会計記録はありません</p>
         <?php else: ?>
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover text-center align-middle">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>購入日</th>
-                            <th>
-                                <table class="table">
+            <table class="table table-success table-striped table-bordered table-hover text-center align-middle">
+                <tr>
+                    <th>ID</th>
+                    <th>購入日</th>
+                    <th>詳細</th>
+                    <th>合計金額</th>
+                </tr>
+                <?php foreach ($sales as $sale): ?>
+                    <tr class="clickable-row" data-id="<?= $sale->get_accountant()->get_id() ?>">
+                        <td><?= $sale->get_accountant()->get_id() ?></td>
+                        <td><?= $sale->get_accountant()->get_date() ?></td>
+                        <td>
+                            <table class="table table-striped">
+                                <tr>
+                                    <th>品名</th>
+                                    <th>価格</th>
+                                    <th>数量</th>
+                                    <th>小計</th>
+                                </tr>
+                                <?php foreach ($sale->get_details() as $detail): ?>
                                     <tr>
-                                        <th>商品名</th>
-                                        <th>価格</th>
-                                        <th>購入数</th>
-                                        <th>小計</th>
+                                        <?php $item_obj = new Item(); ?>
+                                        <?php $item = $item_obj->get_from_id($detail->get_item_id()); ?>
+                                        <td><?= $item->get_item_name() ?></td>
+                                        <td><?= $detail->get_item_price() ?></td>
+                                        <td><?= $detail->get_quantity() ?></td>
+                                        <td><?= $detail->get_subtotal() ?></td>
                                     </tr>
-                                </table>
-                            </th>
-                            <th>合計金額</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($sales as $sale): ?>
-                            <tr class="clickable-row" data-id="<?= $sale->get_accountant()->get_id() ?>">
-                                <td><?= $sale->get_accountant()->get_id() ?></td>
-                                <td><?= $sale->get_accountant()->get_date() ?></td>
-                                <td>
-                                    <table class="table">
-                                        <?php foreach ($sale->get_details() as $detail): ?>
-                                            <tr>
-                                                <?php $item_obj = new Item(); ?>
-                                                <?php $item = $item_obj->get_from_id($detail->get_item_id()); ?>
-                                                <td><?= $item->get_item_name() ?></td>
-                                                <td><?= $detail->get_item_price() ?></td>
-                                                <td><?= $detail->get_quantity() ?></td>
-                                                <td><?= $detail->get_subtotal() ?></td>
-                                            </tr>
-                                        <?php endforeach ?>
-                                    </table>
-                                </td>
-                                <td><?= $sale->get_accountant()->get_total_price() ?></td>
-                            </tr>
-                        <?php endforeach ?>
-                    </tbody>
-                </table>
-            </div>
+                                <?php endforeach ?>
+                            </table>
+                        </td>
+                        <td><?= $sale->get_accountant()->get_total_price() ?></td>
+                    </tr>
+                <?php endforeach ?>
+            </table>
         <?php endif ?>
     </div>
     <script>
