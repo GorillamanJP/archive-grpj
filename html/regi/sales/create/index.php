@@ -34,17 +34,26 @@ $total_amount = 0;
 
 require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/stocks/stock.php";
 // 在庫チェック
-for ($i = 0; $i < count($quantities); $i++) {
-    $stock = new Stock();
-    $stock = $stock->get_from_id($product_ids[$i]);
-    $after_quantity = $stock->get_quantity() - $quantities[$i];
-    if ($after_quantity < 0) {
-        $_SESSION["message"] = "購入数に対し在庫が不足するため、購入処理ができませんでした。";
-        $_SESSION["message_type"] = "danger";
-        session_write_close();
-        header("Location: /regi/");
-        exit();
+try {
+    for ($i = 0; $i < count($quantities); $i++) {
+        $stock = new Stock();
+        $stock = $stock->get_from_id($product_ids[$i]);
+        $after_quantity = $stock->get_quantity() - $quantities[$i];
+        if ($after_quantity < 0) {
+            $_SESSION["message"] = "購入数に対し在庫が不足するため、購入処理ができませんでした。";
+            $_SESSION["message_type"] = "danger";
+            session_write_close();
+            header("Location: /regi/");
+            exit();
+        }
     }
+}catch(\Throwable $e){
+    $_SESSION["message"] = "商品が見つかりませんでした。";
+    $_SESSION["message_details"] = "選ばれた商品が削除された可能性があります。";
+    $_SESSION["message_type"] = "danger";
+    session_write_close();
+    header("Location: /regi/");
+    exit();
 }
 
 // ファイルロックを使って決済画面は一つの端末で一つのタブしかアクセスできない状態を作り出す
