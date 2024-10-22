@@ -47,7 +47,7 @@ try {
             exit();
         }
     }
-}catch(\Throwable $e){
+} catch (\Throwable $e) {
     $_SESSION["message"] = "商品が見つかりませんでした。";
     $_SESSION["message_details"] = "選ばれた商品が削除された可能性があります。";
     $_SESSION["message_type"] = "danger";
@@ -57,42 +57,42 @@ try {
 }
 
 // ファイルロックを使って決済画面は一つの端末で一つのタブしかアクセスできない状態を作り出す
+// ロックファイルの場所
 $lockfile_path = "/tmp/sales_create.lock";
-$lockfile = fopen($lockfile_path, "c+");
+// タイムアウトまでの時間(秒)
+$timeout = 30;
+// ロック可否チェック(ファイルの有無)
+if (!file_exists($lockfile_path)) {
+    // ロックをかける
+    $lockfile = fopen($lockfile_path, "w");
+    fwrite($lockfile, time());
+    fclose($lockfile);
+} else {
+    // ロックそのものはかけられていたが…
+    // ロックファイルのタイムスタンプを確認
+    $lockfile = fopen($lockfile_path, "r+");
+    $lock_time = fread($lockfile, filesize($lockfile_path));
+    fclose($lockfile);
 
-// ファイルロックを取得
-if (flock($lockfile, LOCK_EX)) {
-    // ファイルポインタをリセット
-    fseek($lockfile, 0);
-    $status = fread($lockfile, 1);
+    // 現在の時間を取得
+    $current_time = time();
 
-    if ($status == "0" || $status == "") {
-        // ロック可能
-        unset($_SESSION["product_id"]);
-        unset($_SESSION["quantity"]);
-        // ロックをかける
-        ftruncate($lockfile, 0);
-        fwrite($lockfile, "1");
-        fflush($lockfile);
-        flock($lockfile, LOCK_UN);
+    // タイムアウトをチェック
+    if (($current_time - intval($lock_time)) > $timeout) {
+        // タイムアウトが過ぎている場合、ロックを解除して再ロック
+        unlink($lockfile_path);
+        $lockfile = fopen($lockfile_path, "w");
+        fwrite($lockfile, time());
         fclose($lockfile);
+        // この場合はロックを獲得できたので支払い要求画面に行ける
     } else {
         // ロック失敗(すでにロック済み)
         $_SESSION["product_id"] = $_POST["product_id"];
         $_SESSION["quantity"] = $_POST["quantity"];
         session_write_close();
-        fclose($lockfile);
         header("Location: ./wait.php");
         exit();
     }
-} else {
-    // ロック取得失敗
-    fclose($lockfile);
-    $_SESSION["message"] = "決済処理の準備に失敗しました。";
-    $_SESSION["message_details"] = "ロックの取得に失敗しました。";
-    $_SESSION["message_type"] = "danger";
-    header("Location: /regi/");
-    exit();
 }
 
 require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
@@ -132,6 +132,12 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
     <form action="./create.php" method="post" id="form" onsubmit="return check_received_price()">
         <div class="container">
             <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;" id="keep_alive">
+                <p class="m-0">
+                    <span id="keep_alive_message">レジとの接続が維持できませんでした。まもなく前の画面に戻ります。<b>確定が必要な場合は今すぐしてください。</b></span>
+                </p>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
             <h2>会計詳細</h2>
             <table class="table table-striped">
                 <thead>
@@ -220,6 +226,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
 
         // お預かり金額が少なくないかチェック
         function check_received_price() {
+            calc_and_disp_transaction();
             const received_price = document.getElementById("returned_price").value;
             if (received_price < 0) {
                 alert("お預かり金額が不足しています。");
@@ -239,6 +246,28 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
         window.addEventListener("beforeunload", function () {
             navigator.sendBeacon("./unlock.php");
         });
+
+        // keepalive処理
+        function sendKeepAlive() {
+            fetch('./keep_alive.php')
+                .then(response => response.text())
+                .then(data => {
+                    if (data !== "keepalive success") {
+                        document.getElementById("keep_alive").style = "";
+                        setTimeout(function () {
+                            window.location.href = "/regi/";
+                        }, 20000);
+                    }
+                })
+                .catch(error => {
+                    document.getElementById("keep_alive").style = "";
+                    setTimeout(function () {
+                        window.location.href = "/regi/";
+                    }, 20000);
+                });
+        }
+        // 10秒ごとにkeepaliveを送信
+        setInterval(sendKeepAlive, 10000);
     </script>
 </body>
 
