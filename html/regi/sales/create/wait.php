@@ -21,7 +21,7 @@ $quantities = $_SESSION["quantity"];
     <div class="container mt-5">
         <div class="alert alert-warning text-center">
             <h2 class="alert-heading">ほかの端末が支払いを完了するのを待っています…</h2>
-            <p><span id="second">5</span>秒後にリトライします…</p>
+            <p id="message"><span id="second">5</span>秒後にリトライします…</p>
         </div>
         <form action="./" method="post" id="form" class="text-center">
             <?php foreach ($product_ids as $product_id) : ?>
@@ -43,6 +43,7 @@ $quantities = $_SESSION["quantity"];
             const second = document.getElementById("second");
             second.innerText -= 1;
             if (second.innerText <= 0) {
+                document.getElementById("message").innerHTML = "リトライしています…"
                 document.getElementById("form").submit();
             }
         }, 1000);
