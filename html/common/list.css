@@ -26,5 +26,15 @@ h1 {
 
 .btn-lg-custom {
     padding: 1em 2em;
-    font-size: 1.2em;
+    font-size: 1.3em;
+}
+
+/* デスクトップ端末ではテーブルの文字サイズをでかくする */
+@media (min-width: 1024px) {
+
+    th,
+    td {
+        font-size: 1.3rem;
+        /* 文字サイズを1.3倍にする */
+    }
 }

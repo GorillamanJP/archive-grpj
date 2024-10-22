@@ -99,39 +99,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous"></script>
-
+    <link rel="stylesheet" href="/common/create.css">
     <style>
-        body {
-            background-color: #f8f9fa;
-        }
-
-        h1 {
-            font-weight: bold;
-            color: #333;
-            margin-top: 20px;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: auto;
-        }
-
-        .table {
-            margin-top: 20px;
-            border-radius: 5px;
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn {
-            border-radius: 25px;
-        }
-
-        .btn-primary,
-        .btn-success {
-            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.4);
-        }
-
         .form-container {
             display: flex;
             justify-content: space-between;
@@ -150,7 +119,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
 </head>
 
 <body>
-    <h1 class="text-center">お支払い</h1>
+    <h1 class="text-center my-3">お支払い</h1>
     <form action="./create.php" method="post" id="form" onsubmit="return check_received_price()">
         <div class="container">
             <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
@@ -222,7 +191,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
                 </tr>
             </table>
             <div class="text-center mt-4">
-                <input type="submit" value="購入確定" class="btn btn-primary btn-lg">
+                <input type="submit" value="購入確定" class="btn btn-primary btn-lg round-button">
             </div>
         </div>
     </form>
@@ -258,7 +227,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
         }
 
         // ロック解除スクリプト
-        window.addEventListener("beforeunload", function(){
+        window.addEventListener("beforeunload", function () {
             navigator.sendBeacon("./unlock.php");
         });
     </script>

@@ -13,40 +13,11 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous"></script>
-    <style>
-        body {
-            background-color: #f8f9fa;
-            /* 背景色 */
-        }
-
-        h1 {
-            font-weight: bold;
-            color: #333;
-        }
-
-        .table {
-            border-radius: 5px;
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn {
-            border-radius: 25px;
-        }
-
-        .btn-primary,
-        .btn-secondary {
-            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.4);
-        }
-
-        .btn-lg {
-            padding: 10px 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="/common/create.css">
 </head>
 
 <body>
-    <h1 class="text-center">商品登録</h1>
+    <h1 class="text-center my-3">商品登録</h1>
     <div class="container">
         <?php require $_SERVER['DOCUMENT_ROOT']."/common/alert.php"; ?>
         <table class="table table-bordered table-info table-hover ">
