@@ -132,9 +132,10 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
     <form action="./create.php" method="post" id="form" onsubmit="return check_received_price()">
         <div class="container">
             <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;" id="keep_alive">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;"
+                id="keep_alive">
                 <p class="m-0">
-                    <span id="keep_alive_message">レジとの接続が維持できませんでした。まもなく前の画面に戻ります。<b>確定が必要な場合は今すぐしてください。</b></span>
+                    <span id="keep_alive_message">レジとの接続が維持できませんでした。維持できない状態が続く場合、前の画面に戻ります。</span>
                 </p>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
@@ -247,27 +248,44 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
             navigator.sendBeacon("./unlock.php");
         });
 
-        // keepalive処理
+        // keep_alive処理
+        // タイムアウトが起こっているかフラグ
+        let timeoutOccurred = false;
+
+        // keep_aliveを送る処理
         function sendKeepAlive() {
-            fetch('./keep_alive.php')
+            const controller = new AbortController();
+            const signal = controller.signal;
+            fetch('./keep_alive.php', { signal })
                 .then(response => response.text())
                 .then(data => {
-                    if (data !== "keepalive success") {
-                        document.getElementById("keep_alive").style = "";
-                        setTimeout(function () {
-                            window.location.href = "/regi/";
-                        }, 20000);
+                    if (data === "keepalive success") {
+                        timeoutOccurred = false;
+                        document.getElementById("keep_alive").style = "display: none;";
+                    } else {
+                        handleTimeout();
                     }
                 })
                 .catch(error => {
-                    document.getElementById("keep_alive").style = "";
-                    setTimeout(function () {
-                        window.location.href = "/regi/";
-                    }, 20000);
+                    handleTimeout();
                 });
+            // 10秒後にタイムアウトを設定
+            setTimeout(() => controller.abort(), 10000);
         }
         // 10秒ごとにkeepaliveを送信
         setInterval(sendKeepAlive, 10000);
+        // タイムアウト発生時の処理
+        function handleTimeout() {
+            if (!timeoutOccurred) {
+                timeoutOccurred = true; // タイムアウトフラグを設定
+                document.getElementById("keep_alive").style = "";
+                setTimeout(function () {
+                    if (timeoutOccurred) {
+                        window.location.href = "/regi/";
+                    }
+                }, 20000);
+            }
+        }
     </script>
 </body>
 
