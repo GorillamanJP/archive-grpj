@@ -77,7 +77,7 @@ $product = $product->get_from_stock_id($id);
             <input type="hidden" name="id" value="<?= $product->get_stock()->get_id() ?>"></p>
             <div class="text-center">
                 <input type="submit" value="更新" class="btn btn-outline-primary">
-                <a href="../../list/index.php" class="btn btn-outline-secondary">戻る</a>
+                <a href="../../list/" class="btn btn-outline-secondary">戻る</a>
             </div>
         </form>
     </div>

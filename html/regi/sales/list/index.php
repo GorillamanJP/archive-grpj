@@ -58,7 +58,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
     <div class="container">
         <h1 class="text-center">会計リスト</h1>
         <div class="text-center my-3">
-            <a href="../../index.php" class="btn btn-outline-success btn-lg-custom p-2 mx-1">レジ画面へ</a>
+            <a href="../../" class="btn btn-outline-success btn-lg-custom p-2 mx-1">レジ画面へ</a>
         </div>
         <?php if (is_null($sales)): ?>
             <p class="text-center">会計記録はありません</p>

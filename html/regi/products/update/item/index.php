@@ -79,7 +79,7 @@ $product = $product->get_from_item_id($id);
         </table>
         <div class="text-center">
             <input type="submit" value="更新" class="btn btn-outline-primary">
-            <a href="../../list/index.php" class="btn btn-outline-secondary">戻る</a>
+            <a href="../../list/" class="btn btn-outline-secondary">戻る</a>
         </div>
         </form>
     </div>

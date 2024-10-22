@@ -124,7 +124,7 @@ $item_obj = new Item();
             </tr>
         </table>
         <div class="text-center">
-            <a href="../list/index.php" class="btn btn-outline-secondary btn-lg mb-4">戻る</a>
+            <a href="../list/" class="btn btn-outline-secondary btn-lg mb-4">戻る</a>
         </div>
     </div>
 </body>
