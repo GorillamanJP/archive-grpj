@@ -38,11 +38,10 @@ CREATE TABLE IF NOT EXISTS accountants(
 CREATE TABLE IF NOT EXISTS details(
     id INT AUTO_INCREMENT PRIMARY KEY,
     accountant_id INT NOT NULL,
-    item_id INT NOT NULL,
+    item_name VARCHAR(255) NOT NULL,
     item_price INT NOT NULL,
     quantity INT NOT NULL,
     subtotal INT NOT NULL,
-    FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE,
     FOREIGN KEY (accountant_id) REFERENCES accountants(id) ON DELETE CASCADE
 );
 

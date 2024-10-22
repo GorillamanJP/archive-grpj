@@ -60,9 +60,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
                                 </tr>
                                 <?php foreach ($sale->get_details() as $detail): ?>
                                     <tr>
-                                        <?php $item_obj = new Item(); ?>
-                                        <?php $item = $item_obj->get_from_id($detail->get_item_id()); ?>
-                                        <td><?= $item->get_item_name() ?></td>
+                                        <td><?= $detail->get_item_name() ?></td>
                                         <td><?= $detail->get_item_price() ?></td>
                                         <td><?= $detail->get_quantity() ?></td>
                                         <td><?= $detail->get_subtotal() ?></td>
