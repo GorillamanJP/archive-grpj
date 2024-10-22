@@ -26,13 +26,16 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
 </head>
 
 <body>
-    <div class="container">
+    <div class="container mt-4">
         <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
-        <h1 class="text-center">会計リスト</h1>
-        <div class="text-center my-3">
+        <h1 class="text-center mb-4">会計一覧</h1>
+        <div class="text-center mb-3">
             <a href="../../" class="btn btn-outline-success btn-lg-custom p-2 mx-1">レジ画面へ</a>
+            <div class="alert alert-info mt-2">
+                詳細を見るには、項目を押してください。
+            </div>
         </div>
-        <p class="text-center">詳細を見るには、項目を押してください。</p>
+    
         <?php if (is_null($sales)): ?>
             <p class="text-center">会計記録はありません</p>
         <?php else: ?>
