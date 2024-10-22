@@ -14,8 +14,8 @@ if (!isset($_POST["password"]) || $_POST["password"] === "") {
 }
 
 if ($ok) {
-    $user_name = htmlspecialchars($_POST["user_name"], encoding: "UTF-8");
-    $password = htmlspecialchars($_POST["password"], encoding: "UTF-8");
+    $user_name = htmlspecialchars($_POST["user_name"]);
+    $password = htmlspecialchars($_POST["password"]);
     try {
         require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/user.php";
         $user = new User();
@@ -25,7 +25,7 @@ if ($ok) {
         $_SESSION["message"] = "ログインしました。";
         $_SESSION["message_type"] = "info";
         # ユーザーIDが1(初期ユーザーのadmin)の場合は警告メッセージを出す
-        if($user->get_id() == 1){
+        if ($user->get_id() == 1) {
             $_SESSION["message"] .= "このユーザーは初期ユーザーです。使用者のユーザーを新たに作成したうえで、このアカウントは早急に削除してください。";
             $_SESSION["message_type"] = "danger";
         }
@@ -36,16 +36,23 @@ if ($ok) {
             # POSTデータを持っていた場合
             if (isset($after["post_data"])) {
                 ?>
-                <form action="<?= $after["url"] ?>" method="post" id="post_form">
+                <form action="<?= htmlspecialchars($after["url"]) ?>" method="post" id="post_form">
                     <?php foreach ($after["post_data"] as $key => $value): ?>
-                        <input type="hidden" name="<?= htmlspecialchars($key) ?>" value="<?= htmlspecialchars($value) ?>">
+                        <?php if (is_array($value)): ?>
+                            <?php foreach ($value as $sub_key => $sub_value): ?>
+                                <input type="hidden" name="<?= htmlspecialchars($key) ?>[<?= htmlspecialchars($sub_key) ?>]"
+                                    value="<?= htmlspecialchars($sub_value) ?>">
+                            <?php endforeach ?>
+                        <?php else: ?>
+                            <input type="hidden" name="<?= htmlspecialchars($key) ?>" value="<?= htmlspecialchars($value) ?>">
+                        <?php endif ?>
                     <?php endforeach ?>
                 </form>
                 <script>document.getElementById("post_form").submit();</script>
                 <?php
             } else {
                 session_write_close();
-                header("Location: " . $after["url"]);
+                header("Location: " . htmlspecialchars($after["url"]));
             }
         } else {
             session_write_close();
