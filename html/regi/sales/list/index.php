@@ -1,7 +1,5 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
-?>
-<?php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/sales/sale.php";
 $sale_obj = new Sale();
 $sales = $sale_obj->get_all();
@@ -21,24 +19,20 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/common/list.css">
     <style>
-        @media (min-width: 1024px) {
-
-            th,
-            td {
-                font-size: 1.3rem;
-                /* 文字サイズを1.3倍にする */
-            }
+        .clickable-row {
+            cursor: pointer;
         }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <?php require_once $_SERVER['DOCUMENT_ROOT']."/common/alert.php"; ?>
+        <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
         <h1 class="text-center">会計リスト</h1>
         <div class="text-center my-3">
             <a href="../../" class="btn btn-outline-success btn-lg-custom p-2 mx-1">レジ画面へ</a>
         </div>
+        <p class="text-center">詳細を見るには、項目を押してください。</p>
         <?php if (is_null($sales)): ?>
             <p class="text-center">会計記録はありません</p>
         <?php else: ?>
@@ -59,13 +53,11 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
                                 </table>
                             </th>
                             <th>合計金額</th>
-                            <th>合計購入数</th>
-                            <th>詳細</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($sales as $sale): ?>
-                            <tr>
+                            <tr class="clickable-row" data-id="<?= $sale->get_accountant()->get_id() ?>">
                                 <td><?= $sale->get_accountant()->get_id() ?></td>
                                 <td><?= $sale->get_accountant()->get_date() ?></td>
                                 <td>
@@ -83,13 +75,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
                                     </table>
                                 </td>
                                 <td><?= $sale->get_accountant()->get_total_price() ?></td>
-                                <td><?= $sale->get_accountant()->get_total_amount() ?></td>
-                                <td>
-                                    <form action="../show/" method="post">
-                                        <input type="hidden" name="id" id="id" value="<?= $sale->get_accountant()->get_id() ?>">
-                                        <input type="submit" value="詳細" class="btn btn-outline-primary round-button">
-                                    </form>
-                                </td>
                             </tr>
                         <?php endforeach ?>
                     </tbody>
@@ -97,6 +82,26 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
             </div>
         <?php endif ?>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var rows = document.querySelectorAll(".clickable-row");
+            rows.forEach(function (row) {
+                row.addEventListener("click", function () {
+                    var saleId = row.getAttribute("data-id");
+                    var form = document.createElement("form");
+                    form.setAttribute("method", "post");
+                    form.setAttribute("action", "../show/");
+                    var hiddenField = document.createElement("input");
+                    hiddenField.setAttribute("type", "hidden");
+                    hiddenField.setAttribute("name", "id");
+                    hiddenField.setAttribute("value", saleId);
+                    form.appendChild(hiddenField);
+                    document.body.appendChild(form);
+                    form.submit();
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
