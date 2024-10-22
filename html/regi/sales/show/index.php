@@ -33,45 +33,14 @@ $item_obj = new Item();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous"></script>
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-
-        h1 {
-            font-weight: bold;
-            color: #333;
-            margin-top: 20px;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: auto;
-        }
-
-        .table {
-            margin-top: 20px;
-            border-radius: 5px;
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn {
-            border-radius: 25px;
-        }
-
-        .btn-primary,
-        .btn-success {
-            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.4);
-        }
-    </style>
+        <link rel="stylesheet" href="/common/create.css">
 </head>
 
 <body>
     <div class="container">
-        <h1 class="text-center">会計詳細</h1>
+        <h1 class="text-center my-3">会計詳細</h1>
         <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
-        <table class="table table-striped">
+        <table class="table table-striped table-success">
             <tr>
                 <th>会計番号</th>
                 <td><?= $sale->get_accountant()->get_id() ?></td>
@@ -83,10 +52,9 @@ $item_obj = new Item();
             <tr>
                 <th colspan="2">購入一覧</th>
             </tr>
-            <div class="table-responsive">
                 <tr>
                     <td colspan="2">
-                        <table class="table details-table">
+                        <table class="table">
                             <tr>
                                 <th>商品名</th>
                                 <th>価格</th>
@@ -105,7 +73,6 @@ $item_obj = new Item();
                         </table>
                     </td>
                 </tr>
-            </div>
             <tr>
                 <th>合計購入数</th>
                 <td><?= $sale->get_accountant()->get_total_amount() ?></td>
