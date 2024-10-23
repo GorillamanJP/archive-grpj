@@ -51,7 +51,8 @@ $product = $product->get_from_stock_id($id);
     <h1 class="text-center mt-3 my-3">入荷処理</h1>
     <div class="container">
         <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
-        <form id="updateForm" action="update.php" method="post">
+        <form id="updateForm" action="update.php" method="post"
+            onsubmit="event.preventDefault(); checkAndSubmitForm();">
             <table class="table table-bordered table-info table-hover">
                 <tr class="form-group">
                     <th class="align-middle">商品イメージ</th>
@@ -71,19 +72,17 @@ $product = $product->get_from_stock_id($id);
                 <tr class="form-group">
                     <th class="align-middle">入荷数</th>
                     <td class="table-secondary">
-                        <input type="number" name="add_quantity" id="add_quantity" class="form-control" onchange="updateNewStock()" min="0">
+                        <input type="number" name="add_quantity" id="add_quantity" class="form-control" min="0" required>
                     </td>
                 </tr>
             </table>
             <input type="hidden" name="id" value="<?= $product->get_stock()->get_id() ?>">
             <div class="text-center">
-                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
-                    data-bs-target="#confirmModal">更新</button>
+                <button type="submit" class="btn btn-outline-primary">更新</button>
                 <a href="../../list/" class="btn btn-outline-secondary">戻る</a>
             </div>
         </form>
     </div>
-
     <!-- 更新確認モーダル -->
     <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -95,18 +94,18 @@ $product = $product->get_from_stock_id($id);
                 <div class="modal-body">
                     <p class="fw-bold fs-4">本当に更新しますか？</p>
                     <div>
-                        <p class="fs-5">現在の在庫数: <span id="confirmCurrentStock" class="badge bg-secondary fs-5"></span></p>
+                        <p class="fs-5">現在の在庫数: <span id="confirmCurrentStock" class="badge bg-secondary fs-5"></span>
+                        </p>
                         <p class="fs-5">更新後の在庫数: <span id="confirmNewStock" class="badge bg-success fs-5"></span></p>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
-                    <button type="button" class="btn btn-primary" id="confirmUpdateBtn">更新</button>
+                    <button type="button" class="btn btn-primary" id="confirmUpdateBtnModal">更新</button>
                 </div>
             </div>
         </div>
     </div>
-
     <script>
         function updateNewStock() {
             const currentStock = parseInt(document.getElementById('currentStock').textContent);
@@ -119,9 +118,22 @@ $product = $product->get_from_stock_id($id);
 
         document.getElementById('add_quantity').addEventListener('input', updateNewStock);
 
-        document.getElementById('confirmUpdateBtn').addEventListener('click', function () {
+        document.getElementById('confirmUpdateBtnModal').addEventListener('click', function () {
             document.getElementById('updateForm').submit();
         });
+
+        function checkAndSubmitForm() {
+            const addQuantity = parseInt(document.getElementById('add_quantity').value);
+
+            if (isNaN(addQuantity) || addQuantity <= 0) {
+                document.getElementById('updateForm').submit();
+            } else {
+                var myModal = new bootstrap.Modal(document.getElementById('confirmModal'), {
+                    keyboard: false
+                });
+                myModal.show();
+            }
+        }
     </script>
 </body>
 
