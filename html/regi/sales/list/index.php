@@ -48,31 +48,25 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
                     <th>ID</th>
                     <th>購入日</th>
                     <th>詳細</th>
-                    <th>合計金額</th>
                 </tr>
                 <?php foreach ($sales as $sale): ?>
                     <tr class="clickable-row" data-id="<?= $sale->get_accountant()->get_id() ?>">
                         <td><?= $sale->get_accountant()->get_id() ?></td>
                         <td><?= $sale->get_accountant()->get_date() ?></td>
                         <td>
-                            <table class="table table-striped">
+                            <table class="table table-striped table-bordered">
                                 <tr>
                                     <th>品名</th>
-                                    <th>価格</th>
                                     <th>数量</th>
-                                    <th>小計</th>
                                 </tr>
                                 <?php foreach ($sale->get_details() as $detail): ?>
                                     <tr>
-                                        <td><?= $detail->get_item_name() ?></td>
-                                        <td><?= $detail->get_item_price() ?></td>
+                                        <td><?= $detail->get_item_name() ?></td>                               
                                         <td><?= $detail->get_quantity() ?></td>
-                                        <td><?= $detail->get_subtotal() ?></td>
                                     </tr>
                                 <?php endforeach ?>
                             </table>
                         </td>
-                        <td><?= $sale->get_accountant()->get_total_price() ?></td>
                     </tr>
                 <?php endforeach ?>
             </table>
