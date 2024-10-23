@@ -18,7 +18,7 @@ function check_update(string $last_update, int $last_products_count)
         $update_stocks = $stmt_stocks->fetchColumn();
 
         if ($update_stocks > 0) {
-            return generate_updated_page();
+            return generate_updated_page("在庫");
         }
 
 
@@ -31,7 +31,7 @@ function check_update(string $last_update, int $last_products_count)
         $update_items = $stmt_items_update->fetchColumn();
 
         if ($update_items > 0) {
-            return generate_updated_page();
+            return generate_updated_page("商品内容");
         }
 
 
@@ -44,7 +44,7 @@ function check_update(string $last_update, int $last_products_count)
         $count_items = $stmt_items_count->fetchColumn();
 
         if ($count_items != $last_products_count) {
-            return generate_updated_page();
+            return generate_updated_page("商品数");
         }
 
         http_response_code(200);
@@ -55,7 +55,7 @@ function check_update(string $last_update, int $last_products_count)
     }
 }
 
-function generate_updated_page()
+function generate_updated_page(string $update_type_msg)
 {
     require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/products/product.php";
     $products = new Product();
@@ -115,6 +115,7 @@ function generate_updated_page()
     </td>
 </tr>";
     }
+    $html_text .= "<span id='update_type_msg' style='display: none'>{$update_type_msg}</span>";
     return $html_text;
 }
 

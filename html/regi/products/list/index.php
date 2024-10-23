@@ -45,7 +45,7 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], "EdgA") && strpos($_SERVER['HTTP_USER_AG
             <div id="liveToast" class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
                 <div class="d-flex">
                     <div class="toast-body">
-                        情報に更新がありました！
+                        <span id="update_type_msg_notify"></span>に更新がありました！
                     </div>
                     <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"
                         aria-label="Close"></button>
@@ -124,6 +124,7 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], "EdgA") && strpos($_SERVER['HTTP_USER_AG
             </table>
         </div>
     </div>
+    <span id='update_type_msg' style='display: none'>情報</span>
     <!-- 削除確認モーダル -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
