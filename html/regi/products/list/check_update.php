@@ -62,10 +62,15 @@ function generate_updated_page()
     $products = $products->get_all();
     http_response_code(200);
     if (is_null($products)) {
-        // 商品がなくなったらさすがに再読み込みさせる
-        return '<script>
-        location.reload();
-        </script>';
+        return "
+<tr>
+    <td colspan='5'>
+        <input type='hidden' id='products_count' name='products_count' value=0>
+        <h2 class='text-center'>商品はありません。</h2>
+        <p class='text-center'><a href='../create/'>新たに商品を登録しましょう！</a></p>
+    </td>
+</tr>
+        ";
     }
     $products_count = count($products);
     $html_text = "<input type='hidden' id='products_count' name='products_count' value={$products_count}>";

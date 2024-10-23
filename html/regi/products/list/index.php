@@ -40,35 +40,40 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], "EdgA") && strpos($_SERVER['HTTP_USER_AG
             <a href="../create/" class="btn btn-outline-primary btn-lg-custom p-2 mx-1">商品登録</a>
             <a href="../../" class="btn btn-outline-success btn-lg-custom p-2 mx-1">レジ画面へ</a>
         </div>
-        <?php if (is_null($products)): ?>
-            <h2 class="text-center">商品はありません。</h2>
-            <p class="text-center"><a href="../create/">新たに商品を登録しましょう！</a></p>
-        <?php else: ?>
-            <!-- 更新通知 -->
-            <div class="toast-container position-fixed bottom-0 end-0 p-3">
-                <div id="liveToast" class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
-                    <div class="d-flex">
-                        <div class="toast-body">
-                            情報に更新がありました！
-                        </div>
-                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"
-                            aria-label="Close"></button>
+        <!-- 更新通知 -->
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            <div id="liveToast" class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        情報に更新がありました！
                     </div>
+                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"
+                        aria-label="Close"></button>
                 </div>
             </div>
-            <!-- 更新通知　ここまで -->
-            <div class="table-responsive my-4">
-                <table class="table table-bordered table-hover text-center align-middle">
-                    <thead class="table-info">
+        </div>
+        <!-- 更新通知　ここまで -->
+        <div class="table-responsive my-4">
+            <table class="table table-bordered table-hover text-center align-middle">
+                <thead class="table-info">
+                    <tr>
+                        <th>商品イメージ</th>
+                        <th>商品名</th>
+                        <th>価格</th>
+                        <th>在庫数</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody class="table-light" id="refresh">
+                    <?php if (is_null($products)): ?>
                         <tr>
-                            <th>商品イメージ</th>
-                            <th>商品名</th>
-                            <th>価格</th>
-                            <th>在庫数</th>
-                            <th>操作</th>
+                            <td colspan='5'>
+                                <input type='hidden' id='products_count' name='products_count' value=0>
+                                <h2 class='text-center'>商品はありません。</h2>
+                                <p class='text-center'><a href='../create/'>新たに商品を登録しましょう！</a></p>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody class="table-light" id="refresh">
+                    <?php else: ?>
                         <input type="hidden" id="products_count" name="products_count" value="<?= count($products) ?>">
                         <?php foreach ($products as $product): ?>
                             <tr>
@@ -114,10 +119,10 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], "EdgA") && strpos($_SERVER['HTTP_USER_AG
                                 </td>
                             </tr>
                         <?php endforeach ?>
-                    </tbody>
-                </table>
-            </div>
-        <?php endif ?>
+                    <?php endif ?>
+                </tbody>
+            </table>
+        </div>
     </div>
     <!-- 削除確認モーダル -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
