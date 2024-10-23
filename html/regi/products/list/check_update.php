@@ -1,6 +1,9 @@
 <?php
 function check_update(string $last_update, int $last_products_count)
 {
+    if ($last_update === "0000/0/0 00:00:00") {
+        return generate_updated_page("読み込みが完了しました！");
+    }
     try {
         $password = getenv("DB_PASSWORD");
         $db_name = getenv("DB_DATABASE");
@@ -9,16 +12,16 @@ function check_update(string $last_update, int $last_products_count)
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 
-        $sql_stocks = "SELECT COUNT(*) FROM stocks WHERE last_update >= :input_last_update";
+        $sql_items_count = "SELECT COUNT(*) FROM items";
 
-        $stmt_stocks = $pdo->prepare($sql_stocks);
-        $stmt_stocks->bindValue(":input_last_update", $last_update, PDO::PARAM_STR);
-        $stmt_stocks->execute();
+        $stmt_items_count = $pdo->prepare($sql_items_count);
 
-        $update_stocks = $stmt_stocks->fetchColumn();
+        $stmt_items_count->execute();
 
-        if ($update_stocks > 0) {
-            return generate_updated_page();
+        $count_items = $stmt_items_count->fetchColumn();
+
+        if ($count_items != $last_products_count) {
+            return generate_updated_page("商品が登録されたか削除されました！");
         }
 
 
@@ -31,21 +34,22 @@ function check_update(string $last_update, int $last_products_count)
         $update_items = $stmt_items_update->fetchColumn();
 
         if ($update_items > 0) {
-            return generate_updated_page();
+            return generate_updated_page("商品内容が変わりました！");
         }
 
 
-        $sql_items_count = "SELECT COUNT(*) FROM items";
+        $sql_stocks = "SELECT COUNT(*) FROM stocks WHERE last_update >= :input_last_update";
 
-        $stmt_items_count = $pdo->prepare($sql_items_count);
+        $stmt_stocks = $pdo->prepare($sql_stocks);
+        $stmt_stocks->bindValue(":input_last_update", $last_update, PDO::PARAM_STR);
+        $stmt_stocks->execute();
 
-        $stmt_items_count->execute();
+        $update_stocks = $stmt_stocks->fetchColumn();
 
-        $count_items = $stmt_items_count->fetchColumn();
-
-        if ($count_items != $last_products_count) {
-            return generate_updated_page();
+        if ($update_stocks > 0) {
+            return generate_updated_page("在庫数に変化がありました！");
         }
+
 
         http_response_code(200);
         return "";
@@ -55,66 +59,24 @@ function check_update(string $last_update, int $last_products_count)
     }
 }
 
-function generate_updated_page()
+function generate_updated_page(string $update_msg)
 {
     require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/products/product.php";
     $products = new Product();
     $products = $products->get_all();
+
     http_response_code(200);
+
+    ob_start();
     if (is_null($products)) {
-        return "
-<tr>
-    <td colspan='5'>
-        <input type='hidden' id='products_count' name='products_count' value=0>
-        <h2 class='text-center'>商品はありません。</h2>
-        <p class='text-center'><a href='../create/'>新たに商品を登録しましょう！</a></p>
-    </td>
-</tr>
-        ";
+        require "./list_not_item.php";
+    } else {
+        $products_count = count($products);
+        require "./list_tbody.php";
     }
-    $products_count = count($products);
-    $html_text = "<input type='hidden' id='products_count' name='products_count' value={$products_count}>";
-    foreach ($products as $product) {
-        $html_text .= "
-<tr>
-    <td>
-        <img src='data:image/jpeg;base64,{$product->get_item()->get_item_image()}'
-            alt='商品画像　ID{$product->get_item()->get_id()}番' class='img-fluid img-thumbnail'>
-    </td>
-    <td>{$product->get_item()->get_item_name()}</td>
-    <td>{$product->get_item()->get_price()}</td>
-    <td>{$product->get_stock()->get_quantity()}</td>
-    <td>
-        <table class='container'>
-            <tr>
-                <td>
-                    <form action='../update/item/' method='post'>
-                        <input type='hidden' name='id' id='id' value='{$product->get_item()->get_id()}'>
-                        <input type='submit' value='更新' class='btn btn-outline-primary round-button'>
-                    </form>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <form action='../update/stock/' method='post'>
-                        <input type='hidden' name='id' id='id' value='{$product->get_stock()->get_id()}'>
-                        <input type='submit' value='入荷' btn class='btn btn-outline-success round-button'>
-                    </form>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <!-- 削除ボタン -->
-                    <button type='button' class='btn btn-outline-danger round-button'
-                        data-bs-toggle='modal' data-bs-target='#deleteModal'
-                        data-id={$product->get_item()->get_id()}
-                        data-name={$product->get_item()->get_item_name()}>削除</button>
-                </td>
-            </tr>
-        </table>
-    </td>
-</tr>";
-    }
+    $html_text = ob_get_contents();
+    ob_end_clean();
+
     return $html_text;
 }
 
