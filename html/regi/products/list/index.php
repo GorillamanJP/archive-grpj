@@ -33,7 +33,7 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], "EdgA") && strpos($_SERVER['HTTP_USER_AG
 <body>
     <div class="container">
         <h1 class="text-center mt-3">商品一覧</h1>
-        <p class="text-center my-3" style="font-size: 1.2em;">最終更新時刻:<span id="last-update">0/0/0 00:00:00</span></p>
+        <p class="text-center my-3" style="font-size: 1.2em;">最終更新時刻:<span id="last-update">0000/0/0 00:00:00</span></p>
         <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
         <div class="text-center my-3">
             <a href="../create/" class="btn btn-outline-primary btn-lg-custom p-2 mx-1">商品登録</a>

@@ -1,6 +1,9 @@
 <?php
 function check_update(string $last_update, int $last_products_count)
 {
+    if ($last_update === "0000/0/0 00:00:00") {
+        return generate_updated_page("読み込みが完了しました！");
+    }
     try {
         $password = getenv("DB_PASSWORD");
         $db_name = getenv("DB_DATABASE");
@@ -9,19 +12,16 @@ function check_update(string $last_update, int $last_products_count)
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 
-        $sql_stocks = "SELECT COUNT(*) FROM stocks WHERE last_update >= :input_last_update";
+        $sql_items_count = "SELECT COUNT(*) FROM items";
 
-        $stmt_stocks = $pdo->prepare($sql_stocks);
-        $stmt_stocks->bindValue(":input_last_update", $last_update, PDO::PARAM_STR);
-        $stmt_stocks->execute();
+        $stmt_items_count = $pdo->prepare($sql_items_count);
 
-        $update_stocks = $stmt_stocks->fetchColumn();
+        $stmt_items_count->execute();
 
-        if ($update_stocks > 0) {
-            if($last_update === "0/0/0 00:00:00"){
-                return generate_updated_page("読み込みが完了しました！");
-            }
-            return generate_updated_page("在庫数に変化がありました！");
+        $count_items = $stmt_items_count->fetchColumn();
+
+        if ($count_items != $last_products_count) {
+            return generate_updated_page("商品が登録されたか削除されました！");
         }
 
 
@@ -38,17 +38,18 @@ function check_update(string $last_update, int $last_products_count)
         }
 
 
-        $sql_items_count = "SELECT COUNT(*) FROM items";
+        $sql_stocks = "SELECT COUNT(*) FROM stocks WHERE last_update >= :input_last_update";
 
-        $stmt_items_count = $pdo->prepare($sql_items_count);
+        $stmt_stocks = $pdo->prepare($sql_stocks);
+        $stmt_stocks->bindValue(":input_last_update", $last_update, PDO::PARAM_STR);
+        $stmt_stocks->execute();
 
-        $stmt_items_count->execute();
+        $update_stocks = $stmt_stocks->fetchColumn();
 
-        $count_items = $stmt_items_count->fetchColumn();
-
-        if ($count_items != $last_products_count) {
-            return generate_updated_page("商品が登録されたか削除されました！");
+        if ($update_stocks > 0) {
+            return generate_updated_page("在庫数に変化がありました！");
         }
+
 
         http_response_code(200);
         return "";
@@ -63,7 +64,6 @@ function generate_updated_page(string $update_msg)
     require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/products/product.php";
     $products = new Product();
     $products = $products->get_all();
-    $products_count = count($products);
 
     http_response_code(200);
 
@@ -71,6 +71,7 @@ function generate_updated_page(string $update_msg)
     if (is_null($products)) {
         require "./list_not_item.php";
     } else {
+        $products_count = count($products);
         require "./list_tbody.php";
     }
     $html_text = ob_get_contents();
