@@ -7,6 +7,13 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/products/product.php";
 $product_obj = new Product();
 $products = $product_obj->get_all();
 
+// Androidのmsedgeだと動かないので警告する
+// 治ったら消す
+if (strpos($_SERVER['HTTP_USER_AGENT'], "EdgA") && strpos($_SERVER['HTTP_USER_AGENT'], "Android")) {
+    $_SESSION["message"] = "Android版Microsoft Edgeご利用の方へ";
+    $_SESSION["message_details"] = "お使いのブラウザでは、自動更新機能が動作していません。お手数ですが、別のブラウザをご利用ください。";
+    $_SESSION["message_type"] = "warning";
+}
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -37,6 +44,19 @@ $products = $product_obj->get_all();
             <h2 class="text-center">商品はありません。</h2>
             <p class="text-center"><a href="../create/">新たに商品を登録しましょう！</a></p>
         <?php else: ?>
+            <!-- 更新通知 -->
+            <div class="toast-container position-fixed bottom-0 end-0 p-3">
+                <div id="liveToast" class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            情報に更新がありました！
+                        </div>
+                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"
+                            aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+            <!-- 更新通知　ここまで -->
             <div class="table-responsive my-4">
                 <table class="table table-bordered table-hover text-center align-middle">
                     <thead class="table-info">
@@ -48,7 +68,8 @@ $products = $product_obj->get_all();
                             <th>操作</th>
                         </tr>
                     </thead>
-                    <tbody class="table-light">
+                    <input type="hidden" id="products_count" name="products_count" value="<?= count($products) ?>">
+                    <tbody class="table-light" id="refresh">
                         <? foreach ($products as $product): ?>
                             <tr>
                                 <td>
@@ -65,7 +86,8 @@ $products = $product_obj->get_all();
                                                 <form action="../update/item/" method="post">
                                                     <input type="hidden" name="id" id="id"
                                                         value="<?= $product->get_item()->get_id() ?>">
-                                                    <input type="submit" value="更新" class="btn btn-outline-primary round-button">
+                                                    <input type="submit" value="更新"
+                                                        class="btn btn-outline-primary round-button">
                                                 </form>
                                             </td>
                                         </tr>
@@ -74,15 +96,16 @@ $products = $product_obj->get_all();
                                                 <form action="../update/stock/" method="post">
                                                     <input type="hidden" name="id" id="id"
                                                         value="<?= $product->get_stock()->get_id() ?>">
-                                                    <input type="submit" value="入荷" btn class="btn btn-outline-success round-button">
+                                                    <input type="submit" value="入荷" btn
+                                                        class="btn btn-outline-success round-button">
                                                 </form>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 <!-- 削除ボタン -->
-                                                <button type="button" class="btn btn-outline-danger round-button" data-bs-toggle="modal"
-                                                    data-bs-target="#deleteModal"
+                                                <button type="button" class="btn btn-outline-danger round-button"
+                                                    data-bs-toggle="modal" data-bs-target="#deleteModal"
                                                     data-id="<?= $product->get_item()->get_id() ?>">
                                                     削除
                                                 </button>

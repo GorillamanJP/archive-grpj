@@ -1,5 +1,5 @@
 <?php
-function check_update(string $last_update)
+function check_update(string $last_update, int $last_products_count)
 {
     try {
         $password = getenv("DB_PASSWORD");
@@ -8,13 +8,6 @@ function check_update(string $last_update)
         $pdo = new PDO($dsn, "root", $password);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $sql_items = "SELECT COUNT(*) FROM items WHERE last_update >= :input_last_update";
-
-        $stmt_items = $pdo->prepare($sql_items);
-        $stmt_items->bindValue(":input_last_update", $last_update, PDO::PARAM_STR);
-        $stmt_items->execute();
-
-        $update_items = $stmt_items->fetchColumn();
 
         $sql_stocks = "SELECT COUNT(*) FROM stocks WHERE last_update >= :input_last_update";
 
@@ -24,23 +17,106 @@ function check_update(string $last_update)
 
         $update_stocks = $stmt_stocks->fetchColumn();
 
-        if ($update_items > 0 || $update_stocks > 0) {
-            http_response_code(200);
-            return json_encode(true);
-        } else {
-            http_response_code(200);
-            return json_encode(false);
+        if ($update_stocks > 0) {
+            return generate_updated_page();
         }
+
+
+        $sql_items_update = "SELECT COUNT(*) FROM items WHERE last_update >= :input_last_update";
+
+        $stmt_items_update = $pdo->prepare($sql_items_update);
+        $stmt_items_update->bindValue(":input_last_update", $last_update, PDO::PARAM_STR);
+        $stmt_items_update->execute();
+
+        $update_items = $stmt_items_update->fetchColumn();
+
+        if ($update_items > 0) {
+            return generate_updated_page();
+        }
+
+
+        $sql_items_count = "SELECT COUNT(*) FROM items";
+
+        $stmt_items_count = $pdo->prepare($sql_items_count);
+
+        $stmt_items_count->execute();
+
+        $count_items = $stmt_items_count->fetchColumn();
+
+        if ($count_items != $last_products_count) {
+            return generate_updated_page();
+        }
+
+        http_response_code(200);
+        return "";
     } catch (\Throwable $e) {
         http_response_code(500);
-        return json_encode(["error" => "Exception: {$e}"]);
+        return "Exception! {$e->getMessage()}";
     }
 }
 
-if(!isset($_POST["last_update"])){
+function generate_updated_page()
+{
+    require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/products/product.php";
+    $products = new Product();
+    $products = $products->get_all();
+    http_response_code(200);
+    if (is_null($products)) {
+        // 商品がなくなったらさすがに再読み込みさせる
+        return '<script>
+        location.reload();
+        </script>';
+    }
+    $html_text = "";
+    foreach ($products as $product) {
+        $html_text .= "
+<tr>
+    <td>
+        <img src='data:image/jpeg;base64,{$product->get_item()->get_item_image()}'
+            alt='商品画像　ID{$product->get_item()->get_id()}番' class='img-fluid img-thumbnail'>
+    </td>
+    <td>{$product->get_item()->get_item_name()}</td>
+    <td>{$product->get_item()->get_price()}</td>
+    <td>{$product->get_stock()->get_quantity()}</td>
+    <td>
+        <table class='container'>
+            <tr>
+                <td>
+                    <form action='../update/item/' method='post'>
+                        <input type='hidden' name='id' id='id' value='{$product->get_item()->get_id()}'>
+                        <input type='submit' value='更新' class='btn btn-outline-primary round-button'>
+                    </form>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <form action='../update/stock/' method='post'>
+                        <input type='hidden' name='id' id='id' value='{$product->get_stock()->get_id()}'>
+                        <input type='submit' value='入荷' btn class='btn btn-outline-success round-button'>
+                    </form>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <!-- 削除ボタン -->
+                    <button type='button' class='btn btn-outline-danger round-button' data-bs-toggle='modal'
+                        data-bs-target='#deleteModal' data-id='{$product->get_item()->get_id()}'>
+                        削除
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </td>
+</tr>";
+    }
+    return $html_text;
+}
+
+if (!isset($_POST['last_update']) || !isset($_POST["last_products_count"])) {
     http_response_code(400);
-    echo json_encode(["error"=> "Bad Argument"]);
+    echo "Bad Argument!";
     exit();
 }
-$last_update = $_POST["last_update"];
-echo check_update($last_update);
+$last_update = $_POST['last_update'];
+$last_products_count = $_POST["last_products_count"];
+echo check_update($last_update, $last_products_count);
