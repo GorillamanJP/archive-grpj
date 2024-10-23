@@ -1,5 +1,9 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
+?>
+<?php
+session_start();
+
 require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/sales/sale.php";
 $sale_obj = new Sale();
 $sales = $sale_obj->get_all();
