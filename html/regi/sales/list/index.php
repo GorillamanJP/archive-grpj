@@ -33,45 +33,46 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
     <div class="container mt-4">
         <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
         <h1 class="text-center mb-4">会計一覧</h1>
+        <p class="text-center my-3" style="font-size: 1.2em;">最終更新時刻:<span id="last-update">0000/0/0 00:00:00</span></p>
         <div class="text-center mb-3">
             <a href="../../" class="btn btn-outline-success btn-lg-custom p-2 mx-1">レジ画面へ</a>
             <div class="alert alert-info mt-2">
                 詳細を見るには、項目を押してください。
             </div>
         </div>
-    
-        <?php if (is_null($sales)): ?>
-            <p class="text-center">会計記録はありません</p>
-        <?php else: ?>
-            <table class="table table-success table-striped table-bordered table-hover text-center align-middle">
+
+
+        <table class="table table-success table-striped table-bordered table-hover text-center align-middle">
+            <thead>
                 <tr>
                     <th>ID</th>
                     <th>購入日</th>
                     <th>詳細</th>
                 </tr>
-                <?php foreach ($sales as $sale): ?>
-                    <tr class="clickable-row" data-id="<?= $sale->get_accountant()->get_id() ?>">
-                        <td><?= $sale->get_accountant()->get_id() ?></td>
-                        <td><?= $sale->get_accountant()->get_date() ?></td>
-                        <td>
-                            <table class="table table-striped table-bordered">
-                                <tr>
-                                    <th>品名</th>
-                                    <th>数量</th>
-                                </tr>
-                                <?php foreach ($sale->get_details() as $detail): ?>
-                                    <tr>
-                                        <td><?= $detail->get_item_name() ?></td>                               
-                                        <td><?= $detail->get_quantity() ?></td>
-                                    </tr>
-                                <?php endforeach ?>
-                            </table>
-                        </td>
-                    </tr>
-                <?php endforeach ?>
-            </table>
-        <?php endif ?>
+            </thead>
+            <tbody id="refresh">
+                <input type="hidden" id="update_msg" name="update_msg" value="情報">
+                <tr>
+                    <td colspan="3">
+                        <h2>読み込み中…</h2>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
+    <!-- 更新通知 -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <span id="update_msg_notify"></span>
+                </div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+    <!-- 更新通知　ここまで -->
+    <script src="./check_update.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             var rows = document.querySelectorAll(".clickable-row");
