@@ -63,26 +63,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
     <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/toast.php"; ?>
     <!-- 更新通知　ここまで -->
     <script src="./check_update.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            var rows = document.querySelectorAll(".clickable-row");
-            rows.forEach(function (row) {
-                row.addEventListener("click", function () {
-                    var saleId = row.getAttribute("data-id");
-                    var form = document.createElement("form");
-                    form.setAttribute("method", "post");
-                    form.setAttribute("action", "../show/");
-                    var hiddenField = document.createElement("input");
-                    hiddenField.setAttribute("type", "hidden");
-                    hiddenField.setAttribute("name", "id");
-                    hiddenField.setAttribute("value", saleId);
-                    form.appendChild(hiddenField);
-                    document.body.appendChild(form);
-                    form.submit();
-                });
-            });
-        });
-    </script>
 </body>
 
 </html>
