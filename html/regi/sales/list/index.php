@@ -47,6 +47,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
                     <th>ID</th>
                     <th>購入日</th>
                     <th>詳細</th>
+                    <th>会計者</th>
                 </tr>
             </thead>
             <tbody id="refresh">

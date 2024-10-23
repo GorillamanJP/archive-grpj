@@ -31,7 +31,8 @@ CREATE TABLE IF NOT EXISTS accountants(
     id INT AUTO_INCREMENT PRIMARY KEY,
     date DATETIME NOT NULL,
     total_amount INT NOT NULL,
-    total_price INT NOT NULL
+    total_price INT NOT NULL,
+    accountant_user_name VARCHAR(64) NOT NULL
 );
 
 -- 会計詳細テーブル
