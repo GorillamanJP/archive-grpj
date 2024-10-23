@@ -13,7 +13,7 @@ $products = $product_obj->get_all();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="title">商品一覧</title>
+    <title id="title">商品管理</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
@@ -25,7 +25,7 @@ $products = $product_obj->get_all();
 
 <body>
     <div class="container">
-        <h1 class="text-center mt-3">商品一覧</h1>
+        <h1 class="text-center mt-3">商品管理</h1>
         <p class="text-center my-3" style="font-size: 1.2em;">最終更新時刻:<span id="last-update">0000/0/0 00:00:00</span></p>
         <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
         <div class="text-center my-3">

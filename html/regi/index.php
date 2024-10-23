@@ -40,7 +40,7 @@ $products = $product_obj->get_all();
                 <p>モバイルオーダー</p>
             </a>
             <a href="./sales/list/"><i class="fas fa-list-alt"></i>
-                <p>売上一覧</p>
+                <p>会計一覧</p>
             </a>
             <a href="./products/list/"><i class="fas fa-cubes"></i>
                 <p>商品管理</p>

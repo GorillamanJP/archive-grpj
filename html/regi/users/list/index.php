@@ -23,7 +23,7 @@ $users = $user_obj->get_all();
 
 <body>
     <div class="container">
-        <h1 class="text-center mt-3">ユーザー一覧</h1>
+        <h1 class="text-center mt-3">ユーザー管理</h1>
         <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
         <div class="text-center my-3">
             <a href="../create/" class="btn btn-outline-primary btn-lg p-2 mx-1">ユーザー登録</a>
