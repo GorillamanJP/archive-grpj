@@ -20,8 +20,10 @@ function check_update(string $last_update, int $last_products_count)
 
         $count_items = $stmt_items_count->fetchColumn();
 
-        if ($count_items != $last_products_count) {
-            return generate_updated_page("商品が登録されたか削除されました！");
+        if ($count_items > $last_products_count) {
+            return generate_updated_page("新しい商品が登録されました！");
+        } else if ($count_items < $last_products_count) {
+            return generate_updated_page("商品が削除されました！");
         }
 
 
