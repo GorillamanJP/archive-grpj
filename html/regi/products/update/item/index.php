@@ -52,7 +52,7 @@ $product = $product->get_from_item_id($id);
     <div class="container">
         <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
         <table class="table table-bordered table-info table-hover ">
-            <form action="update.php" method="post" enctype="multipart/form-data">
+            <form id="updateForm" action="update.php" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="id" value="<?= $product->get_item()->get_id() ?>">
                 <tr class="form-group">
                     <th class="align-middle">商品名</th>
@@ -78,11 +78,72 @@ $product = $product->get_from_item_id($id);
                 </tr>
         </table>
         <div class="text-center">
-            <input type="submit" value="更新" class="btn btn-outline-primary">
+            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                data-bs-target="#confirmModal">更新</button>
             <a href="../../list/" class="btn btn-outline-secondary">戻る</a>
         </div>
         </form>
     </div>
+
+    <!-- 更新確認モーダル -->
+    <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmModalLabel">更新の確認</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="fw-bold fs-4">本当に更新しますか？</p>
+                    <div>
+                        <table class="table table-borderless">
+                            <tr>
+                                <th class="fs-5" style="width: 150px; text-align: right;"><strong>商品名:</strong></th>
+                                <td class="fs-5" style="text-align: left;"><span id="confirmItemName"></span></td>
+                            </tr>
+                            <tr>
+                                <th class="fs-5" style="width: 150px; text-align: right;"><strong>価格:</strong></th>
+                                <td class="fs-5" style="text-align: left;"><span id="confirmPrice"></span></td>
+                            </tr>
+                            <tr>
+                                <th class="fs-5" style="width: 150px; text-align: right;"><strong>商品イメージ:</strong></th>
+                                <td class="fs-5" style="text-align: left;"><img id="confirmItemImage"
+                                        style="width: 200px;"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+                    <button type="button" class="btn btn-primary" id="confirmUpdateBtn">更新</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // モーダルが表示されたときに入力内容を表示
+        document.getElementById('confirmModal').addEventListener('show.bs.modal', function () {
+            document.getElementById('confirmItemName').textContent = document.getElementById('item_name').value;
+            document.getElementById('confirmPrice').textContent = document.getElementById('price').value;
+
+            const newImage = document.getElementById('new_item_image').files[0];
+            if (newImage) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('confirmItemImage').src = e.target.result;
+                };
+                reader.readAsDataURL(newImage);
+            } else {
+                document.getElementById('confirmItemImage').src = document.getElementById('now_item_image').src;
+            }
+        });
+
+        // 更新ボタンが押されたときにフォームを送信
+        document.getElementById('confirmUpdateBtn').addEventListener('click', function () {
+            document.getElementById('updateForm').submit();
+        });
+    </script>
 </body>
 <script src="./set_now_image.js"></script>
 
