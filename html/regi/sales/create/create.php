@@ -61,7 +61,8 @@ try {
     require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/sales/sale.php";
     $sale = new Sale();
     $sale->create($product_names, $product_prices, $quantities, $subtotals, $total_amount, $total_price, $received_price, $returned_price);
-    $_SESSION["message"] = "購入処理を正常に受け付けました。";
+    $id = $sale->get_accountant()->get_id();
+    $_SESSION["message"] = "会計番号 {$id}番 で処理を完了しました。";
     $_SESSION["message_type"] = "success";
 } catch (\Throwable $e) {
     $_SESSION["message"] = "エラーが発生しました。";
