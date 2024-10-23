@@ -68,8 +68,8 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], "EdgA") && strpos($_SERVER['HTTP_USER_AG
                             <th>操作</th>
                         </tr>
                     </thead>
-                    <input type="hidden" id="products_count" name="products_count" value="<?= count($products) ?>">
                     <tbody class="table-light" id="refresh">
+                        <input type="hidden" id="products_count" name="products_count" value="<?= count($products) ?>">
                         <?php foreach ($products as $product): ?>
                             <tr>
                                 <td>
@@ -86,7 +86,8 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], "EdgA") && strpos($_SERVER['HTTP_USER_AG
                                                 <form action="../update/item/" method="post">
                                                     <input type="hidden" name="id" id="id"
                                                         value="<?= $product->get_item()->get_id() ?>">
-                                                    <input type="submit" value="更新" class="btn btn-outline-primary round-button">
+                                                    <input type="submit" value="更新"
+                                                        class="btn btn-outline-primary round-button">
                                                 </form>
                                             </td>
                                         </tr>
@@ -95,7 +96,8 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], "EdgA") && strpos($_SERVER['HTTP_USER_AG
                                                 <form action="../update/stock/" method="post">
                                                     <input type="hidden" name="id" id="id"
                                                         value="<?= $product->get_stock()->get_id() ?>">
-                                                    <input type="submit" value="入荷" class="btn btn-outline-success round-button">
+                                                    <input type="submit" value="入荷"
+                                                        class="btn btn-outline-success round-button">
                                                 </form>
                                             </td>
                                         </tr>

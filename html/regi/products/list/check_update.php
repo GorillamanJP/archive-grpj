@@ -67,7 +67,8 @@ function generate_updated_page()
         location.reload();
         </script>';
     }
-    $html_text = "";
+    $products_count = count($products);
+    $html_text = "<input type='hidden' id='products_count' name='products_count' value={$products_count}>";
     foreach ($products as $product) {
         $html_text .= "
 <tr>
@@ -99,10 +100,10 @@ function generate_updated_page()
             <tr>
                 <td>
                     <!-- 削除ボタン -->
-                    <button type='button' class='btn btn-outline-danger round-button' data-bs-toggle='modal'
-                        data-bs-target='#deleteModal' data-id='{$product->get_item()->get_id()}'>
-                        削除
-                    </button>
+                    <button type='button' class='btn btn-outline-danger round-button'
+                        data-bs-toggle='modal' data-bs-target='#deleteModal'
+                        data-id={$product->get_item()->get_id()}
+                        data-name={$product->get_item()->get_item_name()}>削除</button>
                 </td>
             </tr>
         </table>
