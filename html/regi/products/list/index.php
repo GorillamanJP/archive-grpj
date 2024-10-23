@@ -49,7 +49,7 @@ $products = $product_obj->get_all();
                         </tr>
                     </thead>
                     <tbody class="table-light">
-                        <? foreach ($products as $product): ?>
+                        <?php foreach ($products as $product): ?>
                             <tr>
                                 <td>
                                     <img src="data:image/jpeg;base64,<?= $product->get_item()->get_item_image() ?>"
@@ -65,7 +65,8 @@ $products = $product_obj->get_all();
                                                 <form action="../update/item/" method="post">
                                                     <input type="hidden" name="id" id="id"
                                                         value="<?= $product->get_item()->get_id() ?>">
-                                                    <input type="submit" value="更新" class="btn btn-outline-primary round-button">
+                                                    <input type="submit" value="更新"
+                                                        class="btn btn-outline-primary round-button">
                                                 </form>
                                             </td>
                                         </tr>
@@ -74,18 +75,18 @@ $products = $product_obj->get_all();
                                                 <form action="../update/stock/" method="post">
                                                     <input type="hidden" name="id" id="id"
                                                         value="<?= $product->get_stock()->get_id() ?>">
-                                                    <input type="submit" value="入荷" btn class="btn btn-outline-success round-button">
+                                                    <input type="submit" value="入荷"
+                                                        class="btn btn-outline-success round-button">
                                                 </form>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 <!-- 削除ボタン -->
-                                                <button type="button" class="btn btn-outline-danger round-button" data-bs-toggle="modal"
-                                                    data-bs-target="#deleteModal"
-                                                    data-id="<?= $product->get_item()->get_id() ?>">
-                                                    削除
-                                                </button>
+                                                <button type="button" class="btn btn-outline-danger round-button"
+                                                    data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                                    data-id="<?= $product->get_item()->get_id() ?>"
+                                                    data-name="<?= $product->get_item()->get_item_name() ?>">削除</button>
                                             </td>
                                         </tr>
                                     </table>
@@ -97,7 +98,6 @@ $products = $product_obj->get_all();
             </div>
         <?php endif ?>
     </div>
-
     <!-- 削除確認モーダル -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -107,7 +107,7 @@ $products = $product_obj->get_all();
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
                 </div>
                 <div class="modal-body">
-                    本当に削除しますか？
+                    <p class="fw-bold fs-4 text-center"><span id="deleteItemName"></span>を本当に削除しますか？</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
@@ -116,14 +116,14 @@ $products = $product_obj->get_all();
             </div>
         </div>
     </div>
-
     <script>
         let deleteId;  // 削除する商品のIDを保持する変数
-
-        // モーダルが表示されたときに、削除する商品のIDを設定
+        // モーダルが表示されたときに、削除する商品のIDと名前を設定
         document.getElementById('deleteModal').addEventListener('show.bs.modal', function (event) {
             const button = event.relatedTarget;
             deleteId = button.getAttribute('data-id');
+            const itemName = button.getAttribute('data-name');
+            document.getElementById('deleteItemName').textContent = itemName;
         });
 
         // 「削除」ボタンが押されたら、フォームを作成して送信
@@ -131,12 +131,10 @@ $products = $product_obj->get_all();
             const form = document.createElement('form');
             form.method = 'post';
             form.action = '../delete/';
-
             const input = document.createElement('input');
             input.type = 'hidden';
             input.name = 'id';
             input.value = deleteId;
-
             form.appendChild(input);
             document.body.appendChild(form);
             form.submit();
