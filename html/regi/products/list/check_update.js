@@ -30,11 +30,16 @@ async function check_update() {
         }
 
         const data = await response.text();
-        if (data.trim() !== "") { // データが空でない場合のみ更新
-            document.getElementById('refresh').innerHTML = data;
-            document.getElementById('last-update').innerText = getCurrentTime(); // 最終更新時刻を更新
+        if (data.trim() !== "") {
+            // データが空でない場合のみ更新
+            const current_time = getCurrentTime();
 
+            document.getElementById('refresh').innerHTML = data;
+            document.getElementById('last-update').innerText = current_time; // 最終更新時刻を更新
+
+            document.getElementById("notify_title").innerText = document.getElementById("title").innerText;
             document.getElementById("update_msg_notify").innerText = document.getElementById("update_msg").value;
+            document.getElementById("update_time").innerText = current_time;
 
             const toastLiveExample = document.getElementById('liveToast');
             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
