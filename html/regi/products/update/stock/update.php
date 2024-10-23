@@ -18,8 +18,9 @@ if (!isset($_POST["add_quantity"]) || $_POST["add_quantity"] === "") {
 }
 
 $negative_quantity = false;
-if ($_POST["add_quantity"] < 0) {
+if (intval($_POST["add_quantity"]) < 0) {
     $_SESSION["message"] = "在庫数を減らすことはできません。";
+    $ok = false;
     $negative_quantity = true;
 }
 
