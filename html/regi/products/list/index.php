@@ -6,14 +6,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/products/product.php";
 $product_obj = new Product();
 $products = $product_obj->get_all();
-
-// Androidのmsedgeだと動かないので警告する
-// 治ったら消す
-if (strpos($_SERVER['HTTP_USER_AGENT'], "EdgA") && strpos($_SERVER['HTTP_USER_AGENT'], "Android")) {
-    $_SESSION["message"] = "Android版Microsoft Edgeご利用の方へ";
-    $_SESSION["message_details"] = "お使いのブラウザでは、自動更新機能が動作していません。お手数ですが、別のブラウザをご利用ください。";
-    $_SESSION["message"] = "warning";
-}
 ?>
 <!DOCTYPE html>
 <html lang="ja">
