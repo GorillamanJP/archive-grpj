@@ -64,7 +64,7 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], "EdgA") && strpos($_SERVER['HTTP_USER_AG
                     </tr>
                 </thead>
                 <tbody class="table-light" id="refresh">
-                    <!-- 中身はcheck_update.phpを使ってlist_not_item.phpまたはlist_tbody.phpから読み込まれます。画面を編集する場合はそっちへ行ってください。-->
+                    <!-- 中身はcheck_update.phpを使ってlist_not_product.phpまたはproducts_list_tbody.phpから読み込まれます。画面を編集する場合はそっちへ行ってください。-->
                     <input type='hidden' id='products_count' name='products_count' value="0">
                     <input type="hidden" id="update_msg" name="update_msg" value="情報">
                     <tr>
