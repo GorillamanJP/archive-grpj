@@ -12,7 +12,7 @@ $products = $product_obj->get_all();
 if (strpos($_SERVER['HTTP_USER_AGENT'], "EdgA") && strpos($_SERVER['HTTP_USER_AGENT'], "Android")) {
     $_SESSION["message"] = "Android版Microsoft Edgeご利用の方へ";
     $_SESSION["message_details"] = "お使いのブラウザでは、自動更新機能が動作していません。お手数ですが、別のブラウザをご利用ください。";
-    $_SESSION["message_type"] = "warning";
+    $_SESSION["message"] = "warning";
 }
 ?>
 <!DOCTYPE html>
@@ -33,8 +33,7 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], "EdgA") && strpos($_SERVER['HTTP_USER_AG
 <body>
     <div class="container">
         <h1 class="text-center mt-3">商品一覧</h1>
-        <p class="text-center my-3" style="font-size: 1.2em;">最終更新時刻:<span
-                id="last-update"><?= date("Y/m/d H:i:s") ?></span></p>
+        <p class="text-center my-3" style="font-size: 1.2em;">最終更新時刻:<span id="last-update">0/0/0 00:00:00</span></p>
         <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
         <div class="text-center my-3">
             <a href="../create/" class="btn btn-outline-primary btn-lg-custom p-2 mx-1">商品登録</a>
@@ -45,7 +44,7 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], "EdgA") && strpos($_SERVER['HTTP_USER_AG
             <div id="liveToast" class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
                 <div class="d-flex">
                     <div class="toast-body">
-                        <span id="update_type_msg_notify"></span>に更新がありました！
+                        <span id="update_msg_notify"></span>
                     </div>
                     <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"
                         aria-label="Close"></button>
@@ -65,66 +64,16 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], "EdgA") && strpos($_SERVER['HTTP_USER_AG
                     </tr>
                 </thead>
                 <tbody class="table-light" id="refresh">
-                    <?php if (is_null($products)): ?>
-                        <tr>
-                            <td colspan='5'>
-                                <input type='hidden' id='products_count' name='products_count' value=0>
-                                <h2 class='text-center'>商品はありません。</h2>
-                                <p class='text-center'><a href='../create/'>新たに商品を登録しましょう！</a></p>
-                            </td>
-                        </tr>
-                    <?php else: ?>
-                        <input type="hidden" id="products_count" name="products_count" value="<?= count($products) ?>">
-                        <?php foreach ($products as $product): ?>
-                            <tr>
-                                <td>
-                                    <img src="data:image/jpeg;base64,<?= $product->get_item()->get_item_image() ?>"
-                                        alt="商品画像　ID<?= $product->get_item()->get_id() ?>番" class="img-fluid img-thumbnail">
-                                </td>
-                                <td><?= $product->get_item()->get_item_name() ?></td>
-                                <td><?= $product->get_item()->get_price() ?></td>
-                                <td><?= $product->get_stock()->get_quantity() ?></td>
-                                <td>
-                                    <table class="container">
-                                        <tr>
-                                            <td>
-                                                <form action="../update/item/" method="post">
-                                                    <input type="hidden" name="id" id="id"
-                                                        value="<?= $product->get_item()->get_id() ?>">
-                                                    <input type="submit" value="更新"
-                                                        class="btn btn-outline-primary round-button">
-                                                </form>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <form action="../update/stock/" method="post">
-                                                    <input type="hidden" name="id" id="id"
-                                                        value="<?= $product->get_stock()->get_id() ?>">
-                                                    <input type="submit" value="入荷"
-                                                        class="btn btn-outline-success round-button">
-                                                </form>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <!-- 削除ボタン -->
-                                                <button type="button" class="btn btn-outline-danger round-button"
-                                                    data-bs-toggle="modal" data-bs-target="#deleteModal"
-                                                    data-id="<?= $product->get_item()->get_id() ?>"
-                                                    data-name="<?= $product->get_item()->get_item_name() ?>">削除</button>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                        <?php endforeach ?>
-                    <?php endif ?>
+                    <!-- 中身はcheck_update.phpを使ってlist_not_item.phpまたはlist_tbody.phpから読み込まれます。画面を編集する場合はそっちへ行ってください。-->
+                    <input type='hidden' id='products_count' name='products_count' value="0">
+                    <input type="hidden" id="update_msg" name="update_msg" value="情報">
+                    <tr>
+                        <td colspan="5"><h2>読み込み中…</h2></td>
+                    </tr>
                 </tbody>
             </table>
         </div>
     </div>
-    <span id='update_type_msg' style='display: none'>情報</span>
     <!-- 削除確認モーダル -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">

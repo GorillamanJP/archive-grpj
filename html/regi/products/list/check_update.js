@@ -34,8 +34,8 @@ async function check_update() {
             document.getElementById('refresh').innerHTML = data;
             document.getElementById('last-update').innerText = getCurrentTime(); // 最終更新時刻を更新
 
-            document.getElementById("update_type_msg_notify").innerText = document.getElementById("update_type_msg").innerText;
-            
+            document.getElementById("update_msg_notify").innerText = document.getElementById("update_msg").value;
+
             const toastLiveExample = document.getElementById('liveToast');
             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
             toastBootstrap.show();
