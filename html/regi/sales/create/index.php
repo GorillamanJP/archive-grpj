@@ -87,6 +87,7 @@ try {
             $_SESSION["message"] = "購入数に対し在庫が不足するため、購入処理ができませんでした。";
             $_SESSION["message_type"] = "danger";
             session_write_close();
+            require "./unlock.php";
             header("Location: /regi/");
             exit();
         }
