@@ -157,7 +157,7 @@ if ($total_price < 0) {
 
 <body>
     <h1 class="text-center my-3">お支払い</h1>
-    <form action="./create.php" method="post" id="form" onsubmit="return check_received_price()">
+    <form action="./create.php" method="post" id="form">
         <div class="container">
             <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
             <div class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;"
@@ -231,36 +231,156 @@ if ($total_price < 0) {
         </div>
     </form>
 
+    <!-- 支払金額不足モーダル -->
+    <div class="modal fade" id="insufficientFundsModal" tabindex="-1" aria-labelledby="insufficientFundsModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="insufficientFundsModalLabel">支払金額不足</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="fw-bold fs-4">お預かり金額が不足しています。</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 購入確定モーダル -->
+    <div class="modal fade" id="confirmPurchaseModal" tabindex="-1" aria-labelledby="confirmPurchaseModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmPurchaseModalLabel">購入の確認</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="fw-bold fs-4">本当に購入を確定しますか？</p>
+                    <div>
+                        <table class="table table-borderless">
+                            <tr>
+                                <th class="fs-5" style="width: 150px; text-align: right;"><strong>合計金額:</strong></th>
+                                <td class="fs-5" style="text-align: left;"><span id="confirmTotalPrice"></span>円</td>
+                            </tr>
+                            <tr>
+                                <th class="fs-5" style="width: 150px; text-align: right;"><strong>お預かり:</strong></th>
+                                <td class="fs-5" style="text-align: left;"><span id="confirmReceivedPrice"></span>円</td>
+                            </tr>
+                            <tr>
+                                <th class="fs-5" style="width: 150px; text-align: right;"><strong>お釣り:</strong></th>
+                                <td class="fs-5" style="text-align: left;"><span id="confirmReturnedPrice"></span>円</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+                    <button type="button" class="btn btn-primary" id="confirmPurchaseBtn">購入確定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- お釣り確認モーダル -->
+    <div class="modal fade" id="confirmChangeModal" tabindex="-1" aria-labelledby="confirmChangeModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmChangeModalLabel">お釣りの確認</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="fw-bold fs-4">お釣り <span id="confirmChangeAmount"></span> 円を渡してください。</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelChangeBtn"
+                        data-bs-dismiss="modal">キャンセル</button>
+                    <button type="button" class="btn btn-primary" id="confirmChangeBtn">確認</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 購入確定ボタンにイベントリスナーを追加 -->
     <script>
+        document.getElementById('form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            // お釣り計算
+            calc_and_disp_transaction();
+            const receivedPrice = document.getElementById('received_price').value;
+            const returnedPrice = document.getElementById('returned_price').value;
+
+            // お預かり金額が不足している場合の処理
+            if (returnedPrice < 0) {
+                var insufficientFundsModal = new bootstrap.Modal(document.getElementById('insufficientFundsModal'), {
+                    keyboard: false
+                });
+                insufficientFundsModal.show();
+            } else {
+                document.getElementById('confirmTotalPrice').textContent = document.getElementById('total_price_disp').textContent;
+                document.getElementById('confirmReceivedPrice').textContent = document.getElementById('received_price_disp').value;
+                document.getElementById('confirmReturnedPrice').textContent = document.getElementById('returned_price_disp').textContent;
+                var confirmPurchaseModal = new bootstrap.Modal(document.getElementById('confirmPurchaseModal'), {
+                    keyboard: false
+                });
+                confirmPurchaseModal.show();
+            }
+        });
+
+        document.getElementById('confirmPurchaseBtn').addEventListener('click', function () {
+            const returnedPrice = document.getElementById('returned_price').value;
+            var confirmPurchaseModal = bootstrap.Modal.getInstance(document.getElementById('confirmPurchaseModal'));
+            if (returnedPrice > 0) {
+                confirmPurchaseModal.hide();
+                document.getElementById('confirmChangeAmount').textContent = returnedPrice;
+                var confirmChangeModal = new bootstrap.Modal(document.getElementById('confirmChangeModal'), {
+                    keyboard: false
+                });
+                confirmChangeModal.show();
+            } else {
+                confirmPurchaseModal.hide();
+                document.getElementById('form').submit();
+            }
+        });
+
+        document.getElementById('confirmChangeBtn').addEventListener('click', function () {
+            document.getElementById('form').submit();
+        });
+
+        document.getElementById('cancelChangeBtn').addEventListener('click', function () {
+            var confirmChangeModal = bootstrap.Modal.getInstance(document.getElementById('confirmChangeModal'));
+            confirmChangeModal.hide();
+        });
+
+        // Enterキーで確定ボタンを押す処理を追加
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter' && event.target.nodeName !== 'TEXTAREA') {
+                if (document.querySelector('.modal.show #confirmPurchaseBtn')) {
+                    event.preventDefault();
+                    document.querySelector('.modal.show #confirmPurchaseBtn').click();
+                } else if (document.querySelector('.modal.show #confirmChangeBtn')) {
+                    event.preventDefault();
+                    document.querySelector('.modal.show #confirmChangeBtn').click();
+                }
+            }
+        });
+
         // お釣り計算周りの処理
         function calc_and_disp_transaction() {
             document.getElementById("received_price").value = document.getElementById("received_price_disp").value;
-
             const input = document.getElementById("received_price").value;
             const returned_price_value = input - document.getElementById("total_price").value;
             document.getElementById("returned_price").value = returned_price_value;
             document.getElementById("returned_price_disp").innerText = returned_price_value;
         }
-        calc_and_disp_transaction();
-        document.getElementById("received_price_disp").addEventListener("input", calc_and_disp_transaction);
 
-        // お預かり金額が少なくないかチェック
-        function check_received_price() {
-            calc_and_disp_transaction();
-            const received_price = document.getElementById("returned_price").value;
-            if (received_price < 0) {
-                alert("お預かり金額が不足しています。");
-                return false;
-            } else {
-                if (received_price > 0) {
-                    let stat = confirm("おつり" + received_price + "円を渡してください。");
-                    if (stat == false) {
-                        return false;
-                    }
-                }
-                return confirm("支払いを確定します。よろしいですか？");
-            }
-        }
+        document.getElementById("received_price_disp").addEventListener("input", calc_and_disp_transaction);
 
         // ロック解除スクリプト
         window.addEventListener("beforeunload", function () {

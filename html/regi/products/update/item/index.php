@@ -52,7 +52,8 @@ $product = $product->get_from_item_id($id);
     <div class="container">
         <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
         <table class="table table-bordered table-info table-hover ">
-            <form id="updateForm" action="update.php" method="post" enctype="multipart/form-data">
+            <form id="updateForm" action="update.php" method="post" enctype="multipart/form-data"
+                onsubmit="event.preventDefault(); showConfirmationModal();">
                 <input type="hidden" name="id" value="<?= $product->get_item()->get_id() ?>">
                 <tr class="form-group">
                     <th class="align-middle">商品名</th>
@@ -78,13 +79,11 @@ $product = $product->get_from_item_id($id);
                 </tr>
         </table>
         <div class="text-center">
-            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
-                data-bs-target="#confirmModal">更新</button>
+            <input type="submit" class="btn btn-outline-primary" value="更新">
             <a href="../../list/" class="btn btn-outline-secondary">戻る</a>
         </div>
         </form>
     </div>
-
     <!-- 更新確認モーダル -->
     <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -120,13 +119,10 @@ $product = $product->get_from_item_id($id);
             </div>
         </div>
     </div>
-
     <script>
-        // モーダルが表示されたときに入力内容を表示
-        document.getElementById('confirmModal').addEventListener('show.bs.modal', function () {
+        function showConfirmationModal() {
             document.getElementById('confirmItemName').textContent = document.getElementById('item_name').value;
             document.getElementById('confirmPrice').textContent = document.getElementById('price').value;
-
             const newImage = document.getElementById('new_item_image').files[0];
             if (newImage) {
                 const reader = new FileReader();
@@ -137,9 +133,12 @@ $product = $product->get_from_item_id($id);
             } else {
                 document.getElementById('confirmItemImage').src = document.getElementById('now_item_image').src;
             }
-        });
+            var myModal = new bootstrap.Modal(document.getElementById('confirmModal'), {
+                keyboard: false
+            });
+            myModal.show();
+        }
 
-        // 更新ボタンが押されたときにフォームを送信
         document.getElementById('confirmUpdateBtn').addEventListener('click', function () {
             document.getElementById('updateForm').submit();
         });
