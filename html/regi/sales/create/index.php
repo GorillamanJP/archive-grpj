@@ -26,36 +26,6 @@ if (!$ok) {
     exit();
 }
 
-$product_ids = $_POST["product_id"];
-$quantities = $_POST["quantity"];
-
-$total_price = 0;
-$total_amount = 0;
-
-require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/stocks/stock.php";
-// 在庫チェック
-try {
-    for ($i = 0; $i < count($quantities); $i++) {
-        $stock = new Stock();
-        $stock = $stock->get_from_id($product_ids[$i]);
-        $after_quantity = $stock->get_quantity() - $quantities[$i];
-        if ($after_quantity < 0) {
-            $_SESSION["message"] = "購入数に対し在庫が不足するため、購入処理ができませんでした。";
-            $_SESSION["message_type"] = "danger";
-            session_write_close();
-            header("Location: /regi/");
-            exit();
-        }
-    }
-} catch (\Throwable $e) {
-    $_SESSION["message"] = "商品が見つかりませんでした。";
-    $_SESSION["message_details"] = "選ばれた商品が削除された可能性があります。";
-    $_SESSION["message_type"] = "danger";
-    session_write_close();
-    header("Location: /regi/");
-    exit();
-}
-
 // ファイルロックを使って決済画面は一つの端末で一つのタブしかアクセスできない状態を作り出す
 // ロックファイルの場所
 $lockfile_path = "/tmp/sales_create.lock";
@@ -95,7 +65,64 @@ if (!file_exists($lockfile_path)) {
     }
 }
 
-require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
+$product_ids = $_POST["product_id"];
+$quantities = $_POST["quantity"];
+
+$total_price = 0;
+$total_amount = 0;
+
+$buy_items = [];
+
+require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/products/product.php";
+// 在庫チェックしつつ購入内容のデータを組み立てる
+try {
+    for ($i = 0; $i < count($product_ids); $i++) {
+        $product = new Product();
+        $product = $product->get_from_item_id($product_ids[$i]);
+        $item = $product->get_item();
+        $stock = $product->get_stock();
+        $buy_quantity = $quantities[$i];
+        $after_stock = $stock->get_quantity() - $buy_quantity;
+        if ($after_stock < 0) {
+            $_SESSION["message"] = "購入数に対し在庫が不足するため、購入処理ができませんでした。";
+            $_SESSION["message_type"] = "danger";
+            session_write_close();
+            header("Location: /regi/");
+            exit();
+        }
+        $id = $item->get_id();
+        $name = $item->get_item_name();
+        $price = $item->get_price();
+        $subtotal = $buy_quantity * $price;
+        $buy_items[] = array(
+            "id" => $id,
+            "name" => $name,
+            "price" => $price,
+            "buy_quantity" => $buy_quantity,
+            "subtotal" => $subtotal,
+        );
+        $total_price += $subtotal;
+        $total_amount += $buy_quantity;
+    }
+} catch (\Throwable $e) {
+    $_SESSION["message"] = "商品が見つかりませんでした。";
+    $_SESSION["message_details"] = "選ばれた商品が削除された可能性があります。";
+    $_SESSION["message_type"] = "danger";
+    session_write_close();
+    require "./unlock.php";
+    header("Location: /regi/");
+    exit();
+}
+
+if ($total_price < 0) {
+    $_SESSION["message"] = "合計金額が0円以下になります。";
+    $_SESSION["message_details"] = "選んだ商品を確認してください。クーポンなどの割引商品を選びすぎた可能性があります。";
+    $_SESSION["message_type"] = "danger";
+    session_write_close();
+    require "./unlock.php";
+    header("Location: /regi/");
+    exit();
+}
 ?>
 <html lang="ja">
 
@@ -150,38 +177,27 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
                     </tr>
                 </thead>
                 <tbody>
-                    <?php for ($i = 0; $i < count($product_ids); $i++): ?>
-                        <?php
-                        $item = new Item();
-                        $item = $item->get_from_id($product_ids[$i]);
-
-                        $item_name = $item->get_item_name();
-                        $price = $item->get_price();
-                        $quantity = $quantities[$i];
-                        $subtotal = $price * $quantity;
-                        $total_price += $subtotal;
-                        $total_amount += $quantity;
-                        ?>
+                    <?php foreach ($buy_items as $item): ?>
                         <tr>
-                            <input type="hidden" name="product_id[]" value="<?= $item->get_id() ?>" required>
+                            <input type="hidden" name="product_id[]" value="<?= $item["id"] ?>" required>
                             <td>
-                                <span><?= $item_name ?></span>
-                                <input type="hidden" name="product_name[]" value="<?= $item_name ?>" required>
+                                <span><?= $item["name"] ?></span>
+                                <input type="hidden" name="product_name[]" value="<?= $item["name"] ?>" required>
                             </td>
                             <td>
-                                <span><?= $price ?></span>
-                                <input type="hidden" name="product_price[]" value="<?= $price ?>" required>
+                                <span><?= $item["price"] ?></span>
+                                <input type="hidden" name="product_price[]" value="<?= $item["price"] ?>" required>
                             </td>
                             <td>
-                                <span><?= $quantity ?></span>
-                                <input type="hidden" name="quantity[]" value="<?= $quantity ?>" required>
+                                <span><?= $item["buy_quantity"] ?></span>
+                                <input type="hidden" name="quantity[]" value="<?= $item["buy_quantity"] ?>" required>
                             </td>
                             <td>
-                                <span><?= $subtotal ?></span>
-                                <input type="hidden" name="subtotal[]" value="<?= $subtotal ?>" required>
+                                <span><?= $item["subtotal"] ?></span>
+                                <input type="hidden" name="subtotal[]" value="<?= $item["subtotal"] ?>" required>
                             </td>
                         </tr>
-                    <?php endfor; ?>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
             <table class="table mt-3">
@@ -208,7 +224,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
             </table>
             <div class="text-center mt-4">
                 <p><input type="submit" value="購入確定" class="btn btn-primary btn-lg round-button"></p>
-                <p><a href="/regi/"><button type="button" class="btn btn-secondary btn-lg round-button">戻る</button></a></p>
+                <p><a href="/regi/"><button type="button" class="btn btn-secondary btn-lg round-button">戻る</button></a>
+                </p>
             </div>
         </div>
     </form>
