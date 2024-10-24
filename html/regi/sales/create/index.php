@@ -214,7 +214,26 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
         </div>
     </form>
 
-    <!-- 確認モーダル -->
+    <!-- 支払金額不足モーダル -->
+    <div class="modal fade" id="insufficientFundsModal" tabindex="-1" aria-labelledby="insufficientFundsModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="insufficientFundsModalLabel">支払金額不足</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="fw-bold fs-4">お預かり金額が不足しています。</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 購入確定モーダル -->
     <div class="modal fade" id="confirmPurchaseModal" tabindex="-1" aria-labelledby="confirmPurchaseModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -245,25 +264,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
                     <button type="button" class="btn btn-primary" id="confirmPurchaseBtn">購入確定</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 支払金額不足のモーダル -->
-    <div class="modal fade" id="insufficientFundsModal" tabindex="-1" aria-labelledby="insufficientFundsModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="insufficientFundsModalLabel">支払金額不足</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
-                </div>
-                <div class="modal-body">
-                    <p class="fw-bold fs-4">お預かり金額が不足しています。</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
                 </div>
             </div>
         </div>
@@ -341,6 +341,19 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
             confirmChangeModal.hide();
         });
 
+        // Enterキーで確定ボタンを押す処理を追加
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter' && event.target.nodeName !== 'TEXTAREA') {
+                if (document.querySelector('.modal.show #confirmPurchaseBtn')) {
+                    event.preventDefault();
+                    document.querySelector('.modal.show #confirmPurchaseBtn').click();
+                } else if (document.querySelector('.modal.show #confirmChangeBtn')) {
+                    event.preventDefault();
+                    document.querySelector('.modal.show #confirmChangeBtn').click();
+                }
+            }
+        });
+
         // お釣り計算周りの処理
         function calc_and_disp_transaction() {
             document.getElementById("received_price").value = document.getElementById("received_price_disp").value;
@@ -351,7 +364,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
         }
 
         document.getElementById("received_price_disp").addEventListener("input", calc_and_disp_transaction);
-        
+
         // ロック解除スクリプト
         window.addEventListener("beforeunload", function () {
             navigator.sendBeacon("./unlock.php");
