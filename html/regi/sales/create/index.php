@@ -207,7 +207,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
                 </tr>
             </table>
             <div class="text-center mt-4">
-                <input type="submit" value="購入確定" class="btn btn-primary btn-lg round-button">
+                <p><input type="submit" value="購入確定" class="btn btn-primary btn-lg round-button"></p>
+                <p><a href="/regi/"><button type="button" class="btn btn-secondary btn-lg round-button">戻る</button></a></p>
             </div>
         </div>
     </form>

@@ -42,19 +42,19 @@ $item_obj = new Item();
         <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
         <table class="table table-striped table-success">
             <tr>
-                <th>会計番号</th>
+                <th class="text-end">会計番号</th>
                 <td><?= $sale->get_accountant()->get_id() ?></td>
             </tr>
             <tr>
-                <th>会計日時</th>
+                <th class="text-end">会計日時</th>
                 <td><?= $sale->get_accountant()->get_date() ?></td>
             </tr>
             <tr>
-                <th colspan="2">購入一覧</th>
+                <th colspan="2" class="text-center">購入一覧</th>
             </tr>
                 <tr>
                     <td colspan="2">
-                        <table class="table">
+                        <table class="table text-center">
                             <tr>
                                 <th>商品名</th>
                                 <th>価格</th>
@@ -73,23 +73,23 @@ $item_obj = new Item();
                     </td>
                 </tr>
             <tr>
-                <th>合計購入数</th>
+                <th class="text-end">合計購入数</th>
                 <td><?= $sale->get_accountant()->get_total_amount() ?></td>
             </tr>
             <tr>
-                <th>合計</th>
+                <th class="text-end">合計</th>
                 <td><?= $sale->get_accountant()->get_total_price() ?></td>
             </tr>
             <tr>
-                <th>お預かり</th>
+                <th class="text-end">お預かり</th>
                 <td><?= $sale->get_transaction()->get_received_price() ?></td>
             </tr>
             <tr>
-                <th>お釣り</th>
+                <th class="text-end">お釣り</th>
                 <td><?= $sale->get_transaction()->get_returned_price() ?></td>
             </tr>
             <tr>
-                <th>会計者</th>
+                <th class="text-end">会計者</th>
                 <td><?= $sale->get_accountant()->get_accountant_user_name() ?></td>
             </tr>
         </table>
