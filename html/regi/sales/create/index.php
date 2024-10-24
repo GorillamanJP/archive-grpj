@@ -351,9 +351,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
         }
 
         document.getElementById("received_price_disp").addEventListener("input", calc_and_disp_transaction);
-    </script>
-
-    <script>
+        
         // ロック解除スクリプト
         window.addEventListener("beforeunload", function () {
             navigator.sendBeacon("./unlock.php");
