@@ -15,12 +15,13 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>会計履歴</title>
+    <title id="title">会計一覧</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="/common/list.css">
     <style>
         .clickable-row {
@@ -33,65 +34,36 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
     <div class="container mt-4">
         <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
         <h1 class="text-center mb-4">会計一覧</h1>
+        <p class="text-center my-3" style="font-size: 1.2em;">最終更新時刻:<span id="last-update">0000/0/0 00:00:00</span></p>
         <div class="text-center mb-3">
             <a href="../../" class="btn btn-outline-success btn-lg-custom p-2 mx-1">レジ画面へ</a>
             <div class="alert alert-info mt-2">
                 詳細を見るには、項目を押してください。
             </div>
         </div>
-    
-        <?php if (is_null($sales)): ?>
-            <p class="text-center">会計記録はありません</p>
-        <?php else: ?>
-            <table class="table table-success table-striped table-bordered table-hover text-center align-middle">
+        <table class="table table-success table-striped table-bordered table-hover text-center align-middle">
+            <thead>
                 <tr>
                     <th>ID</th>
                     <th>購入日</th>
                     <th>詳細</th>
+                    <th>会計者</th>
                 </tr>
-                <?php foreach ($sales as $sale): ?>
-                    <tr class="clickable-row" data-id="<?= $sale->get_accountant()->get_id() ?>">
-                        <td><?= $sale->get_accountant()->get_id() ?></td>
-                        <td><?= $sale->get_accountant()->get_date() ?></td>
-                        <td>
-                            <table class="table table-striped table-bordered">
-                                <tr>
-                                    <th>品名</th>
-                                    <th>数量</th>
-                                </tr>
-                                <?php foreach ($sale->get_details() as $detail): ?>
-                                    <tr>
-                                        <td><?= $detail->get_item_name() ?></td>                               
-                                        <td><?= $detail->get_quantity() ?></td>
-                                    </tr>
-                                <?php endforeach ?>
-                            </table>
-                        </td>
-                    </tr>
-                <?php endforeach ?>
-            </table>
-        <?php endif ?>
+            </thead>
+            <tbody id="refresh">
+                <input type="hidden" id="update_msg" name="update_msg" value="情報">
+                <tr>
+                    <td colspan="3">
+                        <h2>読み込み中…</h2>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            var rows = document.querySelectorAll(".clickable-row");
-            rows.forEach(function (row) {
-                row.addEventListener("click", function () {
-                    var saleId = row.getAttribute("data-id");
-                    var form = document.createElement("form");
-                    form.setAttribute("method", "post");
-                    form.setAttribute("action", "../show/");
-                    var hiddenField = document.createElement("input");
-                    hiddenField.setAttribute("type", "hidden");
-                    hiddenField.setAttribute("name", "id");
-                    hiddenField.setAttribute("value", saleId);
-                    form.appendChild(hiddenField);
-                    document.body.appendChild(form);
-                    form.submit();
-                });
-            });
-        });
-    </script>
+    <!-- 更新通知 -->
+    <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/toast.php"; ?>
+    <!-- 更新通知　ここまで -->
+    <script src="./check_update.js"></script>
 </body>
 
 </html>

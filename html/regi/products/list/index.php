@@ -6,14 +6,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/products/product.php";
 $product_obj = new Product();
 $products = $product_obj->get_all();
-
-// Androidのmsedgeだと動かないので警告する
-// 治ったら消す
-if (strpos($_SERVER['HTTP_USER_AGENT'], "EdgA") && strpos($_SERVER['HTTP_USER_AGENT'], "Android")) {
-    $_SESSION["message"] = "Android版Microsoft Edgeご利用の方へ";
-    $_SESSION["message_details"] = "お使いのブラウザでは、自動更新機能が動作していません。お手数ですが、別のブラウザをご利用ください。";
-    $_SESSION["message"] = "warning";
-}
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -21,37 +13,25 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], "EdgA") && strpos($_SERVER['HTTP_USER_AG
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>商品一覧</title>
+    <title id="title">商品管理</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="/common/list.css">
 </head>
 
 <body>
     <div class="container">
-        <h1 class="text-center mt-3">商品一覧</h1>
+        <h1 class="text-center mt-3">商品管理</h1>
         <p class="text-center my-3" style="font-size: 1.2em;">最終更新時刻:<span id="last-update">0000/0/0 00:00:00</span></p>
         <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
         <div class="text-center my-3">
             <a href="../create/" class="btn btn-outline-primary btn-lg-custom p-2 mx-1">商品登録</a>
             <a href="../../" class="btn btn-outline-success btn-lg-custom p-2 mx-1">レジ画面へ</a>
         </div>
-        <!-- 更新通知 -->
-        <div class="toast-container position-fixed bottom-0 end-0 p-3">
-            <div id="liveToast" class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="d-flex">
-                    <div class="toast-body">
-                        <span id="update_msg_notify"></span>
-                    </div>
-                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"
-                        aria-label="Close"></button>
-                </div>
-            </div>
-        </div>
-        <!-- 更新通知　ここまで -->
         <div class="table-responsive my-4">
             <table class="table table-bordered table-hover text-center align-middle">
                 <thead class="table-info">
@@ -64,16 +44,21 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], "EdgA") && strpos($_SERVER['HTTP_USER_AG
                     </tr>
                 </thead>
                 <tbody class="table-light" id="refresh">
-                    <!-- 中身はcheck_update.phpを使ってlist_not_item.phpまたはlist_tbody.phpから読み込まれます。画面を編集する場合はそっちへ行ってください。-->
+                    <!-- 中身はcheck_update.phpを使ってlist_not_product.phpまたはproducts_list_tbody.phpから読み込まれます。画面を編集する場合はそっちへ行ってください。-->
                     <input type='hidden' id='products_count' name='products_count' value="0">
                     <input type="hidden" id="update_msg" name="update_msg" value="情報">
                     <tr>
-                        <td colspan="5"><h2>読み込み中…</h2></td>
+                        <td colspan="5">
+                            <h2>読み込み中…</h2>
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
+    <!-- 更新通知 -->
+    <?php require_once $_SERVER['DOCUMENT_ROOT']."/common/toast.php"; ?>
+    <!-- 更新通知　ここまで -->
     <!-- 削除確認モーダル -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">

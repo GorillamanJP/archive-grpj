@@ -88,6 +88,10 @@ $item_obj = new Item();
                 <th>お釣り</th>
                 <td><?= $sale->get_transaction()->get_returned_price() ?></td>
             </tr>
+            <tr>
+                <th>会計者</th>
+                <td><?= $sale->get_accountant()->get_accountant_user_name() ?></td>
+            </tr>
         </table>
         <div class="text-center">
             <a href="../list/" class="btn btn-outline-secondary btn-lg mb-4">戻る</a>

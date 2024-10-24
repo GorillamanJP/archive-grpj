@@ -29,12 +29,12 @@ class Sale
         $this->transaction = new Transaction();
     }
 
-    public function create(array $product_names, array $product_prices, array $quantities, array $subtotals, int $total_amount, int $total_price, int $received_price, int $returned_price): Sale
+    public function create(array $product_names, array $product_prices, array $quantities, array $subtotals, int $total_amount, string $accountant_user_name, int $total_price, int $received_price, int $returned_price): Sale
     {
         require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
         require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/products/product.php";
         try {
-            $this->accountant = $this->accountant->create($total_amount, $total_price);
+            $this->accountant = $this->accountant->create($total_amount, $total_price, $accountant_user_name);
             $accountant_id = $this->accountant->get_id();
             $detail = new Detail();
             $product = new Product();

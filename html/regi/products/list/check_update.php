@@ -71,10 +71,10 @@ function generate_updated_page(string $update_msg)
 
     ob_start();
     if (is_null($products)) {
-        require "./list_not_item.php";
+        require "./list_not_product.php";
     } else {
         $products_count = count($products);
-        require "./list_tbody.php";
+        require "./products_list_tbody.php";
     }
     $html_text = ob_get_contents();
     ob_end_clean();
