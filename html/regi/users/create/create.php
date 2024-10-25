@@ -26,7 +26,7 @@ if ($ok) {
         $_SESSION['message_type'] = 'success';
 
         session_write_close();
-        header('Location: /regi/users/login/');
+        header('Location: ../list/');
         exit();
     } catch (\Throwable $e) {
         // エラーメッセージをセッションに保存
