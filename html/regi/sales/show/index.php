@@ -33,6 +33,7 @@ $item_obj = new Item();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="/common/list.css">
         <link rel="stylesheet" href="/common/create.css">
 </head>
 
@@ -64,9 +65,9 @@ $item_obj = new Item();
                             <?php foreach ($sale->get_details() as $detail): ?>
                                 <tr>
                                     <td><?= $detail->get_item_name() ?></td>
-                                    <td><?= $detail->get_item_price() ?></td>
+                                    <td>￥<?= $detail->get_item_price() ?></td>
                                     <td><?= $detail->get_quantity() ?></td>
-                                    <td><?= $detail->get_subtotal() ?></td>
+                                    <td>￥<?= $detail->get_subtotal() ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         </table>
@@ -78,15 +79,15 @@ $item_obj = new Item();
             </tr>
             <tr>
                 <th class="text-end">合計</th>
-                <td><?= $sale->get_accountant()->get_total_price() ?></td>
+                <td>￥<?= $sale->get_accountant()->get_total_price() ?></td>
             </tr>
             <tr>
                 <th class="text-end">お預かり</th>
-                <td><?= $sale->get_transaction()->get_received_price() ?></td>
+                <td>￥<?= $sale->get_transaction()->get_received_price() ?></td>
             </tr>
             <tr>
                 <th class="text-end">お釣り</th>
-                <td><?= $sale->get_transaction()->get_returned_price() ?></td>
+                <td>￥<?= $sale->get_transaction()->get_returned_price() ?></td>
             </tr>
             <tr>
                 <th class="text-end">会計者</th>
