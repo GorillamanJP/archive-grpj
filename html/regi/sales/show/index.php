@@ -48,7 +48,7 @@ $item_obj = new Item();
             </tr>
             <tr>
                 <th class="text-end">会計日時</th>
-                <td><?= $sale->get_accountant()->get_date() ?></td>
+                <td><?= $sale->get_accountant()->get_formatted_date() ?></td>
             </tr>
             <tr>
                 <th colspan="2" class="text-center">購入一覧</th>
@@ -65,9 +65,9 @@ $item_obj = new Item();
                             <?php foreach ($sale->get_details() as $detail): ?>
                                 <tr>
                                     <td><?= $detail->get_item_name() ?></td>
-                                    <td>￥<?= $detail->get_item_price() ?></td>
+                                    <td>&#165;<?= $detail->get_item_price() ?></td>
                                     <td><?= $detail->get_quantity() ?></td>
-                                    <td>￥<?= $detail->get_subtotal() ?></td>
+                                    <td>&#165;<?= $detail->get_subtotal() ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         </table>
@@ -79,15 +79,15 @@ $item_obj = new Item();
             </tr>
             <tr>
                 <th class="text-end">合計</th>
-                <td>￥<?= $sale->get_accountant()->get_total_price() ?></td>
+                <td>&#165;<?= $sale->get_accountant()->get_total_price() ?></td>
             </tr>
             <tr>
                 <th class="text-end">お預かり</th>
-                <td>￥<?= $sale->get_transaction()->get_received_price() ?></td>
+                <td>&#165;<?= $sale->get_transaction()->get_received_price() ?></td>
             </tr>
             <tr>
                 <th class="text-end">お釣り</th>
-                <td>￥<?= $sale->get_transaction()->get_returned_price() ?></td>
+                <td>&#165;<?= $sale->get_transaction()->get_returned_price() ?></td>
             </tr>
             <tr>
                 <th class="text-end">会計者</th>

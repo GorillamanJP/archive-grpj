@@ -11,6 +11,9 @@ class Accountant
     {
         return $this->date;
     }
+    public function get_formatted_date():string{
+        return date_create($this->date)->format("Y/m/d H:i:s");
+    }
     private int $total_amount;
     public function get_total_amount(): int
     {

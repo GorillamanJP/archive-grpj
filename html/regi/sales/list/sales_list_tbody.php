@@ -1,7 +1,7 @@
 <?php foreach ($sales as $sale): ?>
     <tr class="clickable-row" data-id="<?= $sale->get_accountant()->get_id() ?>">
         <td><?= $sale->get_accountant()->get_id() ?></td>
-        <td><?= $sale->get_accountant()->get_date() ?></td>
+        <td><?= $sale->get_accountant()->get_formatted_date() ?></td>
         <td>
             <table class="table table-striped table-bordered">
                 <tr>
