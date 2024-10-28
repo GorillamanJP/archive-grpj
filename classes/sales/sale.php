@@ -1,7 +1,7 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/accountants/accountant.php";
-require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/details/detail.php";
-require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/transactions/transaction.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/../classes/accountants/accountant.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/../classes/details/detail.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/../classes/transactions/transaction.php";
 class Sale
 {
     private Accountant $accountant;
@@ -31,8 +31,8 @@ class Sale
 
     public function create(array $product_names, array $product_prices, array $quantities, array $subtotals, int $total_amount, string $accountant_user_name, int $total_price, int $received_price, int $returned_price): Sale
     {
-        require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
-        require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/products/product.php";
+        require_once $_SERVER['DOCUMENT_ROOT']."/../classes/items/item.php";
+        require_once $_SERVER['DOCUMENT_ROOT']."/../classes/products/product.php";
         try {
             $this->accountant = $this->accountant->create($total_amount, $total_price, $accountant_user_name);
             $accountant_id = $this->accountant->get_id();

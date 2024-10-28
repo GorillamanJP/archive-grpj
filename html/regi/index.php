@@ -1,5 +1,5 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/regi/users/login_check.php";
 ?>
 <?php
 session_start();
@@ -10,7 +10,7 @@ $user = $user->get_from_id($_SESSION["login"]["user_id"]);
 ?>
 
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/products/product.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/../classes/products/product.php";
 $product_obj = new Product();
 $products = $product_obj->get_all();
 ?>

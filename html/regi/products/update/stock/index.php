@@ -1,9 +1,9 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/regi/users/login_check.php";
 ?>
 <?php
 $id = htmlspecialchars($_POST["id"]);
-require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/products/product.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/../classes/products/product.php";
 
 $product = new Product();
 $product = $product->get_from_stock_id($id);

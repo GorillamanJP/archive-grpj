@@ -1,5 +1,5 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/regi/users/login_check.php";
 ?>
 <?php
 session_start();
@@ -73,7 +73,7 @@ $total_amount = 0;
 
 $buy_items = [];
 
-require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/products/product.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/../classes/products/product.php";
 // 在庫チェックしつつ購入内容のデータを組み立てる
 try {
     for ($i = 0; $i < count($product_ids); $i++) {

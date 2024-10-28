@@ -37,7 +37,7 @@ function check_update(string $last_update)
 
 function generate_updated_page(string $update_msg)
 {
-    require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/sales/sale.php";
+    require_once $_SERVER['DOCUMENT_ROOT']."/../classes/sales/sale.php";
     $sales = new Sale();
     $sales = $sales->get_all();
 
