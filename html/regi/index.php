@@ -140,6 +140,7 @@ $products = $product_obj->get_all();
 <body>
     <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/navbar.php"; ?>
     <!-- 残りのページ内容 -->
+    <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
     <div class="container">
         <div class="content1">
             <h1 class="text-center">商品一覧</h1>
