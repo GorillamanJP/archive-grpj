@@ -36,7 +36,7 @@ $products = $product_obj->get_all();
     <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
     <div class="app">
         <div class="sidebar">
-            <a href="#"><i class="fas fa-shopping-cart"></i>
+            <a href="./order/"><i class="fas fa-shopping-cart"></i>
                 <p>モバイルオーダー</p>
             </a>
             <a href="./sales/list/"><i class="fas fa-list-alt"></i>

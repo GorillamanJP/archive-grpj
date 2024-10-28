@@ -1,4 +1,7 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT']."/order/protects/protect.php";
+?>
+<?php
 require_once $_SERVER['DOCUMENT_ROOT']."/order/users/user_check.php";
 ?>
 <!DOCTYPE html>
