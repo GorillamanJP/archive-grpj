@@ -21,6 +21,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="/common/list.css">
     <style>
@@ -31,6 +32,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
 </head>
 
 <body>
+    <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/navbar.php"; ?>
+    <!-- 残りのページ内容 -->
     <div class="container mt-4">
         <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
         <h1 class="text-center mb-4">会計一覧</h1>

@@ -20,10 +20,13 @@ session_start();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="/common/list.css">
 </head>
 
 <body>
+    <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/navbar.php"; ?>
+    <!-- 残りのページ内容 -->
     <div class="container">
         <h1 class="text-center mt-3">ユーザー管理</h1>
         <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
@@ -67,7 +70,8 @@ session_start();
                     </tbody>
                 </table>
             </div>
-            <p class="text-center"><a href="../logout/"><button type="button" class="btn btn-secondary">ログアウト</button></a></p>
+            <p class="text-center"><a href="../logout/"><button type="button" class="btn btn-secondary">ログアウト</button></a>
+            </p>
         <?php endif ?>
     </div>
 

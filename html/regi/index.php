@@ -25,6 +25,10 @@ $products = $product_obj->get_all();
             flex-direction: column;
             padding-top: 56px;
             /* ナビゲーションバーの高さ分の余白を追加 */
+            background-color: #f8f9fa;
+            /* 優しいグレー */
+            font-family: 'Roboto', sans-serif;
+            /* フォントを変更 */
         }
 
         .container {
@@ -33,6 +37,12 @@ $products = $product_obj->get_all();
             display: flex;
             flex-wrap: wrap;
             /* フレックスボックスを適用 */
+            background-color: #ffffff;
+            /* コンテナの背景色を白に設定 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            /* コンテナにシャドウを追加 */
+            border-radius: 8px;
+            /* 角を丸くする */
         }
 
         .product-grid {
@@ -47,6 +57,8 @@ $products = $product_obj->get_all();
             margin: 0.5rem;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
+            word-wrap: break-word;
+            /* 長い商品名を折り返す */
         }
 
         .product-grid .product img {
@@ -89,50 +101,48 @@ $products = $product_obj->get_all();
             }
         }
 
-        @media (max-width: 576px) {
-            .product-grid .product {
-                flex: 1 1 calc(100% - 1rem);
-                /* 横に1個表示 */
-            }
+        .user-name {
+            font-size: 1.25rem;
+            /* フォントサイズを大きく調整 */
+            font-weight: bold;
+            /* フォントを太字にして強調 */
+            color: #ffeb3b;
+            /* フォントカラーを変更 */
+        }
+
+        /* ボタンのスタイリング */
+        .btn-danger a {
+            color: #fff;
+            /* リンクの色を白に設定 */
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            /* ボタンの背景色を変更 */
+            border-color: #28a745;
+            /* ボタンのボーダー色を変更 */
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+            /* ホバー時のボタンの背景色を変更 */
+            border-color: #1e7e34;
+            /* ホバー時のボーダー色を変更 */
+        }
+
+        a {
+            text-decoration: none;
+            /* リンクの下線を消す */
         }
     </style>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-        <div class="container-fluid">
-            <button onclick="toggleNavbar()" class="navbar-toggler" type="button">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i> モバイルオーダー</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="./sales/list/"><i class="fas fa-list-alt"></i> 会計一覧</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="./products/list/"><i class="fas fa-cubes"></i> 商品管理</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="./users/list/"><i class="fas fa-user"></i> ユーザー管理</a>
-                    </li>
-                    <!-- 新たにユーザー名とログアウトボタンをここに追加 -->
-                    <li class="nav-item">
-                        <p class="nav-link mb-0 mr-3 text-white"><?= $user->get_user_name() ?></p>
-                    </li>
-                    <li class="nav-item">
-                        <button class="btn btn-danger"><a href="./users/logout/" style="color: #fff;">ログアウト</a></button>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
+    <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/navbar.php"; ?>
+    <!-- 残りのページ内容 -->
     <div class="container">
         <div class="content1">
-            <h1>商品一覧</h1>
+            <h1 class="text-center">商品一覧</h1>
             <section class="image-text-block">
                 <div class="product-grid">
                     <?php if (empty($products)): ?>
@@ -300,11 +310,6 @@ $products = $product_obj->get_all();
             updateTotals(change * price, change);
             updateStockDisplay(productId, -change); // 在庫数を更新
             updateForm(productId, newQuantity); // フォームを更新
-        }
-
-        function toggleNavbar() {
-            const navbar = document.getElementById('navbarNav');
-            navbar.classList.toggle('show');
         }
     </script>
 </body>
