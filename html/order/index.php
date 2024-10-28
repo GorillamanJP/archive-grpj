@@ -1,3 +1,6 @@
+<?php
+require_once $_SERVER['DOCUMENT_ROOT']."/order/users/user_check.php";
+?>
 <!DOCTYPE html>
 <html lang="ja">
 

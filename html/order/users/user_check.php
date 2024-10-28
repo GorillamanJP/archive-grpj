@@ -3,7 +3,7 @@ session_start();
 
 // セッションにユーザー情報が書き込まれていない場合はログインに飛ばす
 if (!isset($_SESSION["order"]["user_id"])) {
-    header("Location: ./login.php");
+    header("Location: /order/users/login/");
     exit();
 }
 
@@ -15,12 +15,11 @@ try {
     $order_user = new Order_User();
     $order_user->get_from_id($id);
 
-    exit();
 } catch (\Throwable $th) {
     session_write_close();
     switch ($th->getCode()) {
         case 0:
-            header("Location: ./create.php");
+            header("Location: /order/users/login/");
             break;
 
         default:

@@ -12,6 +12,8 @@ try {
     $user = $user->get_from_id($user_id);
     $user->verify($fingerprint);
     // 例外を踏まなければ無事ログイン成功
+    $_SESSION["order"]["user_id"] = $user->get_id();
+    session_write_close();
     echo json_encode(["success" => true]);
     exit();
 } catch (\Throwable $th) {

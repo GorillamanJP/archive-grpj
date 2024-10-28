@@ -29,7 +29,7 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        document.getElementById("message").innerText = "ログイン成功";
+                        location.href = "/order/";
                     } else {
                         document.getElementById("message").innerText = "ログイン失敗";
                     }
