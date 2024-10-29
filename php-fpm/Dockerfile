@@ -9,5 +9,3 @@ RUN docker-php-ext-install -j$(nproc) gd
 RUN docker-php-ext-install pdo_mysql
 
 RUN git config --global --add safe.directory /var/www
-
-COPY entrypoint.sh /var/www/entrypoint.sh

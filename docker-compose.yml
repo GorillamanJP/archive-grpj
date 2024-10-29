@@ -34,8 +34,7 @@ services:
       - DB_PASSWORD=${DB_ROOT_PASSWORD}
       - TIMEZONE=${TIMEZONE}
       - MAX_FILESIZE=${MAX_FILESIZE}
-    # setting custom env data
-    entrypoint: /var/www/php-fpm/entrypoint.sh
+      - PASS_PHRASE=${PASS_PHRASE}
 
   mariadb:
     image: mariadb:latest
