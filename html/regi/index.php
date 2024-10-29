@@ -18,6 +18,8 @@ $products = $product_obj->get_all();
     <title>レジトップ</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     <style>
         body {
             margin: 0;
@@ -140,9 +142,9 @@ $products = $product_obj->get_all();
 <body>
     <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/navbar.php"; ?>
     <!-- 残りのページ内容 -->
-    <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
     <div class="container">
         <div class="content1">
+            <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
             <h1 class="text-center">商品一覧</h1>
             <section class="image-text-block">
                 <div class="product-grid">
