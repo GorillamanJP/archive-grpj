@@ -25,7 +25,7 @@
                     <p class="nav-link mb-0 mr-3 text-white user-name">ユーザー名：<?= $user->get_user_name() ?></p>
                 </li>
                 <li class="nav-item">
-                    <button class="btn btn-danger"><a href="./users/logout/" style="color: #fff;">ログアウト</a></button>
+                    <button class="btn btn-danger"><a href="/regi/users/logout/" style="color: #fff;">ログアウト</a></button>
                 </li>
             </ul>
         </div>
