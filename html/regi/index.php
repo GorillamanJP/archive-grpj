@@ -5,7 +5,7 @@ $user = new User();
 $user = $user->get_from_id($_SESSION["login"]["user_id"]);
 ?>
 <?php
-require_once $_SERVER['DOCUMENT_ROOT']."/../classes/products/product.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/products/product.php";
 $product_obj = new Product();
 $products = $product_obj->get_all();
 ?>
@@ -101,6 +101,11 @@ $products = $product_obj->get_all();
                 flex: 1 1 100%;
                 /* 狭い画面では縦並びに戻す */
             }
+
+            .quantity-container {
+                flex-direction: row;
+                justify-content: center;
+            }
         }
 
         .user-name {
@@ -135,6 +140,41 @@ $products = $product_obj->get_all();
         a {
             text-decoration: none;
             /* リンクの下線を消す */
+        }
+
+        .quantity-container {
+            display: inline-block;
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+            /* 中央揃えにする */
+            flex-wrap: nowrap;
+            /* 横並びを保持 */
+        }
+
+        .quantity-button {
+            padding: 2px 5px;
+            text-align: center;
+            font-size: 12px;
+            margin: 2px;
+            cursor: pointer;
+            transition-duration: 0.4s;
+        }
+
+        .quantity-container span {
+            display: inline-block;
+            margin: 0 5px;
+            vertical-align: middle;
+        }
+
+        #cart-table tbody td {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .product-name-column {
+            width: 6rem;
+            /* 商品名の固定幅 */
         }
     </style>
 </head>
@@ -174,7 +214,7 @@ $products = $product_obj->get_all();
                         <th>商品名</th>
                         <th>価格</th>
                         <th>個数</th>
-                        <th>削除</th>
+                        <th>取消</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -226,7 +266,7 @@ $products = $product_obj->get_all();
             } else {
                 if (stockQuantity > 0) {
                     const row = document.createElement('tr');
-                    row.innerHTML = `<td>${productName}</td><td>${price}円</td><td><button class="quantity-button" onclick="changeQuantity(this, -1, ${productId}, ${stockQuantity})">－</button><span>1個</span><button class="quantity-button" onclick="changeQuantity(this, 1, ${productId}, ${stockQuantity})">＋</button></td><td><button onclick="removeFromCart(this, ${price}, ${productId})" class="btn btn-danger">削除</button></td>`;
+                    row.innerHTML = `<td class="product-name-column">${productName}</td><td>${price}円</td><td><button class="btn btn-outline-success quantity-button" onclick="changeQuantity(this, -1, ${productId}, ${stockQuantity})">－</button><span>1個</span><button class="btn btn-outline-success quantity-button" onclick="changeQuantity(this, 1, ${productId}, ${stockQuantity})">＋</button></td><td><button class="btn btn-outline-danger" onclick="removeFromCart(this, ${price}, ${productId})" class="btn btn-danger">削除</button></td>`;
                     cartTable.appendChild(row);
                     updateTotals(price, 1);
                     updateStockDisplay(productId, -1);
