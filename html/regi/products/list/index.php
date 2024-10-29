@@ -60,7 +60,7 @@ $products = $product_obj->get_all();
         </div>
     </div>
     <!-- 更新通知 -->
-    <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/toast.php"; ?>
+    <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/toast.html"; ?>
     <!-- 更新通知　ここまで -->
     <!-- 削除確認モーダル -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
