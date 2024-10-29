@@ -167,14 +167,20 @@ $products = $product_obj->get_all();
             vertical-align: middle;
         }
 
+        .quantity-column {
+            width: 5rem;
+            /* 幅を固定 */
+            white-space: nowrap;
+        }
+
+        .delete-column {
+            width: 80px;
+            /* 削除部分の幅を固定 */
+        }
+
         #cart-table tbody td {
             text-align: center;
             vertical-align: middle;
-        }
-
-        .product-name-column {
-            width: 6rem;
-            /* 商品名の固定幅 */
         }
     </style>
 </head>
@@ -266,7 +272,7 @@ $products = $product_obj->get_all();
             } else {
                 if (stockQuantity > 0) {
                     const row = document.createElement('tr');
-                    row.innerHTML = `<td class="product-name-column">${productName}</td><td>${price}円</td><td><button class="btn btn-outline-success quantity-button" onclick="changeQuantity(this, -1, ${productId}, ${stockQuantity})">－</button><span>1個</span><button class="btn btn-outline-success quantity-button" onclick="changeQuantity(this, 1, ${productId}, ${stockQuantity})">＋</button></td><td><button class="btn btn-outline-danger" onclick="removeFromCart(this, ${price}, ${productId})" class="btn btn-danger">削除</button></td>`;
+                    row.innerHTML = `<td>${productName}</td><td>${price}円</td><td class="quantity-column"><button class="btn btn-outline-success quantity-button" onclick="changeQuantity(this, -1, ${productId}, ${stockQuantity})">－</button><span>1個</span><button class="btn btn-outline-success quantity-button" onclick="changeQuantity(this, 1, ${productId}, ${stockQuantity})">＋</button></td><td class="delete-column"><button class="btn btn-outline-danger" onclick="removeFromCart(this, ${price}, ${productId})" class="btn btn-danger">削除</button></td>`;
                     cartTable.appendChild(row);
                     updateTotals(price, 1);
                     updateStockDisplay(productId, -1);
