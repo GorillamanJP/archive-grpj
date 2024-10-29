@@ -16,12 +16,11 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/order/users/user_check.php";
 <body>
     <h1>モバイルオーダートップページ</h1>
     <h2>CAPTCHAテスト</h2>
-    <form method="post" action="verify_captcha.php">
-        <img src="generate_captcha.php" alt="CAPTCHA">
+    <form method="post" action="./captcha/verify_captcha.php">
+        <img src="./captcha/generate_captcha.php" alt="CAPTCHA">
         <input type="text" name="captcha" required>
         <button type="submit">Submit</button>
     </form>
-
 </body>
 
 </html>
