@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS order_order(
     date DATETIME NOT NULL,
     total_amount INT NOT NULL,
     total_price INT NOT NULL,
-    order_user_id VARCHAR(254) UNIQUE NOT NULL,
+    order_user_id VARCHAR(254) NOT NULL,
     is_received BOOLEAN NOT NULL,
     FOREIGN KEY (order_user_id) REFERENCES order_users(id)
 );
