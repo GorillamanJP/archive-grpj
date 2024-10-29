@@ -39,4 +39,12 @@ h1 {
         font-size: 1.3rem;
         /* 文字サイズを1.3倍にする */
     }
+
+/* 商品画像サイズ */
+.product-image img {
+    width: 40%;    /* 幅を50%に設定 */
+    height: auto;  /* 高さは自動調整 */
 }
+}
+
+

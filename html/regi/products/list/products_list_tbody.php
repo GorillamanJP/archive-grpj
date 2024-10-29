@@ -4,10 +4,11 @@
 <input type='hidden' id='products_count' name='products_count' value='<?= $products_count ?>'>
 <?php foreach ($products as $product): ?>
     <tr>
-        <td>
-            <img src='data:image/jpeg;base64,<?= $product->get_item()->get_item_image() ?>'
-                alt='商品画像　ID<?= $product->get_item()->get_id() ?>番' class='img-fluid img-thumbnail'>
-        </td>
+    <td class="product-image">
+    <img src='data:image/jpeg;base64,<?= $product->get_item()->get_item_image() ?>'
+         alt='商品画像　ID<?= $product->get_item()->get_id() ?>番' class='img-fluid img-thumbnail'>
+</td>
+
         <td><?= $product->get_item()->get_item_name() ?></td>
         <td><?= $product->get_item()->get_price() ?></td>
         <td><?= $product->get_stock()->get_quantity() ?></td>
