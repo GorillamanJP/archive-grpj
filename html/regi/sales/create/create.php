@@ -58,12 +58,12 @@ $received_price = $_POST["received_price"];
 $returned_price = $_POST["returned_price"];
 
 try {
-    require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/user.php";
+    require_once $_SERVER['DOCUMENT_ROOT']."/../classes/users/user.php";
     $user_id = $_SESSION["login"]["user_id"];
     $user = new User();
     $user = $user->get_from_id($user_id);
     $accountant_user_name = $user->get_user_name();
-    require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/sales/sale.php";
+    require_once $_SERVER['DOCUMENT_ROOT']."/../classes/sales/sale.php";
     $sale = new Sale();
     $sale->create($product_names, $product_prices, $quantities, $subtotals, $total_amount, $accountant_user_name, $total_price, $received_price, $returned_price);
     $id = $sale->get_accountant()->get_id();

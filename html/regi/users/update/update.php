@@ -27,7 +27,7 @@ if ($ok) {
     $password = htmlspecialchars($_POST["password"]);
 
     try {
-        require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/user.php";
+        require_once $_SERVER['DOCUMENT_ROOT']."/../classes/users/user.php";
         $user = new User();
         $user = $user->get_from_id($id);
         $user = $user->update($user_name, $password);

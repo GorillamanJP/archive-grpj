@@ -1,6 +1,6 @@
 FROM php:fpm
 
-RUN apt-get update && apt-get install git zlib1g-dev libpng-dev libjpeg62-turbo-dev -y
+RUN apt-get update && apt-get install git zlib1g-dev libpng-dev libjpeg62-turbo-dev openssl -y
 
 RUN docker-php-ext-configure gd --with-jpeg
 
