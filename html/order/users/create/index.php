@@ -1,3 +1,9 @@
+<?php
+require_once $_SERVER['DOCUMENT_ROOT']."/order/protects/protect.php";
+?>
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="ja">
 
