@@ -9,8 +9,8 @@
         <!-- 広い画面用のFavicon -->
         <a class="navbar-brand d-none d-lg-block nav-b-b"><img src="/favicon.ico" alt="Favicon"> レジ</a>
         <!-- ナビゲーションメニュー -->
-        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-            <ul class="navbar-nav">
+        <div class="navbar-collapse collapse justify-content-center" id="navbarNav">
+            <ul class="navbar-nav mx-auto">
                 <li class="nav-item">
                     <a class="nav-link text-white" href="/regi/index.php"><i class="fas fa-cash-register"></i> レジ画面</a>
                 </li>
@@ -26,9 +26,11 @@
                 <li class="nav-item">
                     <a class="nav-link text-white" href="/regi/users/list/"><i class="fas fa-user"></i> ユーザー管理</a>
                 </li>
-                <!-- 新たにユーザー名とログアウトボタンをここに追加 -->
+            </ul>
+            <!-- 右寄せユーザー名とログアウトボタン -->
+            <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <p class="nav-link mb-0 mr-3 text-white user-name">ユーザー名：<?= $user->get_user_name() ?></p>
+                    <p class="nav-link mb-0 text-white user-name">ユーザー名：<?= $user->get_user_name() ?></p>
                 </li>
                 <li class="nav-item">
                     <button class="btn btn-danger"><a href="/regi/users/logout/" style="color: #fff;">ログアウト</a></button>
@@ -66,6 +68,18 @@
         left: 10px;
         /* お好みに合わせて調整 */
     }
+
+    /* 右寄せユーザー名とログアウトボタン */
+    .ml-auto {
+        margin-left: auto;
+    }
+
+    .user-name {
+            font-weight: bold;
+            /* フォントを太字にして強調 */
+            color: #ffeb3b;
+            /* フォントカラーを変更 */
+        }
 </style>
 
 <script>
@@ -73,4 +87,10 @@
         const navbar = document.getElementById('navbarNav');
         navbar.classList.toggle('show');
     }
+
+    // ページロード時にナビゲーションバーを折りたたみ状態にする
+    document.addEventListener('DOMContentLoaded', function () {
+        const navbar = document.getElementById('navbarNav');
+        navbar.classList.remove('show');
+    });
 </script>

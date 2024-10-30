@@ -29,6 +29,9 @@ $products = $product_obj->get_all();
             /* ナビゲーションバーの高さ分の余白を追加 */
             background-color: #f8f9fa;
             /* 優しいグレー */
+        }
+
+        .regia {
             font-family: 'Roboto', sans-serif;
             /* フォントを変更 */
         }
@@ -110,20 +113,6 @@ $products = $product_obj->get_all();
             }
         }
 
-        .user-name {
-            font-size: 1.25rem;
-            /* フォントサイズを大きく調整 */
-            font-weight: bold;
-            /* フォントを太字にして強調 */
-            color: #ffeb3b;
-            /* フォントカラーを変更 */
-        }
-
-        /* ボタンのスタイリング */
-        .btn-danger a {
-            color: #fff;
-            /* リンクの色を白に設定 */
-        }
 
         .btn-success {
             background-color: #28a745;
@@ -199,13 +188,28 @@ $products = $product_obj->get_all();
             background-color: #e6e6fa;
             /* 淡いラベンダー */
         }
+
+        /* レジ画面のナビゲーションバーのログアウトボタン */
+        .navbar .logout-btn {
+            color: #fff;
+            background-color: #dc3545;
+            border: none;
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            border-radius: 0.25rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar .logout-btn:hover {
+            background-color: #c82333;
+        }
     </style>
 </head>
 
 <body>
     <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/navbar.php"; ?>
     <!-- 残りのページ内容 -->
-    <div class="container">
+    <div class="container regia">
         <div class="content1">
             <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
             <h1 class="text-center">商品一覧</h1>
