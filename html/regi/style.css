@@ -171,9 +171,11 @@ p.imgs img {
 
 
 .imgs img {
-    width: 150px; /* 画像の幅を150pxに設定 */
-    height: auto; /* アスペクト比を維持 */
+  width: 150px; /* 画像の幅を150pxに設定 */
+  height: 150px; /* 高さを固定 */
+  object-fit: contain; /* アスペクト比を維持しながら、枠内に収める */
 }
+
 
 button:hover {
   background-color: #d0e7f0; /* ホバー効果 */
