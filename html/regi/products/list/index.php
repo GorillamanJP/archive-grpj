@@ -19,11 +19,14 @@ $products = $product_obj->get_all();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="/common/list.css">
 </head>
 
 <body>
+    <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/navbar.php"; ?>
+    <!-- 残りのページ内容 -->
     <div class="container">
         <h1 class="text-center mt-3">商品管理</h1>
         <p class="text-center my-3" style="font-size: 1.2em;">最終更新時刻:<span id="last-update">0000/0/0 00:00:00</span></p>
@@ -57,7 +60,7 @@ $products = $product_obj->get_all();
         </div>
     </div>
     <!-- 更新通知 -->
-    <?php require_once $_SERVER['DOCUMENT_ROOT']."/common/toast.html"; ?>
+    <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/toast.html"; ?>
     <!-- 更新通知　ここまで -->
     <!-- 削除確認モーダル -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
