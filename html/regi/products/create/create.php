@@ -27,7 +27,7 @@ if ($ok) {
     $quantity = htmlspecialchars($_POST["add_quantity"]);
     $item_image = $_FILES["item_image"]["tmp_name"];
 
-    require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/products/product.php";
+    require_once $_SERVER['DOCUMENT_ROOT']."/../classes/products/product.php";
     try {
         $product = new Product();
         $product->create($item_name, $price, $item_image, $quantity);

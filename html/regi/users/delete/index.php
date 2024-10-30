@@ -11,7 +11,7 @@ if (!isset($_POST["id"]) || $_POST["id"] === "") {
 
 $id = htmlspecialchars($_POST["id"]);
 
-require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/user.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/../classes/users/user.php";
 
 try {
     $user = new User();

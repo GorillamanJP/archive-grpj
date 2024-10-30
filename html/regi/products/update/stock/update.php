@@ -27,7 +27,7 @@ if (intval($_POST["add_quantity"]) < 0) {
 if ($ok) {
     $add_quantity = htmlspecialchars($_POST["add_quantity"]);
 
-    require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/stocks/stock.php";
+    require_once $_SERVER['DOCUMENT_ROOT']."/../classes/stocks/stock.php";
 
     try {
         $stock = new Stock();

@@ -33,7 +33,7 @@ if ($ok) {
     $price = htmlspecialchars($_POST["price"]);
     $item_image = $_FILES["new_item_image"]["tmp_name"];
 
-    require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
+    require_once $_SERVER['DOCUMENT_ROOT']."/../classes/items/item.php";
 
     try {
         $item = new Item();

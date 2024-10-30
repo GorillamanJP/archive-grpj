@@ -1,5 +1,5 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/regi/users/login_check.php";
 ?>
 <?php
 session_start();
@@ -12,12 +12,12 @@ if (!isset($_POST["id"]) || $_POST["id"] === "") {
     exit();
 }
 
-require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/sales/sale.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/../classes/sales/sale.php";
 
 $sale = new Sale();
 $sale = $sale->get_from_accountant_id($_POST["id"]);
 
-require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/../classes/items/item.php";
 $item_obj = new Item();
 
 ?>

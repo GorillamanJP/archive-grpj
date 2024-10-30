@@ -1,9 +1,9 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/regi/users/login_check.php";
 ?>
 <?php
 $id = htmlspecialchars($_POST["id"]);
-require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/user.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/../classes/users/user.php";
 
 $user = new User();
 $user = $user->get_from_id($id);
