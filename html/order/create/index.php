@@ -24,6 +24,7 @@ $_SESSION["order"]["captcha"]["before"]["url"] = $_SERVER['REQUEST_URI'];
 </head>
 
 <body>
+    <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
     <h1>注文確認</h1>
     <h2>注文内容は以下の通りでよろしいですか？</h2>
     <a href="../captcha/">はい</a>
