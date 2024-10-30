@@ -9,7 +9,7 @@ $_SESSION["order"]["captcha"]["after"]["url"] = "/order/create/create.php";
 $_SESSION["order"]["captcha"]["before"]["url"] = $_SERVER['REQUEST_URI'];
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 
 <head>
     <meta charset="UTF-8">
