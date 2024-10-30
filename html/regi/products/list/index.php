@@ -1,9 +1,9 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/regi/users/login_check.php";
 ?>
 <?php session_start(); ?>
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/products/product.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/../classes/products/product.php";
 $product_obj = new Product();
 $products = $product_obj->get_all();
 ?>
@@ -57,7 +57,7 @@ $products = $product_obj->get_all();
         </div>
     </div>
     <!-- 更新通知 -->
-    <?php require_once $_SERVER['DOCUMENT_ROOT']."/common/toast.php"; ?>
+    <?php require_once $_SERVER['DOCUMENT_ROOT']."/common/toast.html"; ?>
     <!-- 更新通知　ここまで -->
     <!-- 削除確認モーダル -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">

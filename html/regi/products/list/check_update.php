@@ -63,7 +63,7 @@ function check_update(string $last_update, int $last_products_count)
 
 function generate_updated_page(string $update_msg)
 {
-    require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/products/product.php";
+    require_once $_SERVER['DOCUMENT_ROOT']."/../classes/products/product.php";
     $products = new Product();
     $products = $products->get_all();
 

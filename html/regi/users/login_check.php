@@ -1,5 +1,5 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/user.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/../classes/users/user.php";
 session_start();
 if (isset($_SESSION["login"]["user_id"])) {
     try {

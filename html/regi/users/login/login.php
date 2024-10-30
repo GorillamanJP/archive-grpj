@@ -17,7 +17,7 @@ if ($ok) {
     $user_name = htmlspecialchars($_POST["user_name"]);
     $password = htmlspecialchars($_POST["password"]);
     try {
-        require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/user.php";
+        require_once $_SERVER['DOCUMENT_ROOT']."/../classes/users/user.php";
         $user = new User();
         $user = $user->get_from_user_name($user_name);
         $user = $user->verify($password);

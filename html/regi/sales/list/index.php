@@ -1,13 +1,13 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/regi/users/login_check.php";
 ?>
 <?php
 session_start();
 
-require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/sales/sale.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/../classes/sales/sale.php";
 $sale_obj = new Sale();
 $sales = $sale_obj->get_all();
-require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/../classes/items/item.php";
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -61,7 +61,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
         </table>
     </div>
     <!-- 更新通知 -->
-    <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/toast.php"; ?>
+    <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/toast.html"; ?>
     <!-- 更新通知　ここまで -->
     <script src="./check_update.js"></script>
 </body>

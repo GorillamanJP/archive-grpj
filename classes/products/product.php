@@ -1,6 +1,6 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/items/item.php";
-require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/stocks/stock.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/../classes/items/item.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/../classes/stocks/stock.php";
 class Product
 {
     private Item $item;

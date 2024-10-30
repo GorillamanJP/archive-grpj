@@ -56,6 +56,26 @@ CREATE TABLE IF NOT EXISTS transactions(
     FOREIGN KEY (accountant_id) REFERENCES accountants(id) ON DELETE CASCADE
 );
 
+-- モバイルオーダーの注文情報
+CREATE TABLE IF NOT EXISTS order_orders(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    date DATETIME NOT NULL,
+    total_amount INT NOT NULL,
+    total_price INT NOT NULL,
+    is_received BOOLEAN NOT NULL
+);
+
+-- モバイルオーダーの注文詳細
+CREATE TABLE IF NOT EXISTS order_details(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT NOT NULL,
+    item_name VARCHAR(255) NOT NULL,
+    item_price INT NOT NULL,
+    quantity INT NOT NULL,
+    subtotal INT NOT NULL,
+    FOREIGN KEY (order_id) REFERENCES order_orders(id) ON DELETE CASCADE
+);
+
 -- 初期ユーザー作成
 INSERT INTO users ( user_name, password_hash, salt ) VALUES(
      "admin",

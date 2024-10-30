@@ -11,7 +11,7 @@ if (!isset($_POST["id"]) || $_POST["id"] === "") {
 
 $id = htmlspecialchars($_POST["id"]);
 
-require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/products/product.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/../classes/products/product.php";
 
 try {
     $product = new Product();
