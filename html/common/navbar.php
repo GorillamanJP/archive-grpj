@@ -75,11 +75,12 @@
     }
 
     .user-name {
-            font-weight: bold;
-            /* フォントを太字にして強調 */
-            color: #ffeb3b;
-            /* フォントカラーを変更 */
-        }
+        font-size: 1.25rem;
+        font-weight: bold;
+        /* フォントを太字にして強調 */
+        color: #ffeb3b;
+        /* フォントカラーを変更 */
+    }
 </style>
 
 <script>
