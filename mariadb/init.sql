@@ -56,21 +56,13 @@ CREATE TABLE IF NOT EXISTS transactions(
     FOREIGN KEY (accountant_id) REFERENCES accountants(id) ON DELETE CASCADE
 );
 
--- モバイルオーダーのユーザーテーブル
-CREATE TABLE IF NOT EXISTS order_users(
-    id VARCHAR(254) PRIMARY KEY,
-    hash CHAR(128) NOT NULL
-);
-
 -- モバイルオーダーの注文情報
 CREATE TABLE IF NOT EXISTS order_order(
     id INT AUTO_INCREMENT PRIMARY KEY,
     date DATETIME NOT NULL,
     total_amount INT NOT NULL,
     total_price INT NOT NULL,
-    order_user_id VARCHAR(254) NOT NULL,
-    is_received BOOLEAN NOT NULL,
-    FOREIGN KEY (order_user_id) REFERENCES order_users(id)
+    is_received BOOLEAN NOT NULL
 );
 
 -- モバイルオーダーの注文詳細
