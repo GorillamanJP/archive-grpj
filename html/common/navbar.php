@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-secondary fixed-top">
+<nav class="navbar navbar-expand-lg bg-secondary fixed-top" data-bs-theme="dark">
     <div class="container-fluid">
         <button onclick="toggleNavbar()" class="navbar-toggler" type="button">
             <span class="navbar-toggler-icon"></span>
@@ -6,7 +6,7 @@
         <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                <a class="nav-link text-white" href="/regi/index.php"><i class="fas fa-cash-register"></i>レジ画面</a>
+                <a class="nav-link text-white" href="/regi/index.php"><i class="fas fa-cash-register"></i> レジ画面</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-white" href="/regi/order/"><i class="fas fa-shopping-cart"></i> モバイルオーダー</a>
