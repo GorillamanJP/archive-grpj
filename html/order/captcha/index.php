@@ -2,7 +2,7 @@
 session_start();
 ?>
 <?php
-$before_url = $_SESSION["order"]["captcha"]["before"]["url"];
+$before_url = isset($_SESSION["order"]["captcha"]["before"]["url"]) && $_SESSION["order"]["captcha"]["before"]["url"] !== "" ? $_SESSION["order"]["captcha"]["before"]["url"] : "/order/";
 ?>
 <!DOCTYPE html>
 <html lang="ja">
