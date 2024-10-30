@@ -1,12 +1,18 @@
 <nav class="navbar navbar-expand-lg bg-secondary fixed-top" data-bs-theme="dark">
     <div class="container-fluid">
+        <!-- 狭い画面用のボタン -->
         <button onclick="toggleNavbar()" class="navbar-toggler" type="button">
             <span class="navbar-toggler-icon"></span>
         </button>
+        <!-- 狭い画面用のFavicon -->
+        <a class="navbar-brand d-lg-none mx-auto nav-b-a"><img src="/favicon.ico" alt="Favicon"> レジ</a>
+        <!-- 広い画面用のFavicon -->
+        <a class="navbar-brand d-none d-lg-block nav-b-b"><img src="/favicon.ico" alt="Favicon"> レジ</a>
+        <!-- ナビゲーションメニュー -->
         <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                <a class="nav-link text-white" href="/regi/index.php"><i class="fas fa-cash-register"></i> レジ画面</a>
+                    <a class="nav-link text-white" href="/regi/index.php"><i class="fas fa-cash-register"></i> レジ画面</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-white" href="/regi/order/"><i class="fas fa-shopping-cart"></i> モバイルオーダー</a>
@@ -31,6 +37,36 @@
         </div>
     </div>
 </nav>
+
+<style>
+    .navbar-brand img {
+        height: 100%;
+        /* ナビゲーションバーの高さに合わせる */
+        max-height: 2rem;
+        /* ナビゲーションバーの高さ */
+    }
+
+    /* リストアイテムの高さを統一する */
+    .navbar-nav .nav-item {
+        display: flex;
+        align-items: center;
+        /* 中央揃えにする */
+    }
+
+    /* Faviconの位置調整 */
+    .nav-b-a {
+        position: relative;
+        left: -30px;
+        /* お好みに合わせて調整 */
+    }
+
+    /* Faviconの位置調整 */
+    .nav-b-b {
+        position: relative;
+        left: 10px;
+        /* お好みに合わせて調整 */
+    }
+</style>
 
 <script>
     function toggleNavbar() {
