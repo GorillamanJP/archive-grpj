@@ -69,7 +69,12 @@ $products = $product_obj->get_all();
         .product-grid .product img {
             max-width: 100px;
             /* イメージを小さくする */
+            margin-top: 10px;
+            /* 画像の上に余白を追加 */
+            margin-bottom: 10px;
+            /* 画像の下に余白を追加 */
         }
+
 
         .content1,
         .content2,
