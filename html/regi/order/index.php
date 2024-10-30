@@ -14,13 +14,10 @@ session_start();
 <body>
     <h1>モバイルオーダーのレジ側トップ画面</h1>
     <h2>リンク生成ツール</h2>
-    <input type="text" name="domain_name" id="domain_name" placeholder="ドメイン名">
-    <p>モバイルオーダーのリンク:<pre><span id="url_domain"></span>/order/?magic_char=<?= hash("sha256", getenv("PASS_PHRASE")); ?></pre></p>
+    <p>モバイルオーダーのリンク:<pre><span id="url_domain"></span>/order/?magic_char=<?= hash("SHA3-512", getenv("PASS_PHRASE")); ?></pre></p>
     <p>このリンクを共有することでモバイルオーダーにアクセスできるようになります。</p>
     <script>
-        document.getElementById("domain_name").addEventListener("input", function(){
-            document.getElementById("url_domain").innerText = document.getElementById("domain_name").value;
-        });
+        document.getElementById("url_domain").innerText = window.location.hostname;
     </script>
 </body>
 </html>
