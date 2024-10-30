@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS transactions(
 );
 
 -- モバイルオーダーの注文情報
-CREATE TABLE IF NOT EXISTS order_order(
+CREATE TABLE IF NOT EXISTS order_orders(
     id INT AUTO_INCREMENT PRIMARY KEY,
     date DATETIME NOT NULL,
     total_amount INT NOT NULL,
@@ -68,12 +68,12 @@ CREATE TABLE IF NOT EXISTS order_order(
 -- モバイルオーダーの注文詳細
 CREATE TABLE IF NOT EXISTS order_details(
     id INT AUTO_INCREMENT PRIMARY KEY,
-    order_id INT UNIQUE NOT NULL,
+    order_id INT NOT NULL,
     item_name VARCHAR(255) NOT NULL,
     item_price INT NOT NULL,
     quantity INT NOT NULL,
     subtotal INT NOT NULL,
-    FOREIGN KEY (order_id) REFERENCES order_order(id) ON DELETE CASCADE
+    FOREIGN KEY (order_id) REFERENCES order_orders(id) ON DELETE CASCADE
 );
 
 -- 初期ユーザー作成

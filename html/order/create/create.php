@@ -1,4 +1,2 @@
 <?php
-echo "中身つくってね<br>";
-?>
-<a href="../show/">注文があるようならここに縛り付けるようにしてくれ</a>
+header("Location: ../show/");
