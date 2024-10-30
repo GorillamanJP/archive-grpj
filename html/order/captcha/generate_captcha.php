@@ -1,7 +1,10 @@
 <?php
 session_start();
 // 文字列を定義
-$characters = '0123456789あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん';
+$characters = '0123456789'; // 半角数字
+$characters .= "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん"; // ひらがな
+// $characters .= "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン"; // カタカナ　フォントの都合で除外
+// $characters .= "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"; // アルファベット　フォントの都合で除外
 
 // 文字列を配列に変換
 $characters_array = mb_str_split($characters);
@@ -11,7 +14,7 @@ shuffle($characters_array);
 
 // シャッフルされた文字列を結合
 $captcha_code = implode('', array_slice($characters_array, 0, 8));
-$_SESSION['captcha_code'] = $captcha_code;
+$_SESSION["order"]["captcha"]["code"] = $captcha_code;
 
 header('Content-Type: image/png');
 $image = imagecreatetruecolor(200, 60); // 画像サイズを大きく
