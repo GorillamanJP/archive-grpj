@@ -75,6 +75,8 @@ $products = $product_obj->get_all();
             /* デフォルトでは全幅を使う */
             padding: 10px;
             box-sizing: border-box;
+            border-radius: 10px;
+            /* 枠に丸みをつける */
         }
 
         .content2,
@@ -181,6 +183,21 @@ $products = $product_obj->get_all();
         #cart-table tbody td {
             text-align: center;
             vertical-align: middle;
+        }
+
+        .content1 {
+            background-color: #f0f8ff;
+            /* 淡い青 */
+        }
+
+        .content2 {
+            background-color: #ffe4e1;
+            /* 淡いピンク */
+        }
+
+        .content3 {
+            background-color: #e6e6fa;
+            /* 淡いラベンダー */
         }
     </style>
 </head>

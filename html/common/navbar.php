@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+<nav class="navbar navbar-expand-lg bg-secondary fixed-top">
     <div class="container-fluid">
         <button onclick="toggleNavbar()" class="navbar-toggler" type="button">
             <span class="navbar-toggler-icon"></span>
@@ -6,19 +6,19 @@
         <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                <a class="nav-link" href="/regi/index.php"><i class="fas fa-cash-register"></i>レジ画面</a>
+                <a class="nav-link text-white" href="/regi/index.php"><i class="fas fa-cash-register"></i>レジ画面</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/regi/order/"><i class="fas fa-shopping-cart"></i> モバイルオーダー</a>
+                    <a class="nav-link text-white" href="/regi/order/"><i class="fas fa-shopping-cart"></i> モバイルオーダー</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/regi/sales/list/"><i class="fas fa-list-alt"></i> 会計一覧</a>
+                    <a class="nav-link text-white" href="/regi/sales/list/"><i class="fas fa-list-alt"></i> 会計一覧</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/regi/products/list/"><i class="fas fa-cubes"></i> 商品管理</a>
+                    <a class="nav-link text-white" href="/regi/products/list/"><i class="fas fa-cubes"></i> 商品管理</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/regi/users/list/"><i class="fas fa-user"></i> ユーザー管理</a>
+                    <a class="nav-link text-white" href="/regi/users/list/"><i class="fas fa-user"></i> ユーザー管理</a>
                 </li>
                 <!-- 新たにユーザー名とログアウトボタンをここに追加 -->
                 <li class="nav-item">
