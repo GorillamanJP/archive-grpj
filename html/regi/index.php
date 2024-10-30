@@ -189,19 +189,10 @@ $products = $product_obj->get_all();
             /* 淡いラベンダー */
         }
 
-        /* レジ画面のナビゲーションバーのログアウトボタン */
-        .navbar .logout-btn {
-            color: #fff;
-            background-color: #dc3545;
-            border: none;
-            padding: 0.375rem 0.75rem;
-            font-size: 1rem;
-            border-radius: 0.25rem;
-            transition: background-color 0.3s ease;
-        }
-
-        .navbar .logout-btn:hover {
-            background-color: #c82333;
+        .product {
+            background-color: #faf0e6;
+            /* リネン色 */
+            border-radius: 10px;
         }
     </style>
 </head>
@@ -234,7 +225,7 @@ $products = $product_obj->get_all();
             </section>
         </div>
         <div class="content2">
-            <h1>選択商品</h1>
+            <h1 class="text-center">選択商品</h1>
             <table id="cart-table" class="table">
                 <thead>
                     <tr>
@@ -250,7 +241,7 @@ $products = $product_obj->get_all();
             </table>
         </div>
         <div class="content3">
-            <h1>会計</h1>
+            <h1 class="text-center">会計</h1>
             <table class="table">
                 <thead>
                     <tr>
