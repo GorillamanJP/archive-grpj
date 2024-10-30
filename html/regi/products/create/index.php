@@ -36,6 +36,11 @@ session_start();
                             required></td>
                 </tr>
                 <tr class="form-group">
+                    <th class="aligin-middle">在庫</th>
+                    <td class="table-secondary"><input type="number" name="add_quantity" id="add_quantity" class="form-control"
+                            required></td>
+                </tr>
+                <tr class="form-group">
                     <th class="align-middle">商品イメージ</th>
                     <td class="table-secondary"><img id="image_preview" src="#" alt="商品画像プレビュー"
                             style="display:none; width: 200px;"></td>
