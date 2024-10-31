@@ -200,6 +200,11 @@ $products = $product_obj->get_all();
             /* リネン色 */
             border-radius: 10px;
         }
+
+        .product:hover{
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5)
+            /* ホバーで色濃くする */
+        }
     </style>
 </head>
 
