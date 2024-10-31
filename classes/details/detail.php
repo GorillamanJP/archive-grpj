@@ -100,6 +100,8 @@ class Detail
         } catch (PDOException $e) {
             $this->rollback();
             throw new Exception($e->getMessage(), $e->getCode(), $e);
+        } catch (\Throwable $th) {
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
 
@@ -129,6 +131,9 @@ class Detail
         } catch (\Throwable $e) {
             $this->rollback();
             throw new Exception($e->getMessage(), $e->getCode(), $e);
+        } catch (\Throwable $th) {
+            $this->rollback();
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
 
@@ -159,6 +164,9 @@ class Detail
         } catch (PDOException $e) {
             $this->rollback();
             throw new Exception($e->getMessage(), $e->getCode(), $e);
+        } catch (\Throwable $th) {
+            $this->rollback();
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
 
