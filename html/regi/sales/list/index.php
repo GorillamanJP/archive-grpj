@@ -56,6 +56,7 @@ $item_names = $detail->get_all_item_name();
             <?php endif; ?>
         </table>
     </div>
+    <p>ページネーションつけたい</p>
     <div class="container mt-4">
         <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
         <h1 class="text-center mb-4">会計一覧</h1>
