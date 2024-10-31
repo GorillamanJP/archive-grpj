@@ -10,7 +10,7 @@ unset($_SESSION['message_details']);
 unset($_SESSION['message_type']);
 ?>
 <?php if ($message): ?>
-    <div class="alert alert-<?= $message_type ?> alert-dismissible fade show" role="alert">
+    <div class="alert alert-<?= $message_type ?> alert-dismissible fade show my-2" role="alert">
         <p class="m-0">
             <?= $message ?>
             <?php if ($message_details !== ''): ?>
