@@ -8,9 +8,7 @@ if (!isset($_SESSION["order"]["captcha"]["after"]["url"]) || $_SESSION["order"][
     $after_url = $_SESSION["order"]["captcha"]["after"]["url"];
 }
 
-$_SESSION["order"]["captcha"]["success"] = false;
-
-if ($_POST['captcha'] == $_SESSION["order"]["captcha"]["code"]) {
+if (isset($_POST['captcha']) && $_POST['captcha'] == $_SESSION["order"]["captcha"]["code"]) {
     unset($_SESSION["order"]["captcha"]["code"]);
     $_SESSION["message"] = "認証に成功しました。";
     $_SESSION["message_type"] = "success";
@@ -18,8 +16,26 @@ if ($_POST['captcha'] == $_SESSION["order"]["captcha"]["code"]) {
     unset($_SESSION["order"]["captcha"]["after"]["url"]);
     unset($_SESSION["order"]["captcha"]["before"]["url"]);
     session_write_close();
-    header("Location: {$after_url}");
-    exit();
+    if (isset($_SESSION["order"]["captcha"]["after"]["post_data"])) {
+        ?>
+        <form action="<?= htmlspecialchars($after_url) ?>" method="post" id="post_form">
+            <?php foreach ($_SESSION["order"]["captcha"]["after"]["post_data"] as $key => $value): ?>
+                <?php if (is_array($value)): ?>
+                    <?php foreach ($value as $sub_key => $sub_value): ?>
+                        <input type="hidden" name="<?= htmlspecialchars($key) ?>[<?= htmlspecialchars($sub_key) ?>]"
+                            value="<?= htmlspecialchars($sub_value) ?>">
+                    <?php endforeach ?>
+                <?php else: ?>
+                    <input type="hidden" name="<?= htmlspecialchars($key) ?>" value="<?= htmlspecialchars($value) ?>">
+                <?php endif ?>
+            <?php endforeach ?>
+        </form>
+        <script>document.getElementById("post_form").submit();</script>
+        <?php
+    } else {
+        header("Location: {$after_url}");
+        exit();
+    }
 } else {
     $_SESSION["message"] = "認証に失敗しました。";
     $_SESSION["message_type"] = "danger";
