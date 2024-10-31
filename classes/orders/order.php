@@ -32,6 +32,9 @@ class Order
 
             $product = new Product();
 
+            $stock = $product->get_stock();
+            $stock->start_transaction();
+
             for ($i = 0; $i < count($product_names); $i++) {
                 $name = $product_names[$i];
                 $price = $product_prices[$i];
@@ -47,11 +50,18 @@ class Order
                 }
 
                 $this->order_details[] = $order_detail->create($order_id, $name, $price, $quantity, $subtotal);
+
+                $stock->update($stock_left - $quantity);
             }
+            $stock->commit();
             return $this;
         } catch (Exception $e) {
+            $stock->rollback();
+            $this->order_order->delete();
             throw new Exception($e->getMessage(), $e->getCode(), $e);
         } catch (\Throwable $th) {
+            $stock->rollback();
+            $this->order_order->delete();
             throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
