@@ -76,6 +76,11 @@ class Stock
             throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
+    # 切断
+    public function close()
+    {
+        unset($this->pdo);
+    }
 
     public function create(int $item_id, int $quantity): Stock
     {
@@ -161,6 +166,7 @@ class Stock
                 foreach ($stocks as $stock) {
                     $stock_obj = new Stock();
                     $stocks_array[] = $stock_obj->get_from_id($stock["id"]);
+                    $stock_obj->close();
                 }
                 return $stocks_array;
             } else {

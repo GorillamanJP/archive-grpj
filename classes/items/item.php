@@ -33,7 +33,7 @@ class Item
         # MIMEタイプのチェック
         # 左半分はそもそも画像ではない場合falseになるので反転して検知
         # 右半分は画像タイプを識別してjpeg以外を検知
-        if(!getimagesize($image) || getimagesize($image)["mime"] !== "image/jpeg"){
+        if (!getimagesize($image) || getimagesize($image)["mime"] !== "image/jpeg") {
             throw new Exception("jpeg画像以外の画像がアップロードされました。");
         }
         # 画像データの加工
@@ -118,6 +118,11 @@ class Item
         } catch (PDOException $e) {
             throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
+    }
+    # 切断
+    public function close()
+    {
+        unset($this->pdo);
     }
 
     # 商品登録
@@ -211,6 +216,7 @@ class Item
                 foreach ($items as $item) {
                     $item_obj = new Item();
                     $items_array[] = $item_obj->get_from_id($item["id"]);
+                    $item_obj->close();
                 }
                 return $items_array;
             } else {

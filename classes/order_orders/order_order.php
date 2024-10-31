@@ -77,6 +77,11 @@ class Order_Order
             throw new Exception($e->getMessage(), 1, $e);
         }
     }
+    # 切断
+    public function close()
+    {
+        unset($this->pdo);
+    }
     # コンストラクタ
     public function __construct()
     {
@@ -161,6 +166,7 @@ class Order_Order
                 foreach ($orders as $order) {
                     $order_obj = new Order_Order();
                     $orders_array[] = $order_obj->get_from_id($order->get_id());
+                    $order_obj->close();
                 }
                 return $orders_array;
             } else {

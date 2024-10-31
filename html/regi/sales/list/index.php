@@ -36,6 +36,7 @@ $item_names = $detail->get_all_item_name();
     <!-- 残りのページ内容 -->
     <div class="container">
         <h2>売上記録</h2>
+        <p>そのうち自動更新されるようになります</p>
         <table>
             <tr>
                 <th>商品名</th>

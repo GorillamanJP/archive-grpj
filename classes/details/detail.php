@@ -63,6 +63,11 @@ class Detail
             throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
+    # 切断
+    public function close()
+    {
+        unset($this->pdo);
+    }
     # コンストラクタ
     public function __construct()
     {
@@ -145,6 +150,7 @@ class Detail
                 foreach ($details as $detail) {
                     $detail_obj = new Detail();
                     $details_array[] = $detail_obj->get_from_id($detail["id"]);
+                    $detail_obj->close();
                 }
                 return $details_array;
             } else {
