@@ -67,8 +67,9 @@ $products = $product_obj->get_all();
         }
 
         .product-grid .product img {
-            max-width: 100px;
-            /* イメージを小さくする */
+            width: 100px; 
+            height: 100px;
+            object-fit: contain; /* 商品画像を同じ比率で表示 */
         }
 
         .content1,
