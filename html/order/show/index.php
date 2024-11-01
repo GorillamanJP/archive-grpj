@@ -2,15 +2,23 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . "/order/protects/protect.php";
 ?>
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . "/order/is_not_order.php";
+?>
+<?php
+session_start();
+
 require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/orders/order.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/orders/decrypt_id.php";
 
 $order_id = decrypt_id($_COOKIE["order"]);
 $order = new Order();
 $order = $order->get_from_order_id($order_id);
-?>
-<?php
-session_start();
+
+if($order->get_order_order()->get_is_received()){
+    session_write_close();
+    header("Location: ../receive/");
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -34,7 +42,7 @@ session_start();
             <th>内容</th>
             <td>
                 <table>
-                    <?php foreach($order->get_order_details() as $detail): ?>
+                    <?php foreach ($order->get_order_details() as $detail): ?>
                         <tr>
                             <th>品名</th>
                             <td><?= $detail->get_item_name() ?></td>
@@ -65,7 +73,7 @@ session_start();
         </tr>
         <tr>
             <th>受け取り済み</th>
-            <td><?= $order->get_order_order()->get_is_received() ? "はい":"いいえ" ?></td>
+            <td><?= $order->get_order_order()->get_is_received() ? "はい" : "いいえ" ?></td>
         </tr>
     </table>
     <p>店頭にある表示用QRコードを使ってこの画面を再表示したうえで、店員にお見せください。</p>

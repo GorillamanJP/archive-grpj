@@ -9,11 +9,7 @@ if (isset($_COOKIE["order"]) && $_COOKIE["order"] !== "") {
         $order = new Order();
         $id = decrypt_id($_COOKIE["order"]);
         $order->get_from_order_id($id);
-        if ($order->get_order_order()->get_is_received() == true) {
-            session_write_close();
-            header("Location: /order/receive/");
-            exit();
-        } else {
+        if ($order->get_order_order()->get_is_received() == false) {
             session_write_close();
             header("Location: /order/show/");
             exit();
