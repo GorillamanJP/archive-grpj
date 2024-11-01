@@ -18,7 +18,7 @@ class Order
     public function __construct()
     {
         $this->order_order = new Order_Order();
-        $this->order_detail = [];
+        $this->order_details = [];
     }
 
     public function create(array $product_names, array $product_prices, array $quantities, array $subtotals, int $total_amount, int $total_price): Order
@@ -41,7 +41,7 @@ class Order
                 $quantity = $quantities[$i];
                 $subtotal = $subtotals[$i];
 
-                $id = $product->get_item()->get_from_item_name($name)->get_id();
+                $id = $product->get_from_item_name($name)->get_item()->get_id();
 
                 $stock_left = $product->get_stock()->get_quantity();
 
@@ -62,7 +62,7 @@ class Order
         } catch (\Throwable $th) {
             $stock->rollback();
             $this->order_order->delete();
-            throw new Exception("予期しないエラーが発生しました。", -1, $th);
+            throw new Exception("予期しないエラーが発生しました。".$th->getMessage(), -1, $th);
         }
     }
 

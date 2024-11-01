@@ -3,6 +3,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/order/protects/protect.php";
 ?>
 <?php
 session_start();
+unset($_SESSION["order"]["order_items"]);
 ?>
 <!DOCTYPE html>
 <html lang="ja">

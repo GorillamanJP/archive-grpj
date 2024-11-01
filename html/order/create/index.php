@@ -5,13 +5,35 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/order/protects/protect.php";
 session_start();
 ?>
 <?php
+$ok = true;
+$message = "";
+
+if (!isset($_POST["product_id"]) || $_POST["product_id"] === "") {
+    $message .= "「商品」";
+    $ok = false;
+}
+
+if (!isset($_POST["quantity"]) || $_POST["quantity"] === "") {
+    $message .= "「購入数」";
+    $ok = false;
+}
+
+if (!$ok) {
+    $message .= "の項目が空になっています。";
+    $_SESSION["message"] = $message;
+    $_SESSION["message_type"] = "danger";
+    session_write_close();
+    header("Location: /regi/");
+    exit();
+}
+
 $product_ids = $_POST["product_id"];
 $quantities = $_POST["quantity"];
 
 $total_price = 0;
 $total_amount = 0;
 
-$buy_items = [];
+$order_items = [];
 
 require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/products/product.php";
 // 在庫チェックしつつ購入内容のデータを組み立てる
@@ -21,8 +43,8 @@ try {
         $product = $product->get_from_item_id($product_ids[$i]);
         $item = $product->get_item();
         $stock = $product->get_stock();
-        $buy_quantity = $quantities[$i];
-        $after_stock = $stock->get_quantity() - $buy_quantity;
+        $order_quantity = $quantities[$i];
+        $after_stock = $stock->get_quantity() - $order_quantity;
         if ($after_stock < 0) {
             $_SESSION["message"] = "購入数に対し在庫が不足するため、購入処理ができませんでした。";
             $_SESSION["message_type"] = "danger";
@@ -33,16 +55,16 @@ try {
         $id = $item->get_id();
         $name = $item->get_item_name();
         $price = $item->get_price();
-        $subtotal = $buy_quantity * $price;
-        $buy_items[] = array(
+        $subtotal = $order_quantity * $price;
+        $order_items[] = array(
             "id" => $id,
             "name" => $name,
             "price" => $price,
-            "buy_quantity" => $buy_quantity,
+            "order_quantity" => $order_quantity,
             "subtotal" => $subtotal,
         );
         $total_price += $subtotal;
-        $total_amount += $buy_quantity;
+        $total_amount += $order_quantity;
     }
 } catch (\Throwable $e) {
     $_SESSION["message"] = "商品が見つかりませんでした。";
@@ -61,6 +83,17 @@ if ($total_price < 0) {
     header("Location: /order/");
     exit();
 }
+
+unset($_SESSION["order"]["data"]);
+foreach($order_items as $item){
+    $_SESSION["order"]["data"]["product_id"][] = $item['id'];
+    $_SESSION["order"]["data"]["product_name"][] = $item['name'];
+    $_SESSION["order"]["data"]["product_price"][] = $item['price'];
+    $_SESSION["order"]["data"]["quantity"][] = $item['order_quantity'];
+    $_SESSION["order"]["data"]["subtotal"][] = $item['subtotal'];
+}
+$_SESSION["order"]["data"]["total_amount"] = $total_amount;
+$_SESSION["order"]["data"]["total_price"] = $total_price;
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -94,24 +127,19 @@ if ($total_price < 0) {
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($buy_items as $item): ?>
+                <?php foreach ($order_items as $item): ?>
                     <tr>
-                        <input type="hidden" name="product_id[]" value="<?= $item["id"] ?>" required>
                         <td>
                             <span><?= $item["name"] ?></span>
-                            <input type="hidden" name="product_name[]" value="<?= $item["name"] ?>" required>
                         </td>
                         <td>
                             <span><?= $item["price"] ?></span>
-                            <input type="hidden" name="product_price[]" value="<?= $item["price"] ?>" required>
                         </td>
                         <td>
-                            <span><?= $item["buy_quantity"] ?></span>
-                            <input type="hidden" name="quantity[]" value="<?= $item["buy_quantity"] ?>" required>
+                            <span><?= $item["order_quantity"] ?></span>
                         </td>
                         <td>
                             <span><?= $item["subtotal"] ?></span>
-                            <input type="hidden" name="subtotal[]" value="<?= $item["subtotal"] ?>" required>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -121,12 +149,10 @@ if ($total_price < 0) {
             <tr>
                 <th>合計購入数</th>
                 <td><span id="total_amount_disp"><?= $total_amount ?></span>個</td>
-                <input type="hidden" name="total_amount" value="<?= $total_amount ?>" required>
             </tr>
             <tr>
                 <th>合計金額</th>
                 <td><span id="total_price_disp"><?= $total_price ?></span>円</td>
-                <input type="hidden" name="total_price" id="total_price" value="<?= $total_price ?>" required>
             </tr>
         </table>
         <div class="text-center mt-4">
