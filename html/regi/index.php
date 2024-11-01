@@ -73,6 +73,9 @@ $products = $product_obj->get_all();
             /* 画像の上に余白を追加 */
             margin-bottom: 10px;
             /* 画像の下に余白を追加 */
+            width: 100px; 
+            height: 100px;
+            object-fit: contain; /* 商品画像を同じ比率で表示 */
         }
 
 
