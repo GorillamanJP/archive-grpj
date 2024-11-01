@@ -13,13 +13,15 @@ if (isset($_POST['captcha']) && $_POST['captcha'] == $_SESSION["order"]["captcha
     $_SESSION["message"] = "認証に成功しました。";
     $_SESSION["message_type"] = "success";
     $_SESSION["order"]["captcha"]["success"] = true;
-    unset($_SESSION["order"]["captcha"]["after"]["url"]);
-    unset($_SESSION["order"]["captcha"]["before"]["url"]);
+    $post_data = isset($_SESSION["order"]["captcha"]["post_data"]) ? $_SESSION["order"]["captcha"]["post_data"] : "";
+    unset($_SESSION["order"]["captcha"]["after"]);
+    unset($_SESSION["order"]["captcha"]["before"]);
+    unset($_SESSION["order"]["captcha"]["post_data"]);
     session_write_close();
-    if (isset($_SESSION["order"]["captcha"]["after"]["post_data"])) {
+    if ($post_data) {
         ?>
         <form action="<?= htmlspecialchars($after_url) ?>" method="post" id="post_form">
-            <?php foreach ($_SESSION["order"]["captcha"]["after"]["post_data"] as $key => $value): ?>
+            <?php foreach ($post_data as $key => $value): ?>
                 <?php if (is_array($value)): ?>
                     <?php foreach ($value as $sub_key => $sub_value): ?>
                         <input type="hidden" name="<?= htmlspecialchars($key) ?>[<?= htmlspecialchars($sub_key) ?>]"

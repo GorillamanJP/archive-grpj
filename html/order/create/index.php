@@ -23,7 +23,7 @@ if (!$ok) {
     $_SESSION["message"] = $message;
     $_SESSION["message_type"] = "danger";
     session_write_close();
-    header("Location: /regi/");
+    header("Location: /order/");
     exit();
 }
 
