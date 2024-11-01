@@ -5,6 +5,9 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/order/captcha/require_captcha.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/order/protects/protect.php";
 ?>
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . "/order/receive/is_receive.php";
+?>
+<?php
 session_start();
 unset($_SESSION["order"]["order_items"]);
 ?>

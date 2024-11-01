@@ -10,7 +10,7 @@ class Order
     }
 
     private array $order_details;
-    public function get_order_detail(): array
+    public function get_order_details(): array
     {
         return $this->order_details;
     }

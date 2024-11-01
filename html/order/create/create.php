@@ -60,9 +60,13 @@ try {
     $order = new Order();
     $order->create($product_names, $product_prices, $quantities, $subtotals, $total_amount, $total_price);
     $id = $order->get_order_order()->get_id();
+
     // 1か月後
     $expire = time() + (30 * 24 * 60 * 60);
-    setcookie("order", hash("SHA3-512", $id), $expire, "/");
+
+    require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/orders/encrypt_id.php";
+    $enc_id = encrypt_id($id);
+    setcookie("order", $enc_id, $expire, "/");
     $_SESSION["message"] = "注文番号 {$id}番 で処理を完了しました。";
     $_SESSION["message_type"] = "success";
 } catch (\Throwable $e) {
