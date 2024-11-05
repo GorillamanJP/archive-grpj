@@ -11,7 +11,8 @@ class Accountant
     {
         return $this->date;
     }
-    public function get_formatted_date():string{
+    public function get_formatted_date(): string
+    {
         return date_create($this->date)->format("Y/m/d H:i:s");
     }
     private int $total_amount;
@@ -60,6 +61,11 @@ class Accountant
         } catch (PDOException $e) {
             throw new Exception($e->getMessage());
         }
+    }
+    # 切断
+    public function close()
+    {
+        unset($this->pdo);
     }
     # コンストラクタ
     public function __construct()
@@ -136,6 +142,7 @@ class Accountant
                 foreach ($accountants as $accountant) {
                     $accountant_obj = new Accountant();
                     $accountants_array[] = $accountant_obj->get_from_id($accountant["id"]);
+                    $accountant_obj->close();
                 }
                 return $accountants_array;
             } else {

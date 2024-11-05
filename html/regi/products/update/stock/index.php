@@ -57,17 +57,17 @@ $product = $product->get_from_stock_id($id);
                 <tr class="form-group">
                     <th class="align-middle">商品イメージ</th>
                     <td class="table-secondary"><img
-                            src="data:image/jpeg;base64,<?= $product->get_item()->get_item_image() ?>"
-                            alt="商品画像　ID<?= $product->get_item()->get_id() ?>番" id="now_item_image"
+                            src="data:image/jpeg;base64,<?= $product->get_item_image() ?>"
+                            alt="商品画像　ID<?= $product->get_item_id() ?>番" id="now_item_image"
                             style="width: 200px;"></td>
                 </tr>
                 <tr class="form-group">
                     <th class="align-middle">商品名</th>
-                    <td class="table-secondary"><?= $product->get_item()->get_item_name() ?></td>
+                    <td class="table-secondary"><?= $product->get_item_name() ?></td>
                 </tr>
                 <tr class="form-group">
                     <th>現在の在庫数</th>
-                    <td class="table-secondary" id="currentStock"><?= $product->get_stock()->get_quantity() ?></td>
+                    <td class="table-secondary" id="currentStock"><?= $product->get_now_stock() ?></td>
                 </tr>
                 <tr class="form-group">
                     <th class="align-middle">入荷数</th>
@@ -76,7 +76,7 @@ $product = $product->get_from_stock_id($id);
                     </td>
                 </tr>
             </table>
-            <input type="hidden" name="id" value="<?= $product->get_stock()->get_id() ?>">
+            <input type="hidden" name="id" value="<?= $product->get_item_id() ?>">
             <div class="text-center">
                 <button type="submit" class="btn btn-outline-primary">更新</button>
                 <a href="../../list/" class="btn btn-outline-secondary">戻る</a>

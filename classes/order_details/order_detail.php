@@ -13,6 +13,12 @@ class Order_Detail
         return $this->order_id;
     }
 
+    private int $item_id;
+    public function get_item_id(): int
+    {
+        return $this->item_id;
+    }
+
     private string $item_name;
     public function get_item_name(): string
     {
@@ -83,7 +89,7 @@ class Order_Detail
         }
     }
 
-    public function create(int $order_id, string $item_name, int $item_price, int $quantity, int $subtotal): Order_Detail
+    public function create(int $order_id, int $item_id, string $item_name, int $item_price, int $quantity, int $subtotal): Order_Detail
     {
         try {
             $sql = "INSERT INTO order_details (order_id, item_name, item_price, quantity, subtotal) VALUES (:order_id, :item_name, :item_price, :quantity, :subtotal)";
@@ -91,6 +97,7 @@ class Order_Detail
             $stmt = $this->pdo->prepare($sql);
 
             $stmt->bindValue(":order_id", $order_id, PDO::PARAM_INT);
+            $stmt->bindValue(":item_id", $item_id, PDO::PARAM_INT);
             $stmt->bindValue(":item_name", $item_name, PDO::PARAM_STR);
             $stmt->bindValue(":item_price", $item_price, PDO::PARAM_INT);
             $stmt->bindValue(":quantity", $quantity, PDO::PARAM_INT);

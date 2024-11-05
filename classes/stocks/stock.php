@@ -76,6 +76,11 @@ class Stock
             throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
+    # 切断
+    public function close()
+    {
+        unset($this->pdo);
+    }
 
     public function create(int $item_id, int $quantity): Stock
     {
@@ -145,6 +150,39 @@ class Stock
         }
     }
 
+    public function gets_from_item_id(int $item_id): array
+    {
+        try {
+            $sql = "SELECT id FROM stocks WHERE item_id = :item_id";
+
+            $stmt = $this->pdo->prepare($sql);
+
+            $stmt->bindValue(":item_id", $item_id, PDO::PARAM_INT);
+
+            $stmt->execute();
+
+            $stocks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            if ($stocks) {
+                $stocks_array = [];
+                foreach ($stocks as $stock) {
+                    $stock_obj = new Stock();
+                    $stocks_array[] = $stock_obj->get_from_id($stock["id"]);
+                    $stock_obj->close();
+                }
+                return $stocks_array;
+            } else {
+                throw new Exception("指定した商品IDに対応する在庫は見つかりませんでした。", 0);
+            }
+        } catch (PDOException $pe) {
+            $this->rollback();
+            throw new Exception("データベースエラーです。", 1, $pe);
+        } catch (\Throwable $th) {
+            $this->rollback();
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
+        }
+    }
+
     public function get_all(): array|null
     {
         try {
@@ -161,6 +199,7 @@ class Stock
                 foreach ($stocks as $stock) {
                     $stock_obj = new Stock();
                     $stocks_array[] = $stock_obj->get_from_id($stock["id"]);
+                    $stock_obj->close();
                 }
                 return $stocks_array;
             } else {

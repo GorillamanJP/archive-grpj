@@ -77,6 +77,11 @@ class Order_Order
             throw new Exception($e->getMessage(), 1, $e);
         }
     }
+    # 切断
+    public function close()
+    {
+        unset($this->pdo);
+    }
     # コンストラクタ
     public function __construct()
     {
@@ -132,7 +137,7 @@ class Order_Order
                 $this->date = $order["date"];
                 $this->total_amount = $order["total_amount"];
                 $this->total_price = $order["total_price"];
-                $this->is_received = $order["is_received"];
+                $this->is_received = boolval($order["is_received"]);
                 return $this;
             } else {
                 throw new Exception("指定した注文は見つかりませんでした。", 0);
@@ -161,6 +166,7 @@ class Order_Order
                 foreach ($orders as $order) {
                     $order_obj = new Order_Order();
                     $orders_array[] = $order_obj->get_from_id($order->get_id());
+                    $order_obj->close();
                 }
                 return $orders_array;
             } else {
