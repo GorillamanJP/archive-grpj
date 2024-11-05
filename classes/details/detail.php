@@ -177,48 +177,19 @@ class Detail
         }
     }
 
-    public function get_all_item_name(): array|null
-    {
-        try {
-            $sql = "SELECT item_name FROM details GROUP BY item_name";
-
-            $stmt = $this->pdo->prepare($sql);
-
-            $stmt->execute();
-
-            $item_names = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            if ($item_names) {
-                $item_names_array = [];
-                foreach ($item_names as $item_name) {
-                    $item_names_array[] = $item_name["item_name"];
-                }
-                return $item_names_array;
-            } else {
-                return null;
-            }
-        } catch (PDOException $pe) {
-            $this->rollback();
-            throw new Exception("データベースエラーです。", 1, $pe);
-        } catch (\Throwable $th) {
-            $this->rollback();
-            throw new Exception("予期しないエラーが発生しました。", -1, $th);
-        }
-    }
-
-    public function get_total_sold(string $item_name): int
+    public function get_total_sold(int $item_id): int
     {
         try {
             $sql = "
 SELECT SUM(quantity) AS total_sold
 FROM details
-WHERE item_name = :item_name
-GROUP BY item_name
+WHERE item_id = :item_id
+GROUP BY item_id
 ORDER BY total_sold DESC
 ";
             $stmt = $this->pdo->prepare($sql);
 
-            $stmt->bindValue(":item_name", $item_name, PDO::PARAM_STR);
+            $stmt->bindValue(":item_id", $item_id, PDO::PARAM_INT);
 
             $stmt->execute();
 
@@ -226,7 +197,7 @@ ORDER BY total_sold DESC
             if ($total_sold) {
                 return (int) $total_sold["total_sold"];
             } else {
-                throw new Exception("指定した商品名は見つかりませんでした。", 0);
+                throw new Exception("指定した商品は見つかりませんでした。", 0);
             }
         } catch (PDOException $pe) {
             $this->rollback();
@@ -237,19 +208,19 @@ ORDER BY total_sold DESC
         }
     }
 
-    public function get_total_revenue(string $item_name): int
+    public function get_total_revenue(string $item_id): int
     {
         try {
             $sql = "
-SELECT item_name, SUM(subtotal) AS total_revenue
+SELECT SUM(subtotal) AS total_revenue
 FROM details
-WHERE item_name = :item_name
-GROUP BY item_name
+WHERE item_id = :item_id
+GROUP BY item_id
 ORDER BY total_revenue DESC;
 ";
             $stmt = $this->pdo->prepare($sql);
 
-            $stmt->bindValue(":item_name", $item_name, PDO::PARAM_STR);
+            $stmt->bindValue(":item_id", $item_id, PDO::PARAM_STR);
 
             $stmt->execute();
 
@@ -257,7 +228,7 @@ ORDER BY total_revenue DESC;
             if ($total_revenue) {
                 return (int) $total_revenue["total_revenue"];
             } else {
-                throw new Exception("指定した商品名は見つかりませんでした。", 0);
+                throw new Exception("指定した商品は見つかりませんでした。", 0);
             }
         } catch (PDOException $pe) {
             $this->rollback();
