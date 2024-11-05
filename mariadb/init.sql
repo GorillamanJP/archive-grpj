@@ -14,13 +14,14 @@ CREATE TABLE IF NOT EXISTS items(
     item_name VARCHAR(255) NOT NULL UNIQUE,
     price INT NOT NULL,
     item_image LONGBLOB NOT NULL,
-    last_update DATETIME NOT NULL
+    last_update DATETIME NOT NULL,
+    delete_flag BOOLEAN NOT NULL
 );
 
 -- 在庫テーブル
 CREATE TABLE IF NOT EXISTS stocks(
     id INT AUTO_INCREMENT PRIMARY KEY,
-    item_id INT NOT NULL UNIQUE,
+    item_id INT NOT NULL,
     quantity INT NOT NULL,
     last_update DATETIME NOT NULL,
     FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE
@@ -39,11 +40,13 @@ CREATE TABLE IF NOT EXISTS accountants(
 CREATE TABLE IF NOT EXISTS details(
     id INT AUTO_INCREMENT PRIMARY KEY,
     accountant_id INT NOT NULL,
+    item_id INT NOT NULL,
     item_name VARCHAR(255) NOT NULL,
     item_price INT NOT NULL,
     quantity INT NOT NULL,
     subtotal INT NOT NULL,
-    FOREIGN KEY (accountant_id) REFERENCES accountants(id) ON DELETE CASCADE
+    FOREIGN KEY (accountant_id) REFERENCES accountants(id) ON DELETE CASCADE,
+    FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE
 );
 
 -- 取引記録テーブル
@@ -69,11 +72,13 @@ CREATE TABLE IF NOT EXISTS order_orders(
 CREATE TABLE IF NOT EXISTS order_details(
     id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT NOT NULL,
+    item_id INT NOT NULL,
     item_name VARCHAR(255) NOT NULL,
     item_price INT NOT NULL,
     quantity INT NOT NULL,
     subtotal INT NOT NULL,
-    FOREIGN KEY (order_id) REFERENCES order_orders(id) ON DELETE CASCADE
+    FOREIGN KEY (order_id) REFERENCES order_orders(id) ON DELETE CASCADE,
+    FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE
 );
 
 -- 初期ユーザー作成

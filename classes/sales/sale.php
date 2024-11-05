@@ -1,7 +1,7 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT']."/../classes/accountants/accountant.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/../classes/details/detail.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/../classes/transactions/transaction.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/accountants/accountant.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/details/detail.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/transactions/transaction.php";
 class Sale
 {
     private Accountant $accountant;
@@ -29,37 +29,32 @@ class Sale
         $this->transaction = new Transaction();
     }
 
-    public function create(array $product_names, array $product_prices, array $quantities, array $subtotals, int $total_amount, string $accountant_user_name, int $total_price, int $received_price, int $returned_price): Sale
+    public function create(array $product_ids, array $product_names, array $product_prices, array $quantities, array $subtotals, int $total_amount, string $accountant_user_name, int $total_price, int $received_price, int $returned_price): Sale
     {
-        require_once $_SERVER['DOCUMENT_ROOT']."/../classes/items/item.php";
-        require_once $_SERVER['DOCUMENT_ROOT']."/../classes/products/product.php";
+        require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/items/item.php";
+        require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/products/product.php";
         try {
             $this->accountant = $this->accountant->create($total_amount, $total_price, $accountant_user_name);
             $accountant_id = $this->accountant->get_id();
             $detail = new Detail();
             $product = new Product();
-            $stock = $product->get_stock();
-            $stock->start_transaction();
 
-            for($i = 0; $i < count($product_names); $i++){
+            for ($i = 0; $i < count($product_ids); $i++) {
                 // 配列バラしゾーン
+                $id = $product_ids[$i];
                 $name = $product_names[$i];
                 $price = $product_prices[$i];
                 $quantity = $quantities[$i];
                 $subtotal = $subtotals[$i];
 
-                $id = $product->get_item()->get_from_item_name($name)->get_id();
-
                 // 在庫チェック
-                $stock = $stock->get_from_item_id($id);
-                $quantity_left = $stock->get_quantity();
-                if($quantity_left - $quantity < 0){
+                $stock = $product->get_from_item_id($id);
+                $stock_left = $product->get_now_stock();
+                if ($stock_left - $quantity < 0) {
                     throw new Exception("在庫が不足しています。");
                 }
 
-                $this->details[] = $detail->create($accountant_id, $name, $quantity, $price, $subtotal);
-
-                $stock->update($quantity_left - $quantity);
+                $this->details[] = $detail->create($accountant_id, $id, $name, $quantity, $price, $subtotal);
             }
 
             $stock->commit();

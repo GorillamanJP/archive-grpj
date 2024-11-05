@@ -21,7 +21,7 @@ class Order
         $this->order_details = [];
     }
 
-    public function create(array $product_names, array $product_prices, array $quantities, array $subtotals, int $total_amount, int $total_price): Order
+    public function create(array $product_ids, array $product_names, array $product_prices, array $quantities, array $subtotals, int $total_amount, int $total_price): Order
     {
         require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/products/product.php";
         try {
@@ -32,28 +32,21 @@ class Order
 
             $product = new Product();
 
-            $stock = $product->get_stock();
-            $stock->start_transaction();
-
-            for ($i = 0; $i < count($product_names); $i++) {
+            for ($i = 0; $i < count($product_ids); $i++) {
+                $id = $product_ids[$i];
                 $name = $product_names[$i];
                 $price = $product_prices[$i];
                 $quantity = $quantities[$i];
                 $subtotal = $subtotals[$i];
 
-                $id = $product->get_from_item_name($name)->get_item()->get_id();
-
-                $stock_left = $product->get_stock()->get_quantity();
+                $stock_left = $product->get_now_stock();
 
                 if ($stock_left - $quantity < 0) {
                     throw new Exception("在庫が不足しています。", 0);
                 }
 
-                $this->order_details[] = $order_detail->create($order_id, $name, $price, $quantity, $subtotal);
-
-                $stock->update($stock_left - $quantity);
+                $this->order_details[] = $order_detail->create($order_id, $id, $name, $price, $quantity, $subtotal);
             }
-            $stock->commit();
             return $this;
         } catch (Exception $e) {
             $stock->rollback();
@@ -62,7 +55,7 @@ class Order
         } catch (\Throwable $th) {
             $stock->rollback();
             $this->order_order->delete();
-            throw new Exception("予期しないエラーが発生しました。".$th->getMessage(), -1, $th);
+            throw new Exception("予期しないエラーが発生しました。" . $th->getMessage(), -1, $th);
         }
     }
 

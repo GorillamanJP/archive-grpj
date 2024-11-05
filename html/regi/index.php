@@ -221,14 +221,14 @@ $products = $product_obj->get_all();
                         <p>なにも登録されていません</p>
                     <?php else: ?>
                         <?php foreach ($products as $product): ?>
-                            <div class="product" id="product-<?= $product->get_item()->get_id() ?>"
-                                onclick="addToCart('<?= htmlspecialchars($product->get_item()->get_item_name()) ?>', <?= $product->get_item()->get_price() ?>, <?= $product->get_stock()->get_quantity() ?>, <?= $product->get_item()->get_id() ?>)">
-                                <img src="data:image/jpeg;base64,<?= $product->get_item()->get_item_image() ?>"
-                                    alt="<?= htmlspecialchars($product->get_item()->get_item_name()) ?>">
-                                <p class="product-name"><?= htmlspecialchars($product->get_item()->get_item_name()) ?></p>
-                                <p class="price"><?= $product->get_item()->get_price() ?>円</p>
-                                <p id="stock-<?= $product->get_item()->get_id() ?>">
-                                    【残<?= $product->get_stock()->get_quantity() ?>個】</p>
+                            <div class="product" id="product-<?= $product->get_item_id() ?>"
+                                onclick="addToCart('<?= htmlspecialchars($product->get_item_name()) ?>', <?= $product->get_price() ?>, <?= $product->get_stock()->get_quantity() ?>, <?= $product->get_item_id() ?>)">
+                                <img src="data:image/jpeg;base64,<?= $product->get_item_image() ?>"
+                                    alt="<?= htmlspecialchars($product->get_item_name()) ?>">
+                                <p class="product-name"><?= htmlspecialchars($product->get_item_name()) ?></p>
+                                <p class="price"><?= $product->get_price() ?>円</p>
+                                <p id="stock-<?= $product->get_item_id() ?>">
+                                    【残<?= $product->get_now_stock() ?>個】</p>
                             </div>
                         <?php endforeach; ?>
                     <?php endif; ?>

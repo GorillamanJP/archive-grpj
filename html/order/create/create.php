@@ -45,6 +45,7 @@ if (!$ok) {
     exit();
 }
 
+$product_ids = $_SESSION["order"]["data"]["product_ids"];
 $product_names = $_SESSION["order"]["data"]["product_name"];
 $product_prices = $_SESSION["order"]["data"]["product_price"];
 $quantities = $_SESSION["order"]["data"]["quantity"];
@@ -58,7 +59,7 @@ unset($_SESSION["order"]["data"]);
 try {
     require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/orders/order.php";
     $order = new Order();
-    $order->create($product_names, $product_prices, $quantities, $subtotals, $total_amount, $total_price);
+    $order->create($product_ids, $product_names, $product_prices, $quantities, $subtotals, $total_amount, $total_price);
     $id = $order->get_order_order()->get_id();
 
     // 1か月後

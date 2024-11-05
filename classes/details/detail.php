@@ -11,6 +11,11 @@ class Detail
     {
         return $this->accountant_id;
     }
+    private int $item_id;
+    public function get_item_id(): int
+    {
+        return $this->item_id;
+    }
     private string $item_name;
     public function get_item_name(): string
     {
@@ -81,14 +86,15 @@ class Detail
             throw new Exception($e->getMessage());
         }
     }
-    public function create(int $accountant_id, string $item_name, int $quantity, int $item_price, int $subtotal): Detail
+    public function create(int $accountant_id, int $item_id, string $item_name, int $quantity, int $item_price, int $subtotal): Detail
     {
         try {
-            $sql = "INSERT INTO details (accountant_id, item_name, quantity, item_price, subtotal) VALUES (:accountant_id, :item_name, :quantity, :item_price, :subtotal)";
+            $sql = "INSERT INTO details (accountant_id, item_id, item_name, quantity, item_price, subtotal) VALUES (:accountant_id, :item_id, :item_name, :quantity, :item_price, :subtotal)";
 
             $stmt = $this->pdo->prepare($sql);
 
             $stmt->bindValue(":accountant_id", $accountant_id, PDO::PARAM_INT);
+            $stmt->bindValue(":item_id", $item_id, PDO::PARAM_INT);
             $stmt->bindValue(":item_name", $item_name, PDO::PARAM_STR);
             $stmt->bindValue(":quantity", $quantity, PDO::PARAM_INT);
             $stmt->bindValue(":item_price", $item_price, PDO::PARAM_INT);
@@ -120,6 +126,7 @@ class Detail
             if ($detail) {
                 $this->detail_id = $detail["id"];
                 $this->accountant_id = $detail["accountant_id"];
+                $this->item_id = $detail["item_id"];
                 $this->item_name = $detail["item_name"];
                 $this->quantity = $detail["quantity"];
                 $this->item_price = $detail["item_price"];

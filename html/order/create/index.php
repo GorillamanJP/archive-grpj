@@ -41,20 +41,19 @@ try {
     for ($i = 0; $i < count($product_ids); $i++) {
         $product = new Product();
         $product = $product->get_from_item_id($product_ids[$i]);
-        $item = $product->get_item();
-        $stock = $product->get_stock();
+        $stock_left = $product->get_now_stock();
         $order_quantity = $quantities[$i];
-        $after_stock = $stock->get_quantity() - $order_quantity;
+        $after_stock = $stock_left - $order_quantity;
         if ($after_stock < 0) {
-            $_SESSION["message"] = "購入数に対し在庫が不足するため、購入処理ができませんでした。";
+            $_SESSION["message"] = "注文数に対し在庫が不足するため、注文処理ができませんでした。";
             $_SESSION["message_type"] = "danger";
             session_write_close();
             header("Location: /order/");
             exit();
         }
-        $id = $item->get_id();
-        $name = $item->get_item_name();
-        $price = $item->get_price();
+        $id = $product->get_item_id();
+        $name = $product->get_item_name();
+        $price = $product->get_price();
         $subtotal = $order_quantity * $price;
         $order_items[] = array(
             "id" => $id,
