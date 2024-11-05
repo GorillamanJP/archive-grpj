@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/orders/order.php";
 
 $order_obj = new Order();
@@ -26,10 +27,11 @@ $orders = $order_obj->get_all();
             <th>注文番号</th>
             <th>注文日時</th>
             <th>詳細</th>
+            <th>受け取り</th>
         </tr>
         <?php if (is_null($orders)): ?>
             <tr>
-                <td colspan="3">
+                <td colspan="4">
                     <h2>受け取り待ちの注文はありません。</h2>
                 </td>
             </tr>
