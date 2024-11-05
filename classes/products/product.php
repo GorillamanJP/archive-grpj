@@ -30,6 +30,7 @@ class Product
     {
         return $this->stock;
     }
+    private array $stocks;
     public function get_now_stock(): int
     {
         $stocks = $this->stock->gets_from_item_id($this->get_item_id());
@@ -103,6 +104,7 @@ class Product
     {
         $this->item = new Item();
         $this->stock = new Stock();
+        $this->stocks = [];
         try {
             $password = getenv("DB_PASSWORD");
             $db_name = getenv("DB_DATABASE");
@@ -127,30 +129,9 @@ class Product
     {
         try {
             $this->item = $this->item->get_from_id($item_id);
-            $this->stock = $this->stock->get_from_item_id($this->item->get_id());
+            $this->stocks = $this->stock->gets_from_item_id($this->item->get_id());
             return $this;
         } catch (\Throwable $e) {
-            throw new Exception($e->getMessage(), $e->getCode(), $e);
-        }
-    }
-    public function get_from_item_name(string $item_name): Product
-    {
-        try {
-            $this->item = $this->item->get_from_item_name($item_name);
-            $this->stock = $this->stock->get_from_item_id($this->item->get_id());
-            return $this;
-        } catch (\Throwable $e) {
-            throw new Exception($e->getMessage(), $e->getCode(), $e);
-
-        }
-    }
-    public function get_from_stock_id(int $stock_id): Product
-    {
-        try {
-            $this->stock = $this->stock->get_from_id($stock_id);
-            $this->item = $this->item->get_from_id($this->stock->get_item_id());
-            return $this;
-        } catch (PDOException $e) {
             throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
@@ -172,16 +153,6 @@ class Product
             return null;
         }
     }
-    // public function update(string $item_name, int $price, string $item_image, int $quantity): Product
-    // {
-    //     try {
-    //         $this->item = $this->item->update($item_name, $price, $item_image);
-    //         $this->stock = $this->stock->update($quantity);
-    //         return $this;
-    //     } catch (\Throwable $e) {
-    //         throw new Exception($e->getMessage(), $e->getCode(), $e);
-    //     }
-    // }
     public function delete(): void
     {
         try {
