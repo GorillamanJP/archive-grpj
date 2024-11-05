@@ -92,7 +92,7 @@ class Order_Detail
     public function create(int $order_id, int $item_id, string $item_name, int $item_price, int $quantity, int $subtotal): Order_Detail
     {
         try {
-            $sql = "INSERT INTO order_details (order_id, item_name, item_price, quantity, subtotal) VALUES (:order_id, :item_name, :item_price, :quantity, :subtotal)";
+            $sql = "INSERT INTO order_details (order_id, item_id, item_name, item_price, quantity, subtotal) VALUES (:order_id, :item_id, :item_name, :item_price, :quantity, :subtotal)";
 
             $stmt = $this->pdo->prepare($sql);
 
@@ -130,6 +130,7 @@ class Order_Detail
             if ($order_detail) {
                 $this->id = $order_detail["id"];
                 $this->order_id = $order_detail["order_id"];
+                $this->item_id = $order_detail["item_id"];
                 $this->item_name = $order_detail["item_name"];
                 $this->item_price = $order_detail["item_price"];
                 $this->quantity = $order_detail["quantity"];
