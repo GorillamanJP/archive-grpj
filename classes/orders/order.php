@@ -81,7 +81,7 @@ class Order
             $orders_array = [];
             foreach ($orders_orders as $orders_order) {
                 $orders_obj = new Order();
-                $orders_array = $orders_obj->get_from_order_id($orders_order->get_id());
+                $orders_array[] = $orders_obj->get_from_order_id($orders_order->get_id());
             }
             return $orders_array;
         } catch (Exception $e) {
