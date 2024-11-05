@@ -24,8 +24,6 @@ $products = $product_obj->get_all();
             margin: 0;
             display: flex;
             flex-direction: column;
-            padding-top: 56px;
-            /* ナビゲーションバーの高さ分の余白を追加 */
             background-color: #f8f9fa;
             /* 優しいグレー */
         }
@@ -161,6 +159,7 @@ $products = $product_obj->get_all();
 </head>
 
 <body>
+    <h1 class="text-center my-3">モバイルオーダー</h1>
     <div class="container regia">
         <div class="content1"> <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
             <h1 class="text-center">商品一覧</h1>

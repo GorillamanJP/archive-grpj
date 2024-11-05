@@ -213,6 +213,12 @@ $products = $product_obj->get_all();
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5)
                 /* ホバーで色濃くする */
         }
+
+        #form {
+            display: flex;
+            justify-content: center;
+            /* 中央揃えにする */
+        }
     </style>
 </head>
 
