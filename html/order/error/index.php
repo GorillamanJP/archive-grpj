@@ -1,5 +1,10 @@
 <?php
 session_start();
+if(!isset($_SESSION["order"]["warning"]) || $_SESSION["order"]["warning"] === ""){
+    session_write_close();
+    header("Location: /order/");
+    exit();
+}
 $message = $_SESSION["order"]["warning"]["message"];
 $details = $_SESSION["order"]["warning"]["message_details"];
 
@@ -15,6 +20,6 @@ unset($_SESSION["order"]["warning"]);
 <body>
     <h1>エラー</h1>
     <h2><?= $message ?></h2>
-    <p><?= $message_details ?></p>
+    <p><?= $details ?></p>
 </body>
 </html>
