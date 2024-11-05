@@ -53,7 +53,8 @@ $products = $product_obj->get_all();
         .product-grid {
             display: flex;
             flex-wrap: wrap;
-            justify-content: space-between;
+            justify-content: center;
+            /* 中央揃えにする */
         }
 
         .product-grid .product {
@@ -64,12 +65,15 @@ $products = $product_obj->get_all();
             text-align: center;
             word-wrap: break-word;
             /* 長い商品名を折り返す */
+            max-width: 200px;
+            /* 最大幅を指定 */
         }
 
         .product-grid .product img {
-            width: 100px; 
+            width: 100px;
             height: 100px;
-            object-fit: contain; /* 商品画像を同じ比率で表示 */
+            object-fit: contain;
+            /* 商品画像を同じ比率で表示 */
             margin-top: 10px;
             /* 画像の上に余白を追加 */
             margin-bottom: 10px;
@@ -98,6 +102,8 @@ $products = $product_obj->get_all();
             .product-grid .product {
                 flex: 1 1 calc(33.333% - 1rem);
                 /* 横に3個表示 */
+                max-width: calc(33.333% - 1rem);
+                /* 最大幅を指定 */
             }
         }
 
@@ -105,6 +111,8 @@ $products = $product_obj->get_all();
             .product-grid .product {
                 flex: 1 1 calc(50% - 1rem);
                 /* 横に2個表示 */
+                max-width: calc(50% - 1rem);
+                /* 最大幅を指定 */
             }
 
             .content2,
@@ -201,9 +209,9 @@ $products = $product_obj->get_all();
             border-radius: 10px;
         }
 
-        .product:hover{
+        .product:hover {
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5)
-            /* ホバーで色濃くする */
+                /* ホバーで色濃くする */
         }
     </style>
 </head>
