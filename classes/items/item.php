@@ -183,32 +183,6 @@ class Item
         }
     }
 
-    # 商品名から検索
-    public function get_from_item_name(string $item_name): Item
-    {
-        try {
-            $sanitized_item_name = htmlspecialchars($item_name);
-
-            $sql = "SELECT id FROM items WHERE item_name = :item_name";
-
-            $stmt = $this->pdo->prepare($sql);
-
-            $stmt->bindValue(":item_name", $sanitized_item_name, PDO::PARAM_STR);
-
-            $stmt->execute();
-
-            $item = $stmt->fetch(PDO::FETCH_ASSOC);
-            if ($item != false) {
-                return $this->get_from_id($item["id"]);
-            } else {
-                throw new Exception("Name: {$item_name} has not found.");
-            }
-        } catch (PDOException $e) {
-            $this->rollback();
-            throw new Exception($e->getMessage(), $e->getCode(), $e);
-        }
-    }
-
     # 商品すべてを取得
     public function get_all(): array|null
     {

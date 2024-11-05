@@ -130,26 +130,6 @@ class Stock
         }
     }
 
-    public function get_from_item_id(int $item_id): Stock
-    {
-        try {
-            $sql = "SELECT id FROM stocks WHERE item_id = :item_id";
-
-            $stmt = $this->pdo->prepare($sql);
-
-            $stmt->bindValue(":item_id", $item_id, PDO::PARAM_INT);
-
-            $stmt->execute();
-
-            $id = $stmt->fetch(PDO::FETCH_ASSOC)["id"];
-
-            return $this->get_from_id($id);
-        } catch (PDOException $e) {
-            $this->rollback();
-            throw new Exception($e->getMessage(), $e->getCode(), $e);
-        }
-    }
-
     public function gets_from_item_id(int $item_id): array
     {
         try {
@@ -180,70 +160,6 @@ class Stock
         } catch (\Throwable $th) {
             $this->rollback();
             throw new Exception("予期しないエラーが発生しました。", -1, $th);
-        }
-    }
-
-    public function get_all(): array|null
-    {
-        try {
-            $sql = "SELECT id FROM stocks ORDER BY id ASC";
-
-            $stmt = $this->pdo->prepare($sql);
-
-            $stmt->execute();
-
-            $stocks = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            if ($stocks) {
-                $stocks_array = [];
-                foreach ($stocks as $stock) {
-                    $stock_obj = new Stock();
-                    $stocks_array[] = $stock_obj->get_from_id($stock["id"]);
-                    $stock_obj->close();
-                }
-                return $stocks_array;
-            } else {
-                return null;
-            }
-        } catch (PDOException $e) {
-            $this->rollback();
-            return null;
-        }
-    }
-
-    public function update(int $quantity): Stock
-    {
-        try {
-            $sql = "UPDATE stocks SET quantity = :quantity, last_update = :last_update WHERE id = :id";
-
-            $stmt = $this->pdo->prepare($sql);
-
-            $stmt->bindValue(":id", $this->id, PDO::PARAM_INT);
-            $stmt->bindValue(":quantity", $quantity, PDO::PARAM_INT);
-            $stmt->bindValue(":last_update", date("Y-m-d H:i:s"), PDO::PARAM_STR);
-
-            $stmt->execute();
-
-            return $this->get_from_id($this->id);
-        } catch (PDOException $e) {
-            $this->rollback();
-            throw new Exception($e->getMessage(), $e->getCode(), $e);
-        }
-    }
-
-    public function delete(): void
-    {
-        try {
-            $sql = "DELETE FROM stocks WHERE id = :id";
-
-            $stmt = $this->pdo->prepare($sql);
-
-            $stmt->bindValue(":id", $this->id, PDO::PARAM_INT);
-
-            $stmt->execute();
-        } catch (Throwable $t) {
-            $this->rollback();
-            throw $t;
         }
     }
 }

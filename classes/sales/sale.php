@@ -48,20 +48,16 @@ class Sale
                 $subtotal = $subtotals[$i];
 
                 // 在庫チェック
-                $stock = $product->get_from_item_id($id);
-                $stock_left = $product->get_now_stock();
+                $stock_left = $product->get_from_item_id($id)->get_now_stock();
                 if ($stock_left - $quantity < 0) {
                     throw new Exception("在庫が不足しています。");
                 }
 
                 $this->details[] = $detail->create($accountant_id, $id, $name, $quantity, $price, $subtotal);
             }
-
-            $stock->commit();
             $this->transaction = $this->transaction->create($accountant_id, $total_price, $received_price, $returned_price);
             return $this;
         } catch (\Throwable $e) {
-            $stock->rollback();
             $this->accountant->delete();
             throw new Exception($e->getMessage(), $e->getCode(), $e);
         }

@@ -39,7 +39,7 @@ class Order
                 $quantity = $quantities[$i];
                 $subtotal = $subtotals[$i];
 
-                $stock_left = $product->get_now_stock();
+                $stock_left = $product->get_from_item_id($id)->get_now_stock();
 
                 if ($stock_left - $quantity < 0) {
                     throw new Exception("在庫が不足しています。", 0);
@@ -49,11 +49,9 @@ class Order
             }
             return $this;
         } catch (Exception $e) {
-            $stock->rollback();
             $this->order_order->delete();
             throw new Exception($e->getMessage(), $e->getCode(), $e);
         } catch (\Throwable $th) {
-            $stock->rollback();
             $this->order_order->delete();
             throw new Exception("予期しないエラーが発生しました。" . $th->getMessage(), -1, $th);
         }
