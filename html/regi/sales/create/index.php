@@ -330,7 +330,7 @@ $_SESSION["regi"]["data"]["total_price"] = $total_price;
         let confirmChangeProcessing = false;
         let modalQueue = [];
         let enterPressTimeout;
-        let lastEnterPressTime = 0; // 最後にEnterキーが押された時間を追跡
+        let lastEnterPressTime = 0;
 
         document.getElementById('form').addEventListener('submit', function (event) {
             event.preventDefault();
@@ -355,7 +355,7 @@ $_SESSION["regi"]["data"]["total_price"] = $total_price;
                 showModal('confirmPurchaseModal');
             }
 
-            setTimeout(() => submitted = false, 1000); // 遅延時間を1000msに増加
+            setTimeout(() => submitted = false, 1000);
         });
 
         function showModal(modalId) {
@@ -387,14 +387,7 @@ $_SESSION["regi"]["data"]["total_price"] = $total_price;
         });
 
         document.getElementById('confirmChangeBtn').addEventListener('click', function () {
-            if (confirmChangeProcessing) return;
-            confirmChangeProcessing = true;
-
-            console.log('confirmChangeBtnがクリックされました');
-
-            console.log('フォームが送信されます');
-            document.getElementById('form').submit();
-            setTimeout(() => confirmChangeProcessing = false, 1000); // 遅延時間を1000msに増加
+            processConfirmChange();
         });
 
         document.addEventListener('keydown', function (event) {
@@ -402,7 +395,7 @@ $_SESSION["regi"]["data"]["total_price"] = $total_price;
                 event.preventDefault();
 
                 const now = new Date().getTime();
-                if (now - lastEnterPressTime < 500) return; // 500ms以内の連続Enterキー押下を無視
+                if (now - lastEnterPressTime < 500) return;
                 lastEnterPressTime = now;
 
                 console.log('Enterキーが押されました');
@@ -414,15 +407,13 @@ $_SESSION["regi"]["data"]["total_price"] = $total_price;
                     if (activeModal.querySelector('#confirmPurchaseBtn') && !confirmPurchaseProcessing) {
                         processConfirmPurchase();
                     } else if (activeModal.querySelector('#confirmChangeBtn') && !confirmChangeProcessing) {
-                        confirmChangeProcessing = true;
-                        activeModal.querySelector('#confirmChangeBtn').click();
-                        console.log('confirmChangeBtnがEnterキーでクリックされました');
+                        processConfirmChange();
                     }
 
                     enterPressTimeout = setTimeout(() => {
                         confirmPurchaseProcessing = false;
                         confirmChangeProcessing = false;
-                    }, 1000); // 遅延時間を1000msに増加
+                    }, 1000);
                 } else {
                     console.log('フォームが送信されます');
                     document.getElementById('form').dispatchEvent(new Event('submit'));
@@ -450,6 +441,22 @@ $_SESSION["regi"]["data"]["total_price"] = $total_price;
                 console.log('フォームが送信されます');
                 document.getElementById('form').submit();
             }
+        }
+
+        function processConfirmChange() {
+            if (confirmChangeProcessing) return;
+            confirmChangeProcessing = true;
+
+            console.log('confirmChangeBtnがクリックされました');
+            console.log('フォーム送信の準備中...');
+
+            console.log('フォームが送信されます');
+            document.getElementById('form').submit();
+
+            setTimeout(() => {
+                console.log('confirmChangeProcessingをリセット');
+                confirmChangeProcessing = false;
+            }, 1000);
         }
 
         const cancelPurchaseBtn = document.getElementById('cancelPurchaseBtn');
