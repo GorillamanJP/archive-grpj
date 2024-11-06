@@ -123,6 +123,17 @@ if ($total_price < 0) {
     header("Location: /regi/");
     exit();
 }
+
+unset($_SESSION["regi"]["data"]);
+foreach ($buy_items as $item) {
+    $_SESSION["regi"]["data"]["product_id"][] = $item['id'];
+    $_SESSION["regi"]["data"]["product_name"][] = $item['name'];
+    $_SESSION["regi"]["data"]["product_price"][] = $item['price'];
+    $_SESSION["regi"]["data"]["quantity"][] = $item['buy_quantity'];
+    $_SESSION["regi"]["data"]["subtotal"][] = $item['subtotal'];
+}
+$_SESSION["regi"]["data"]["total_amount"] = $total_amount;
+$_SESSION["regi"]["data"]["total_price"] = $total_price;
 ?>
 <html lang="ja">
 
@@ -184,22 +195,17 @@ if ($total_price < 0) {
                 <tbody>
                     <?php foreach ($buy_items as $item): ?>
                         <tr>
-                            <input type="hidden" name="product_id[]" value="<?= $item["id"] ?>" required>
                             <td>
                                 <span><?= $item["name"] ?></span>
-                                <input type="hidden" name="product_name[]" value="<?= $item["name"] ?>" required>
                             </td>
                             <td>
                                 <span><?= $item["price"] ?></span>
-                                <input type="hidden" name="product_price[]" value="<?= $item["price"] ?>" required>
                             </td>
                             <td>
                                 <span><?= $item["buy_quantity"] ?></span>
-                                <input type="hidden" name="quantity[]" value="<?= $item["buy_quantity"] ?>" required>
                             </td>
                             <td>
                                 <span><?= $item["subtotal"] ?></span>
-                                <input type="hidden" name="subtotal[]" value="<?= $item["subtotal"] ?>" required>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -209,12 +215,10 @@ if ($total_price < 0) {
                 <tr>
                     <th>合計購入数</th>
                     <td><span id="total_amount_disp"><?= $total_amount ?></span>個</td>
-                    <input type="hidden" name="total_amount" value="<?= $total_amount ?>" required>
                 </tr>
                 <tr>
                     <th>合計金額</th>
                     <td><span id="total_price_disp"><?= $total_price ?></span>円</td>
-                    <input type="hidden" name="total_price" id="total_price" value="<?= $total_price ?>" required>
                 </tr>
                 <tr>
                     <th>お預かり</th>
@@ -229,7 +233,15 @@ if ($total_price < 0) {
             </table>
             <div class="text-center mt-4">
                 <p><input type="submit" value="購入確定" class="btn btn-primary btn-lg round-button"></p>
-                <p><a href="/regi/"><button type="button" class="btn btn-secondary btn-lg round-button">戻る</button></a>
+                <?php
+                // モバイルオーダー受け取りの場合戻る先が違うので判断
+                $back_url = "/regi/";
+                if (isset($_SESSION["regi"]["order"])) {
+                    $back_url = "/regi/order/list/";
+                }
+                ?>
+                <p><a href="<?= $back_url ?>"><button type="button"
+                            class="btn btn-secondary btn-lg round-button">戻る</button></a>
                 </p>
             </div>
         </div>
@@ -379,7 +391,7 @@ if ($total_price < 0) {
         function calc_and_disp_transaction() {
             document.getElementById("received_price").value = document.getElementById("received_price_disp").value;
             const input = document.getElementById("received_price").value;
-            const returned_price_value = input - document.getElementById("total_price").value;
+            const returned_price_value = input - document.getElementById("total_price_disp").innerText;
             document.getElementById("returned_price").value = returned_price_value;
             document.getElementById("returned_price_disp").innerText = returned_price_value;
         }
