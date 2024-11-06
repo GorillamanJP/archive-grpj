@@ -87,6 +87,8 @@ $products = $product_obj->get_all();
             </form>
         </div>
     </div>
+    <div id="notifications" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+    <script src="/regi/notify/check_notify.js"></script>
     <script src="/common/regi.js"></script>
 </body>
 

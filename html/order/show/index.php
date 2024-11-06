@@ -84,12 +84,9 @@ if ($order->get_order_order()->get_is_received()) {
             <th>合計</th>
             <td><?= $order->get_order_order()->get_total_price() ?></td>
         </tr>
-        <tr>
-            <th>受け取り済み</th>
-            <td><?= $order->get_order_order()->get_is_received() ? "はい" : "いいえ" ?></td>
-        </tr>
     </table>
     <p>店頭にある表示用QRコードを使ってこの画面を再表示したうえで、店員にお見せください。</p>
+    <p>なお、長時間受け取りに来ない場合はこちらからオーダーをキャンセルさせていただく場合がございます。</p>
 </body>
 
 </html>

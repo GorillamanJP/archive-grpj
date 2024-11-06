@@ -59,9 +59,10 @@ $products = $product_obj->get_all();
             </table>
         </div>
     </div>
-    <!-- 更新通知 -->
-    <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/toast.html"; ?>
-    <!-- 更新通知　ここまで -->
+    <!-- 通知領域 -->
+    <div id="notifications" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+    <script src="/regi/notify/check_notify.js"></script>
+    <!-- 通知領域　ここまで -->
     <!-- 削除確認モーダル -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">

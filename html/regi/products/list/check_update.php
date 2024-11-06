@@ -12,21 +12,6 @@ function check_update(string $last_update, int $last_products_count)
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 
-        $sql_items_count = "SELECT COUNT(*) FROM items";
-
-        $stmt_items_count = $pdo->prepare($sql_items_count);
-
-        $stmt_items_count->execute();
-
-        $count_items = $stmt_items_count->fetchColumn();
-
-        if ($count_items > $last_products_count) {
-            return generate_updated_page("新しい商品が登録されました！");
-        } else if ($count_items < $last_products_count) {
-            return generate_updated_page("商品が削除されました！");
-        }
-
-
         $sql_items_update = "SELECT COUNT(*) FROM items WHERE last_update >= :input_last_update";
 
         $stmt_items_update = $pdo->prepare($sql_items_update);

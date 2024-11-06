@@ -82,6 +82,14 @@ class Stock
         unset($this->pdo);
     }
 
+    # 通知を送る
+    private function send_notification(string $title, string $message)
+    {
+        require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/notifications/notification.php";
+        $notification = new Notification();
+        $notification->create($title, $message);
+    }
+
     public function create(int $item_id, int $quantity): Stock
     {
         try {
@@ -94,6 +102,12 @@ class Stock
             $stmt->bindValue(":last_update", date("Y-m-d H:i:s"), PDO::PARAM_STR);
 
             $stmt->execute();
+
+            require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/products/product.php";
+            $product = new Product();
+            $product->get_from_item_id($item_id);
+
+            $this->send_notification("在庫追加", "{$product->get_item_name()} の在庫が {$quantity} 個追加されました！");
 
             return $this->get_from_id($this->pdo->lastInsertId());
         } catch (PDOException $e) {

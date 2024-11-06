@@ -4,27 +4,27 @@ session_start();
 $ok = true;
 $message = "";
 
-if (!isset($_POST["product_id"]) || $_POST["product_id"] === "") {
+if (!isset($_SESSION["regi"]["data"]["product_id"]) || $_SESSION["regi"]["data"]["product_id"] === "") {
     $message .= "「商品ID」";
     $ok = false;
 }
-if (!isset($_POST["product_price"]) || $_POST["product_price"] === "") {
+if (!isset($_SESSION["regi"]["data"]["product_price"]) || $_SESSION["regi"]["data"]["product_price"] === "") {
     $message .= "「価格」";
     $ok = false;
 }
-if (!isset($_POST["quantity"]) || $_POST["quantity"] === "") {
+if (!isset($_SESSION["regi"]["data"]["quantity"]) || $_SESSION["regi"]["data"]["quantity"] === "") {
     $message .= "「購入数」";
     $ok = false;
 }
-if (!isset($_POST["subtotal"]) || $_POST["subtotal"] === "") {
+if (!isset($_SESSION["regi"]["data"]["subtotal"]) || $_SESSION["regi"]["data"]["subtotal"] === "") {
     $message .= "「小計」";
     $ok = false;
 }
-if (!isset($_POST["total_amount"]) || $_POST["total_amount"] === "") {
+if (!isset($_SESSION["regi"]["data"]["total_amount"]) || $_SESSION["regi"]["data"]["total_amount"] === "") {
     $message .= "「合計購入数」";
     $ok = false;
 }
-if (!isset($_POST["total_price"]) || $_POST["total_price"] === "") {
+if (!isset($_SESSION["regi"]["data"]["total_price"]) || $_SESSION["regi"]["data"]["total_price"] === "") {
     $message .= "「合計金額」";
     $ok = false;
 }
@@ -46,25 +46,25 @@ if (!$ok) {
     exit();
 }
 
-$product_ids = $_POST["product_id"];
-$product_names = $_POST["product_name"];
-$product_prices = $_POST["product_price"];
-$quantities = $_POST["quantity"];
-$subtotals = $_POST["subtotal"];
+$product_ids = $_SESSION["regi"]["data"]["product_id"];
+$product_names = $_SESSION["regi"]["data"]["product_name"];
+$product_prices = $_SESSION["regi"]["data"]["product_price"];
+$quantities = $_SESSION["regi"]["data"]["quantity"];
+$subtotals = $_SESSION["regi"]["data"]["subtotal"];
 
-$total_amount = $_POST["total_amount"];
-$total_price = $_POST["total_price"];
+$total_amount = $_SESSION["regi"]["data"]["total_amount"];
+$total_price = $_SESSION["regi"]["data"]["total_price"];
 
 $received_price = $_POST["received_price"];
 $returned_price = $_POST["returned_price"];
 
 try {
-    require_once $_SERVER['DOCUMENT_ROOT']."/../classes/users/user.php";
+    require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/users/user.php";
     $user_id = $_SESSION["login"]["user_id"];
     $user = new User();
     $user = $user->get_from_id($user_id);
     $accountant_user_name = $user->get_user_name();
-    require_once $_SERVER['DOCUMENT_ROOT']."/../classes/sales/sale.php";
+    require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/sales/sale.php";
     $sale = new Sale();
     $sale->create($product_ids, $product_names, $product_prices, $quantities, $subtotals, $total_amount, $accountant_user_name, $total_price, $received_price, $returned_price);
     $id = $sale->get_accountant()->get_id();
@@ -77,5 +77,9 @@ try {
 }
 
 session_write_close();
-header("Location: /regi/");
+if (isset($_SESSION["regi"]["order"])) {
+    header("Location: /regi/order/receive/receive.php");
+} else {
+    header("Location: /regi/");
+}
 exit();

@@ -36,15 +36,7 @@ async function check_update() {
             document.getElementById('refresh').innerHTML = data;
             document.getElementById('last-update').innerText = current_time; // 最終更新時刻を更新
 
-            document.getElementById("notify_title").innerText = document.getElementById("title").innerText;
-            document.getElementById("update_msg_notify").innerText = document.getElementById("update_msg").value;
-            document.getElementById("update_time").innerText = current_time;
-
             set_tap_detail();
-
-            const toastLiveExample = document.getElementById('liveToast');
-            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
-            toastBootstrap.show();
         }
     } catch (error) {
         console.error('Error:', error);
