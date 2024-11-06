@@ -80,7 +80,6 @@ $detail = new Detail();
                 </tr>
             </thead>
             <tbody id="refresh">
-                <input type="hidden" id="update_msg" name="update_msg" value="情報">
                 <tr>
                     <td colspan="4">
                         <h2>読み込み中…</h2>
