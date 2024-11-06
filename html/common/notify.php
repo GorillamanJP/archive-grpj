@@ -13,17 +13,22 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/notifications/notification
 $notification = new Notification();
 $notifications = $notification->gets_notifications_after($datetime);
 
-if (!is_null($notifications)) {
-    $notifications_array = array();
+$response = [
+    'hasData' => !is_null($notifications) && count($notifications) > 0,
+    'notifications' => []
+];
+
+if ($response['hasData']) {
     foreach ($notifications as $notify) {
-        $notifications_array[] = [
+        $response['notifications'][] = [
             'title' => $notify->get_title(),
             'message' => $notify->get_message(),
             'sent_date' => $notify->get_sent_date()
         ];
     }
-    echo json_encode($notifications_array);
     $_SESSION["notify"]["last_update"] = date("Y-m-d H:i:s");
 }
+
+echo json_encode($response);
 session_write_close();
 exit();

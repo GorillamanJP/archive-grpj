@@ -4,8 +4,8 @@ document.addEventListener("DOMContentLoaded", function () {
             let response = await fetch("/common/notify.php");
             if (response.ok) {
                 let data = await response.json();
-                if (data.length > 0) {
-                    data.forEach(notification => displayNotification(notification));
+                if (data.hasData && data.notifications.length > 0) {
+                    data.notifications.forEach(notification => displayNotification(notification));
                 }
             } else {
                 console.error("Error fetching notifications: " + response.statusText);
