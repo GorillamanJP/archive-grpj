@@ -67,15 +67,24 @@ $products = $product_obj->get_all();
         }
 
         .product-grid .product img {
+<<<<<<< HEAD
             max-width: 100px;
             /* イメージを小さくする */
+=======
+            width: 100px; 
+            height: 100px;
+            object-fit: contain; /* 商品画像を同じ比率で表示 */
+>>>>>>> origin/sanet
             margin-top: 10px;
             /* 画像の上に余白を追加 */
             margin-bottom: 10px;
             /* 画像の下に余白を追加 */
+<<<<<<< HEAD
             width: 100px; 
             height: 100px;
             object-fit: contain; /* 商品画像を同じ比率で表示 */
+=======
+>>>>>>> origin/sanet
         }
 
 
@@ -202,6 +211,11 @@ $products = $product_obj->get_all();
             /* リネン色 */
             border-radius: 10px;
         }
+
+        .product:hover{
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5)
+            /* ホバーで色濃くする */
+        }
     </style>
 </head>
 
@@ -218,14 +232,14 @@ $products = $product_obj->get_all();
                         <p>なにも登録されていません</p>
                     <?php else: ?>
                         <?php foreach ($products as $product): ?>
-                            <div class="product" id="product-<?= $product->get_item()->get_id() ?>"
-                                onclick="addToCart('<?= htmlspecialchars($product->get_item()->get_item_name()) ?>', <?= $product->get_item()->get_price() ?>, <?= $product->get_stock()->get_quantity() ?>, <?= $product->get_item()->get_id() ?>)">
-                                <img src="data:image/jpeg;base64,<?= $product->get_item()->get_item_image() ?>"
-                                    alt="<?= htmlspecialchars($product->get_item()->get_item_name()) ?>">
-                                <p class="product-name"><?= htmlspecialchars($product->get_item()->get_item_name()) ?></p>
-                                <p class="price"><?= $product->get_item()->get_price() ?>円</p>
-                                <p id="stock-<?= $product->get_item()->get_id() ?>">
-                                    【残<?= $product->get_stock()->get_quantity() ?>個】</p>
+                            <div class="product" id="product-<?= $product->get_item_id() ?>"
+                                onclick="addToCart('<?= htmlspecialchars($product->get_item_name()) ?>', <?= $product->get_price() ?>, <?= $product->get_stock()->get_quantity() ?>, <?= $product->get_item_id() ?>)">
+                                <img src="data:image/jpeg;base64,<?= $product->get_item_image() ?>"
+                                    alt="<?= htmlspecialchars($product->get_item_name()) ?>">
+                                <p class="product-name"><?= htmlspecialchars($product->get_item_name()) ?></p>
+                                <p class="price"><?= $product->get_price() ?>円</p>
+                                <p id="stock-<?= $product->get_item_id() ?>">
+                                    【残<?= $product->get_now_stock() ?>個】</p>
                             </div>
                         <?php endforeach; ?>
                     <?php endif; ?>

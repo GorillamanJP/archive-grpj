@@ -1,13 +1,13 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT']."/regi/users/login_check.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
 ?>
 <?php
 session_start();
 
-require_once $_SERVER['DOCUMENT_ROOT']."/../classes/sales/sale.php";
-$sale_obj = new Sale();
-$sales = $sale_obj->get_all();
-require_once $_SERVER['DOCUMENT_ROOT']."/../classes/items/item.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/details/detail.php";
+$detail = new Detail();
+$item_names = $detail->get_all_item_name();
+
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -34,6 +34,29 @@ require_once $_SERVER['DOCUMENT_ROOT']."/../classes/items/item.php";
 <body>
     <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/navbar.php"; ?>
     <!-- 残りのページ内容 -->
+    <div class="container">
+        <h2>売上記録</h2>
+        <p>そのうち自動更新されるようになります</p>
+        <table>
+            <tr>
+                <th>商品名</th>
+                <th>販売数</th>
+                <th>売上</th>
+            </tr>
+            <?php if (is_null($item_names)): ?>
+                <h3>会計記録はありません。</h3>
+            <?php else: ?>
+                <?php foreach ($item_names as $item_name): ?>
+                    <tr>
+                        <td><?= $item_name ?></td>
+                        <td><?= $detail->get_total_sold($item_name) ?></td>
+                        <td><?= $detail->get_total_revenue($item_name) ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </table>
+    </div>
+    <p>ページネーションつけたい</p>
     <div class="container mt-4">
         <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
         <h1 class="text-center mb-4">会計一覧</h1>

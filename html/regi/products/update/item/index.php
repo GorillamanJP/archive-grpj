@@ -54,22 +54,22 @@ $product = $product->get_from_item_id($id);
         <table class="table table-bordered table-info table-hover ">
             <form id="updateForm" action="update.php" method="post" enctype="multipart/form-data"
                 onsubmit="event.preventDefault(); showConfirmationModal();">
-                <input type="hidden" name="id" value="<?= $product->get_item()->get_id() ?>">
+                <input type="hidden" name="id" value="<?= $product->get_item_id() ?>">
                 <tr class="form-group">
                     <th class="align-middle">商品名</th>
                     <td class="table-secondary"><input type="text" name="item_name" id="item_name"
-                            value="<?= $product->get_item()->get_item_name() ?>" class="form-control" required></td>
+                            value="<?= $product->get_item_name() ?>" class="form-control" required></td>
                 </tr>
                 <tr class="form-group">
                     <th class="align-middle">価格</th>
                     <td class="table-secondary"><input type="number" name="price" id="price"
-                            value="<?= $product->get_item()->get_price() ?>" class="form-control" required></td>
+                            value="<?= $product->get_price() ?>" class="form-control" required></td>
                 </tr>
                 <tr class="form-group">
                     <th class="align-middle">商品イメージ</th>
                     <td class="table-secondary"><img
-                            src="data:image/jpeg;base64,<?= $product->get_item()->get_item_image() ?>"
-                            alt="商品画像　ID<?= $product->get_item()->get_id() ?>番" id="now_item_image"
+                            src="data:image/jpeg;base64,<?= $product->get_item_image() ?>"
+                            alt="商品画像　ID<?= $product->get_item_id() ?>番" id="now_item_image"
                             style="width: 200px;"></td>
                 </tr>
                 <tr class="form-group">

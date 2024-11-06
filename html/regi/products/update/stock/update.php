@@ -27,21 +27,20 @@ if (intval($_POST["add_quantity"]) < 0) {
 if ($ok) {
     $add_quantity = htmlspecialchars($_POST["add_quantity"]);
 
-    require_once $_SERVER['DOCUMENT_ROOT']."/../classes/stocks/stock.php";
+    require_once $_SERVER['DOCUMENT_ROOT']."/../classes/products/product.php";
 
     try {
-        $stock = new Stock();
-        $stock->start_transaction();
-        $stock = $stock->get_from_id($id);
-        $now_quantity = $stock->get_quantity();
+        $product = new Product();
+        $product = $product->get_from_item_id($id);
+        $now_quantity = $product->get_now_stock();
         // 在庫が0未満にならないようにチェック
         $new_quantity = $now_quantity + $add_quantity;
         if ($new_quantity < 0) {
             throw new Exception("在庫が0未満になるため、更新できません。");
         }
 
-        $stock = $stock->update($new_quantity);
-        $stock->commit();
+        $product = $product->get_stock()->create($product->get_item_id(), $add_quantity);
+
         $_SESSION["message"] = "在庫が追加されました。";
         $_SESSION["message_type"] = "success";
         session_write_close();

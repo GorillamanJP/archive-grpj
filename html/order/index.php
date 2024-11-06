@@ -1,8 +1,15 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . "/order/captcha/require_captcha.php";
+?>
+<?php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/order/protects/protect.php";
 ?>
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . "/order/receive/is_receive.php";
+?>
+<?php
 session_start();
+unset($_SESSION["order"]["order_items"]);
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -21,9 +28,22 @@ session_start();
 <body>
     <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
     <h1>モバイルオーダートップページ</h1>
+    <h2>仮の処理</h2>
+    <p>いずれレジと同じ処理にする</p>
+    <form action="./create/" method="post">
+        <button type="button" id="new_cart">カート追加ボタン（仮）</button>
+        <div id="cart">
+        </div>
+        <button type="submit">注文確認→</button>
+    </form>
     <!-- ここに商品一覧をもってくる -->
     <h2>注文内容</h2>
     <a href="./create/">注文確認（仮）</a>
 </body>
+<script>
+    document.getElementById("new_cart").addEventListener("click", () => {
+        document.getElementById("cart").innerHTML += '<div><input type="number" name="product_id[]" id="product_id[]" placeholder="商品番号"><input type="number" name="quantity[]" id="quantity[]" placeholder="個数"></div>';
+    });
+</script>
 
 </html>

@@ -47,6 +47,11 @@ class User
             throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
+    # 切断
+    public function close()
+    {
+        unset($this->pdo);
+    }
 
     #ユーザー登録
     public function create(string $user_name, string $password): User
@@ -132,6 +137,7 @@ class User
                 foreach ($users as $user) {
                     $user_obj = new User();
                     $users_array[] = $user_obj->get_from_id($user["id"]);
+                    $user_obj->close();
                 }
                 return $users_array;
             } else {

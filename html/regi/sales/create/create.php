@@ -46,6 +46,7 @@ if (!$ok) {
     exit();
 }
 
+$product_ids = $_POST["product_id"];
 $product_names = $_POST["product_name"];
 $product_prices = $_POST["product_price"];
 $quantities = $_POST["quantity"];
@@ -65,7 +66,7 @@ try {
     $accountant_user_name = $user->get_user_name();
     require_once $_SERVER['DOCUMENT_ROOT']."/../classes/sales/sale.php";
     $sale = new Sale();
-    $sale->create($product_names, $product_prices, $quantities, $subtotals, $total_amount, $accountant_user_name, $total_price, $received_price, $returned_price);
+    $sale->create($product_ids, $product_names, $product_prices, $quantities, $subtotals, $total_amount, $accountant_user_name, $total_price, $received_price, $returned_price);
     $id = $sale->get_accountant()->get_id();
     $_SESSION["message"] = "会計番号 {$id}番 で処理を完了しました。";
     $_SESSION["message_type"] = "success";
