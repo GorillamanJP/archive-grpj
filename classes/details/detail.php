@@ -197,7 +197,7 @@ ORDER BY total_sold DESC
             if ($total_sold) {
                 return (int) $total_sold["total_sold"];
             } else {
-                throw new Exception("指定した商品は見つかりませんでした。", 0);
+                return 0;
             }
         } catch (PDOException $pe) {
             $this->rollback();
@@ -228,7 +228,7 @@ ORDER BY total_revenue DESC;
             if ($total_revenue) {
                 return (int) $total_revenue["total_revenue"];
             } else {
-                throw new Exception("指定した商品は見つかりませんでした。", 0);
+                return 0;
             }
         } catch (PDOException $pe) {
             $this->rollback();
