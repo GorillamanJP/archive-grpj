@@ -39,7 +39,7 @@ class Order
                 $quantity = $quantities[$i];
                 $subtotal = $subtotals[$i];
 
-                $stock_left = $product->get_now_stock();
+                $stock_left = $product->get_from_item_id($id)->get_now_stock();
 
                 if ($stock_left - $quantity < 0) {
                     throw new Exception("在庫が不足しています。", 0);
@@ -49,11 +49,9 @@ class Order
             }
             return $this;
         } catch (Exception $e) {
-            $stock->rollback();
             $this->order_order->delete();
             throw new Exception($e->getMessage(), $e->getCode(), $e);
         } catch (\Throwable $th) {
-            $stock->rollback();
             $this->order_order->delete();
             throw new Exception("予期しないエラーが発生しました。" . $th->getMessage(), -1, $th);
         }
@@ -83,7 +81,27 @@ class Order
             $orders_array = [];
             foreach ($orders_orders as $orders_order) {
                 $orders_obj = new Order();
-                $orders_array = $orders_obj->get_from_order_id($orders_order->get_id());
+                $orders_array[] = $orders_obj->get_from_order_id($orders_order->get_id());
+            }
+            return $orders_array;
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
+        } catch (\Throwable $th) {
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
+        }
+    }
+
+    public function get_all_all(): array|null
+    {
+        try {
+            $orders_orders = $this->order_order->get_all_all();
+            if (is_null($orders_orders)) {
+                return null;
+            }
+            $orders_array = [];
+            foreach ($orders_orders as $orders_order) {
+                $orders_obj = new Order();
+                $orders_array[] = $orders_obj->get_from_order_id($orders_order->get_id());
             }
             return $orders_array;
         } catch (Exception $e) {

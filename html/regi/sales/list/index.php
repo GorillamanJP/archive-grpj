@@ -4,9 +4,12 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
 <?php
 session_start();
 
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/products/product.php";
+$product = new Product();
+$products = $product->get_all();
+
 require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/details/detail.php";
 $detail = new Detail();
-$item_names = $detail->get_all_item_name();
 
 ?>
 <!DOCTYPE html>
@@ -43,14 +46,14 @@ $item_names = $detail->get_all_item_name();
                 <th>販売数</th>
                 <th>売上</th>
             </tr>
-            <?php if (is_null($item_names)): ?>
+            <?php if (is_null($products)): ?>
                 <h3>会計記録はありません。</h3>
             <?php else: ?>
-                <?php foreach ($item_names as $item_name): ?>
+                <?php foreach ($products as $product): ?>
                     <tr>
-                        <td><?= $item_name ?></td>
-                        <td><?= $detail->get_total_sold($item_name) ?></td>
-                        <td><?= $detail->get_total_revenue($item_name) ?></td>
+                        <td><?= $product->get_item_name() ?></td>
+                        <td><?= $detail->get_total_sold($product->get_item_id()) ?></td>
+                        <td><?= $detail->get_total_revenue($product->get_item_id()) ?></td>
                     </tr>
                 <?php endforeach; ?>
             <?php endif; ?>

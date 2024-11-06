@@ -45,7 +45,7 @@ if (!$ok) {
     exit();
 }
 
-$product_ids = $_SESSION["order"]["data"]["product_ids"];
+$product_ids = $_SESSION["order"]["data"]["product_id"];
 $product_names = $_SESSION["order"]["data"]["product_name"];
 $product_prices = $_SESSION["order"]["data"]["product_price"];
 $quantities = $_SESSION["order"]["data"]["quantity"];

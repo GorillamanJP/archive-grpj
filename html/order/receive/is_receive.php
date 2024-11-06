@@ -15,15 +15,14 @@ if (isset($_COOKIE["order"]) && $_COOKIE["order"] !== "") {
             exit();
         }
     } catch (Exception $e) {
-        $_SESSION["message"] = "注文番号が読み取れませんでした。";
-        $_SESSION["message_detail"] = "クッキーに保存した注文番号が改ざんされた可能性があります。恐れ入りますが、店頭スタッフまでお尋ねください。";
-        $_SESSION["message_type"] = "danger";
+        $_SESSION["order"]["warning"]["message"] = "注文番号が読み取れませんでした。";
+        $_SESSION["order"]["warning"]["message_details"] = "クッキーに保存した注文番号が改ざんされた可能性があります。恐れ入りますが、店頭スタッフまでお尋ねください。";
         session_write_close();
-        header("Location: /order/");
+        header("Location: /order/error/");
         exit();
     } catch (\Throwable $th) {
         $_SESSION["message"] = "予期しないエラーが発生しました。";
-        $_SESSION["message_detail"] = $th->getMessage();
+        $_SESSION["message_details"] = $th->getMessage();
         $_SESSION["message_type"] = "danger";
         session_write_close();
         header("Location: /order/");

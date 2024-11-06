@@ -154,6 +154,35 @@ class Order_Order
     public function get_all(): array|null
     {
         try {
+            $sql = "SELECT id FROM order_orders WHERE is_received = 0 ORDER BY id DESC";
+
+            $stmt = $this->pdo->prepare($sql);
+
+            $stmt->execute();
+
+            $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if ($orders) {
+                $orders_array = [];
+                foreach ($orders as $order) {
+                    $order_obj = new Order_Order();
+                    $orders_array[] = $order_obj->get_from_id($order["id"]);
+                    $order_obj->close();
+                }
+                return $orders_array;
+            } else {
+                return null;
+            }
+        } catch (PDOException $pe) {
+            $this->rollback();
+            throw new Exception("データベースエラーです。", 1, $pe);
+        } catch (\Throwable $th) {
+            $this->rollback();
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
+        }
+    }
+
+    public function get_all_all():array|null{
+        try {
             $sql = "SELECT id FROM order_orders ORDER BY id DESC";
 
             $stmt = $this->pdo->prepare($sql);
@@ -165,7 +194,7 @@ class Order_Order
                 $orders_array = [];
                 foreach ($orders as $order) {
                     $order_obj = new Order_Order();
-                    $orders_array[] = $order_obj->get_from_id($order->get_id());
+                    $orders_array[] = $order_obj->get_from_id($order["id"]);
                     $order_obj->close();
                 }
                 return $orders_array;
@@ -185,6 +214,25 @@ class Order_Order
     {
         try {
             $sql = "DELETE FROM order_orders WHERE id = :id";
+
+            $stmt = $this->pdo->prepare($sql);
+
+            $stmt->bindValue(":id", $this->id, PDO::PARAM_INT);
+
+            $stmt->execute();
+        } catch (PDOException $pe) {
+            $this->rollback();
+            throw new Exception("データベースエラーです。", 1, $pe);
+        } catch (\Throwable $th) {
+            $this->rollback();
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
+        }
+    }
+
+    public function receive(): void
+    {
+        try {
+            $sql = "UPDATE order_orders SET is_received = 1 WHERE id = :id";
 
             $stmt = $this->pdo->prepare($sql);
 
