@@ -1,5 +1,7 @@
 USE cash_register;
 
+ALTER DATABASE your_database_name CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+
 -- レジのユーザーテーブル
 CREATE TABLE IF NOT EXISTS users(
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -79,6 +81,14 @@ CREATE TABLE IF NOT EXISTS order_details(
     subtotal INT NOT NULL,
     FOREIGN KEY (order_id) REFERENCES order_orders(id) ON DELETE CASCADE,
     FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE
+);
+
+-- 通知テーブル
+CREATE TABLE IF NOT EXISTS notifications(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    message VARCHAR(1023) NOT NULL,
+    sent_date DATETIME NOT NULL
 );
 
 -- 初期ユーザー作成

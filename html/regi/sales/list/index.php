@@ -89,9 +89,8 @@ $detail = new Detail();
             </tbody>
         </table>
     </div>
-    <!-- 更新通知 -->
-    <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/toast.html"; ?>
-    <!-- 更新通知　ここまで -->
+    <div id="notifications" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+    <script src="/common/check_notify.js"></script>
     <script src="./check_update.js"></script>
 </body>
 
