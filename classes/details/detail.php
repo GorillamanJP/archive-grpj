@@ -87,11 +87,13 @@ class Detail
         }
     }
     # 通知を送る
-    private function send_notification(string $title, string $message){
+    private function send_notification(string $title, string $message)
+    {
         require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/notifications/notification.php";
         $notification = new Notification();
         $notification->create($title, $message);
     }
+
     public function create(int $accountant_id, int $item_id, string $item_name, int $quantity, int $item_price, int $subtotal): Detail
     {
         try {
@@ -108,8 +110,8 @@ class Detail
 
             $stmt->execute();
 
-            $this->send_notification("販売通知", "{$item_name} が {$quantity} 個売れました！");
-            
+            $this->send_notification("会計詳細", "{$item_name} が {$quantity} 個売れました！");
+
             return $this->get_from_id($this->pdo->lastInsertId());
         } catch (PDOException $e) {
             $this->rollback();

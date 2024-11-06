@@ -89,7 +89,7 @@ $detail = new Detail();
         </table>
     </div>
     <div id="notifications" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
-    <script src="/common/check_notify.js"></script>
+    <script src="/regi/notify/check_notify.js"></script>
     <script src="./check_update.js"></script>
 </body>
 

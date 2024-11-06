@@ -132,6 +132,14 @@ class Item
         unset($this->pdo);
     }
 
+    # 通知を送る
+    private function send_notification(string $title, string $message)
+    {
+        require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/notifications/notification.php";
+        $notification = new Notification();
+        $notification->create($title, $message);
+    }
+
     # 商品登録
     public function create(string $item_name, int $price, string $item_image): Item
     {
@@ -149,6 +157,9 @@ class Item
             $stmt->bindValue(":delete_flag", false, PDO::PARAM_BOOL);
 
             $stmt->execute();
+
+            $this->send_notification("商品追加", "新しい商品「{$item_name}」が追加されました！");
+
             return $this->get_from_id($this->pdo->lastInsertId());
         } catch (PDOException $e) {
             $this->rollback();
@@ -227,6 +238,8 @@ class Item
 
             $stmt->execute();
 
+            $this->send_notification("商品更新", "商品「{$this->item_name}」の情報が更新されました！");
+
             return $this->get_from_id($this->id);
         } catch (PDOException $e) {
             $this->rollback();
@@ -244,6 +257,8 @@ class Item
             $stmt->bindValue(":id", $this->id, PDO::PARAM_INT);
 
             $stmt->execute();
+
+            $this->send_notification("商品削除", "商品「$this->item_name}」が削除されました！");
         } catch (PDOException $pe) {
             $this->rollback();
             throw new Exception("データベースエラーです。", 1, $pe);
