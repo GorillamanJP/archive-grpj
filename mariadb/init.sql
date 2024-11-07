@@ -1,7 +1,5 @@
 USE cash_register;
 
-ALTER DATABASE your_database_name CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-
 -- レジのユーザーテーブル
 CREATE TABLE IF NOT EXISTS users(
     id INT AUTO_INCREMENT PRIMARY KEY,
