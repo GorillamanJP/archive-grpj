@@ -88,6 +88,12 @@ class Order_Detail
             throw new Exception($e->getMessage(), 1, $e);
         }
     }
+        # 通知を送る
+        private function send_notification(string $title, string $message){
+            require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/notifications/notification.php";
+            $notification = new Notification();
+            $notification->create($title, $message);
+        }
 
     public function create(int $order_id, int $item_id, string $item_name, int $item_price, int $quantity, int $subtotal): Order_Detail
     {
@@ -105,7 +111,11 @@ class Order_Detail
 
             $stmt->execute();
 
-            return $this->get_from_id($this->pdo->lastInsertId());
+            $id = $this->pdo->lastInsertId();
+
+            $this->send_notification("注文詳細", "{$item_name} が {$quantity} 個注文されました！");
+
+            return $this->get_from_id($id);
         } catch (PDOException $pe) {
             $this->rollback();
             throw new Exception("データベースエラーです。", 1, $pe);

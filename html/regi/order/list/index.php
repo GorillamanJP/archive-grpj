@@ -4,13 +4,11 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
 <?php
 session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/orders/order.php";
-
 $order_obj = new Order();
 $orders = $order_obj->get_all();
 ?>
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,17 +21,21 @@ $orders = $order_obj->get_all();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="/common/list.css">
 </head>
-
 <body>
     <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
     <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/navbar.php"; ?>
     <!-- コンテナ開始 -->
     <div class="container mt-4">
         <h1 class="text-center mb-4">モバイル注文準備中</h1>
+<<<<<<< HEAD
 
         <!-- ページネーション準備 -->
         <p class="text-center my-3" style="font-size: 1.2em;">最終更新時刻:<span id="last-update">0000/0/0 00:00:00</span></p>
 
+=======
+        <!-- ページネーション準備 -->
+        <p class="text-center my-3" style="font-size: 1.2em;">最終更新時刻:<span id="last-update">0000/0/0 00:00:00</span></p>
+>>>>>>> origin/seki
         <div class="text-center mb-3">
             <a href="../../" class="btn btn-outline-success btn-lg-custom p-2 mx-1">レジ画面へ</a>
         </div>
@@ -86,5 +88,4 @@ $orders = $order_obj->get_all();
             <?php endif; ?>
         </table>
 </body>
-
 </html>

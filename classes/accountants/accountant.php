@@ -81,6 +81,14 @@ class Accountant
         }
     }
 
+    # 通知を送る
+    private function send_notification(string $title, string $message)
+    {
+        require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/notifications/notification.php";
+        $notification = new Notification();
+        $notification->create($title, $message);
+    }
+
     public function create(int $total_amount, int $total_price, string $accountant_user_name): Accountant
     {
         try {
@@ -95,7 +103,9 @@ class Accountant
 
             $stmt->execute();
 
-            return $this->get_from_id($this->pdo->lastInsertId());
+            $id = $this->pdo->lastInsertId();
+            $this->send_notification("会計", "{$id} 番の会計が処理されました！");
+            return $this->get_from_id($id);
         } catch (PDOException $e) {
             $this->rollback();
             throw new Exception($e->getMessage());
