@@ -43,10 +43,15 @@ if ($order->get_order_order()->get_is_received()) {
 
 <body>
     <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
-    <h1>注文番号</h1>
-    <?= $order_id ?>
-    <h2>内容</h2>
+    <h1>注文表示</h1>
+    <h2>注文番号</h2>
+    <h1><?= $order->get_order_order()->get_id() ?></h1>
+    <h2>詳細</h2>
     <table>
+        <tr>
+            <th>注文番号</th>
+            <td><?= $order->get_order_order()->get_id() ?></td>
+        </tr>
         <tr>
             <th>注文日</th>
             <td><?= $order->get_order_order()->get_date() ?></td>
@@ -55,24 +60,20 @@ if ($order->get_order_order()->get_is_received()) {
             <th>内容</th>
             <td>
                 <table>
+                    <tr>
+                        <th>品名</th>
+                        <th>価格</th>
+                        <th>個数</th>
+                        <th>小計</th>
+                    </tr>
                     <?php foreach ($order->get_order_details() as $detail): ?>
                         <tr>
-                            <th>品名</th>
                             <td><?= $detail->get_item_name() ?></td>
-                        </tr>
-                        <tr>
-                            <th>価格</th>
                             <td><?= $detail->get_item_price() ?></td>
-                        </tr>
-                        <tr>
-                            <th>個数</th>
                             <td><?= $detail->get_quantity() ?></td>
-                        </tr>
-                        <tr>
-                            <th>小計</th>
                             <td><?= $detail->get_subtotal() ?></td>
                         </tr>
-                    <?php endforeach ?>
+                    <?php endforeach; ?>
                 </table>
             </td>
         </tr>
