@@ -39,54 +39,66 @@ if ($order->get_order_order()->get_is_received()) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/common/list.css">
+    <link rel="stylesheet" href="/common/create.css">
+    <style>
+        .alert-custom {
+            text-align: center;
+        }
+    </style>
 </head>
 
 <body>
-    <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
-    <h1>注文番号</h1>
-    <?= $order_id ?>
-    <h2>内容</h2>
-    <table>
-        <tr>
-            <th>注文日</th>
-            <td><?= $order->get_order_order()->get_date() ?></td>
-        </tr>
-        <tr>
-            <th>内容</th>
-            <td>
-                <table>
-                    <?php foreach ($order->get_order_details() as $detail): ?>
+    <div class="container">
+        <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
+        <h1 class="text-center my-3">注文番号：<?= $order_id ?></h1>
+        <h2 class="text-center my-3">注文内容</h2>
+        <table class="table table-striped table-success">
+            <tr>
+                <th class="text-end">注文日</th>
+                <td><?= $order->get_order_order()->get_date() ?></td>
+            </tr>
+            <tr>
+                <th colspan="2" class="text-center">注文内容</th>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <table class="table text-center">
                         <tr>
-                            <th>品名</th>
-                            <td><?= $detail->get_item_name() ?></td>
-                        </tr>
-                        <tr>
+                            <th>商品名</th>
                             <th>価格</th>
-                            <td><?= $detail->get_item_price() ?></td>
-                        </tr>
-                        <tr>
-                            <th>個数</th>
-                            <td><?= $detail->get_quantity() ?></td>
-                        </tr>
-                        <tr>
+                            <th>購入数</th>
                             <th>小計</th>
-                            <td><?= $detail->get_subtotal() ?></td>
                         </tr>
-                    <?php endforeach ?>
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <th>総数</th>
-            <td><?= $order->get_order_order()->get_total_amount() ?></td>
-        </tr>
-        <tr>
-            <th>合計</th>
-            <td><?= $order->get_order_order()->get_total_price() ?></td>
-        </tr>
-    </table>
-    <p>店頭にある表示用QRコードを使ってこの画面を再表示したうえで、店員にお見せください。</p>
-    <p>なお、長時間受け取りに来ない場合はこちらからオーダーをキャンセルさせていただく場合がございます。</p>
+                        <?php foreach ($order->get_order_details() as $detail): ?>
+                            <tr>
+                                <td><?= $detail->get_item_name() ?></td>
+                                <td><?= $detail->get_item_price() ?></td>
+                                <td><?= $detail->get_quantity() ?></td>
+                                <td><?= $detail->get_subtotal() ?></td>
+                            </tr>
+                        <?php endforeach ?>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <th class="text-end">合計購入数</th>
+                <td><?= $order->get_order_order()->get_total_amount() ?></td>
+            </tr>
+            <tr>
+                <th class="text-end">合計</th>
+                <td><?= $order->get_order_order()->get_total_price() ?></td>
+            </tr>
+        </table>
+    </div>
+    <div class="container mt-4">
+        <div class="alert alert-warning alert-custom" role="alert">
+            <p class="text-center">店頭にある表示用QRコードを使ってこの画面を再表示したうえで、店員にお見せください。</p>
+        </div>
+        <div class="alert alert-danger alert-custom" role="alert">
+            <p class="text-center">なお、長時間受け取りに来ない場合はこちらからオーダーをキャンセルさせていただく場合がございます。</p>
+        </div>
+    </div>
 </body>
 
 </html>
