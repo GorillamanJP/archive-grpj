@@ -9,6 +9,7 @@ $orders = $order_obj->get_all();
 ?>
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,6 +22,7 @@ $orders = $order_obj->get_all();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="/common/list.css">
 </head>
+
 <body>
     <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
     <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/navbar.php"; ?>
@@ -52,7 +54,7 @@ $orders = $order_obj->get_all();
                         <td><?= $order->get_order_order()->get_id() ?></td>
                         <td><?= $order->get_order_order()->get_date() ?></td>
                         <td>
-                            <table class="table table-bordered table-hover">
+                            <table class="table table-bordered">
                                 <thead>
                                     <tr>
                                         <th>品名</th>
@@ -73,7 +75,7 @@ $orders = $order_obj->get_all();
                             <form action="../receive/" method="post">
                                 <input type="hidden" name="order_id" id="order_id"
                                     value="<?= $order->get_order_order()->get_id() ?>">
-                                <button type="submit">受け取り</button>
+                                <input type='submit' value='受け取り' btn class='btn btn-outline-success round-button'>
                             </form>
                         </td>
                     </tr>
@@ -81,4 +83,5 @@ $orders = $order_obj->get_all();
             <?php endif; ?>
         </table>
 </body>
+
 </html>

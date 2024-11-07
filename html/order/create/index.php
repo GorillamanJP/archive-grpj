@@ -84,7 +84,7 @@ if ($total_price < 0) {
 }
 
 unset($_SESSION["order"]["data"]);
-foreach($order_items as $item){
+foreach ($order_items as $item) {
     $_SESSION["order"]["data"]["product_id"][] = $item['id'];
     $_SESSION["order"]["data"]["product_name"][] = $item['name'];
     $_SESSION["order"]["data"]["product_price"][] = $item['price'];
@@ -106,69 +106,66 @@ $_SESSION["order"]["data"]["total_price"] = $total_price;
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous"></script>
-
 </head>
 
 <body>
-    <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
-    <h1>注文確認</h1>
-    <h2>注文内容は以下の通りでよろしいですか？</h2>
-    <p id="back_message">確定しない場合は、<span id="back_second">30</span>秒後に前のページに戻ります。</p>
-    <h2>会計詳細</h2>
-    <form action="./create.php" method="post">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>商品名</th>
-                    <th>価格</th>
-                    <th>購入数</th>
-                    <th>小計</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($order_items as $item): ?>
+    <div class="container mt-4">
+        <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
+        <h1 class="text-center mb-4">注文確認</h1>
+        <h2 class="text-center mb-4">注文内容は以下の通りでよろしいですか？</h2>
+        <p class="text-center" id="back_message">確定しない場合は、<span id="back_second">30</span>秒後に前のページに戻ります。</p>
+        <h2 class="text-center mt-4">会計詳細</h2>
+        <form action="./create.php" method="post" class="mt-4">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>商品名</th>
+                            <th>価格</th>
+                            <th>購入数</th>
+                            <th>小計</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($order_items as $item): ?>
+                            <tr>
+                                <td><?= $item["name"] ?></td>
+                                <td><?= $item["price"] ?></td>
+                                <td><?= $item["order_quantity"] ?></td>
+                                <td><?= $item["subtotal"] ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-responsive mt-3">
+                <table class="table">
                     <tr>
-                        <td>
-                            <span><?= $item["name"] ?></span>
-                        </td>
-                        <td>
-                            <span><?= $item["price"] ?></span>
-                        </td>
-                        <td>
-                            <span><?= $item["order_quantity"] ?></span>
-                        </td>
-                        <td>
-                            <span><?= $item["subtotal"] ?></span>
-                        </td>
+                        <th>合計購入数</th>
+                        <td><span id="total_amount_disp"><?= $total_amount ?></span>個</td>
                     </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-        <table class="table mt-3">
-            <tr>
-                <th>合計購入数</th>
-                <td><span id="total_amount_disp"><?= $total_amount ?></span>個</td>
-            </tr>
-            <tr>
-                <th>合計金額</th>
-                <td><span id="total_price_disp"><?= $total_price ?></span>円</td>
-            </tr>
-        </table>
-        <div class="text-center mt-4">
-            <p><input type="submit" value="注文確定" class="btn btn-primary btn-lg round-button"></p>
-            <p><a href="/order/"><button type="button" class="btn btn-secondary btn-lg round-button">戻る</button></a>
-            </p>
-        </div>
-    </form>
+                    <tr>
+                        <th>合計金額</th>
+                        <td><span id="total_price_disp"><?= $total_price ?></span>円</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary btn-lg round-button">注文確定</button>
+                <a href="/order/" class="btn btn-secondary btn-lg round-button">戻る</a>
+            </div>
+        </form>
+    </div>
 </body>
 <script>
     setInterval(() => {
         const second = document.getElementById("back_second");
         second.innerText -= 1;
-        if(second.innerText <= 0){
+        if (second.innerText <= 0) {
             document.getElementById("back_message").innerHTML = "前のページに戻っています…";
             location.href = "/order/";
         }
     }, 1000);
 </script>
+
 </html>
