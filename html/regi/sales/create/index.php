@@ -325,67 +325,161 @@ $_SESSION["regi"]["data"]["total_price"] = $total_price;
 
     <!-- 購入確定ボタンにイベントリスナーを追加 -->
     <script>
+        let submitted = false;
+        let confirmPurchaseProcessing = false;
+        let confirmChangeProcessing = false;
+        let modalQueue = [];
+        let enterPressTimeout;
+        let lastEnterPressTime = 0;
+
         document.getElementById('form').addEventListener('submit', function (event) {
             event.preventDefault();
-            // お釣り計算
+            if (submitted) return;
+            submitted = true;
+
+            console.log('フォームが送信されました');
+
             calc_and_disp_transaction();
+
             const receivedPrice = document.getElementById('received_price').value;
             const returnedPrice = document.getElementById('returned_price').value;
 
-            // お預かり金額が不足している場合の処理
             if (returnedPrice < 0) {
-                var insufficientFundsModal = new bootstrap.Modal(document.getElementById('insufficientFundsModal'), {
-                    keyboard: false
-                });
-                insufficientFundsModal.show();
+                console.log('不足金額モーダルを表示');
+                showModal('insufficientFundsModal');
             } else {
+                console.log('購入確認モーダルを表示');
                 document.getElementById('confirmTotalPrice').textContent = document.getElementById('total_price_disp').textContent;
                 document.getElementById('confirmReceivedPrice').textContent = document.getElementById('received_price_disp').value;
                 document.getElementById('confirmReturnedPrice').textContent = document.getElementById('returned_price_disp').textContent;
-                var confirmPurchaseModal = new bootstrap.Modal(document.getElementById('confirmPurchaseModal'), {
-                    keyboard: false
-                });
-                confirmPurchaseModal.show();
+                showModal('confirmPurchaseModal');
             }
+
+            setTimeout(() => submitted = false, 1000);
         });
 
+        function showModal(modalId) {
+            const modal = new bootstrap.Modal(document.getElementById(modalId), { keyboard: false });
+            modal.show();
+
+            console.log(`${modalId}が表示されました`);
+
+            document.getElementById(modalId).addEventListener('shown.bs.modal', function () {
+                if (modalId === 'confirmPurchaseModal') {
+                    confirmPurchaseProcessing = false;
+                    console.log('confirmPurchaseProcessingがリセットされました');
+                } else if (modalId === 'confirmChangeModal') {
+                    confirmChangeProcessing = false;
+                    console.log('confirmChangeProcessingがリセットされました');
+                }
+            });
+
+            document.getElementById(modalId).addEventListener('hidden.bs.modal', function () {
+                if (modalQueue.length > 0) {
+                    showModal(modalQueue.shift());
+                }
+                console.log(`${modalId}が隠されました`);
+            }, { once: true });
+        }
+
         document.getElementById('confirmPurchaseBtn').addEventListener('click', function () {
-            const returnedPrice = document.getElementById('returned_price').value;
-            var confirmPurchaseModal = bootstrap.Modal.getInstance(document.getElementById('confirmPurchaseModal'));
-            if (returnedPrice > 0) {
-                confirmPurchaseModal.hide();
-                document.getElementById('confirmChangeAmount').textContent = returnedPrice;
-                var confirmChangeModal = new bootstrap.Modal(document.getElementById('confirmChangeModal'), {
-                    keyboard: false
-                });
-                confirmChangeModal.show();
-            } else {
-                confirmPurchaseModal.hide();
-                document.getElementById('form').submit();
-            }
+            processConfirmPurchase();
         });
 
         document.getElementById('confirmChangeBtn').addEventListener('click', function () {
-            document.getElementById('form').submit();
+            processConfirmChange();
         });
 
-        document.getElementById('cancelChangeBtn').addEventListener('click', function () {
-            var confirmChangeModal = bootstrap.Modal.getInstance(document.getElementById('confirmChangeModal'));
-            confirmChangeModal.hide();
-        });
-
-        // Enterキーで確定ボタンを押す処理を追加
         document.addEventListener('keydown', function (event) {
             if (event.key === 'Enter' && event.target.nodeName !== 'TEXTAREA') {
-                if (document.querySelector('.modal.show #confirmPurchaseBtn')) {
-                    event.preventDefault();
-                    document.querySelector('.modal.show #confirmPurchaseBtn').click();
-                } else if (document.querySelector('.modal.show #confirmChangeBtn')) {
-                    event.preventDefault();
-                    document.querySelector('.modal.show #confirmChangeBtn').click();
+                event.preventDefault();
+
+                const now = new Date().getTime();
+                if (now - lastEnterPressTime < 500) return;
+                lastEnterPressTime = now;
+
+                console.log('Enterキーが押されました');
+
+                clearTimeout(enterPressTimeout);
+
+                const activeModal = document.querySelector('.modal.show');
+                if (activeModal) {
+                    if (activeModal.querySelector('#confirmPurchaseBtn') && !confirmPurchaseProcessing) {
+                        processConfirmPurchase();
+                    } else if (activeModal.querySelector('#confirmChangeBtn') && !confirmChangeProcessing) {
+                        processConfirmChange();
+                    }
+
+                    enterPressTimeout = setTimeout(() => {
+                        confirmPurchaseProcessing = false;
+                        confirmChangeProcessing = false;
+                    }, 1000);
+                } else {
+                    console.log('フォームが送信されます');
+                    document.getElementById('form').dispatchEvent(new Event('submit'));
                 }
             }
         });
+
+        function processConfirmPurchase() {
+            if (confirmPurchaseProcessing) return;
+            confirmPurchaseProcessing = true;
+
+            const returnedPrice = document.getElementById('returned_price').value;
+            const confirmPurchaseModal = bootstrap.Modal.getInstance(document.getElementById('confirmPurchaseModal'));
+            confirmPurchaseModal.hide();
+
+            console.log('confirmPurchaseBtnがクリックされました');
+            console.log(`returnedPrice: ${returnedPrice}`);
+
+            if (returnedPrice > 0) {
+                document.getElementById('confirmChangeAmount').textContent = returnedPrice;
+                showModal('confirmChangeModal', () => {
+                    console.log('confirmChangeModalが表示されました');
+                });
+            } else {
+                console.log('フォームが送信されます');
+                document.getElementById('form').submit();
+            }
+        }
+
+        function processConfirmChange() {
+            if (confirmChangeProcessing) return;
+            confirmChangeProcessing = true;
+
+            console.log('confirmChangeBtnがクリックされました');
+            console.log('フォーム送信の準備中...');
+
+            console.log('フォームが送信されます');
+            document.getElementById('form').submit();
+
+            setTimeout(() => {
+                console.log('confirmChangeProcessingをリセット');
+                confirmChangeProcessing = false;
+            }, 1000);
+        }
+
+        const cancelPurchaseBtn = document.getElementById('cancelPurchaseBtn');
+        if (cancelPurchaseBtn) {
+            cancelPurchaseBtn.addEventListener('click', function () {
+                const confirmPurchaseModal = bootstrap.Modal.getInstance(document.getElementById('confirmPurchaseModal'));
+                confirmPurchaseModal.hide();
+                confirmPurchaseProcessing = false;
+                submitted = false;
+                console.log('cancelPurchaseBtnがクリックされました');
+            });
+        }
+
+        const cancelChangeBtn = document.getElementById('cancelChangeBtn');
+        if (cancelChangeBtn) {
+            cancelChangeBtn.addEventListener('click', function () {
+                const confirmChangeModal = bootstrap.Modal.getInstance(document.getElementById('confirmChangeModal'));
+                confirmChangeModal.hide();
+                confirmChangeProcessing = false;
+                submitted = false;
+                console.log('cancelChangeBtnがクリックされました');
+            });
+        }
 
         // お釣り計算周りの処理
         function calc_and_disp_transaction() {
@@ -404,10 +498,8 @@ $_SESSION["regi"]["data"]["total_price"] = $total_price;
         });
 
         // keep_alive処理
-        // タイムアウトが起こっているかフラグ
         let timeoutOccurred = false;
 
-        // keep_aliveを送る処理
         function sendKeepAlive() {
             const controller = new AbortController();
             const signal = controller.signal;
@@ -424,15 +516,14 @@ $_SESSION["regi"]["data"]["total_price"] = $total_price;
                 .catch(error => {
                     handleTimeout();
                 });
-            // 10秒後にタイムアウトを設定
             setTimeout(() => controller.abort(), 10000);
         }
-        // 10秒ごとにkeepaliveを送信
+
         setInterval(sendKeepAlive, 10000);
-        // タイムアウト発生時の処理
+
         function handleTimeout() {
             if (!timeoutOccurred) {
-                timeoutOccurred = true; // タイムアウトフラグを設定
+                timeoutOccurred = true;
                 document.getElementById("keep_alive").style = "";
                 setTimeout(function () {
                     if (timeoutOccurred) {
@@ -442,6 +533,7 @@ $_SESSION["regi"]["data"]["total_price"] = $total_price;
             }
         }
     </script>
+
 </body>
 
 </html>
