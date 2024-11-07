@@ -1,6 +1,83 @@
+document.addEventListener("DOMContentLoaded", function () {
+  console.log("DOM fully loaded and parsed"); // DOMのロード確認ログ
+
+  const buttons = document.querySelectorAll(
+    ".quantity-button.increment, .quantity-button.decrement"
+  );
+  console.log("Buttons found:", buttons.length); // ボタンの数を確認
+
+  buttons.forEach((button) => {
+    addLongPressEvent(
+      button,
+      button.classList.contains("increment") ? "increment" : "decrement"
+    );
+  });
+});
+
+function addLongPressEvent(button, action) {
+  console.log("Button:", button); // ボタンが正しく選択されているか確認
+  let timer;
+  let interval;
+  const delay = 500; // 長押しの開始までの遅延 (ミリ秒)
+  const speed = 100; // 長押し中の繰り返し速度 (ミリ秒)
+
+  const startLongPress = (e) => {
+    e.preventDefault(); // デフォルト動作をキャンセル
+    console.log("Start Long Press Event Triggered", action); // デバッグ用ログ
+    timer = setTimeout(() => {
+      interval = setInterval(() => {
+        console.log("Interval Triggered", action); // デバッグ用ログ
+        changeQuantity(
+          button,
+          action === "increment" ? 1 : -1,
+          button.dataset.productId,
+          button.dataset.stockQuantity
+        );
+      }, speed);
+    }, delay);
+  };
+
+  const endLongPress = () => {
+    console.log("End Long Press Event Triggered"); // デバッグ用ログ
+    clearTimeout(timer);
+    clearInterval(interval);
+    interval = null;
+  };
+
+  button.addEventListener("mousedown", startLongPress);
+  button.addEventListener("mouseup", (e) => {
+    if (!interval) {
+      console.log("Click Event Triggered", action); // デバッグ用ログ
+      changeQuantity(
+        button,
+        action === "increment" ? 1 : -1,
+        button.dataset.productId,
+        button.dataset.stockQuantity
+      );
+    }
+    endLongPress();
+  });
+  button.addEventListener("mouseleave", endLongPress);
+  button.addEventListener("touchstart", startLongPress);
+  button.addEventListener("touchend", (e) => {
+    if (!interval) {
+      console.log("Click Event Triggered", action); // デバッグ用ログ
+      changeQuantity(
+        button,
+        action === "increment" ? 1 : -1,
+        button.dataset.productId,
+        button.dataset.stockQuantity
+      );
+    }
+    endLongPress();
+  });
+  button.addEventListener("touchcancel", endLongPress);
+}
+
 let totalCount = 0;
 let totalPrice = 0;
 let productCounter = 0;
+
 function addToCart(productName, price, stockQuantity, productId) {
   const cartTable = document
     .getElementById("cart-table")
@@ -29,11 +106,20 @@ function addToCart(productName, price, stockQuantity, productId) {
   } else {
     if (stockQuantity > 0) {
       const row = document.createElement("tr");
-      row.innerHTML = `<td>${productName}</td><td>${price}円</td><td class="quantity-column"><button class="btn btn-outline-success quantity-button" onclick="changeQuantity(this, -1, ${productId}, ${stockQuantity})">－</button><span>1個</span><button class="btn btn-outline-success quantity-button" onclick="changeQuantity(this, 1, ${productId}, ${stockQuantity})">＋</button></td><td class="delete-column"><button class="btn btn-outline-danger" onclick="removeFromCart(this, ${price}, ${productId})" class="btn btn-danger">削除</button></td>`;
+      row.innerHTML = `<td>${productName}</td><td>${price}円</td><td class="quantity-column"><button class="btn btn-outline-success quantity-button increment" data-product-id="${productId}" data-stock-quantity="${stockQuantity}">＋</button><span>1個</span><button class="btn btn-outline-success quantity-button decrement" data-product-id="${productId}" data-stock-quantity="${stockQuantity}">－</button></td><td class="delete-column"><button class="btn btn-outline-danger" onclick="removeFromCart(this, ${price}, ${productId})">削除</button></td>`;
       cartTable.appendChild(row);
       updateTotals(price, 1);
       updateStockDisplay(productId, -1);
       addHiddenInputs(productId, 1);
+      // 追加されたボタンに長押しイベントを設定
+      const newIncrementButton = row.querySelector(
+        ".quantity-button.increment"
+      );
+      const newDecrementButton = row.querySelector(
+        ".quantity-button.decrement"
+      );
+      addLongPressEvent(newIncrementButton, "increment");
+      addLongPressEvent(newDecrementButton, "decrement");
     } else {
       alert("在庫が足りません。");
     }
@@ -88,7 +174,7 @@ function removeFromCart(button, price, productId) {
   const row = button.parentNode.parentNode;
   const quantity = parseInt(row.cells[2].children[1].innerText);
   row.remove();
-  updateTotals(-price * quantity, -quantity);
+  updateTotals(-price * quantity, -quantity); // 合計金額と合計個数を正しく更新
   updateStockDisplay(productId, quantity); // 在庫を戻す
   const productIdInputs = document.getElementsByName("product_id[]");
   const quantityInputs = document.getElementsByName("quantity[]");
@@ -102,9 +188,15 @@ function removeFromCart(button, price, productId) {
 }
 
 function changeQuantity(button, change, productId, stockQuantity) {
+  console.log("changeQuantity called", {
+    button,
+    change,
+    productId,
+    stockQuantity,
+  }); // デバッグ用ログ
   const quantityCell = button.parentNode.children[1];
   let currentQuantity = parseInt(quantityCell.innerText);
-  const price = parseInt(button.parentNode.parentNode.cells[1].innerText);
+  const price = parseInt(button.parentNode.parentNode.cells[1].innerText); // 価格を取得
   const newQuantity = currentQuantity + change;
   if (newQuantity < 1) {
     return; // 最小個数を1に制限
@@ -113,7 +205,7 @@ function changeQuantity(button, change, productId, stockQuantity) {
     return;
   }
   quantityCell.innerText = `${newQuantity}個`;
-  updateTotals(change * price, change);
+  updateTotals(price * change, change);
   updateStockDisplay(productId, -change); // 在庫数を更新
   updateForm(productId, newQuantity); // フォームを更新
 }
