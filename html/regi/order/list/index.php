@@ -47,6 +47,13 @@ $orders = $order_obj->get_all();
                     <td colspan="4">
                         <h2>受け取り待ちの注文はありません。</h2>
                     </td>
+                    <td>
+                        <form action="../show/" method="post">
+                            <input type="hidden" name="order_id" id="order_id"
+                                value="<?= $order->get_order_order()->get_id() ?>">
+                            <button type="submit">詳細</button>
+                        </form>
+                    </td>
                 </tr>
             <?php else: ?>
                 <?php foreach ($orders as $order): ?>
