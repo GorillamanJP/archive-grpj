@@ -9,6 +9,7 @@ $orders = $order_obj->get_all();
 ?>
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,71 +22,44 @@ $orders = $order_obj->get_all();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="/common/list.css">
 </head>
+
 <body>
     <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
     <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/navbar.php"; ?>
     <!-- コンテナ開始 -->
     <div class="container mt-4">
         <h1 class="text-center mb-4">モバイル注文準備中</h1>
-<<<<<<< HEAD
 
         <!-- ページネーション準備 -->
         <p class="text-center my-3" style="font-size: 1.2em;">最終更新時刻:<span id="last-update">0000/0/0 00:00:00</span></p>
 
-=======
-        <!-- ページネーション準備 -->
-        <p class="text-center my-3" style="font-size: 1.2em;">最終更新時刻:<span id="last-update">0000/0/0 00:00:00</span></p>
->>>>>>> origin/seki
         <div class="text-center mb-3">
             <a href="../../" class="btn btn-outline-success btn-lg-custom p-2 mx-1">レジ画面へ</a>
         </div>
         <h1>モバイル待機列</h1>
         <table class="table table-striped table-bordered table-hover text-center align-middle">
-            <tr>
-                <th>注文番号</th>
-                <th>注文日時</th>
-                <th>詳細</th>
-                <th>受け取り</th>
-            </tr>
-            <?php if (is_null($orders)): ?>
+            <thead>
+                <tr>
+                    <th>注文番号</th>
+                    <th>注文日時</th>
+                    <th>詳細</th>
+                    <th>受け取り</th>
+                </tr>
+            </thead>
+            <tbody id="refresh">
                 <tr>
                     <td colspan="4">
-                        <h2>受け取り待ちの注文はありません。</h2>
+                        <h3>読み込み中…</h3>
                     </td>
                 </tr>
-            <?php else: ?>
-                <?php foreach ($orders as $order): ?>
-                    <tr>
-                        <td><?= $order->get_order_order()->get_id() ?></td>
-                        <td><?= $order->get_order_order()->get_date() ?></td>
-                        <td>
-                            <table class="table table-bordered table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>品名</th>
-                                        <th>数量</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach ($order->get_order_details() as $detail): ?>
-                                        <tr>
-                                            <td><?= $detail->get_item_name() ?></td>
-                                            <td><?= $detail->get_quantity() ?></td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                <tbody>
-                            </table>
-                        </td>
-                        <td>
-                            <form action="../receive/" method="post">
-                                <input type="hidden" name="order_id" id="order_id"
-                                    value="<?= $order->get_order_order()->get_id() ?>">
-                                <button type="submit">受け取り</button>
-                            </form>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            <?php endif; ?>
+            </tbody>
         </table>
+    </div>
+    <!-- 通知領域 -->
+    <div id="notifications" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+    <script src="/regi/notify/check_notify.js"></script>
+    <!-- 通知領域　ここまで -->
 </body>
+<script src="./check_update_common.js"></script>
+
 </html>

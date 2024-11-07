@@ -5,6 +5,8 @@ if (!login_check()) {
     exit();
 }
 
+session_start();
+
 if (!isset($_SESSION["notify"]["last_update"]) || $_SESSION["notify"]["last_update"] === "") {
     $_SESSION["notify"]["last_update"] = date("Y-m-d H:i:s");
 }
