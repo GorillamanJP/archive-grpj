@@ -58,6 +58,8 @@ $total_price = $_SESSION["regi"]["data"]["total_price"];
 $received_price = $_POST["received_price"];
 $returned_price = $_POST["returned_price"];
 
+unset($_SESSION["regi"]["data"]);
+
 try {
     require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/users/user.php";
     $user_id = $_SESSION["login"]["user_id"];
@@ -76,10 +78,11 @@ try {
     $_SESSION["message_type"] = "danger";
 }
 
-session_write_close();
-if (isset($_SESSION["regi"]["order"])) {
+if (isset($_SESSION["regi"]["order"]["id"])) {
+    session_write_close();
     header("Location: /regi/order/receive/receive.php");
 } else {
+    session_write_close();
     header("Location: /regi/");
 }
 exit();

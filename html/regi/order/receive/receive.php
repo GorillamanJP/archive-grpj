@@ -10,7 +10,7 @@ if (!isset($_SESSION["regi"]["order"]["id"]) || $_SESSION["regi"]["order"]["id"]
 }
 
 $order_id = $_SESSION["regi"]["order"]["id"];
-unset($_SESSION["regi"]["order"]);
+unset($_SESSION["regi"]["order"]["id"]);
 
 require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/orders/order.php";
 try {
