@@ -27,7 +27,7 @@ $orders = $order_obj->get_all();
     <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/navbar.php"; ?>
     <div class="container mt-4">
         <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
-        <h1 class="text-center mb-4">注文一覧</h1>
+        <h1 class="text-center mb-4">モバイルオーダー注文一覧</h1>
         <p class="text-center my-3" style="font-size: 1.2em;">最終更新時刻:<span id="last-update">0000/0/0 00:00:00</span></p>
         <div class="text-center mb-3">
             <a href="../../" class="btn btn-outline-success btn-lg-custom p-2 mx-1">レジ画面へ</a>
@@ -35,17 +35,55 @@ $orders = $order_obj->get_all();
                 詳細を見るには、項目を押してください。
             </div>
         </div>
-        <table>
-            <tr>
-                <th>注文番号</th>
-                <th>注文日時</th>
-                <th>詳細</th>
-                <th>受け取り</th>
-            </tr>
-            <?php if (is_null($orders)): ?>
+        <table class="table table-success table-striped table-bordered table-hover text-center align-middle">
+            <thead>
+                <tr>
+                    <th>注文番号</th>
+                    <th>注文日時</th>
+                    <th>詳細</th>
+                    <th>受け取り</th>
+                </tr>
+            </thead>
+            <tbody id="refresh">
                 <tr>
                     <td colspan="4">
-                        <h2>受け取り待ちの注文はありません。</h2>
+                        <h2>読み込み中…</h2>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <?php if (is_null($orders)): ?>
+            <tr>
+                <td colspan="4">
+                    <h2>受け取り待ちの注文はありません。</h2>
+                </td>
+
+            </tr>
+        <?php else: ?>
+            <?php foreach ($orders as $order): ?>
+                <tr>
+                    <td><?= $order->get_order_order()->get_id() ?></td>
+                    <td><?= $order->get_order_order()->get_date() ?></td>
+                    <td>
+                        <table>
+                            <tr>
+                                <th>品名</th>
+                                <th>数量</th>
+                            </tr>
+                            <?php foreach ($order->get_order_details() as $detail): ?>
+                                <tr>
+                                    <td><?= $detail->get_item_name() ?></td>
+                                    <td><?= $detail->get_quantity() ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </table>
+                    </td>
+                    <td>
+                        <form action="../receive/" method="post">
+                            <input type="hidden" name="order_id" id="order_id"
+                                value="<?= $order->get_order_order()->get_id() ?>">
+                            <button type="submit">受け取り</button>
+                        </form>
                     </td>
                     <td>
                         <form action="../show/" method="post">
@@ -54,37 +92,11 @@ $orders = $order_obj->get_all();
                             <button type="submit">詳細</button>
                         </form>
                     </td>
+
                 </tr>
-            <?php else: ?>
-                <?php foreach ($orders as $order): ?>
-                    <tr>
-                        <td><?= $order->get_order_order()->get_id() ?></td>
-                        <td><?= $order->get_order_order()->get_date() ?></td>
-                        <td>
-                            <table>
-                                <tr>
-                                    <th>品名</th>
-                                    <th>数量</th>
-                                </tr>
-                                <?php foreach ($order->get_order_details() as $detail): ?>
-                                    <tr>
-                                        <td><?= $detail->get_item_name() ?></td>
-                                        <td><?= $detail->get_quantity() ?></td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </table>
-                        </td>
-                        <td>
-                            <form action="../receive/" method="post">
-                                <input type="hidden" name="order_id" id="order_id"
-                                    value="<?= $order->get_order_order()->get_id() ?>">
-                                <button type="submit">受け取り</button>
-                            </form>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            <?php endif; ?>
-        </table>
+            <?php endforeach; ?>
+        <?php endif; ?>
+
     </div>
 </body>
 
