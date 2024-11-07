@@ -18,13 +18,20 @@ function addLongPressEvent(button, action) {
   console.log("Button:", button); // ボタンが正しく選択されているか確認
   let timer;
   let interval;
+  let longPress = false; // 長押しを示すフラグ
+  let isTouch = false; // タッチイベントかどうかを示すフラグ
+  let preventClick = false; // 連続タップを防ぐフラグ
   const delay = 500; // 長押しの開始までの遅延 (ミリ秒)
   const speed = 100; // 長押し中の繰り返し速度 (ミリ秒)
+  const tapDelay = 300; // 連続タップを防ぐディレイ (ミリ秒)
 
   const startLongPress = (e) => {
     e.preventDefault(); // デフォルト動作をキャンセル
+    isTouch = e.type.startsWith("touch"); // タッチイベントかどうかを判定
+    longPress = false; // 長押しフラグをリセット
     console.log("Start Long Press Event Triggered", action); // デバッグ用ログ
     timer = setTimeout(() => {
+      longPress = true; // 長押し開始
       interval = setInterval(() => {
         console.log("Interval Triggered", action); // デバッグ用ログ
         changeQuantity(
@@ -41,36 +48,30 @@ function addLongPressEvent(button, action) {
     console.log("End Long Press Event Triggered"); // デバッグ用ログ
     clearTimeout(timer);
     clearInterval(interval);
-    interval = null;
+  };
+
+  const handleClick = (e) => {
+    if (!longPress && !preventClick) {
+      console.log("Click Event Triggered", action); // デバッグ用ログ
+      changeQuantity(
+        button,
+        action === "increment" ? 1 : -1,
+        button.dataset.productId,
+        button.dataset.stockQuantity
+      );
+      preventClick = true; // 連続タップを防ぐフラグをセット
+      setTimeout(() => {
+        preventClick = false; // 一定時間後にフラグをリセット
+      }, tapDelay);
+    }
+    endLongPress();
   };
 
   button.addEventListener("mousedown", startLongPress);
-  button.addEventListener("mouseup", (e) => {
-    if (!interval) {
-      console.log("Click Event Triggered", action); // デバッグ用ログ
-      changeQuantity(
-        button,
-        action === "increment" ? 1 : -1,
-        button.dataset.productId,
-        button.dataset.stockQuantity
-      );
-    }
-    endLongPress();
-  });
+  button.addEventListener("mouseup", handleClick);
   button.addEventListener("mouseleave", endLongPress);
   button.addEventListener("touchstart", startLongPress);
-  button.addEventListener("touchend", (e) => {
-    if (!interval) {
-      console.log("Click Event Triggered", action); // デバッグ用ログ
-      changeQuantity(
-        button,
-        action === "increment" ? 1 : -1,
-        button.dataset.productId,
-        button.dataset.stockQuantity
-      );
-    }
-    endLongPress();
-  });
+  button.addEventListener("touchend", handleClick);
   button.addEventListener("touchcancel", endLongPress);
 }
 
