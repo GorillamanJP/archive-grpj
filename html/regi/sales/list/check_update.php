@@ -7,11 +7,11 @@ if (!login_check()) {
 
 session_start();
 
-if (!isset($_SESSION["regi"]["order"]["list"]["last_update"]) || $_SESSION["regi"]["order"]["list"]["last_update"] === "") {
-    $_SESSION["regi"]["order"]["list"]["last_update"] = date("Y/m/d H:i:s");
+if (!isset($_SESSION["regi"]["sales"]["list"]["last_update"]) || $_SESSION["regi"]["sales"]["list"]["last_update"] === "") {
+    $_SESSION["regi"]["sales"]["list"]["last_update"] = date("Y/m/d H:i:s");
 }
 
-$last_update = $_SESSION["regi"]["order"]["list"]["last_update"];
+$last_update = $_SESSION["regi"]["sales"]["list"]["last_update"];
 
 try {
     $password = getenv("DB_PASSWORD");
