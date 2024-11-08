@@ -94,7 +94,6 @@ $orders = $order_obj->get_all_all();
     <!-- コンテナ終了 -->
 
     <!-- 更新通知 -->
-    <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/toast.html"; ?>
     <script src="./check_update.js"></script>
 </body>
 

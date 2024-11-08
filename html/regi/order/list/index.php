@@ -36,6 +36,7 @@ $orders = $order_obj->get_all();
 
         <div class="text-center mb-3">
             <a href="../../" class="btn btn-outline-success btn-lg-custom p-2 mx-1">レジ画面へ</a>
+            <a href="../history/" class="btn btn-outline-success btn-lg-custom p-2 mx-1">履歴一覧へ</a>
         </div>
         <h1>モバイル待機列</h1>
         <table class="table table-striped table-bordered table-hover text-center align-middle">

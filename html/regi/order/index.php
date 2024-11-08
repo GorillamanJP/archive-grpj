@@ -93,6 +93,7 @@ session_start();
 
     <div class="text-center my-3">
     <a href="/regi/order/list/" class="btn btn-outline-primary btn-lg p-2 mx-1">注文一覧</a>
+    <a href="/regi/order/history/" class="btn btn-outline-primary btn-lg p-2 mx-1">履歴</a>
     </div>
 
     <script>
