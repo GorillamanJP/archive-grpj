@@ -23,6 +23,7 @@ $orders = $order_obj->get_all();
     <link rel="stylesheet" href="/common/list.css">
 </head>
 
+
 <body>
     <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
     <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/navbar.php"; ?>
@@ -46,7 +47,7 @@ $orders = $order_obj->get_all();
                     <th>受け取り</th>
                 </tr>
             </thead>
-            <tbody id="refresh">
+            <tbody id="table">
                 <tr>
                     <td colspan="4">
                         <h3>読み込み中…</h3>
@@ -57,9 +58,11 @@ $orders = $order_obj->get_all();
     </div>
     <!-- 通知領域 -->
     <div id="notifications" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
-    <script src="/regi/notify/check_notify.js"></script>
     <!-- 通知領域　ここまで -->
+    <script src="/regi/notify/check_notify.js"></script>
+    <script src="/common/set_tap_detail.js"></script>
 </body>
 <script src="/common/check_update_common.js"></script>
+
 
 </html>
