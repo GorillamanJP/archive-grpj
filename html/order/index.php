@@ -78,10 +78,12 @@ $products = $product_obj->get_all();
                     </tr>
                 </tbody>
             </table>
-            <form action="./create/" method="post" id="form"> <input type="submit" value="支払いへ進む→"
-                    class="btn btn-success"> </form>
+            <form action="./create/" method="post" id="form">
+                <input type="submit" value="確認へ進む→" class="btn btn-success">
+            </form>
         </div>
     </div>
     <script src="/common/regi.js"></script>
 </body>
+
 </html>

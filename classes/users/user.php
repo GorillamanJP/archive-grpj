@@ -132,7 +132,7 @@ class User
     public function get_all(): array|null
     {
         try {
-            $this->close();
+            $this->open();
             $sql = "SELECT id FROM users ORDER BY id ASC";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute();

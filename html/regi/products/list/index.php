@@ -46,10 +46,7 @@ $products = $product_obj->get_all();
                         <th>操作</th>
                     </tr>
                 </thead>
-                <tbody class="table-light" id="refresh">
-                    <!-- 中身はcheck_update.phpを使ってlist_not_product.phpまたはproducts_list_tbody.phpから読み込まれます。画面を編集する場合はそっちへ行ってください。-->
-                    <input type='hidden' id='products_count' name='products_count' value="0">
-                    <input type="hidden" id="update_msg" name="update_msg" value="情報">
+                <tbody class="table-light" id="table">
                     <tr>
                         <td colspan="5">
                             <h2>読み込み中…</h2>
@@ -105,7 +102,7 @@ $products = $product_obj->get_all();
             form.submit();
         });
     </script>
-    <script src="./check_update.js"></script>
+    <script src="/common/check_update_common.js"></script>
 </body>
 
 </html>

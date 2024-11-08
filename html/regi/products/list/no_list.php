@@ -1,6 +1,3 @@
-<?php
-// 商品が空っぽの場合
-?>
 <tr>
     <td colspan='5'>
         <input type='hidden' id='products_count' name='products_count' value=0>
