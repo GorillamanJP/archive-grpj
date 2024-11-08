@@ -40,6 +40,7 @@ $orders = $order_obj->get_all_all();
 
         <div class="text-center mb-3">
             <a href="../../" class="btn btn-outline-success btn-lg-custom p-2 mx-1">レジ画面へ</a>
+            <a href="../list/" class="btn btn-outline-success btn-lg-custom p-2 mx-1">準備中一覧へ</a>
         </div>
         <!-- ページネーション -->
         <div>
@@ -64,7 +65,7 @@ $orders = $order_obj->get_all_all();
     </div>
     <div id="notifications" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
     <!-- コンテナ終了 -->
-     <script src="/regi/notify/check_notify.js"></script>
+    <script src="/regi/notify/check_notify.js"></script>
     <script src="/common/check_update_common.js"></script>
     <script src="/common/set_tap_detail.js"></script>
     <script src="/common/pagination.js"></script>
