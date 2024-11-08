@@ -1,7 +1,3 @@
-<?php
-// 商品一覧テーブルのtbodyの中身
-?>
-<input type='hidden' id='products_count' name='products_count' value='<?= $products_count ?>'>
 <?php foreach ($products as $product): ?>
     <tr>
     <td class="product-image">
@@ -42,4 +38,3 @@
         </td>
     </tr>
 <?php endforeach; ?>
-<input type="hidden" id="update_msg" name="update_msg" value="<?= $update_msg ?>">
