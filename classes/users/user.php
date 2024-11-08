@@ -24,8 +24,7 @@ class User
     # ログイン検証
     public function verify(string $password): User
     {
-        $sanitized_password = htmlspecialchars($password, encoding: "UTF-8");
-        if (password_verify($sanitized_password . $this->salt, $this->password_hash)) {
+        if (password_verify($password . $this->salt, $this->password_hash)) {
             return $this;
         } else {
             throw new Exception("Invalid Username or Password.");
@@ -83,7 +82,7 @@ class User
     public function get_from_user_name(string $user_name): User
     {
         try {
-            $this->close();
+            $this->open();
             $sql = "SELECT id FROM users WHERE user_name = :user_name";
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindValue(":user_name", $user_name, PDO::PARAM_STR);
