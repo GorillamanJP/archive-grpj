@@ -1,18 +1,4 @@
 <?php
-/*
-メモ: 例外パターンの変更について
-例外のうち、何が起こったか分かるもの(
-    例:
-    ・データベースにつながらなかった
-    ・指定したIDのものが見つからなかった
-    ・ユーザー名かパスワードが違う
-    など
-)は例外の番号を指定する。
-0: 自作の例外(下記コードだとユーザー検証失敗の部分)
-1: 使ったクラスの例外(PDOExceptionなど)
-2: これ以降は使ったクラスが複数ある場合や例外のパターンがいくつか増えた場合に連番で増やす。細かいことは書き換えながら考える。
--1: 予期しない例外(ThrowableやExceptionなど大きなくくりで例外を捕まえた場合)
-*/
 class Order_Order
 {
     private int $id;
@@ -46,44 +32,8 @@ class Order_Order
     }
 
     private PDO $pdo;
-    # トランザクション開始
-    public function start_transaction()
-    {
-        try {
-            $this->pdo->beginTransaction();
-        } catch (PDOException $e) {
-            throw new Exception($e->getMessage(), 1, $e);
-        }
-    }
-    # ロールバック
-    public function rollback()
-    {
-        try {
-            if ($this->pdo->inTransaction()) {
-                $this->pdo->rollBack();
-            }
-        } catch (PDOException $e) {
-            throw new Exception($e->getMessage(), 1, $e);
-        }
-    }
-    # コミット
-    public function commit()
-    {
-        try {
-            if ($this->pdo->inTransaction()) {
-                $this->pdo->commit();
-            }
-        } catch (PDOException $e) {
-            throw new Exception($e->getMessage(), 1, $e);
-        }
-    }
-    # 切断
-    public function close()
-    {
-        unset($this->pdo);
-    }
-    # コンストラクタ
-    public function __construct()
+    # 接続
+    public function open()
     {
         try {
             $password = getenv("DB_PASSWORD");
@@ -92,8 +42,13 @@ class Order_Order
             $this->pdo = new PDO($dsn, "root", $password);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            throw new Exception($e->getMessage(), 1, $e);
+            throw new Exception($e->getMessage());
         }
+    }
+    # 切断
+    public function close()
+    {
+        unset($this->pdo);
     }
     # 通知を送る
     private function send_notification(string $title, string $message)
@@ -105,6 +60,7 @@ class Order_Order
     public function create(int $total_amount, int $total_price): Order_Order
     {
         try {
+            $this->open();
             $sql = "INSERT INTO order_orders (date, total_amount, total_price, is_received) VALUES (:date, :total_amount, :total_price, :is_received)";
 
             $stmt = $this->pdo->prepare($sql);
@@ -118,14 +74,16 @@ class Order_Order
 
             $id = $this->pdo->lastInsertId();
 
+            $this->close();
+
             $this->send_notification("注文", "新しい注文 {$id} 番があります！");
 
             return $this->get_from_id($id);
         } catch (PDOException $pe) {
-            $this->rollback();
+            $this->close();
             throw new Exception("データベースエラーです。", 1, $pe);
         } catch (\Throwable $th) {
-            $this->rollback();
+            $this->close();
             throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
@@ -133,6 +91,7 @@ class Order_Order
     public function get_from_id(int $id): Order_Order
     {
         try {
+            $this->open();
             $sql = "SELECT * FROM order_orders WHERE id = :id";
 
             $stmt = $this->pdo->prepare($sql);
@@ -142,6 +101,7 @@ class Order_Order
             $stmt->execute();
 
             $order = $stmt->fetch(PDO::FETCH_ASSOC);
+            $this->close();
             if ($order) {
                 $this->id = $order["id"];
                 $this->date = $order["date"];
@@ -153,10 +113,10 @@ class Order_Order
                 throw new Exception("指定した注文は見つかりませんでした。", 0);
             }
         } catch (PDOException $pe) {
-            $this->rollback();
+            $this->close();
             throw new Exception("データベースエラーです。", 1, $pe);
         } catch (\Throwable $th) {
-            $this->rollback();
+            $this->close();
             throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
@@ -164,6 +124,7 @@ class Order_Order
     public function get_all(): array|null
     {
         try {
+            $this->open();
             $sql = "SELECT id FROM order_orders WHERE is_received = 0 ORDER BY id DESC";
 
             $stmt = $this->pdo->prepare($sql);
@@ -171,22 +132,22 @@ class Order_Order
             $stmt->execute();
 
             $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $this->close();
             if ($orders) {
                 $orders_array = [];
                 foreach ($orders as $order) {
                     $order_obj = new Order_Order();
                     $orders_array[] = $order_obj->get_from_id($order["id"]);
-                    $order_obj->close();
                 }
                 return $orders_array;
             } else {
                 return null;
             }
         } catch (PDOException $pe) {
-            $this->rollback();
+            $this->close();
             throw new Exception("データベースエラーです。", 1, $pe);
         } catch (\Throwable $th) {
-            $this->rollback();
+            $this->close();
             throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
@@ -194,6 +155,7 @@ class Order_Order
     public function get_all_all(): array|null
     {
         try {
+            $this->open();
             $sql = "SELECT id FROM order_orders ORDER BY id DESC";
 
             $stmt = $this->pdo->prepare($sql);
@@ -201,22 +163,22 @@ class Order_Order
             $stmt->execute();
 
             $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $this->close();
             if ($orders) {
                 $orders_array = [];
                 foreach ($orders as $order) {
                     $order_obj = new Order_Order();
                     $orders_array[] = $order_obj->get_from_id($order["id"]);
-                    $order_obj->close();
                 }
                 return $orders_array;
             } else {
                 return null;
             }
         } catch (PDOException $pe) {
-            $this->rollback();
+            $this->close();
             throw new Exception("データベースエラーです。", 1, $pe);
         } catch (\Throwable $th) {
-            $this->rollback();
+            $this->close();
             throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
@@ -224,6 +186,7 @@ class Order_Order
     public function delete(): void
     {
         try {
+            $this->open();
             $sql = "DELETE FROM order_orders WHERE id = :id";
 
             $stmt = $this->pdo->prepare($sql);
@@ -231,11 +194,12 @@ class Order_Order
             $stmt->bindValue(":id", $this->id, PDO::PARAM_INT);
 
             $stmt->execute();
+            $this->close();
         } catch (PDOException $pe) {
-            $this->rollback();
+            $this->close();
             throw new Exception("データベースエラーです。", 1, $pe);
         } catch (\Throwable $th) {
-            $this->rollback();
+            $this->close();
             throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
@@ -243,6 +207,7 @@ class Order_Order
     public function receive(): void
     {
         try {
+            $this->open();
             $sql = "UPDATE order_orders SET is_received = 1 WHERE id = :id";
 
             $stmt = $this->pdo->prepare($sql);
@@ -251,12 +216,14 @@ class Order_Order
 
             $stmt->execute();
 
+            $this->close();
+
             $this->send_notification("注文", "注文番号 {$this->id} 番の注文が受け取られました！");
         } catch (PDOException $pe) {
-            $this->rollback();
+            $this->close();
             throw new Exception("データベースエラーです。", 1, $pe);
         } catch (\Throwable $th) {
-            $this->rollback();
+            $this->close();
             throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }

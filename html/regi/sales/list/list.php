@@ -19,4 +19,3 @@
         <td><?= $sale->get_accountant()->get_accountant_user_name() ?></td>
     </tr>
 <?php endforeach ?>
-<input type="hidden" id="update_msg" name="update_msg" value="<?= $update_msg ?>">

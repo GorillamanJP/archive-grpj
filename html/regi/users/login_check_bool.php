@@ -9,8 +9,10 @@ function login_check():bool{
         $id = $_SESSION["login"]["user_id"];
         $user = new User();
         $user->get_from_id($id);
+        session_write_close();
         return true;
     }catch(\Throwable $th){
+        session_write_close();
         return false;
     }
 }

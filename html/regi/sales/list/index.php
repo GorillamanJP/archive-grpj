@@ -39,27 +39,23 @@ $detail = new Detail();
     <!-- 残りのページ内容 -->
     <div class="container">
         <h2>売上記録</h2>
-        <p>そのうち自動更新されるようになります</p>
         <table>
+            <thead>
             <tr>
                 <th>商品名</th>
                 <th>販売数</th>
                 <th>売上</th>
             </tr>
-            <?php if (is_null($products)): ?>
-                <h3>会計記録はありません。</h3>
-            <?php else: ?>
-                <?php foreach ($products as $product): ?>
-                    <tr>
-                        <td><?= $product->get_item_name() ?></td>
-                        <td><?= $detail->get_total_sold($product->get_item_id()) ?></td>
-                        <td><?= $detail->get_total_revenue($product->get_item_id()) ?></td>
-                    </tr>
-                <?php endforeach; ?>
-            <?php endif; ?>
+            </thead>
+            <tbody id="sales_table">
+                <tr>
+                    <td colspan="3">
+                        <h2>読み込み中…</h2>
+                    </td>
+                </tr>
+            </tbody>
         </table>
     </div>
-    <p>ページネーションつけたい</p>
     <div class="container mt-4">
         <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
         <h1 class="text-center mb-4">会計一覧</h1>
@@ -70,6 +66,11 @@ $detail = new Detail();
                 詳細を見るには、項目を押してください。
             </div>
         </div>
+        <div>
+            <button type="button" id="page_prev">&lt;</button>
+            <span id="page_no">1</span> / <span id="page_end">1</span>
+            <button type="button" id="page_next">&gt;</button>
+        </div>
         <table class="table table-success table-striped table-bordered table-hover text-center align-middle">
             <thead>
                 <tr>
@@ -79,7 +80,7 @@ $detail = new Detail();
                     <th>会計者</th>
                 </tr>
             </thead>
-            <tbody id="refresh">
+            <tbody id="accountants_table">
                 <tr>
                     <td colspan="4">
                         <h2>読み込み中…</h2>
@@ -90,7 +91,34 @@ $detail = new Detail();
     </div>
     <div id="notifications" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
     <script src="/regi/notify/check_notify.js"></script>
-    <script src="./check_update.js"></script>
+    <script src="/common/set_tap_detail.js"></script>
+    <script src="/common/check_update_common.js"></script>
+    <script>
+        function change_value(value) {
+            const page_no = document.getElementById("page_no");
+            const page_end = document.getElementById("page_end").innerText;
+            const after_page_no = page_no.innerText - value;
+            if (after_page_no < 1) {
+                page_no.innerText = 1;
+            } else if (after_page_no > page_end) {
+                page_no.innerText = page_end;
+            } else {
+                page_no.innerText = after_page_no;
+            }
+        }
+        document.getElementById("page_prev").addEventListener("click", function () {
+            change_value(1);
+            get_update();
+        });
+        document.getElementById("page_next").addEventListener("click", function () {
+            change_value(-1);
+            get_update();
+        });
+        // 前と次の数値の増減が普通と違うのは、おそらく会計を新しい順で拾ってるせい
+
+        //ページが更新されたらタップ可能なJS関数を呼び出す
+        
+    </script>
 </body>
 
 </html>

@@ -44,39 +44,8 @@ class Order_Detail
     }
 
     private PDO $pdo;
-    # トランザクション開始
-    public function start_transaction()
-    {
-        try {
-            $this->pdo->beginTransaction();
-        } catch (PDOException $e) {
-            throw new Exception($e->getMessage(), 1, $e);
-        }
-    }
-    # ロールバック
-    public function rollback()
-    {
-        try {
-            if ($this->pdo->inTransaction()) {
-                $this->pdo->rollBack();
-            }
-        } catch (PDOException $e) {
-            throw new Exception($e->getMessage(), 1, $e);
-        }
-    }
-    # コミット
-    public function commit()
-    {
-        try {
-            if ($this->pdo->inTransaction()) {
-                $this->pdo->commit();
-            }
-        } catch (PDOException $e) {
-            throw new Exception($e->getMessage(), 1, $e);
-        }
-    }
-    # コンストラクタ
-    public function __construct()
+    # 接続
+    public function open()
     {
         try {
             $password = getenv("DB_PASSWORD");
@@ -85,19 +54,25 @@ class Order_Detail
             $this->pdo = new PDO($dsn, "root", $password);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            throw new Exception($e->getMessage(), 1, $e);
+            throw new Exception($e->getMessage());
         }
     }
-        # 通知を送る
-        private function send_notification(string $title, string $message){
-            require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/notifications/notification.php";
-            $notification = new Notification();
-            $notification->create($title, $message);
-        }
+    public function close()
+    {
+        unset($this->pdo);
+    }
+    # 通知を送る
+    private function send_notification(string $title, string $message)
+    {
+        require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/notifications/notification.php";
+        $notification = new Notification();
+        $notification->create($title, $message);
+    }
 
     public function create(int $order_id, int $item_id, string $item_name, int $item_price, int $quantity, int $subtotal): Order_Detail
     {
         try {
+            $this->open();
             $sql = "INSERT INTO order_details (order_id, item_id, item_name, item_price, quantity, subtotal) VALUES (:order_id, :item_id, :item_name, :item_price, :quantity, :subtotal)";
 
             $stmt = $this->pdo->prepare($sql);
@@ -113,14 +88,16 @@ class Order_Detail
 
             $id = $this->pdo->lastInsertId();
 
+            $this->close();
+
             $this->send_notification("注文詳細", "{$item_name} が {$quantity} 個注文されました！");
 
             return $this->get_from_id($id);
         } catch (PDOException $pe) {
-            $this->rollback();
+            $this->close();
             throw new Exception("データベースエラーです。", 1, $pe);
         } catch (\Throwable $th) {
-            $this->rollback();
+            $this->close();
             throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
@@ -128,6 +105,7 @@ class Order_Detail
     public function get_from_id(int $id): Order_Detail
     {
         try {
+            $this->open();
             $sql = "SELECT * FROM order_details WHERE id = :id";
 
             $stmt = $this->pdo->prepare($sql);
@@ -137,6 +115,7 @@ class Order_Detail
             $stmt->execute();
 
             $order_detail = $stmt->fetch(PDO::FETCH_ASSOC);
+            $this->close();
             if ($order_detail) {
                 $this->id = $order_detail["id"];
                 $this->order_id = $order_detail["order_id"];
@@ -150,10 +129,10 @@ class Order_Detail
                 throw new Exception("指定された注文詳細は見つかりませんでした。", 0);
             }
         } catch (PDOException $pe) {
-            $this->rollback();
+            $this->close();
             throw new Exception("データベースエラーです。", 1, $pe);
         } catch (\Throwable $th) {
-            $this->rollback();
+            $this->close();
             throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
@@ -161,6 +140,7 @@ class Order_Detail
     public function gets_from_order_id(int $order_id): array
     {
         try {
+            $this->open();
             $sql = "SELECT id FROM order_details WHERE order_id = :order_id";
 
             $stmt = $this->pdo->prepare($sql);
@@ -170,6 +150,7 @@ class Order_Detail
             $stmt->execute();
 
             $order_details = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $this->close();
             if ($order_details) {
                 $order_details_array = [];
                 foreach ($order_details as $order_detail) {
@@ -181,10 +162,10 @@ class Order_Detail
                 throw new Exception("指定した注文番号に紐づけられたデータがありません。", 0);
             }
         } catch (PDOException $pe) {
-            $this->rollback();
+            $this->close();
             throw new Exception("データベースエラーです。", 1, $pe);
         } catch (\Throwable $th) {
-            $this->rollback();
+            $this->close();
             throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }

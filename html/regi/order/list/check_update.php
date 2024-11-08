@@ -20,7 +20,7 @@ try {
     $pdo = new PDO($dsn, "root", $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $sql = "SELECT COUNT(*) FROM accountants WHERE date >= :last_update";
+    $sql = "SELECT COUNT(*) FROM order_orders WHERE date >= :last_update";
 
     $stmt = $pdo->prepare($sql);
 
@@ -38,9 +38,5 @@ try {
     exit();
 } catch (\Throwable $th) {
     http_response_code(500);
-    exit();
-}
-if (!isset($_POST["page_offset"]) || !isset($_POST["page_limit"])) {
-    http_response_code(400);
     exit();
 }
