@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if (!isset($_POST["order_id"]) || $_POST["order_id"] === "") {
+if (!isset($_POST["id"]) || $_POST["id"] === "") {
     $_SESSION["message"] = "注文番号が指定されていません。";
     $_SESSION["message_type"] = "warning";
     session_write_close();
@@ -9,7 +9,7 @@ if (!isset($_POST["order_id"]) || $_POST["order_id"] === "") {
     exit();
 }
 
-$id = htmlspecialchars($_POST["order_id"]);
+$id = htmlspecialchars($_POST["id"]);
 
 require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/orders/order.php";
 
