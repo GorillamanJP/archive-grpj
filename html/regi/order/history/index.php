@@ -37,11 +37,17 @@ $orders = $order_obj->get_all_all();
 
         <!-- ページネーション準備 -->
         <p class="text-center my-3" style="font-size: 1.2em;">最終更新時刻:<span id="last-update">0000/0/0 00:00:00</span></p>
-        
+
         <div class="text-center mb-3">
             <a href="../../" class="btn btn-outline-success btn-lg-custom p-2 mx-1">レジ画面へ</a>
         </div>
-
+        <!-- ページネーション -->
+        <div>
+            <button type="button" id="page_prev">&lt;</button>
+            <span id="page_no">1</span> / <span id="page_end">1</span>
+            <button type="button" id="page_next">&gt;</button>
+        </div>
+        <!-- ページネーション　終わり -->
         <!-- 注文テーブル -->
         <table class="table table-striped table-bordered table-hover text-center align-middle">
             <thead>
@@ -52,50 +58,16 @@ $orders = $order_obj->get_all_all();
                     <th>受け取り</th>
                 </tr>
             </thead>
-            <tbody>
-                <?php if (is_null($orders)): ?>
-                    <tr>
-                        <td colspan="4">
-                            <h3>注文はありません。</h3>
-                        </td>
-                    </tr>
-                <?php else: ?>
-                    <?php foreach ($orders as $order): ?>
-                        <tr>
-                            <td><?= $order->get_order_order()->get_id() ?></td>
-                            <td><?= $order->get_order_order()->get_date() ?></td>
-                            <td>
-                                <table class="table table-bordered table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>品名</th>
-                                            <th>数量</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php foreach ($order->get_order_details() as $detail): ?>
-                                            <tr>
-                                                <td><?= $detail->get_item_name() ?></td>
-                                                <td><?= $detail->get_quantity() ?></td>
-                                            </tr>
-                                        <?php endforeach; ?>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td>
-                                <?= $order->get_order_order()->get_is_received() ? "済み" : "まだ" ?>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php endif; ?>
+            <tbody id="table">
             </tbody>
         </table>
     </div>
+    <div id="notifications" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
     <!-- コンテナ終了 -->
-
-    <!-- 更新通知 -->
-    <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/toast.html"; ?>
-    <script src="./check_update.js"></script>
+     <script src="/regi/notify/check_notify.js"></script>
+    <script src="/common/check_update_common.js"></script>
+    <script src="/common/set_tap_detail.js"></script>
+    <script src="/common/pagination.js"></script>
 </body>
 
 </html>
