@@ -80,9 +80,8 @@ class Item
 
     # PDOオブジェクト
     private PDO $pdo;
-
-    # コンストラクタ
-    public function __construct()
+    # 接続
+    public function open()
     {
         try {
             $password = getenv("DB_PASSWORD");
@@ -91,39 +90,7 @@ class Item
             $this->pdo = new PDO($dsn, "root", $password);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            throw new Exception($e->getMessage(), $e->getCode(), $e);
-        }
-    }
-
-    # トランザクション開始
-    public function start_transaction()
-    {
-        try {
-            $this->pdo->beginTransaction();
-        } catch (PDOException $e) {
-            throw new Exception($e->getMessage(), $e->getCode(), $e);
-        }
-    }
-    # ロールバック
-    public function rollback()
-    {
-        try {
-            if ($this->pdo->inTransaction()) {
-                $this->pdo->rollBack();
-            }
-        } catch (PDOException $e) {
-            throw new Exception($e->getMessage(), $e->getCode(), $e);
-        }
-    }
-    # コミット
-    public function commit()
-    {
-        try {
-            if ($this->pdo->inTransaction()) {
-                $this->pdo->commit();
-            }
-        } catch (PDOException $e) {
-            throw new Exception($e->getMessage(), $e->getCode(), $e);
+            throw new Exception($e->getMessage());
         }
     }
     # 切断
@@ -144,13 +111,13 @@ class Item
     public function create(string $item_name, int $price, string $item_image): Item
     {
         try {
-            $sanitized_item_name = htmlspecialchars($item_name);
+            $this->open();
 
             $sql = "INSERT INTO items (item_name, price, item_image, last_update, delete_flag) VALUES (:item_name, :price, :item_image, :last_update, :delete_flag)";
 
             $stmt = $this->pdo->prepare($sql);
 
-            $stmt->bindValue(":item_name", $sanitized_item_name, PDO::PARAM_STR);
+            $stmt->bindValue(":item_name", $item_name, PDO::PARAM_STR);
             $stmt->bindValue(":price", $price, PDO::PARAM_INT);
             $stmt->bindValue(":item_image", $this->resize_image($item_image), PDO::PARAM_LOB);
             $stmt->bindValue(":last_update", date("Y-m-d H:i:s"), PDO::PARAM_STR);
@@ -158,11 +125,15 @@ class Item
 
             $stmt->execute();
 
+            $id = $this->pdo->lastInsertId();
+
+            $this->close();
+
             $this->send_notification("商品追加", "新しい商品「{$item_name}」が追加されました！");
 
-            return $this->get_from_id($this->pdo->lastInsertId());
+            return $this->get_from_id($id);
         } catch (PDOException $e) {
-            $this->rollback();
+            $this->close();
             throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
@@ -171,13 +142,15 @@ class Item
     public function get_from_id(int $id): Item
     {
         try {
+            $this->open();
+
             $sql = "SELECT * FROM items WHERE id = :id";
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindValue(":id", $id, PDO::PARAM_INT);
             $stmt->execute();
 
             $item = $stmt->fetch(PDO::FETCH_ASSOC);
-
+            $this->close();
             if ($item) {
                 $this->id = $item["id"];
                 $this->item_name = $item["item_name"];
@@ -186,10 +159,10 @@ class Item
                 $this->last_update = $item["last_update"];
                 return $this;
             } else {
-                throw new Exception("ID: {$id} has not found.");
+                throw new Exception("指定した商品は見つかりませんでした。");
             }
         } catch (PDOException $e) {
-            $this->rollback();
+            $this->close();
             throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
@@ -198,12 +171,13 @@ class Item
     public function get_all(): array|null
     {
         try {
+            $this->open();
             $sql = "SELECT id FROM items WHERE delete_flag = 0 ORDER BY id ASC";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute();
 
             $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+            $this->close();
             if ($items) {
                 $items_array = [];
                 foreach ($items as $item) {
@@ -216,8 +190,8 @@ class Item
                 return null;
             }
         } catch (PDOException $e) {
-            $this->rollback();
-            return null;
+            $this->close();
+            throw new Exception("データベースエラーです。", 1, $e);
         }
     }
 
@@ -225,24 +199,25 @@ class Item
     public function update(string $item_name, int $price, string $item_image): Item
     {
         try {
-            $sanitized_item_name = htmlspecialchars($item_name);
-
+            $this->open();
             $sql = "UPDATE items SET item_name = :item_name, price = :price, item_image = :item_image, last_update = :last_update WHERE id = :id";
 
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindValue(":id", $this->id, PDO::PARAM_INT);
-            $stmt->bindValue(":item_name", $sanitized_item_name, PDO::PARAM_STR);
+            $stmt->bindValue(":item_name", $item_name, PDO::PARAM_STR);
             $stmt->bindValue(":price", $price, PDO::PARAM_INT);
             $stmt->bindValue(":item_image", $this->resize_image($item_image), PDO::PARAM_LOB);
             $stmt->bindValue(":last_update", date("Y-m-d H:i:s"), PDO::PARAM_STR);
 
             $stmt->execute();
 
+            $this->close();
+
             $this->send_notification("商品更新", "商品「{$this->item_name}」の情報が更新されました！");
 
             return $this->get_from_id($this->id);
         } catch (PDOException $e) {
-            $this->rollback();
+            $this->close();
             throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
@@ -251,6 +226,7 @@ class Item
     public function delete(): void
     {
         try {
+            $this->open();
             $sql = "UPDATE items SET delete_flag = 1 WHERE id = :id";
 
             $stmt = $this->pdo->prepare($sql);
@@ -258,11 +234,14 @@ class Item
 
             $stmt->execute();
 
-            $this->send_notification("商品削除", "商品「$this->item_name}」が削除されました！");
+            $this->close();
+
+            $this->send_notification("商品削除", "商品「{$this->item_name}」が削除されました！");
         } catch (PDOException $pe) {
-            $this->rollback();
+            $this->close();
             throw new Exception("データベースエラーです。", 1, $pe);
         } catch (\Throwable $th) {
+            $this->close();
             throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }

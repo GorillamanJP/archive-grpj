@@ -33,9 +33,8 @@ class User
     }
     # PDOオブジェクト
     private PDO $pdo;
-
-    # コンストラクタ
-    public function __construct()
+    # 接続
+    public function open()
     {
         try {
             $password = getenv("DB_PASSWORD");
@@ -44,7 +43,7 @@ class User
             $this->pdo = new PDO($dsn, "root", $password);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            throw new Exception($e->getMessage(), $e->getCode(), $e);
+            throw new Exception($e->getMessage());
         }
     }
     # 切断
@@ -57,22 +56,25 @@ class User
     public function create(string $user_name, string $password): User
     {
         try {
-            # 入力値サニタイズ
-            $sanitized_user_name = htmlspecialchars($user_name, encoding: "UTF-8");
-            $sanitized_password = htmlspecialchars($password, encoding: "UTF-8");
+            $this->open();
             # ソルト生成
             $salt = substr(uniqid(mt_rand(), true) . bin2hex(random_bytes(64)), 0, 128);
             #SQLクエリ用意
             $sql = "INSERT INTO users (user_name, password_hash, salt) VALUES (:user_name, :password_hash, :salt)";
             $stmt = $this->pdo->prepare($sql);
-            $stmt->bindValue(":user_name", $sanitized_user_name, PDO::PARAM_STR);
+            $stmt->bindValue(":user_name", $user_name, PDO::PARAM_STR);
             # パスワードのハッシュ化
-            $stmt->bindValue(":password_hash", password_hash($sanitized_password . $salt, PASSWORD_ARGON2ID), PDO::PARAM_STR);
+            $stmt->bindValue(":password_hash", password_hash($password . $salt, PASSWORD_ARGON2ID), PDO::PARAM_STR);
             $stmt->bindValue(":salt", $salt, PDO::PARAM_STR);
             $stmt->execute();
 
-            return $this->get_from_id($this->pdo->lastInsertId());
+            $id = $this->pdo->lastInsertId();
+
+            $this->close();
+
+            return $this->get_from_id($id);
         } catch (PDOException $e) {
+            $this->close();
             throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
@@ -80,20 +82,22 @@ class User
     # ユーザー名から読み込み
     public function get_from_user_name(string $user_name): User
     {
-        $sanitized_user_name = htmlspecialchars($user_name, encoding: "UTF-8");
         try {
+            $this->close();
             $sql = "SELECT id FROM users WHERE user_name = :user_name";
             $stmt = $this->pdo->prepare($sql);
-            $stmt->bindValue(":user_name", $sanitized_user_name, PDO::PARAM_STR);
+            $stmt->bindValue(":user_name", $user_name, PDO::PARAM_STR);
             $stmt->execute();
 
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            $this->close();
             if ($user) {
                 return $this->get_from_id($user["id"]);
             } else {
-                throw new Exception("Name {$user_name} has not found.");
+                throw new Exception("指定したユーザーは見つかりませんでした。");
             }
         } catch (PDOException $e) {
+            $this->close();
             throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
@@ -102,12 +106,14 @@ class User
     public function get_from_id(int $id): User
     {
         try {
+            $this->open();
             $sql = "SELECT * FROM users WHERE id = :id";
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindValue(":id", $id, PDO::PARAM_INT);
             $stmt->execute();
 
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            $this->close();
             if ($user) {
                 $this->id = $user["id"];
                 $this->user_name = $user["user_name"];
@@ -115,9 +121,10 @@ class User
                 $this->salt = $user["salt"];
                 return $this;
             } else {
-                throw new Exception("ID {$id} has not found.");
+                throw new Exception("指定したユーザーは見つかりませんでした。");
             }
         } catch (PDOException $e) {
+            $this->close();
             throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
@@ -126,12 +133,13 @@ class User
     public function get_all(): array|null
     {
         try {
+            $this->close();
             $sql = "SELECT id FROM users ORDER BY id ASC";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute();
 
             $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+            $this->close();
             if ($users) {
                 $users_array = [];
                 foreach ($users as $user) {
@@ -144,6 +152,7 @@ class User
                 return null;
             }
         } catch (PDOException $e) {
+            $this->close();
             return null;
         }
     }
@@ -152,9 +161,7 @@ class User
     public function update(string $user_name, string $password): User
     {
         try {
-            # 入力値サニタイズ
-            $sanitized_user_name = htmlspecialchars($user_name, encoding: "UTF-8");
-            $sanitized_password = htmlspecialchars($password, encoding: "UTF-8");
+            $this->open();
             # ソルト生成
             $salt = substr(uniqid(mt_rand(), true) . bin2hex(random_bytes(64)), 0, 128);
 
@@ -162,11 +169,13 @@ class User
 
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindValue(":id", $this->id, PDO::PARAM_INT);
-            $stmt->bindValue(":user_name", $sanitized_user_name, PDO::PARAM_STR);
-            $stmt->bindValue(":password_hash", password_hash($sanitized_password . $salt, PASSWORD_ARGON2ID), PDO::PARAM_STR);
+            $stmt->bindValue(":user_name", $user_name, PDO::PARAM_STR);
+            $stmt->bindValue(":password_hash", password_hash($password . $salt, PASSWORD_ARGON2ID), PDO::PARAM_STR);
             $stmt->bindValue(":salt", $salt, PDO::PARAM_STR);
 
             $stmt->execute();
+
+            $this->close();
 
             return $this->get_from_id($this->id);
         } catch (PDOException $e) {
@@ -178,14 +187,16 @@ class User
     public function delete(): void
     {
         try {
+            $this->open();
             $sql = "DELETE FROM users WHERE id = :id";
 
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindValue(":id", $this->id);
 
             $stmt->execute();
-        } catch (Throwable $t) {
-            throw $t;
+            $this->close();
+        } catch (\Throwable $t) {
+            throw new Exception("予期しないエラーが発生しました。", -1, $t);
         }
     }
 }

@@ -26,44 +26,8 @@ class Notification
     }
 
     private PDO $pdo;
-    # トランザクション開始
-    public function start_transaction()
-    {
-        try {
-            $this->pdo->beginTransaction();
-        } catch (PDOException $e) {
-            throw new Exception($e->getMessage(), 1, $e);
-        }
-    }
-    # ロールバック
-    public function rollback()
-    {
-        try {
-            if ($this->pdo->inTransaction()) {
-                $this->pdo->rollBack();
-            }
-        } catch (PDOException $e) {
-            throw new Exception($e->getMessage(), 1, $e);
-        }
-    }
-    # コミット
-    public function commit()
-    {
-        try {
-            if ($this->pdo->inTransaction()) {
-                $this->pdo->commit();
-            }
-        } catch (PDOException $e) {
-            throw new Exception($e->getMessage(), 1, $e);
-        }
-    }
-    # 切断
-    public function close()
-    {
-        unset($this->pdo);
-    }
-    # コンストラクタ
-    public function __construct()
+    # 接続
+    public function open()
     {
         try {
             $password = getenv("DB_PASSWORD");
@@ -72,13 +36,19 @@ class Notification
             $this->pdo = new PDO($dsn, "root", $password);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            throw new Exception($e->getMessage(), 1, $e);
+            throw new Exception($e->getMessage());
         }
+    }
+    # 切断
+    public function close()
+    {
+        unset($this->pdo);
     }
 
     public function create(string $title, string $message): Notification
     {
         try {
+            $this->open();
             $sql = "INSERT INTO notifications (title, message, sent_date) VALUES (:title, :message, :sent_date)";
 
             $stmt = $this->pdo->prepare($sql);
@@ -89,12 +59,16 @@ class Notification
 
             $stmt->execute();
 
-            return $this->get_from_id($this->pdo->lastInsertId());
+            $id = $this->pdo->lastInsertId();
+
+            $this->close();
+
+            return $this->get_from_id($id);
         } catch (PDOException $pe) {
-            $this->rollback();
+            $this->close();
             throw new Exception("データベースエラーです。", 1, $pe);
         } catch (\Throwable $th) {
-            $this->rollback();
+            $this->close();
             throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
@@ -102,6 +76,7 @@ class Notification
     public function get_from_id(int $id): Notification
     {
         try {
+            $this->open();
             $sql = "SELECT * FROM notifications WHERE id = :id";
 
             $stmt = $this->pdo->prepare($sql);
@@ -111,6 +86,7 @@ class Notification
             $stmt->execute();
 
             $notification = $stmt->fetch(PDO::FETCH_ASSOC);
+            $this->close();
             if ($notification) {
                 $this->id = $notification["id"];
                 $this->title = $notification["title"];
@@ -121,10 +97,10 @@ class Notification
                 throw new Exception("指定した通知は見つかりませんでした。", 0);
             }
         } catch (PDOException $pe) {
-            $this->rollback();
+            $this->close();
             throw new Exception("データベースエラーです。", 1, $pe);
         } catch (\Throwable $th) {
-            $this->rollback();
+            $this->close();
             throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
@@ -132,6 +108,7 @@ class Notification
     public function gets_notifications_after(string $datetime): array|null
     {
         try {
+            $this->open();
             $sql = "SELECT id FROM notifications WHERE sent_date > :datetime ORDER BY sent_date ASC";
 
             $stmt = $this->pdo->prepare($sql);
@@ -141,6 +118,7 @@ class Notification
             $stmt->execute();
 
             $notifications = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $this->close();
             if ($notifications) {
                 $notifications_array = [];
                 foreach ($notifications as $notification) {
@@ -153,16 +131,18 @@ class Notification
                 return null;
             }
         } catch (PDOException $pe) {
-            $this->rollback();
+            $this->close();
             throw new Exception("データベースエラーです。", 1, $pe);
         } catch (\Throwable $th) {
-            $this->rollback();
+            $this->close();
             throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
 
-    public function get_all():array|null{
+    public function get_all(): array|null
+    {
         try {
+            $this->open();
             $sql = "SELECT id FROM notifications ORDER BY sent_date ASC";
 
             $stmt = $this->pdo->prepare($sql);
@@ -170,6 +150,7 @@ class Notification
             $stmt->execute();
 
             $notifications = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $this->close();
             if ($notifications) {
                 $notifications_array = [];
                 foreach ($notifications as $notification) {
@@ -182,10 +163,10 @@ class Notification
                 return null;
             }
         } catch (PDOException $pe) {
-            $this->rollback();
+            $this->close();
             throw new Exception("データベースエラーです。", 1, $pe);
         } catch (\Throwable $th) {
-            $this->rollback();
+            $this->close();
             throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }

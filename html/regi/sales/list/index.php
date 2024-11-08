@@ -39,27 +39,23 @@ $detail = new Detail();
     <!-- 残りのページ内容 -->
     <div class="container">
         <h2>売上記録</h2>
-        <p>そのうち自動更新されるようになります</p>
         <table>
+            <thead>
             <tr>
                 <th>商品名</th>
                 <th>販売数</th>
                 <th>売上</th>
             </tr>
-            <?php if (is_null($products)): ?>
-                <h3>会計記録はありません。</h3>
-            <?php else: ?>
-                <?php foreach ($products as $product): ?>
-                    <tr>
-                        <td><?= $product->get_item_name() ?></td>
-                        <td><?= $detail->get_total_sold($product->get_item_id()) ?></td>
-                        <td><?= $detail->get_total_revenue($product->get_item_id()) ?></td>
-                    </tr>
-                <?php endforeach; ?>
-            <?php endif; ?>
+            </thead>
+            <tbody id="sales_table">
+                <tr>
+                    <td colspan="3">
+                        <h2>読み込み中…</h2>
+                    </td>
+                </tr>
+            </tbody>
         </table>
     </div>
-    <p>ページネーションつけたい</p>
     <div class="container mt-4">
         <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
         <h1 class="text-center mb-4">会計一覧</h1>
@@ -84,7 +80,7 @@ $detail = new Detail();
                     <th>会計者</th>
                 </tr>
             </thead>
-            <tbody id="refresh">
+            <tbody id="accountants_table">
                 <tr>
                     <td colspan="4">
                         <h2>読み込み中…</h2>

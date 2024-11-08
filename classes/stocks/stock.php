@@ -31,8 +31,8 @@ class Stock
 
     # PDOオブジェクト
     private PDO $pdo;
-
-    public function __construct()
+    # 接続
+    public function open()
     {
         try {
             $password = getenv("DB_PASSWORD");
@@ -41,39 +41,7 @@ class Stock
             $this->pdo = new PDO($dsn, "root", $password);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            throw new Exception($e->getMessage(), $e->getCode(), $e);
-        }
-    }
-
-    # トランザクション開始
-    public function start_transaction()
-    {
-        try {
-            $this->pdo->beginTransaction();
-        } catch (PDOException $e) {
-            throw new Exception($e->getMessage(), $e->getCode(), $e);
-        }
-    }
-    # ロールバック
-    public function rollback()
-    {
-        try {
-            if ($this->pdo->inTransaction()) {
-                $this->pdo->rollBack();
-            }
-        } catch (PDOException $e) {
-            throw new Exception($e->getMessage(), $e->getCode(), $e);
-        }
-    }
-    # コミット
-    public function commit()
-    {
-        try {
-            if ($this->pdo->inTransaction()) {
-                $this->pdo->commit();
-            }
-        } catch (PDOException $e) {
-            throw new Exception($e->getMessage(), $e->getCode(), $e);
+            throw new Exception($e->getMessage());
         }
     }
     # 切断
@@ -93,6 +61,7 @@ class Stock
     public function create(int $item_id, int $quantity): Stock
     {
         try {
+            $this->open();
             $sql = "INSERT INTO stocks (item_id, quantity, last_update) VALUES (:item_id, :quantity, :last_update)";
 
             $stmt = $this->pdo->prepare($sql);
@@ -103,15 +72,19 @@ class Stock
 
             $stmt->execute();
 
+            $id = $this->pdo->lastInsertId();
+
+            $this->close();
+
             require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/products/product.php";
             $product = new Product();
             $product->get_from_item_id($item_id);
 
             $this->send_notification("在庫追加", "{$product->get_item_name()} の在庫が {$quantity} 個追加されました！");
 
-            return $this->get_from_id($this->pdo->lastInsertId());
+            return $this->get_from_id($id);
         } catch (PDOException $e) {
-            $this->rollback();
+            $this->close();
             throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
@@ -119,6 +92,7 @@ class Stock
     public function get_from_id(int $id): Stock
     {
         try {
+            $this->open();
             $sql = "SELECT * FROM stocks WHERE id = :id";
 
             $stmt = $this->pdo->prepare($sql);
@@ -128,7 +102,7 @@ class Stock
             $stmt->execute();
 
             $stock = $stmt->fetch(PDO::FETCH_ASSOC);
-
+            $this->close();
             if ($stock) {
                 $this->id = $stock["id"];
                 $this->item_id = $stock["item_id"];
@@ -136,10 +110,10 @@ class Stock
                 $this->last_update = $stock["last_update"];
                 return $this;
             } else {
-                throw new Exception("ID: {$id} has not found.");
+                throw new Exception("指定した在庫情報は見つかりませんでした。");
             }
         } catch (PDOException $e) {
-            $this->rollback();
+            $this->close();
             throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
@@ -147,6 +121,7 @@ class Stock
     public function gets_from_item_id(int $item_id): array
     {
         try {
+            $this->open();
             $sql = "SELECT id FROM stocks WHERE item_id = :item_id";
 
             $stmt = $this->pdo->prepare($sql);
@@ -156,7 +131,7 @@ class Stock
             $stmt->execute();
 
             $stocks = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+            $this->close();
             if ($stocks) {
                 $stocks_array = [];
                 foreach ($stocks as $stock) {
@@ -169,10 +144,10 @@ class Stock
                 throw new Exception("指定した商品IDに対応する在庫は見つかりませんでした。", 0);
             }
         } catch (PDOException $pe) {
-            $this->rollback();
+            $this->close();
             throw new Exception("データベースエラーです。", 1, $pe);
         } catch (\Throwable $th) {
-            $this->rollback();
+            $this->close();
             throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }

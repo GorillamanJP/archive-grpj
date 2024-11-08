@@ -84,7 +84,7 @@ class Product
                 return null;
             }
         } catch (\Throwable $e) {
-            return null;
+            throw new Exception("エラーが発生しました。" . $e->getMessage(), 1, $e);
         }
     }
     public function delete(): void
@@ -93,6 +93,28 @@ class Product
             $this->item->delete();
         } catch (Throwable $t) {
             throw $t;
+        }
+    }
+
+    public function get_total_sold(): int
+    {
+        try {
+            require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/details/detail.php";
+            $detail = new Detail();
+            return $detail->get_total_sold($this->get_item_id());
+        } catch (\Throwable $th) {
+            throw new Exception($th->getMessage(), $th->getCode(), $th);
+        }
+    }
+
+    public function get_total_revenue(): int
+    {
+        try {
+            require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/details/detail.php";
+            $detail = new Detail();
+            return $detail->get_total_revenue($this->get_item_id());
+        } catch (\Throwable $th) {
+            throw new Exception($th->getMessage(), $th->getCode(), $th);
         }
     }
 }
