@@ -60,6 +60,6 @@ $orders = $order_obj->get_all();
     <script src="/regi/notify/check_notify.js"></script>
     <!-- 通知領域　ここまで -->
 </body>
-<script src="./check_update_common.js"></script>
+<script src="/common/check_update_common.js"></script>
 
 </html>

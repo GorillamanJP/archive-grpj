@@ -162,6 +162,38 @@ class Accountant
             return null;
         }
     }
+
+    public function gets_range(int $offset, int $limit): array|null
+    {
+        try {
+            $sql = "SELECT id FROM accountants ORDER BY id DESC LIMIT :limit OFFSET :offset";
+
+            $stmt = $this->pdo->prepare($sql);
+
+            $stmt->bindValue(":limit", $limit, PDO::PARAM_INT);
+            $stmt->bindValue(":offset", $offset, PDO::PARAM_INT);
+
+            $stmt->execute();
+
+            $accountants = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if ($accountants) {
+                $accountants_array = [];
+                foreach ($accountants as $accountant) {
+                    $accountant_obj = new Accountant();
+                    $accountants_array[] = $accountant_obj->get_from_id($accountant["id"]);
+                    $accountant_obj->close();
+                }
+                return $accountants_array;
+            } else {
+                return null;
+            }
+        } catch (PDOException $pe) {
+            throw new Exception("データベースエラーです。", 1, $pe);
+        } catch (\Throwable $th) {
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
+        }
+    }
+    
     public function delete(): void
     {
         try {

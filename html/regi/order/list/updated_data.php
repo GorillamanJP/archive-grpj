@@ -7,6 +7,11 @@ if (!login_check()) {
 
 session_start();
 
+if (!isset($_POST["page_offset"]) || !isset($_POST["page_limit"])) {
+    http_response_code(400);
+    exit();
+}
+
 $last_update = date("Y/m/d H:i:s");
 $_SESSION["regi"]["order"]["list"]["last_update"] = $last_update;
 

@@ -93,4 +93,24 @@ class Sale
             throw new Exception($e->getMessage(), $e->getCode(), $e);
         }
     }
+
+    public function gets_range(int $offset, int $limit)
+    {
+        try {
+            $accountants = $this->accountant->gets_range($offset, $limit);
+            if (is_null($accountants)) {
+                return null;
+            }
+            $sales_array = [];
+            foreach ($accountants as $accountant) {
+                $sale_obj = new Sale();
+                $sales_array[] = $sale_obj->get_from_accountant_id($accountant->get_id());
+            }
+            return $sales_array;
+        } catch (Exception $e) {
+            throw new Exception("エラーが発生しました。", 1, $e);
+        } catch (\Throwable $th) {
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
+        }
+    }
 }
