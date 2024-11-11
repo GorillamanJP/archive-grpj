@@ -43,12 +43,33 @@ $orders = $order_obj->get_all_all();
             <a href="../list/" class="btn btn-outline-success btn-lg-custom p-2 mx-1">準備中一覧へ</a>
         </div>
         <!-- ページネーション -->
-        <div class="text-center">
-            <button type="button" id="page_prev">&lt;</button>
-            <span id="page_no">1</span> / <span id="page_end">1</span>
-            <button type="button" id="page_next">&gt;</button>
+        <div class="d-flex justify-content-center">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <button class="page-link" id="page_prev" aria-label="Previous">
+                            <span aria-hidden="true">&lt;</span>
+                        </button>
+                    </li>
+                    <li class="page-item">
+                        <span class="page-link" id="page_no">1</span>
+                    </li>
+                    <li class="page-item">
+                        <span class="page-link">/</span>
+                    </li>
+                    <li class="page-item">
+                        <span class="page-link" id="page_end">1</span>
+                    </li>
+                    <li class="page-item">
+                        <button class="page-link" id="page_next" aria-label="Next">
+                            <span aria-hidden="true">&gt;</span>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
         </div>
         <!-- ページネーション　終わり -->
+
         <!-- 注文テーブル -->
         <table class="table table-striped table-bordered table-hover text-center align-middle">
             <thead>
