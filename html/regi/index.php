@@ -9,6 +9,9 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/products/product.php";
 $product_obj = new Product();
 $products = $product_obj->get_all();
 ?>
+<?php
+unset($_SESSION["regi"]["data"]);
+?>
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -78,7 +81,7 @@ $products = $product_obj->get_all();
     </div>
     <div id="notifications" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
     <script>
-        function run_custom_function(){
+        function run_custom_function() {
             setupEventListeners();
         }
     </script>
