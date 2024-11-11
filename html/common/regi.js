@@ -1,6 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
   console.log("DOM fully loaded and parsed"); // DOMのロード確認ログ
 
+  setupEventListeners(); // イベントリスナーの設定関数を呼び出し
+});
+
+function setupEventListeners() {
   const buttons = document.querySelectorAll(
     ".quantity-button.increment, .quantity-button.decrement"
   );
@@ -12,7 +16,9 @@ document.addEventListener("DOMContentLoaded", function () {
       button.classList.contains("increment") ? "increment" : "decrement"
     );
   });
-});
+
+  // Add any other event listeners here
+}
 
 function addLongPressEvent(button, action) {
   console.log("Button:", button); // ボタンが正しく選択されているか確認
