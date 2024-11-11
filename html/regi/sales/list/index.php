@@ -67,12 +67,33 @@ $detail = new Detail();
             </div>
         </div>
         <!-- ページネーション -->
-        <div>
-            <button type="button" id="page_prev">&lt;</button>
-            <span id="page_no">1</span> / <span id="page_end">1</span>
-            <button type="button" id="page_next">&gt;</button>
-        </div>
-        <!-- ページネーション　終わり -->
+<div class="d-flex justify-content-center">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <li class="page-item">
+                <button class="page-link" id="page_prev" aria-label="Previous">
+                    <span aria-hidden="true">&lt;</span>
+                </button>
+            </li>
+            <li class="page-item">
+                <span class="page-link" id="page_no">1</span>
+            </li>
+            <li class="page-item">
+                <span class="page-link">/</span>
+            </li>
+            <li class="page-item">
+                <span class="page-link" id="page_end">1</span>
+            </li>
+            <li class="page-item">
+                <button class="page-link" id="page_next" aria-label="Next">
+                    <span aria-hidden="true">&gt;</span>
+                </button>
+            </li>
+        </ul>
+    </nav>
+</div>
+<!-- ページネーション　終わり -->
+
         <table class="table table-success table-striped table-bordered table-hover text-center align-middle">
             <thead>
                 <tr>
