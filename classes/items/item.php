@@ -227,10 +227,12 @@ class Item
     {
         try {
             $this->open();
-            $sql = "UPDATE items SET delete_flag = 1 WHERE id = :id";
+            $sql = "UPDATE items SET delete_flag = 1, last_update = :last_update WHERE id = :id";
 
             $stmt = $this->pdo->prepare($sql);
+
             $stmt->bindValue(":id", $this->id, PDO::PARAM_INT);
+            $stmt->bindValue(":last_update", date("Y-m-d H:i:s"));
 
             $stmt->execute();
 
