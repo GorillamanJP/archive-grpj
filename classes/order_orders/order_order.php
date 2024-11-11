@@ -183,6 +183,40 @@ class Order_Order
         }
     }
 
+    public function gets_range(int $offset, int $limit): array|null
+    {
+        try {
+            $this->open();
+            $sql = "SELECT id FROM order_orders ORDER BY id DESC LIMIT :limit OFFSET :offset";
+
+            $stmt = $this->pdo->prepare($sql);
+
+            $stmt->bindValue(":limit", $limit, PDO::PARAM_INT);
+            $stmt->bindValue(":offset", $offset, PDO::PARAM_INT);
+
+            $stmt->execute();
+
+            $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $this->close();
+            if ($orders) {
+                $orders_array = [];
+                foreach ($orders as $order) {
+                    $order_obj = new Order_Order();
+                    $orders_array[] = $order_obj->get_from_id($order["id"]);
+                }
+                return $orders_array;
+            } else {
+                return null;
+            }
+        } catch (PDOException $pe) {
+            $this->close();
+            throw new Exception("データベースエラーです。", 1, $pe);
+        } catch (\Throwable $th) {
+            $this->close();
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
+        }
+    }
+
     public function delete(): void
     {
         try {

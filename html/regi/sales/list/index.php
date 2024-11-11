@@ -66,11 +66,13 @@ $detail = new Detail();
                 詳細を見るには、項目を押してください。
             </div>
         </div>
+        <!-- ページネーション -->
         <div class="text-center">
             <button type="button" id="page_prev">&lt;</button>
             <span id="page_no">1</span> / <span id="page_end">1</span>
             <button type="button" id="page_next">&gt;</button>
         </div>
+        <!-- ページネーション　終わり -->
         <table class="table table-success table-striped table-bordered table-hover text-center align-middle">
             <thead>
                 <tr>
@@ -93,32 +95,7 @@ $detail = new Detail();
     <script src="/regi/notify/check_notify.js"></script>
     <script src="/common/set_tap_detail.js"></script>
     <script src="/common/check_update_common.js"></script>
-    <script>
-        function change_value(value) {
-            const page_no = document.getElementById("page_no");
-            const page_end = document.getElementById("page_end").innerText;
-            const after_page_no = page_no.innerText - value;
-            if (after_page_no < 1) {
-                page_no.innerText = 1;
-            } else if (after_page_no > page_end) {
-                page_no.innerText = page_end;
-            } else {
-                page_no.innerText = after_page_no;
-            }
-        }
-        document.getElementById("page_prev").addEventListener("click", function () {
-            change_value(1);
-            get_update();
-        });
-        document.getElementById("page_next").addEventListener("click", function () {
-            change_value(-1);
-            get_update();
-        });
-        // 前と次の数値の増減が普通と違うのは、おそらく会計を新しい順で拾ってるせい
-
-        //ページが更新されたらタップ可能なJS関数を呼び出す
-        
-    </script>
+    <script src="/common/pagination.js"></script>
 </body>
 
 </html>

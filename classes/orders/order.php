@@ -110,4 +110,24 @@ class Order
             throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
+
+    public function gets_range(int $offset, int $limit): array|null
+    {
+        try {
+            $orders_orders = $this->order_order->gets_range($offset, $limit);
+            if (is_null($orders_orders)) {
+                return null;
+            }
+            $orders_array = [];
+            foreach ($orders_orders as $orders_order) {
+                $order_obj = new Order();
+                $orders_array[] = $order_obj->get_from_order_id($orders_order->get_id());
+            }
+            return $orders_array;
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
+        } catch (\Throwable $th) {
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
+        }
+    }
 }

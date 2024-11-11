@@ -7,11 +7,11 @@ if (!login_check()) {
 
 session_start();
 
-if (!isset($_SESSION["regi"]["sales"]["list"]["last_update"]) || $_SESSION["regi"]["sales"]["list"]["last_update"] === "") {
-    $_SESSION["regi"]["sales"]["list"]["last_update"] = date("Y/m/d H:i:s");
+if (!isset($_SESSION["regi"]["order"]["history"]["last_update"]) || $_SESSION["regi"]["order"]["history"]["last_update"] === "") {
+    $_SESSION["regi"]["order"]["history"]["last_update"] = date("Y/m/d H:i:s");
 }
 
-$last_update = $_SESSION["regi"]["sales"]["list"]["last_update"];
+$last_update = $_SESSION["regi"]["order"]["history"]["last_update"];
 
 try {
     $password = getenv("DB_PASSWORD");
@@ -20,7 +20,7 @@ try {
     $pdo = new PDO($dsn, "root", $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $sql = "SELECT COUNT(*) FROM accountants WHERE date >= :last_update";
+    $sql = "SELECT COUNT(*) FROM order_orders WHERE date >= :last_update";
 
     $stmt = $pdo->prepare($sql);
 
@@ -38,9 +38,5 @@ try {
     exit();
 } catch (\Throwable $th) {
     http_response_code(500);
-    exit();
-}
-if (!isset($_POST["page_offset"]) || !isset($_POST["page_limit"])) {
-    http_response_code(400);
     exit();
 }

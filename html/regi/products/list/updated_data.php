@@ -8,7 +8,7 @@ if (!login_check()) {
 session_start();
 
 $last_update = date("Y/m/d H:i:s");
-$_SESSION["regi"]["order"]["list"]["last_update"] = $last_update;
+$_SESSION["regi"]["product"]["list"]["last_update"] = $last_update;
 
 try {
     require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/products/product.php";
