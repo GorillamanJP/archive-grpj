@@ -35,24 +35,24 @@ $timeout = 30;
 if (!file_exists($lockfile_path)) {
     // ロックをかける
     $lockfile = fopen($lockfile_path, "w");
-    fwrite($lockfile, time());
+    fwrite($lockfile, json_encode(['time' => time(), 'user_id' => $_SESSION["login"]['user_id']]));
     fclose($lockfile);
 } else {
     // ロックそのものはかけられていたが…
     // ロックファイルのタイムスタンプを確認
     $lockfile = fopen($lockfile_path, "r+");
-    $lock_time = fread($lockfile, filesize($lockfile_path));
+    $lock_data = json_decode(fread($lockfile, filesize($lockfile_path)), true);
     fclose($lockfile);
 
     // 現在の時間を取得
     $current_time = time();
 
     // タイムアウトをチェック
-    if (($current_time - intval($lock_time)) > $timeout) {
+    if (($current_time - intval($lock_data['time'])) > $timeout) {
         // タイムアウトが過ぎている場合、ロックを解除して再ロック
         unlink($lockfile_path);
         $lockfile = fopen($lockfile_path, "w");
-        fwrite($lockfile, time());
+        fwrite($lockfile, json_encode(['time' => time(), 'user_id' => $_SESSION["login"]['user_id']]));
         fclose($lockfile);
         // この場合はロックを獲得できたので支払い要求画面に行ける
     } else {
@@ -64,6 +64,7 @@ if (!file_exists($lockfile_path)) {
         exit();
     }
 }
+
 
 $product_ids = $_POST["product_id"];
 $quantities = $_POST["quantity"];
@@ -236,7 +237,7 @@ $_SESSION["regi"]["data"]["total_price"] = $total_price;
                 <?php
                 // モバイルオーダー受け取りの場合戻る先が違うので判断
                 $back_url = "/regi/";
-                if (isset($_SESSION["regi"]["order"])) {
+                if (isset($_SESSION["regi"]["order"]["id"])) {
                     $back_url = "/regi/order/list/";
                 }
                 ?>

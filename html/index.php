@@ -14,6 +14,6 @@ session_start();
     <p>ご利用の方は、ポスターにあるQRコードを読み込んでご利用ください。</p>
     <h2>レジ</h2>
     <p>レジ利用者は<a href="/regi/">こちら</a>から</p>
-    <p>テスト: <?= print_r($_SESSION) ?></p>
+    <pre>テスト: <?= print_r($_SESSION) ?><?= print_r(hash_algos()) ?></pre>
 </body>
 </html>

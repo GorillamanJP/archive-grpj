@@ -6,6 +6,8 @@ session_start();
 
 $product_ids = $_SESSION["product_id"];
 $quantities = $_SESSION["quantity"];
+unset($_SESSION["product_id"]);
+unset($_SESSION["quantity"]);
 ?>
 <!DOCTYPE html>
 <html lang="ja">

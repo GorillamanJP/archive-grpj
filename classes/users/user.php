@@ -15,8 +15,12 @@ class User
         return $this->user_name;
     }
 
-    # パスワードのSHA3-512ハッシュ
+    # パスワードのハッシュ
     private string $password_hash;
+    public function get_password_hash(): string
+    {
+        return hash("SHA3-512", $this->password_hash);
+    }
 
     # ソルト
     private string $salt;
