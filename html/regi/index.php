@@ -28,26 +28,14 @@ $products = $product_obj->get_all();
     <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/navbar.php"; ?>
     <!-- 残りのページ内容 -->
     <div class="container regia">
+        <p>最終更新時刻:<span id="last-update">0000/0/0 00:00:00</span></p>
         <div class="content1">
             <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
             <h1 class="text-center">商品一覧</h1>
             <section class="image-text-block">
-                <div class="product-grid">
-                    <?php if (empty($products)): ?>
-                        <p>なにも登録されていません</p>
-                    <?php else: ?>
-                        <?php foreach ($products as $product): ?>
-                            <div class="product" id="product-<?= $product->get_item_id() ?>"
-                                onclick="addToCart('<?= htmlspecialchars($product->get_item_name()) ?>', <?= $product->get_price() ?>, <?= $product->get_now_stock() ?>, <?= $product->get_item_id() ?>)">
-                                <img src="data:image/jpeg;base64,<?= $product->get_item_image() ?>"
-                                    alt="<?= htmlspecialchars($product->get_item_name()) ?>">
-                                <p class="product-name"><?= htmlspecialchars($product->get_item_name()) ?></p>
-                                <p class="price"><?= $product->get_price() ?>円</p>
-                                <p id="stock-<?= $product->get_item_id() ?>">
-                                    【残<?= $product->get_now_stock() ?>個】</p>
-                            </div>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
+                <div class="product-grid" id="table">
+                    <!-- ここに非同期で商品が読み込まれる -->
+                    <p>読み込み中…</p>
                 </div>
             </section>
         </div>
@@ -89,6 +77,12 @@ $products = $product_obj->get_all();
         </div>
     </div>
     <div id="notifications" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+    <script>
+        function run_custom_function(){
+            setupEventListeners();
+        }
+    </script>
+    <script src="/common/check_update_common.js"></script>
     <script src="/regi/notify/check_notify.js"></script>
     <script src="/common/regi.js"></script>
 </body>
