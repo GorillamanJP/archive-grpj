@@ -80,6 +80,9 @@ try {
     for ($i = 0; $i < count($product_ids); $i++) {
         $product = new Product();
         $product = $product->get_from_item_id($product_ids[$i]);
+        if($product->get_delete_flag() == true){
+            throw new Exception("指定した商品は削除されました。", 0);
+        }
         $stock_left = $product->get_now_stock();
         $buy_quantity = $quantities[$i];
         $after_stock = $stock_left - $buy_quantity;
