@@ -26,32 +26,20 @@ $products = $product_obj->get_all();
 <body>
     <h1 class="text-center my-3">モバイルオーダー</h1>
     <div class="container regia">
+        <p>最終更新時刻:<span id="last-update">0000/0/0 00:00:00</span></p>
         <div class="content1">
             <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
             <h1 class="text-center">商品一覧</h1>
             <section class="image-text-block">
-                <div class="product-grid">
-                    <?php if (empty($products)): ?>
-                        <p>なにも登録されていません</p>
-                    <?php else: ?>
-                        <?php foreach ($products as $product): ?>
-                            <div class="product" id="product-<?= $product->get_item_id() ?>"
-                                onclick="addToCart('<?= htmlspecialchars($product->get_item_name()) ?>', <?= $product->get_price() ?>, <?= $product->get_now_stock() ?>, <?= $product->get_item_id() ?>)">
-                                <img src="data:image/jpeg;base64,<?= $product->get_item_image() ?>"
-                                    alt="<?= htmlspecialchars($product->get_item_name()) ?>">
-                                <p class="product-name"><?= htmlspecialchars($product->get_item_name()) ?></p>
-                                <p class="price"><?= $product->get_price() ?>円</p>
-                                <p id="stock-<?= $product->get_item_id() ?>">
-                                    【残<?= $product->get_now_stock() ?>個】</p>
-                            </div>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
+                <div class="product-grid" id="table">
+                    <!-- ここに非同期で商品が読み込まれる -->
+                    <p>読み込み中…</p>
                 </div>
             </section>
         </div>
         <div class="content2">
             <h1 class="text-center">選択商品</h1>
-            <table id="cart-table" class="table">
+            <table id="cart-table" class="table text-center">
                 <thead>
                     <tr>
                         <th>商品名</th>
@@ -60,12 +48,14 @@ $products = $product_obj->get_all();
                         <th>取消</th>
                     </tr>
                 </thead>
-                <tbody> <!-- カート商品がここに追加される --> </tbody>
+                <tbody>
+                    <!-- カート商品がここに追加される -->
+                </tbody>
             </table>
         </div>
         <div class="content3">
             <h1 class="text-center">会計</h1>
-            <table class="table">
+            <table class="table text-center">
                 <thead>
                     <tr>
                         <th>合計品数</th>
@@ -84,6 +74,13 @@ $products = $product_obj->get_all();
             </form>
         </div>
     </div>
+    <div id="notifications" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+    <script>
+        function run_custom_function(){
+            setupEventListeners();
+        }
+    </script>
+    <script src="/common/check_update_common.js"></script>
     <script src="/common/regi.js"></script>
 </body>
 
