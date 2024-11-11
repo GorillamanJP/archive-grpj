@@ -43,7 +43,7 @@ $orders = $order_obj->get_all_all();
             <a href="../list/" class="btn btn-outline-success btn-lg-custom p-2 mx-1">準備中一覧へ</a>
         </div>
         <!-- ページネーション -->
-        <div>
+        <div class="text-center">
             <button type="button" id="page_prev">&lt;</button>
             <span id="page_no">1</span> / <span id="page_end">1</span>
             <button type="button" id="page_next">&gt;</button>

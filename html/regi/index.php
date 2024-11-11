@@ -20,6 +20,7 @@ $products = $product_obj->get_all();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="/common/regi.css">
 </head>
 
@@ -52,7 +53,7 @@ $products = $product_obj->get_all();
         </div>
         <div class="content2">
             <h1 class="text-center">選択商品</h1>
-            <table id="cart-table" class="table">
+            <table id="cart-table" class="table text-center">
                 <thead>
                     <tr>
                         <th>商品名</th>
@@ -68,7 +69,7 @@ $products = $product_obj->get_all();
         </div>
         <div class="content3">
             <h1 class="text-center">会計</h1>
-            <table class="table">
+            <table class="table text-center">
                 <thead>
                     <tr>
                         <th>合計品数</th>
