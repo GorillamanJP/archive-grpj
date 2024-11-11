@@ -21,7 +21,9 @@ async function get_update() {
         if (resp.ok) {
             const data = await resp.json();
             set_html_from_json(data);
-            set_tap_detail();
+            if (typeof run_custom_function === "function") {
+                run_custom_function();
+            }
         } else {
             console.error("Error: " + resp.statusText);
         }
