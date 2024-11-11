@@ -12,8 +12,5 @@ if (file_exists($lockfile_path)) {
     // ロックをかけたユーザーが現在のユーザーと一致するか確認
     if ($lock_data['user_id'] == $_SESSION["login"]['user_id']) {
         unlink($lockfile_path);
-        echo "unlock success";
-    } else {
-        echo "lock held by another user";
     }
 }
