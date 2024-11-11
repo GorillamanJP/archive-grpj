@@ -60,6 +60,11 @@ $orders = $order_obj->get_all();
     <!-- 通知領域 -->
     <div id="notifications" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
     <!-- 通知領域　ここまで -->
+    <script>
+        function run_custom_function() {
+            set_tap_detail();
+        }
+    </script>
     <script src="/regi/notify/check_notify.js"></script>
     <script src="/common/set_tap_detail.js"></script>
 </body>
