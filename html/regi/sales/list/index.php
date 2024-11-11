@@ -66,7 +66,7 @@ $detail = new Detail();
                 詳細を見るには、項目を押してください。
             </div>
         </div>
-        <div>
+        <div class="text-center">
             <button type="button" id="page_prev">&lt;</button>
             <span id="page_no">1</span> / <span id="page_end">1</span>
             <button type="button" id="page_next">&gt;</button>
