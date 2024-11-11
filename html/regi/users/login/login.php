@@ -21,7 +21,10 @@ if ($ok) {
         $user = new User();
         $user = $user->get_from_user_name($user_name);
         $user = $user->verify($password);
+        session_regenerate_id(true);
         $_SESSION["login"]["user_id"] = $user->get_id();
+        $_SESSION["login"]["last_activity"] = time();
+        $_SESSION["login"]["token"] = hash("SHA3-512", $user->get_user_name() . $user->get_password_hash());
         $_SESSION["message"] = "ログインしました。";
         $_SESSION["message_type"] = "info";
         # ユーザーIDが1(初期ユーザーのadmin)の場合は警告メッセージを出す
@@ -61,7 +64,6 @@ if ($ok) {
         exit();
     } catch (\Throwable $e) {
         $_SESSION["message"] = "ユーザー名またはパスワードが違います。";
-        $_SESSION["message_details"] = $e->getMessage();
         $_SESSION["message_type"] = "danger";
         session_write_close();
         header("Location: ./");
