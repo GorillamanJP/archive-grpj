@@ -79,7 +79,6 @@ session_start();
 
 <body>
     <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/navbar.php"; ?>
-    <h1>モバイルオーダーのレジ側トップ画面</h1>
 
     <!-- URL生成セクション -->
     <div class="link-container">
