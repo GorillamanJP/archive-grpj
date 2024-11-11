@@ -237,7 +237,7 @@ $_SESSION["regi"]["data"]["total_price"] = $total_price;
                 <?php
                 // モバイルオーダー受け取りの場合戻る先が違うので判断
                 $back_url = "/regi/";
-                if (isset($_SESSION["regi"]["order"])) {
+                if (isset($_SESSION["regi"]["order"]["id"])) {
                     $back_url = "/regi/order/list/";
                 }
                 ?>
