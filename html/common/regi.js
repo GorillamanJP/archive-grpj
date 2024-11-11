@@ -102,12 +102,12 @@ function addToCart(productName, price, stockQuantity, productId) {
         stockQuantity
       );
     } else {
-      alert("在庫が足りません。");
+      showCustomAlert("在庫が足りません。");
     }
   } else {
     if (stockQuantity > 0) {
       const row = document.createElement("tr");
-      row.innerHTML = `<td>${productName}</td><td>${price}円</td><td class="quantity-column"><button class="btn btn-outline-success quantity-button increment" data-product-id="${productId}" data-stock-quantity="${stockQuantity}">＋</button><span>1個</span><button class="btn btn-outline-success quantity-button decrement" data-product-id="${productId}" data-stock-quantity="${stockQuantity}">－</button></td><td class="delete-column"><button class="btn btn-outline-danger" onclick="removeFromCart(this, ${price}, ${productId})">削除</button></td>`;
+      row.innerHTML = `<td>${productName}</td><td>${price}円</td><td class="quantity-column"><button class="btn btn-outline-success btn-lg quantity-button increment" data-product-id="${productId}" data-stock-quantity="${stockQuantity}">＋</button><span>1個</span><button class="btn btn-outline-success btn-lg quantity-button decrement" data-product-id="${productId}" data-stock-quantity="${stockQuantity}">－</button></td><td class="delete-column"><button class="btn btn-outline-danger" onclick="removeFromCart(this, ${price}, ${productId})">削除</button></td>`;
       cartTable.appendChild(row);
       updateTotals(price, 1);
       updateStockDisplay(productId, -1);
@@ -122,7 +122,7 @@ function addToCart(productName, price, stockQuantity, productId) {
       addLongPressEvent(newIncrementButton, "increment");
       addLongPressEvent(newDecrementButton, "decrement");
     } else {
-      alert("在庫が足りません。");
+      showCustomAlert("在庫が足りません。");
     }
   }
 }
@@ -188,6 +188,19 @@ function removeFromCart(button, price, productId) {
   }
 }
 
+function showCustomAlert(message) {
+  const alertBox = document.createElement("div");
+  alertBox.classList.add("custom-alert");
+  alertBox.innerText = message;
+  document.body.appendChild(alertBox);
+  alertBox.style.display = "block";
+
+  setTimeout(() => {
+    alertBox.style.display = "none";
+    alertBox.remove();
+  }, 2000); // 2秒後に自動的に消える
+}
+
 function changeQuantity(button, change, productId, stockQuantity) {
   console.log("changeQuantity called", {
     button,
@@ -202,7 +215,14 @@ function changeQuantity(button, change, productId, stockQuantity) {
   if (newQuantity < 1) {
     return; // 最小個数を1に制限
   } else if (newQuantity > stockQuantity) {
-    alert("在庫が足りません。");
+    if (!button.hasAttribute("data-alert-shown")) {
+      // アラートが未表示の場合のみ表示
+      showCustomAlert("在庫が足りません。");
+      button.setAttribute("data-alert-shown", "true");
+      setTimeout(() => {
+        button.removeAttribute("data-alert-shown");
+      }, 2000); // 2秒後にフラグをリセット
+    }
     return;
   }
   quantityCell.innerText = `${newQuantity}個`;

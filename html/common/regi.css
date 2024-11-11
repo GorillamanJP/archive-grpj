@@ -194,3 +194,21 @@ a {
   justify-content: center;
   /* 中央揃えにする */
 }
+
+.custom-alert {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 20px;
+  border: 1px solid #f5c6cb;
+  border-radius: 5px;
+  z-index: 1000;
+  display: none;
+}
+
+.quantity-column span {
+  margin: 0 8px; /* ボタンと個数表示の間に余白を追加 */
+}
