@@ -207,7 +207,32 @@ function updateStockDisplay(productId, change) {
   const stockElement = document.getElementById(`stock-${productId}`);
   if (stockElement) {
     const currentStock = parseInt(stockElement.innerText.match(/\d+/)[0]);
-    stockElement.innerText = `【残${currentStock + change}個】`;
+    const newStock = currentStock + change;
+    if (newStock < 0) {
+      showCustomAlert(`選択した商品「${productId}」の在庫が足りません。カート内の数量を調整します。`);
+      adjustCartQuantity(productId, newStock); // カート内の数量を調整
+    } else {
+      stockElement.innerText = `【残${newStock}個】`;
+    }
+  }
+}
+
+function adjustCartQuantity(productId, newStock) {
+  const buttonElement = document.querySelector(`button[data-product-id="${productId}"]`);
+  if (buttonElement) {
+    const row = buttonElement.closest("tr");
+    if (row) {
+      const quantityCell = row.cells[2].children[1];
+      const currentQuantity = parseInt(quantityCell.innerText);
+      const adjustedQuantity = currentQuantity + newStock;
+      if (adjustedQuantity <= 0) {
+        removeFromCart(row.querySelector(".delete-column button"), parseInt(row.cells[1].innerText), productId);
+      } else {
+        quantityCell.innerText = `${adjustedQuantity}個`;
+        updateTotals(-parseInt(row.cells[1].innerText) * (currentQuantity - adjustedQuantity), -(currentQuantity - adjustedQuantity));
+        updateForm(productId, adjustedQuantity);
+      }
+    }
   }
 }
 
@@ -260,15 +285,12 @@ function updateTotals(price, quantity) {
 function removeFromCart(button, price, productId) {
   const row = button.parentNode.parentNode;
   const quantity = parseInt(row.cells[2].children[1].innerText);
-
   row.remove();
-
   updateTotals(-price * quantity, -quantity); // 合計金額と合計個数を正しく更新
   updateStockDisplay(productId, quantity); // 在庫を戻す
 
   const productIdInputs = document.getElementsByName("product_id[]");
   const quantityInputs = document.getElementsByName("quantity[]");
-
   for (let i = 0; i < productIdInputs.length; i++) {
     if (productIdInputs[i].value == productId) {
       productIdInputs[i].remove();
@@ -287,18 +309,18 @@ function showCustomAlert(message) {
 
   // 5秒後に自動的に消える
   setTimeout(() => {
-      alertBox.style.display = "none";
-      alertBox.remove();
+    alertBox.style.display = "none";
+    alertBox.remove();
   }, 5000); // 5000ミリ秒 = 5秒
 
   // 1秒後にクリックイベントリスナーを追加
   setTimeout(() => {
-      document.addEventListener("click", function(event) {
-          if (alertBox && !alertBox.contains(event.target)) {
-              alertBox.style.display = "none";
-              alertBox.remove();
-          }
-      });
+    document.addEventListener("click", function (event) {
+      if (alertBox && !alertBox.contains(event.target)) {
+        alertBox.style.display = "none";
+        alertBox.remove();
+      }
+    });
   }, 1000); // 1000ミリ秒 = 1秒
 }
 
