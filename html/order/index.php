@@ -4,9 +4,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/order/protects/protect.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/order/receive/is_receive.php";
 session_start();
 unset($_SESSION["order"]["order_items"]);
-require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/products/product.php";
-$product_obj = new Product();
-$products = $product_obj->get_all();
 ?>
 <!DOCTYPE html>
 <html lang="ja">
