@@ -284,10 +284,22 @@ function showCustomAlert(message) {
   alertBox.innerText = message;
   document.body.appendChild(alertBox);
   alertBox.style.display = "block";
+
+  // 5秒後に自動的に消える
   setTimeout(() => {
-    alertBox.style.display = "none";
-    alertBox.remove();
-  }, 2000); // 2秒後に自動的に消える
+      alertBox.style.display = "none";
+      alertBox.remove();
+  }, 5000); // 5000ミリ秒 = 5秒
+
+  // 1秒後にクリックイベントリスナーを追加
+  setTimeout(() => {
+      document.addEventListener("click", function(event) {
+          if (alertBox && !alertBox.contains(event.target)) {
+              alertBox.style.display = "none";
+              alertBox.remove();
+          }
+      });
+  }, 1000); // 1000ミリ秒 = 1秒
 }
 
 function changeQuantity(button, change, productId, stockQuantity) {
