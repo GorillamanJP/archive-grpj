@@ -226,22 +226,24 @@ function updateAllStockDisplays() {
 function checkCartItemsExistence() {
   const productIdInputs = document.getElementsByName("product_id[]");
   const quantityInputs = document.getElementsByName("quantity[]");
-
   for (let i = 0; i < productIdInputs.length; i++) {
     const productId = productIdInputs[i].value;
     const stockElement = document.getElementById(`stock-${productId}`);
-
-    if (!stockElement) { // 商品一覧から削除されている場合
-      const row = document.querySelector(`button[data-product-id="${productId}"]`).closest("tr");
-      const productName = row.cells[0].innerText;
-      const price = parseInt(row.cells[1].innerText);
-      const quantity = parseInt(quantityInputs[i].value);
-
-      showCustomAlert(`選択した商品「${productName}」が商品一覧から削除されました。カートからも削除されます。`);
-      removeFromCart(row.querySelector("button.delete-column button"), price, productId);
+    if (!stockElement) {
+      // 商品一覧から削除されている場合
+      const buttonElement = document.querySelector(`button[data-product-id="${productId}"]`);
+      if (buttonElement) {
+        const row = buttonElement.closest("tr");
+        const productName = row.cells[0].innerText;
+        const price = parseInt(row.cells[1].innerText);
+        const quantity = parseInt(quantityInputs[i].value);
+        showCustomAlert(`選択した商品「${productName}」が商品一覧から削除されました。カートからも削除されます。`);
+        removeFromCart(buttonElement, price, productId);
+      }
     }
   }
 }
+
 
 
 function updateTotals(price, quantity) {
