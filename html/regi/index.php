@@ -75,16 +75,9 @@ unset($_SESSION["regi"]["data"]);
         </div>
     </div>
     <div id="notifications" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
-    <script>
-        function run_custom_function() {
-            setupEventListeners();
-        }
-        const custom_check_update_path = "/common/index/check_update.php";
-        const custom_updated_data_path = "/common/index/updated_data.php";
-    </script>
+    <script src="/common/regi.js"></script>
     <script src="/common/check_update_common.js"></script>
     <script src="/regi/notify/check_notify.js"></script>
-    <script src="/common/regi.js"></script>
 </body>
 
 </html>
