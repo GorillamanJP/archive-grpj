@@ -18,18 +18,29 @@ try {
 
     $stmt_items = $pdo->prepare($sql_items);
 
-    $stmt_items->bindValue(":last_update", $last_update);
+    $stmt_items->bindValue(":last_update", $last_update, PDO::PARAM_STR);
 
     $stmt_items->execute();
 
     $update_count = intval($stmt_items->fetchColumn());
 
-    
+
+    $sql_stocks = "SELECT COUNT(*) FROM stocks WHERE last_update >= :last_update";
+
+    $stmt_stocks = $pdo->prepare($sql_stocks);
+
+    $stmt_stocks->bindValue(":last_update", $last_update, PDO::PARAM_STR);
+
+    $stmt_stocks->execute();
+
+    $update_count += intval($stmt_stocks->fetchColumn());
+
+
     $sql_accountants = "SELECT COUNT(*) FROM accountants WHERE date >= :last_update";
 
     $stmt_accountants = $pdo->prepare($sql_accountants);
 
-    $stmt_accountants->bindValue(":last_update", $last_update);
+    $stmt_accountants->bindValue(":last_update", $last_update, PDO::PARAM_STR);
 
     $stmt_accountants->execute();
 
