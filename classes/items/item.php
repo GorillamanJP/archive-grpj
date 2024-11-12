@@ -157,6 +157,7 @@ class Item
                 $this->price = $item["price"];
                 $this->item_image = base64_encode($item["item_image"]);
                 $this->last_update = $item["last_update"];
+                $this->delete_flag = $item["delete_flag"];
                 return $this;
             } else {
                 throw new Exception("指定した商品は見つかりませんでした。");

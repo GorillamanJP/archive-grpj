@@ -1,14 +1,8 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check_bool.php";
-if (!login_check()) {
-    http_response_code(403);
-    exit();
-}
-
 session_start();
 
 $last_update = date("Y/m/d H:i:s");
-$_SESSION["regi"]["list"]["last_update"] = $last_update;
+$_SESSION["list"]["last_update"] = $last_update;
 
 try {
     require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/products/product.php";

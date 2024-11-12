@@ -1,17 +1,11 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check_bool.php";
-if (!login_check()) {
-    http_response_code(403);
-    exit();
-}
-
 session_start();
 
-if (!isset($_SESSION["regi"]["list"]["last_update"]) || $_SESSION["regi"]["list"]["last_update"] === "") {
-    $_SESSION["regi"]["list"]["last_update"] = date("Y/m/d H:i:s");
+if (!isset($_SESSION["list"]["last_update"]) || $_SESSION["list"]["last_update"] === "") {
+    $_SESSION["list"]["last_update"] = date("Y/m/d H:i:s");
 }
 
-$last_update = $_SESSION["regi"]["list"]["last_update"];
+$last_update = $_SESSION["list"]["last_update"];
 
 try {
     $password = getenv("DB_PASSWORD");

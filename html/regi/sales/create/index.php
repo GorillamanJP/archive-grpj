@@ -110,7 +110,7 @@ try {
     }
 } catch (\Throwable $e) {
     $_SESSION["message"] = "商品が見つかりませんでした。";
-    $_SESSION["message_details"] = "選ばれた商品が削除された可能性があります。";
+    $_SESSION["message_details"] = "選ばれた商品が削除された可能性があります。".$e->getMessage();
     $_SESSION["message_type"] = "danger";
     session_write_close();
     require "./unlock.php";

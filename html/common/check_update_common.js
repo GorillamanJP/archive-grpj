@@ -1,11 +1,12 @@
 async function get_update() {
     try {
         let resp;
+        const updated_data_path = typeof custom_updated_data_path == "string" ? custom_updated_data_path : "./updated_data.php";
         if (document.getElementById("page_no")) {
             const page_no = document.getElementById("page_no").innerText;
             const limit = 20;
             const offset = (page_no - 1) * limit;
-            resp = await fetch("./updated_data.php", {
+            resp = await fetch(updated_data_path, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -16,7 +17,7 @@ async function get_update() {
                 })
             });
         } else {
-            resp = await fetch("./updated_data.php");
+            resp = await fetch(updated_data_path);
         }
         if (resp.ok) {
             const data = await resp.json();
@@ -49,7 +50,8 @@ function set_html(id, data) {
 
 async function check_update() {
     try {
-        const resp = await fetch("./check_update.php");
+        const check_update_path = typeof custom_check_update_path == "string" ? custom_check_update_path : "./check_update.php";
+        const resp = await fetch(check_update_path);
         if (resp.ok) {
             const data = await resp.json();
             if (data.is_update) {
