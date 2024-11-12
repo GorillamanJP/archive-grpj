@@ -13,7 +13,7 @@ unset($_SESSION["regi"]["data"]);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>レジトップ</title>
+    <title>レジ</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
@@ -25,6 +25,7 @@ unset($_SESSION["regi"]["data"]);
 <body>
     <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/navbar.php"; ?>
     <!-- 残りのページ内容 -->
+    <h1 class="text-center my-3">レジ</h1>
     <div class="container regia">
         <p>最終更新時刻:<span id="last-update">0000/0/0 00:00:00</span></p>
         <div class="content1">
