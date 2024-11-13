@@ -100,5 +100,6 @@ if ($order->get_order_order()->get_is_received()) {
         </div>
     </div>
 </body>
+<script src="./check_receive.js"></script>
 
 </html>

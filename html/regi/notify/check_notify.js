@@ -1,6 +1,6 @@
 async function fetchNotifications() {
     try {
-        let response = await fetch("/regi/notify/notify.php");
+        const response = await fetch("/regi/notify/notify.php");
         if (response.ok) {
             let data = await response.json();
             if (data.hasData && data.notifications.length > 0) {
