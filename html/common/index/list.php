@@ -6,6 +6,6 @@
         <p class="product-name"><?= htmlspecialchars($product->get_item_name()) ?></p>
         <p class="price"><?= $product->get_price() ?>円</p>
         <p id="stock-<?= $product->get_item_id() ?>">
-            【残<?= $product->get_now_stock() ?>個】</p>
+            【残<?= $product->get_buy_available_count() ?>個】</p>
     </div>
 <?php endforeach; ?>

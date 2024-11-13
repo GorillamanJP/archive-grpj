@@ -43,6 +43,15 @@ class Product
         $total_sales = $detail->get_total_sold($this->get_item_id());
         return $quantity - $total_sales;
     }
+    public function get_buy_available_count(): int
+    {
+        $now_stock = $this->get_now_stock();
+
+        require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/order_details/order_detail.php";
+        $order_detail = new Order_Detail();
+
+        return $now_stock - $order_detail->get_now_order_total($this->get_item_id());
+    }
     public function __construct()
     {
         $this->item = new Item();

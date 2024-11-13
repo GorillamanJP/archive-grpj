@@ -169,4 +169,38 @@ class Order_Detail
             throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
+
+    public function get_now_order_total(int $item_id): int
+    {
+        try {
+            $this->open();
+            $sql = "
+SELECT SUM(od.quantity) AS now_order_total
+FROM order_details od
+JOIN order_orders oo ON od.order_id = oo.id
+WHERE od.item_id = :item_id
+AND oo.is_received = 0;
+";
+
+            $stmt = $this->pdo->prepare($sql);
+
+            $stmt->bindValue(":item_id", $item_id, PDO::PARAM_INT);
+
+            $stmt->execute();
+
+            $now_order_total = $stmt->fetch(PDO::FETCH_ASSOC);
+            $this->close();
+            if ($now_order_total) {
+                return intval($now_order_total["now_order_total"]);
+            } else {
+                return 0;
+            }
+        } catch (PDOException $pe) {
+            $this->close();
+            throw new Exception("データベースエラーです。", 1, $pe);
+        } catch (\Throwable $th) {
+            $this->close();
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
+        }
+    }
 }
