@@ -1,9 +1,9 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT']."/regi/users/login_check.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
 ?>
 <?php
 $id = htmlspecialchars($_POST["id"]);
-require_once $_SERVER['DOCUMENT_ROOT']."/../classes/products/product.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/products/product.php";
 
 $product = new Product();
 $product = $product->get_from_item_id($id);
@@ -67,10 +67,8 @@ $product = $product->get_from_item_id($id);
                 </tr>
                 <tr class="form-group">
                     <th class="align-middle">商品イメージ</th>
-                    <td class="table-secondary"><img
-                            src="data:image/jpeg;base64,<?= $product->get_item_image() ?>"
-                            alt="商品画像　ID<?= $product->get_item_id() ?>番" id="now_item_image"
-                            style="width: 200px;"></td>
+                    <td class="table-secondary"><img src="data:image/jpeg;base64,<?= $product->get_item_image() ?>"
+                            alt="商品画像　ID<?= $product->get_item_id() ?>番" id="now_item_image" style="width: 200px;"></td>
                 </tr>
                 <tr class="form-group">
                     <th class="align-middle">画像選択</th>
@@ -79,7 +77,7 @@ $product = $product->get_from_item_id($id);
                 </tr>
         </table>
         <div class="text-center">
-            <input type="submit" class="btn btn-outline-primary" value="更新">
+            <input type="submit" class="btn btn-outline-primary" id="initialUpdateBtn" value="更新">
             <a href="../../list/" class="btn btn-outline-secondary">戻る</a>
         </div>
         </form>
@@ -139,8 +137,29 @@ $product = $product->get_from_item_id($id);
             myModal.show();
         }
 
+        document.getElementById('initialUpdateBtn').addEventListener('click', function () {
+            showConfirmationModal();
+        });
+
         document.getElementById('confirmUpdateBtn').addEventListener('click', function () {
             document.getElementById('updateForm').submit();
+        });
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter' && event.target.nodeName !== 'TEXTAREA') {
+                event.preventDefault();
+                console.log('Enterキーが押されました');
+                const activeModal = document.querySelector('.modal.show');
+                if (activeModal) {
+                    if (activeModal.querySelector('#confirmUpdateBtn')) {
+                        activeModal.querySelector('#confirmUpdateBtn').click();
+                        console.log('confirmUpdateBtnがEnterキーでクリックされました');
+                    }
+                } else {
+                    showConfirmationModal();
+                    console.log('initialUpdateBtnがEnterキーでクリックされました');
+                }
+            }
         });
     </script>
 </body>

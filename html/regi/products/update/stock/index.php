@@ -1,9 +1,9 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT']."/regi/users/login_check.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
 ?>
 <?php
 $id = htmlspecialchars($_POST["id"]);
-require_once $_SERVER['DOCUMENT_ROOT']."/../classes/products/product.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/products/product.php";
 
 $product = new Product();
 $product = $product->get_from_item_id($id);
@@ -56,10 +56,8 @@ $product = $product->get_from_item_id($id);
             <table class="table table-bordered table-info table-hover">
                 <tr class="form-group">
                     <th class="align-middle">商品イメージ</th>
-                    <td class="table-secondary"><img
-                            src="data:image/jpeg;base64,<?= $product->get_item_image() ?>"
-                            alt="商品画像　ID<?= $product->get_item_id() ?>番" id="now_item_image"
-                            style="width: 200px;"></td>
+                    <td class="table-secondary"><img src="data:image/jpeg;base64,<?= $product->get_item_image() ?>"
+                            alt="商品画像　ID<?= $product->get_item_id() ?>番" id="now_item_image" style="width: 200px;"></td>
                 </tr>
                 <tr class="form-group">
                     <th class="align-middle">商品名</th>
@@ -72,7 +70,8 @@ $product = $product->get_from_item_id($id);
                 <tr class="form-group">
                     <th class="align-middle">入荷数</th>
                     <td class="table-secondary">
-                        <input type="number" name="add_quantity" id="add_quantity" class="form-control" min="0" required>
+                        <input type="number" name="add_quantity" id="add_quantity" class="form-control" min="0"
+                            required>
                     </td>
                 </tr>
             </table>
@@ -134,6 +133,25 @@ $product = $product->get_from_item_id($id);
                 myModal.show();
             }
         }
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter' && event.target.nodeName !== 'TEXTAREA') {
+                event.preventDefault();
+
+                console.log('Enterキーが押されました');
+
+                const activeModal = document.querySelector('.modal.show');
+                if (activeModal) {
+                    if (activeModal.querySelector('#confirmUpdateBtnModal')) {
+                        activeModal.querySelector('#confirmUpdateBtnModal').click();
+                        console.log('confirmUpdateBtnModalがEnterキーでクリックされました');
+                    }
+                } else {
+                    checkAndSubmitForm();
+                    console.log('最初の更新ボタンがEnterキーでクリックされました');
+                }
+            }
+        });
     </script>
 </body>
 

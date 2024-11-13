@@ -139,6 +139,7 @@ a {
   margin: 2px;
   cursor: pointer;
   transition-duration: 0.4s;
+  padding: 10px; /* クリックエリアを増やすためのパディング */
 }
 
 .quantity-container span {
@@ -211,4 +212,10 @@ a {
 
 .quantity-column span {
   margin: 0 8px; /* ボタンと個数表示の間に余白を追加 */
+}
+
+.quantity-column span {
+  display: inline-block;
+  width: 50px; /* 必要に応じて幅を調整 */
+  text-align: center;
 }
