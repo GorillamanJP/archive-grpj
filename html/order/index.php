@@ -1,7 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/order/captcha/require_captcha.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/order/protects/protect.php";
-require_once $_SERVER['DOCUMENT_ROOT'] . "/order/receive/is_receive.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/order/is_receive.php";
 session_start();
 unset($_SESSION["order"]["order_items"]);
 ?>

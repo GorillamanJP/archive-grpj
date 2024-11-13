@@ -25,7 +25,7 @@ if (isset($_COOKIE["order"]) && $_COOKIE["order"] !== "") {
         $_SESSION["message_details"] = $th->getMessage();
         $_SESSION["message_type"] = "danger";
         session_write_close();
-        header("Location: /order/");
+        header("Location: /order/error/");
         exit();
     }
 }
