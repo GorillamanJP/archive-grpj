@@ -27,10 +27,11 @@ if (isset($_SESSION["login"]["user_id"])) {
         try {
             $user = new User();
             $user = $user->get_from_id($_SESSION["login"]["user_id"]);
-            if(!isset($_SESSION["login"]["token"]) || $_SESSION["login"]["token"] !== hash("SHA3-512", $user->get_user_name() . $user->get_password_hash())){
+            if (!isset($_SESSION["login"]["token"]) || $_SESSION["login"]["token"] !== hash("SHA3-512", $user->get_user_name() . $user->get_password_hash())) {
                 $_SESSION["message_details"] = "ユーザー名またはパスワードが変更された可能性があります。";
                 login_fail("再ログインが必要です。", "warning", $_SERVER['REQUEST_URI'], $_POST);
             }
+            $_SESSION["login"]["last_activity"] = time();
         } catch (\Throwable $e) {
             $_SESSION["message_details"] = "ログイン中のユーザーを削除した可能性があります。";
             login_fail("ログイン中のユーザーが見つかりませんでした。", "danger", $_SERVER['REQUEST_URI'], $_POST);
