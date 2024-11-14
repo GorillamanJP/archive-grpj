@@ -41,7 +41,7 @@ $item_obj = new Item();
     <div class="container">
         <h1 class="text-center my-3">会計詳細</h1>
         <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
-        <table class="table table-striped table-success">
+        <table class="table table-hover">
             <tr>
                 <th class="text-end">会計番号</th>
                 <td><?= $sale->get_accountant()->get_id() ?></td>

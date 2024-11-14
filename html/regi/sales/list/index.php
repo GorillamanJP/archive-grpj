@@ -31,30 +31,48 @@ $detail = new Detail();
         .clickable-row {
             cursor: pointer;
         }
+
+        .custom-background {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        .table th,
+        .table td {
+            vertical-align: middle;
+        }
+
+        .loading-message {
+            color: #888;
+            font-style: italic;
+        }
     </style>
 </head>
 
 <body>
     <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/navbar.php"; ?>
-    <!-- 残りのページ内容 -->
-    <div class="container">
-        <h2>売上記録</h2>
-        <table>
-            <thead>
-            <tr>
-                <th>商品名</th>
-                <th>販売数</th>
-                <th>売上</th>
-            </tr>
-            </thead>
-            <tbody id="sales_table">
-                <tr>
-                    <td colspan="3">
-                        <h2>読み込み中…</h2>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="container custom-background">
+        <h1 class="text-center mb-4">総売上記録</h1>
+        <div class="table-responsive">
+            <table class="table">
+                <thead class="table-secondary">
+                    <tr>
+                        <th>商品名</th>
+                        <th>販売数</th>
+                        <th>売上</th>
+                    </tr>
+                </thead>
+                <tbody id="sales_table">
+                    <tr>
+                        <td colspan="3" class="text-center loading-message">
+                            <h2>読み込み中…</h2>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
     <div class="container mt-4">
         <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
@@ -67,35 +85,35 @@ $detail = new Detail();
             </div>
         </div>
         <!-- ページネーション -->
-<div class="d-flex justify-content-center">
-    <nav aria-label="Page navigation">
-        <ul class="pagination">
-            <li class="page-item">
-                <button class="page-link" id="page_prev" aria-label="Previous">
-                    <span aria-hidden="true">&lt;</span>
-                </button>
-            </li>
-            <li class="page-item">
-                <span class="page-link" id="page_no">1</span>
-            </li>
-            <li class="page-item">
-                <span class="page-link">/</span>
-            </li>
-            <li class="page-item">
-                <span class="page-link" id="page_end">1</span>
-            </li>
-            <li class="page-item">
-                <button class="page-link" id="page_next" aria-label="Next">
-                    <span aria-hidden="true">&gt;</span>
-                </button>
-            </li>
-        </ul>
-    </nav>
-</div>
-<!-- ページネーション　終わり -->
+        <div class="d-flex justify-content-center">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <button class="page-link" id="page_prev" aria-label="Previous">
+                            <span aria-hidden="true">&lt;</span>
+                        </button>
+                    </li>
+                    <li class="page-item">
+                        <span class="page-link" id="page_no">1</span>
+                    </li>
+                    <li class="page-item">
+                        <span class="page-link">/</span>
+                    </li>
+                    <li class="page-item">
+                        <span class="page-link" id="page_end">1</span>
+                    </li>
+                    <li class="page-item">
+                        <button class="page-link" id="page_next" aria-label="Next">
+                            <span aria-hidden="true">&gt;</span>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <!-- ページネーション　終わり -->
 
-        <table class="table table-success table-striped table-bordered table-hover text-center align-middle">
-            <thead>
+        <table class="table table-secondary table-bordered table-hover text-center align-middle">
+            <thead class="table-primary">
                 <tr>
                     <th>ID</th>
                     <th>購入日</th>
@@ -114,7 +132,7 @@ $detail = new Detail();
     </div>
     <div id="notifications" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
     <script>
-        function run_custom_function(){
+        function run_custom_function() {
             set_tap_detail();
         }
     </script>
