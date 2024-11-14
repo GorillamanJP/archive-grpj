@@ -66,7 +66,8 @@ unset($_SESSION["order"]["order_items"]);
                     </tr>
                 </tbody>
             </table>
-            <form action="./create/" method="post" id="form">
+            <form action="./create/" method="post">
+                <div id="form"></div>
                 <input type="submit" value="確認へ進む→" class="btn btn-success">
             </form>
         </div>
