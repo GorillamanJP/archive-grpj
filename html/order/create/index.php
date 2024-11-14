@@ -139,7 +139,7 @@ $_SESSION["order"]["data"]["total_price"] = $total_price;
             <p class="text-center" id="back_message">確定しない場合は、<span id="back_second">30</span>秒後に前のページに戻ります。</p>
             <h2 class="text-center mt-4">会計詳細</h2>
             <div class="table-responsive mt-4">
-                <table class="table table-striped">
+                <table class="table">
                     <thead>
                         <tr>
                             <th>商品名</th>
