@@ -66,12 +66,13 @@ unset($_SESSION["regi"]["data"]);
                 </thead>
                 <tbody>
                     <tr>
-                        <td id="total-count">0個</td>
-                        <td id="total-price">0円</td>
+                        <td><span id="total-count">0</span>個</td>
+                        <td><span id="total-price">0</span>円</td>
                     </tr>
                 </tbody>
             </table>
-            <form action="./sales/create/" method="post" id="form">
+            <form action="./sales/create/" method="post">
+                <div id="form"></div>
                 <input type="submit" value="支払いへ進む→" class="btn btn-success">
             </form>
         </div>
