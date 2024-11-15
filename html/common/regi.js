@@ -27,7 +27,7 @@ function showCustomAlert(message) {
   setTimeout(() => {
     alertBox.style.display = "none";
     alertBox.remove();
-  }, 5000); // 5秒後に自動的に消える
+  }, 2000); // 2秒後に自動的に消える
 }
 
 // 作成しなおし　カート系処理
@@ -86,7 +86,7 @@ function updateCart() {
       const id = this.getAttribute("data-product-id");
       incrementInterval = setInterval(() => {
         incrementProductQuantity(id);
-      }, 200);
+      }, 100); // 長押しの間隔を100ミリ秒に変更
     });
 
     button.addEventListener("mouseup", function () {
@@ -98,6 +98,7 @@ function updateCart() {
     });
 
     button.addEventListener("click", function () {
+      clearInterval(incrementInterval); // クリックイベントの直前にインターバルをクリア
       const id = this.getAttribute("data-product-id");
       incrementProductQuantity(id);
     });
@@ -108,7 +109,7 @@ function updateCart() {
       const id = this.getAttribute("data-product-id");
       decrementInterval = setInterval(() => {
         decrementProductQuantity(id);
-      }, 200);
+      }, 100); // 長押しの間隔を100ミリ秒に変更
     });
 
     button.addEventListener("mouseup", function () {
@@ -120,6 +121,7 @@ function updateCart() {
     });
 
     button.addEventListener("click", function () {
+      clearInterval(decrementInterval); // クリックイベントの直前にインターバルをクリア
       const id = this.getAttribute("data-product-id");
       decrementProductQuantity(id);
     });
@@ -271,6 +273,60 @@ function setupEventHandlers() {
       }
 
       addProductToCart(id, name, price);
+    });
+  });
+
+  // 各ボタンに長押しイベントを設定
+  document.querySelectorAll(".quantity-button.increment").forEach((button) => {
+    button.addEventListener("mousedown", function () {
+      const id = this.getAttribute("data-product-id");
+      incrementInterval = setInterval(() => {
+        incrementProductQuantity(id);
+      }, 100); // 長押しの間隔を100ミリ秒に設定
+    });
+
+    button.addEventListener("mouseup", function () {
+      clearInterval(incrementInterval);
+    });
+
+    button.addEventListener("mouseout", function () {
+      clearInterval(incrementInterval);
+    });
+
+    button.addEventListener("click", function () {
+      clearInterval(incrementInterval); // クリックイベントの直前にインターバルをクリア
+      const id = this.getAttribute("data-product-id");
+      incrementProductQuantity(id);
+    });
+  });
+
+  document.querySelectorAll(".quantity-button.decrement").forEach((button) => {
+    button.addEventListener("mousedown", function () {
+      const id = this.getAttribute("data-product-id");
+      decrementInterval = setInterval(() => {
+        decrementProductQuantity(id);
+      }, 100); // 長押しの間隔を100ミリ秒に設定
+    });
+
+    button.addEventListener("mouseup", function () {
+      clearInterval(decrementInterval);
+    });
+
+    button.addEventListener("mouseout", function () {
+      clearInterval(decrementInterval);
+    });
+
+    button.addEventListener("click", function () {
+      clearInterval(decrementInterval); // クリックイベントの直前にインターバルをクリア
+      const id = this.getAttribute("data-product-id");
+      decrementProductQuantity(id);
+    });
+  });
+
+  document.querySelectorAll(".delete-column button").forEach((button) => {
+    button.addEventListener("click", function () {
+      const id = this.getAttribute("data-product-id");
+      removeProductFromCart(id);
     });
   });
 }
