@@ -71,7 +71,7 @@ $orders = $order_obj->get_all_all();
         <!-- ページネーション　終わり -->
 
         <!-- 注文テーブル -->
-        <table class="table table-striped table-bordered table-hover text-center align-middle">
+        <table class="table table-striped table-bordered table-hover text-center align-middle table-primary">
             <thead>
                 <tr>
                     <th>注文番号</th>

@@ -40,7 +40,7 @@ $orders = $order_obj->get_all();
             <a href="../history/" class="btn btn-outline-success btn-lg-custom p-2 mx-1">履歴一覧へ</a>
         </div>
         <h1>モバイル待機列</h1>
-        <table class="table table-striped table-bordered table-hover text-center align-middle">
+        <table class="table table-striped table-bordered table-hover text-center align-middle table-primary">
             <thead>
                 <tr>
                     <th>注文番号</th>
