@@ -1,3 +1,10 @@
+// カートの初期化
+let cart = {};
+
+// グローバルに interval 変数を宣言
+let incrementInterval;
+let decrementInterval;
+
 // 非同期更新で使うやつ
 function run_custom_function() {
   adjustCartForStock();
@@ -9,19 +16,30 @@ const custom_check_update_path = "/common/index/check_update.php";
 const custom_updated_data_path = "/common/index/updated_data.php";
 // 非同期更新で使うやつ　ここまで
 
+// カスタムアラートの関数
+function showCustomAlert(message) {
+  const alertBox = document.createElement("div");
+  alertBox.classList.add("custom-alert");
+  alertBox.innerText = message;
+  document.body.appendChild(alertBox);
+  alertBox.style.display = "block";
+
+  setTimeout(() => {
+    alertBox.style.display = "none";
+    alertBox.remove();
+  }, 5000); // 5秒後に自動的に消える
+}
 
 // 作成しなおし　カート系処理
-let cart = {};
-
 function updateCart() {
-  const cartTableBody = document.querySelector('#cart-table tbody');
-  const totalCountSpan = document.querySelector('#total-count');
-  const totalPriceSpan = document.querySelector('#total-price');
-  const form = document.querySelector('#form');
+  const cartTableBody = document.querySelector("#cart-table tbody");
+  const totalCountSpan = document.querySelector("#total-count");
+  const totalPriceSpan = document.querySelector("#total-price");
+  const form = document.querySelector("#form");
 
   // Clear the cart table and form inputs
-  cartTableBody.innerHTML = '';
-  form.innerHTML = '';
+  cartTableBody.innerHTML = "";
+  form.innerHTML = "";
 
   let totalCount = 0;
   let totalPrice = 0;
@@ -32,7 +50,7 @@ function updateCart() {
     totalPrice += product.price * product.quantity;
 
     // Add to cart table
-    const row = document.createElement('tr');
+    const row = document.createElement("tr");
     row.innerHTML = `
               <td>${product.name}</td>
               <td>${product.price}円</td>
@@ -46,15 +64,15 @@ function updateCart() {
     cartTableBody.appendChild(row);
 
     // Add to form inputs
-    const inputId = document.createElement('input');
-    inputId.type = 'hidden';
-    inputId.name = 'product_id[]';
+    const inputId = document.createElement("input");
+    inputId.type = "hidden";
+    inputId.name = "product_id[]";
     inputId.value = id;
     form.appendChild(inputId);
 
-    const inputQuantity = document.createElement('input');
-    inputQuantity.type = 'hidden';
-    inputQuantity.name = 'quantity[]';
+    const inputQuantity = document.createElement("input");
+    inputQuantity.type = "hidden";
+    inputQuantity.name = "quantity[]";
     inputQuantity.value = product.quantity;
     form.appendChild(inputQuantity);
   }
@@ -63,23 +81,53 @@ function updateCart() {
   totalPriceSpan.textContent = totalPrice;
 
   // Add event listeners for quantity buttons and remove buttons
-  document.querySelectorAll('.quantity-button.increment').forEach(button => {
-    button.addEventListener('click', function () {
-      const id = this.getAttribute('data-product-id');
+  document.querySelectorAll(".quantity-button.increment").forEach((button) => {
+    button.addEventListener("mousedown", function () {
+      const id = this.getAttribute("data-product-id");
+      incrementInterval = setInterval(() => {
+        incrementProductQuantity(id);
+      }, 200);
+    });
+
+    button.addEventListener("mouseup", function () {
+      clearInterval(incrementInterval);
+    });
+
+    button.addEventListener("mouseout", function () {
+      clearInterval(incrementInterval);
+    });
+
+    button.addEventListener("click", function () {
+      const id = this.getAttribute("data-product-id");
       incrementProductQuantity(id);
     });
   });
 
-  document.querySelectorAll('.quantity-button.decrement').forEach(button => {
-    button.addEventListener('click', function () {
-      const id = this.getAttribute('data-product-id');
+  document.querySelectorAll(".quantity-button.decrement").forEach((button) => {
+    button.addEventListener("mousedown", function () {
+      const id = this.getAttribute("data-product-id");
+      decrementInterval = setInterval(() => {
+        decrementProductQuantity(id);
+      }, 200);
+    });
+
+    button.addEventListener("mouseup", function () {
+      clearInterval(decrementInterval);
+    });
+
+    button.addEventListener("mouseout", function () {
+      clearInterval(decrementInterval);
+    });
+
+    button.addEventListener("click", function () {
+      const id = this.getAttribute("data-product-id");
       decrementProductQuantity(id);
     });
   });
 
-  document.querySelectorAll('.delete-column button').forEach(button => {
-    button.addEventListener('click', function () {
-      const id = this.getAttribute('data-product-id');
+  document.querySelectorAll(".delete-column button").forEach((button) => {
+    button.addEventListener("click", function () {
+      const id = this.getAttribute("data-product-id");
       removeProductFromCart(id);
     });
   });
@@ -90,11 +138,14 @@ function updateCart() {
 }
 
 function updateStock() {
-  const productElements = document.querySelectorAll('.product');
-  productElements.forEach(productElement => {
-    const id = productElement.getAttribute('id').split('-')[1];
-    const stockElement = productElement.querySelector('p span');
-    const originalStock = parseInt(stockElement.getAttribute('data-original-stock'), 10);
+  const productElements = document.querySelectorAll(".product");
+  productElements.forEach((productElement) => {
+    const id = productElement.getAttribute("id").split("-")[1];
+    const stockElement = productElement.querySelector("p span");
+    const originalStock = parseInt(
+      stockElement.getAttribute("data-original-stock"),
+      10
+    );
     let currentStock = originalStock;
 
     if (cart[id]) {
@@ -106,12 +157,15 @@ function updateStock() {
 }
 
 function adjustCartForStock() {
-  const productElements = document.querySelectorAll('.product');
+  const productElements = document.querySelectorAll(".product");
   let cartUpdated = false;
-  productElements.forEach(productElement => {
-    const id = productElement.getAttribute('id').split('-')[1];
-    const stockElement = productElement.querySelector('p span');
-    const originalStock = parseInt(stockElement.getAttribute('data-original-stock'), 10);
+  productElements.forEach((productElement) => {
+    const id = productElement.getAttribute("id").split("-")[1];
+    const stockElement = productElement.querySelector("p span");
+    const originalStock = parseInt(
+      stockElement.getAttribute("data-original-stock"),
+      10
+    );
     let currentStock = originalStock;
 
     if (cart[id]) {
@@ -131,6 +185,9 @@ function adjustCartForStock() {
       }
       cartUpdated = true;
       currentStock = 0; // Set stock to zero
+
+      // Show custom alert
+      showCustomAlert("在庫不足のため、カートが更新されました。");
     }
   });
 
@@ -142,12 +199,22 @@ function adjustCartForStock() {
 
 function addProductToCart(id, name, price) {
   if (id in cart) {
+    const productStock = parseInt(
+      document
+        .querySelector(`#product-${id} p span`)
+        .getAttribute("data-original-stock"),
+      10
+    );
+    if (cart[id].quantity + 1 > productStock) {
+      showCustomAlert("在庫数を超えています。");
+      return;
+    }
     cart[id].quantity++;
   } else {
     cart[id] = {
       name: name,
       price: price,
-      quantity: 1
+      quantity: 1,
     };
   }
   updateCart();
@@ -159,6 +226,16 @@ function removeProductFromCart(id) {
 }
 
 function incrementProductQuantity(id) {
+  const productStock = parseInt(
+    document
+      .querySelector(`#product-${id} p span`)
+      .getAttribute("data-original-stock"),
+    10
+  );
+  if (cart[id] && cart[id].quantity + 1 > productStock) {
+    showCustomAlert("在庫数を超えています。");
+    return;
+  }
   if (cart[id]) {
     cart[id].quantity++;
     updateCart();
@@ -175,17 +252,22 @@ function decrementProductQuantity(id) {
 }
 
 function setupEventHandlers() {
-  const productElements = document.querySelectorAll('.product');
-  productElements.forEach(productElement => {
-    productElement.addEventListener('click', function () {
-      const id = productElement.getAttribute('id').split('-')[1];
-      const name = productElement.querySelector('p').textContent;
-      const price = parseInt(productElement.querySelector('p:nth-of-type(2)').textContent.replace('円', ''), 10);
-      const stockElement = productElement.querySelector('p span');
+  const productElements = document.querySelectorAll(".product");
+  productElements.forEach((productElement) => {
+    productElement.addEventListener("click", function () {
+      const id = productElement.getAttribute("id").split("-")[1];
+      const name = productElement.querySelector("p").textContent;
+      const price = parseInt(
+        productElement
+          .querySelector("p:nth-of-type(2)")
+          .textContent.replace("円", ""),
+        10
+      );
+      const stockElement = productElement.querySelector("p span");
       const originalStock = parseInt(stockElement.textContent, 10);
 
-      if (!stockElement.hasAttribute('data-original-stock')) {
-        stockElement.setAttribute('data-original-stock', originalStock);
+      if (!stockElement.hasAttribute("data-original-stock")) {
+        stockElement.setAttribute("data-original-stock", originalStock);
       }
 
       addProductToCart(id, name, price);
