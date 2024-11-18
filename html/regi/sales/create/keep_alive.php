@@ -16,5 +16,6 @@ if (file_exists($lockFilePath)) {
         $lockFile = fopen($lockFilePath, "w");
         fwrite($lockFile, json_encode(['time' => time(), 'user_id' => $_SESSION["login"]['user_id']]));
         fclose($lockFile);
+        echo "keepalive success";
     }
 }

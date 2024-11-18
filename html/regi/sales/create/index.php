@@ -80,7 +80,7 @@ try {
     for ($i = 0; $i < count($product_ids); $i++) {
         $product = new Product();
         $product = $product->get_from_item_id($product_ids[$i]);
-        if($product->get_delete_flag() == true){
+        if ($product->get_delete_flag() == true) {
             throw new Exception("指定した商品は削除されました。", 0);
         }
         $stock_left = $product->get_now_stock();
@@ -110,7 +110,7 @@ try {
     }
 } catch (\Throwable $e) {
     $_SESSION["message"] = "商品が見つかりませんでした。";
-    $_SESSION["message_details"] = "選ばれた商品が削除された可能性があります。".$e->getMessage();
+    $_SESSION["message_details"] = "選ばれた商品が削除された可能性があります。" . $e->getMessage();
     $_SESSION["message_type"] = "danger";
     session_write_close();
     require "./unlock.php";

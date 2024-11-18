@@ -14,6 +14,7 @@ function login_check():bool{
             session_write_close();
             return false;
         }
+        $_SESSION["login"]["last_activity"] = time();
         session_write_close();
         return true;
     }catch(\Throwable $th){
