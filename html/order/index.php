@@ -23,10 +23,10 @@ unset($_SESSION["order"]["order_items"]);
 <body>
     <h1 class="text-center my-3">モバイルオーダー</h1>
     <div class="container regia">
-        <p>最終更新時刻:<span id="last-update">0000/0/0 00:00:00</span></p>
         <div class="content1">
             <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
             <h1 class="text-center">商品一覧</h1>
+            <p class="text-center">最終更新時刻:<span id="last-update">0000/0/0 00:00:00</span></p>
             <section class="image-text-block">
                 <div class="product-grid" id="table">
                     <!-- ここに非同期で商品が読み込まれる -->

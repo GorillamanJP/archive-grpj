@@ -106,18 +106,40 @@ $_SESSION["order"]["data"]["total_price"] = $total_price;
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous"></script>
+    <style>
+        .custom-background {
+            background-color: #e3f2fd;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .table th,
+        .table td {
+            vertical-align: middle;
+        }
+
+        .round-button {
+            border-radius: 50px;
+        }
+
+        .timer {
+            font-size: 1.2em;
+            color: #ff6f61;
+        }
+    </style>
 </head>
 
 <body>
     <div class="container mt-4">
         <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
         <h1 class="text-center mb-4">注文確認</h1>
-        <h2 class="text-center mb-4">注文内容は以下の通りでよろしいですか？</h2>
-        <p class="text-center" id="back_message">確定しない場合は、<span id="back_second">30</span>秒後に前のページに戻ります。</p>
-        <h2 class="text-center mt-4">会計詳細</h2>
-        <form action="./create.php" method="post" class="mt-4">
-            <div class="table-responsive">
-                <table class="table table-striped">
+        <div class="custom-background">
+            <h2 class="text-center mb-4">注文内容は以下の通りでよろしいですか？</h2>
+            <p class="text-center" id="back_message">確定しない場合は、<span id="back_second">30</span>秒後に前のページに戻ります。</p>
+            <h2 class="text-center mt-4">会計詳細</h2>
+            <div class="table-responsive mt-4">
+                <table class="table">
                     <thead>
                         <tr>
                             <th>商品名</th>
@@ -150,11 +172,13 @@ $_SESSION["order"]["data"]["total_price"] = $total_price;
                     </tr>
                 </table>
             </div>
-            <div class="text-center mt-4">
-                <button type="submit" class="btn btn-primary btn-lg round-button">注文確定</button>
-                <a href="/order/" class="btn btn-secondary btn-lg round-button">戻る</a>
-            </div>
-        </form>
+        </div>
+        <div class="text-center mt-4">
+            <form action="./create.php" method="post">
+                <button type="submit" class="btn btn-outline-primary btn-lg round-button">注文確定</button>
+                <a href="/order/" class="btn btn-outline-secondary btn-lg round-button">戻る</a>
+            </form>
+        </div>
     </div>
 </body>
 <script>
