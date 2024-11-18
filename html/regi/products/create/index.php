@@ -96,6 +96,10 @@ session_start();
         </div>
     </div>
     <script>
+        let isProcessing = false;
+        let enterPressTimeout;
+        let lastEnterPressTime = 0;
+
         document.getElementById('item_image').addEventListener('change', function (event) {
             const file = event.target.files[0];
             if (file) {
@@ -108,6 +112,71 @@ session_start();
                 reader.readAsDataURL(file);
             }
         });
+
+        document.getElementById('initialRegisterBtn').addEventListener('click', function () {
+            if (isProcessing) return;
+            isProcessing = true;
+            this.disabled = true;  // ボタンを無効化
+            showConfirmationModal();
+        });
+
+        document.getElementById('confirmRegisterBtn').addEventListener('click', function () {
+            if (isProcessing) return;
+            isProcessing = true;
+            this.disabled = true;  // ボタンを無効化
+            handleSubmitForm().then(() => {
+                isProcessing = false;
+                this.disabled = false;  // ボタンを再度有効化
+            });
+        });
+
+        function handleSubmitForm() {
+            return new Promise((resolve) => {
+                document.getElementById('registerForm').submit();
+                resolve();  // 即座に解決
+            });
+        }
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter' && event.target.nodeName !== 'TEXTAREA') {
+                event.preventDefault();
+
+                const now = new Date().getTime();
+                if (now - lastEnterPressTime < 50) return;  // 短い間隔を設定
+                lastEnterPressTime = now;
+
+                console.log('Enterキーが押されました');
+
+                clearTimeout(enterPressTimeout);
+
+                const activeModal = document.querySelector('.modal.show');
+                if (activeModal) {
+                    if (activeModal.querySelector('#confirmRegisterBtn') && !isProcessing) {
+                        processConfirmRegister();
+                    }
+
+                    enterPressTimeout = setTimeout(() => {
+                        isProcessing = false;
+                    }, 50);  // 短い時間でロック解除
+                } else {
+                    if (isProcessing) return;
+                    isProcessing = true;
+                    showConfirmationModal();
+                }
+            }
+        });
+
+        function processConfirmRegister() {
+            if (isProcessing) return;
+            isProcessing = true;
+
+            const confirmRegisterModal = bootstrap.Modal.getInstance(document.getElementById('confirmModal'));
+            confirmRegisterModal.hide();
+
+            console.log('confirmRegisterBtnがクリックされました');
+
+            document.getElementById('registerForm').submit();
+        }
 
         function showConfirmationModal() {
             document.getElementById('confirmItemName').textContent = document.getElementById('item_name').value;
@@ -127,32 +196,12 @@ session_start();
                 keyboard: false
             });
             myModal.show();
+
+            document.getElementById('confirmModal').addEventListener('hidden.bs.modal', function () {
+                console.log('confirmModalが隠されました');
+                isProcessing = false;
+            }, { once: true });
         }
-
-        document.getElementById('initialRegisterBtn').addEventListener('click', function () {
-            showConfirmationModal();
-        });
-
-        document.getElementById('confirmRegisterBtn').addEventListener('click', function () {
-            document.getElementById('registerForm').submit();
-        });
-
-        document.addEventListener('keydown', function (event) {
-            if (event.key === 'Enter' && event.target.nodeName !== 'TEXTAREA') {
-                event.preventDefault();
-                console.log('Enterキーが押されました');
-                const activeModal = document.querySelector('.modal.show');
-                if (activeModal) {
-                    if (activeModal.querySelector('#confirmRegisterBtn')) {
-                        activeModal.querySelector('#confirmRegisterBtn').click();
-                        console.log('confirmRegisterBtnがEnterキーでクリックされました');
-                    }
-                } else {
-                    showConfirmationModal();
-                    console.log('initialRegisterBtnがEnterキーでクリックされました');
-                }
-            }
-        });
     </script>
 </body>
 
