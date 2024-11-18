@@ -2,7 +2,7 @@ async function fetchNotifications() {
     try {
         const response = await fetch("/regi/notify/notify.php");
         if (response.ok) {
-            let data = await response.json();
+            const data = await response.json();
             if (data.hasData && data.notifications.length > 0) {
                 data.notifications.forEach(notification => displayNotification(notification));
             }
@@ -35,8 +35,8 @@ function displayNotification(notification) {
     notificationContainer.insertAdjacentHTML('afterbegin', toastHTML);
 
     // Initialize the new toast element
-    var toastElement = notificationContainer.querySelector('.toast');
-    var toast = new bootstrap.Toast(toastElement);
+    const toastElement = notificationContainer.querySelector('.toast');
+    const toast = new bootstrap.Toast(toastElement);
     toast.show();
 }
 
