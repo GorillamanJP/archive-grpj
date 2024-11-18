@@ -10,8 +10,8 @@ let decrementTimeout;
 // 非同期更新で使うやつ
 function run_custom_function() {
   adjustCartForStock();
-  updateStock();
   setupEventHandlers();
+  updateStock();
 }
 
 const custom_check_update_path = "/common/index/check_update.php";
@@ -56,15 +56,15 @@ function updateCart() {
     // カートテーブルに追加
     const row = document.createElement("tr");
     row.innerHTML = `
-              <td>${product.name}</td>
-              <td>${product.price}円</td>
-              <td class="quantity-column">
-                  <button class="btn btn-outline-success btn-lg quantity-button increment" data-product-id="${id}">＋</button>
-                  <span>${product.quantity}個</span>
-                  <button class="btn btn-outline-success btn-lg quantity-button decrement" data-product-id="${id}">－</button>
-              </td>
-              <td class="delete-column"><button class="btn btn-outline-danger" data-product-id="${id}">削除</button></td>
-          `;
+          <td>${product.name}</td>
+          <td>${product.price}円</td>
+          <td class="quantity-column">
+              <button class="btn btn-outline-success btn-lg quantity-button increment" data-product-id="${id}">＋</button>
+              <span>${product.quantity}個</span>
+              <button class="btn btn-outline-success btn-lg quantity-button decrement" data-product-id="${id}">－</button>
+          </td>
+          <td class="delete-column"><button class="btn btn-outline-danger" data-product-id="${id}">削除</button></td>
+      `;
     cartTableBody.appendChild(row);
 
     // フォームに入力フィールドを追加
@@ -147,6 +147,10 @@ function updateCart() {
       removeProductFromCart(id);
     });
   });
+
+  // Adjust stock after updating the cart
+  updateStock();
+  adjustCartForStock();
 }
 
 // 在庫の更新処理
