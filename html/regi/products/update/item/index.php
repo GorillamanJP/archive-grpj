@@ -2,6 +2,9 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
 ?>
 <?php
+session_start();
+?>
+<?php
 $id = htmlspecialchars($_POST["id"]);
 require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/products/product.php";
 
