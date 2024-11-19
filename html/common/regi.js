@@ -225,7 +225,7 @@ function addProductToCart(id, name, price) {
       10
     );
     if (cart[id].quantity + 1 > productStock) {
-      showCustomAlert("在庫数を超えています。");
+      showCustomAlert("在庫数が不足しています。");
       return;
     }
     cart[id].quantity++;
@@ -254,7 +254,7 @@ function incrementProductQuantity(id) {
     10
   );
   if (cart[id] && cart[id].quantity + 1 > productStock) {
-    showCustomAlert("在庫数を超えています。");
+    showCustomAlert("在庫数が不足しています。");
     return;
   }
   if (cart[id]) {
