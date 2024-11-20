@@ -36,7 +36,7 @@ try {
     if (!is_null($all_sales)) {
         $sales_count = ceil(count($all_sales) / $limit);
     }
-    $page_end = $sales_count;
+    $page_end = $sales_count > 0 ? $sales_count : 1;
 
     require_once $_SERVER['DOCUMENT_ROOT']."/../classes/products/product.php";
     $product_obj = new Product();
