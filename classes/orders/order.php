@@ -1,7 +1,9 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/BaseClassGroup.php";
+
 require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/order_orders/order_order.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/order_details/order_detail.php";
-class Order
+class Order extends BaseClassGroup
 {
     private Order_Order $order_order;
     public function get_order_order(): Order_Order
@@ -51,7 +53,7 @@ class Order
         } catch (Exception $e) {
             $this->order_order->delete();
             throw new Exception($e->getMessage(), $e->getCode(), $e);
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             $this->order_order->delete();
             throw new Exception("予期しないエラーが発生しました。" . $th->getMessage(), -1, $th);
         }
@@ -66,7 +68,7 @@ class Order
             return $this;
         } catch (Exception $e) {
             throw new Exception($e->getMessage(), $e->getCode(), $e);
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
@@ -86,7 +88,7 @@ class Order
             return $orders_array;
         } catch (Exception $e) {
             throw new Exception($e->getMessage(), $e->getCode(), $e);
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
@@ -106,7 +108,7 @@ class Order
             return $orders_array;
         } catch (Exception $e) {
             throw new Exception($e->getMessage(), $e->getCode(), $e);
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
@@ -126,7 +128,7 @@ class Order
             return $orders_array;
         } catch (Exception $e) {
             throw new Exception($e->getMessage(), $e->getCode(), $e);
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }

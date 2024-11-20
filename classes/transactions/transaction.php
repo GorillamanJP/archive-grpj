@@ -1,5 +1,6 @@
 <?php
-class Transaction
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/BaseClass.php";
+class Transaction extends BaseClass
 {
     # 取引記録の内部ID
     private int $id;
@@ -36,26 +37,6 @@ class Transaction
         return $this->returned_price;
     }
 
-    private PDO $pdo;
-    # 接続
-    public function open()
-    {
-        try {
-            $password = getenv("DB_PASSWORD");
-            $db_name = getenv("DB_DATABASE");
-            $dsn = "mysql:host=mariadb;dbname={$db_name}";
-            $this->pdo = new PDO($dsn, "root", $password);
-            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOException $e) {
-            throw new Exception($e->getMessage());
-        }
-    }
-    # 切断
-    public function close()
-    {
-        unset($this->pdo);
-    }
-
     public function create(int $accountant_id, int $total_price, int $received_price, int $returned_price): Transaction
     {
         try {
@@ -76,9 +57,12 @@ class Transaction
             $this->close();
 
             return $this->get_from_id($id);
-        } catch (PDOException $e) {
+        } catch (PDOException $pe) {
             $this->close();
-            throw new Exception($e->getMessage(), $e->getCode(), $e);
+            throw new Exception("データベースエラーです。", 1, $pe);
+        } catch (Throwable $th) {
+            $this->close();
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
 
@@ -106,9 +90,12 @@ class Transaction
             } else {
                 throw new Exception("指定した金銭収受データは見つかりませんでした。");
             }
-        } catch (\Throwable $e) {
+        } catch (PDOException $pe) {
             $this->close();
-            throw new Exception($e->getMessage(), $e->getCode(), $e);
+            throw new Exception("データベースエラーです。", 1, $pe);
+        } catch (Throwable $th) {
+            $this->close();
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
 
@@ -132,9 +119,12 @@ class Transaction
             } else {
                 throw new Exception("指定した会計は見つかりませんでした。");
             }
-        } catch (\Throwable $e) {
+        } catch (PDOException $pe) {
             $this->close();
-            throw new Exception($e->getMessage(), $e->getCode(), $e);
+            throw new Exception("データベースエラーです。", 1, $pe);
+        } catch (Throwable $th) {
+            $this->close();
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
 
@@ -150,9 +140,12 @@ class Transaction
 
             $stmt->execute();
             $this->close();
-        } catch (Throwable $t) {
+        } catch (PDOException $pe) {
             $this->close();
-            throw $t;
+            throw new Exception("データベースエラーです。", 1, $pe);
+        } catch (Throwable $th) {
+            $this->close();
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
 }

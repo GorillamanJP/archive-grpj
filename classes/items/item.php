@@ -1,5 +1,6 @@
 <?php
-class Item
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/BaseClass.php";
+class Item extends BaseClass
 {
     # 商品ID
     private int $id;
@@ -76,35 +77,6 @@ class Item
     public function get_last_update(): string
     {
         return $this->last_update;
-    }
-
-    # PDOオブジェクト
-    private PDO $pdo;
-    # 接続
-    public function open()
-    {
-        try {
-            $password = getenv("DB_PASSWORD");
-            $db_name = getenv("DB_DATABASE");
-            $dsn = "mysql:host=mariadb;dbname={$db_name}";
-            $this->pdo = new PDO($dsn, "root", $password);
-            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOException $e) {
-            throw new Exception($e->getMessage());
-        }
-    }
-    # 切断
-    public function close()
-    {
-        unset($this->pdo);
-    }
-
-    # 通知を送る
-    private function send_notification(string $title, string $message)
-    {
-        require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/notifications/notification.php";
-        $notification = new Notification();
-        $notification->create($title, $message);
     }
 
     # 商品登録

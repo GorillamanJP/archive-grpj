@@ -1,5 +1,6 @@
 <?php
-class Notification
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/BaseClass.php";
+class Notification extends BaseClass
 {
     private int $id;
     public function get_id(): int
@@ -23,26 +24,6 @@ class Notification
     public function get_sent_date(): string
     {
         return $this->sent_date;
-    }
-
-    private PDO $pdo;
-    # 接続
-    public function open()
-    {
-        try {
-            $password = getenv("DB_PASSWORD");
-            $db_name = getenv("DB_DATABASE");
-            $dsn = "mysql:host=mariadb;dbname={$db_name}";
-            $this->pdo = new PDO($dsn, "root", $password);
-            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOException $e) {
-            throw new Exception($e->getMessage());
-        }
-    }
-    # 切断
-    public function close()
-    {
-        unset($this->pdo);
     }
 
     public function create(string $title, string $message): Notification

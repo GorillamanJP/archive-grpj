@@ -1,5 +1,6 @@
 <?php
-class Detail
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/BaseClass.php";
+class Detail extends BaseClass
 {
     private int $detail_id;
     public function get_detail_id(): int
@@ -35,32 +36,6 @@ class Detail
     public function get_subtotal(): int
     {
         return $this->subtotal;
-    }
-    private PDO $pdo;
-    # 接続
-    public function open()
-    {
-        try {
-            $password = getenv("DB_PASSWORD");
-            $db_name = getenv("DB_DATABASE");
-            $dsn = "mysql:host=mariadb;dbname={$db_name}";
-            $this->pdo = new PDO($dsn, "root", $password);
-            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOException $e) {
-            throw new Exception($e->getMessage());
-        }
-    }
-    # 切断
-    public function close()
-    {
-        unset($this->pdo);
-    }
-    # 通知を送る
-    private function send_notification(string $title, string $message)
-    {
-        require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/notifications/notification.php";
-        $notification = new Notification();
-        $notification->create($title, $message);
     }
 
     public function create(int $accountant_id, int $item_id, string $item_name, int $quantity, int $item_price, int $subtotal): Detail
