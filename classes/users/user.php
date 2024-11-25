@@ -32,7 +32,7 @@ class User extends BaseClass
         if (password_verify($password . $this->salt, $this->password_hash)) {
             return $this;
         } else {
-            throw new Exception("Invalid Username or Password.");
+            throw new Exception("ユーザー名またはパスワードが違います。");
         }
     }
 
@@ -59,7 +59,11 @@ class User extends BaseClass
             return $this->get_from_id($id);
         } catch (PDOException $pe) {
             $this->close();
-            throw new Exception("データベースエラーです。", 1, $pe);
+            if ($pe->getCode() == 23000) {
+                throw new Exception("指定したユーザー名は既に存在します。", 0, $pe);
+            } else {
+                throw new Exception("データベースエラーです。", 1, $pe);
+            }
         } catch (Throwable $th) {
             $this->close();
             throw new Exception("予期しないエラーが発生しました。", -1, $th);
@@ -81,7 +85,7 @@ class User extends BaseClass
             if ($user) {
                 return $this->get_from_id($user["id"]);
             } else {
-                throw new Exception("指定したユーザーは見つかりませんでした。");
+                throw new Exception("ユーザー名またはパスワードが違います。",0);
             }
         } catch (PDOException $pe) {
             $this->close();

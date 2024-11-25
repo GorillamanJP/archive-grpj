@@ -3,6 +3,9 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
 ?>
 <?php
 session_start();
+
+unset($_SESSION["regi"]["order"]["id"]);
+
 require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/orders/order.php";
 $order_obj = new Order();
 $orders = $order_obj->get_all();

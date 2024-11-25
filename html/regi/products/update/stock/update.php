@@ -1,64 +1,46 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../functions/redirect_with_error.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../functions/redirect_with_alert_with_form.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../functions/verify_int_value.php";
+
 session_start();
+
 if (!isset($_POST["id"]) || $_POST["id"] === "") {
-    $_SESSION["message"] = "商品のIDが指定されていません。<br>このメッセージが出る場合、内部のバグの可能性がありますので、「何を」「どのように」したらエラーが出たのかを開発者までお伝えください。<br>ご不便をおかけして申し訳ありませんが、ご協力をお願いします。";
-    $_SESSION["message_type"] = "danger";
-    session_write_close();
-    header("Location ../../");
-    exit();
+    redirect_with_error("../../list/", "商品のIDが指定されていません。", "", "warning");
 }
 
 $id = htmlspecialchars($_POST["id"]);
 
-$ok = true;
-$_SESSION["message"] = "";
 if (!isset($_POST["add_quantity"]) || $_POST["add_quantity"] === "") {
-    $_SESSION["message"] .= "「入荷数」";
-    $ok = false;
+    redirect_with_error_with_form("./", "在庫の追加数の項目が空になっています。", null, "warning", $_POST);
 }
 
-$negative_quantity = false;
+if (verify_int_value($_POST["add_quantity"]) == false) {
+    redirect_with_error_with_form("./", "数値エラー", "価格または在庫の数値が小数になっているか、値が大きすぎる可能性があります。", "danger", $_POST);
+}
+
 if (intval($_POST["add_quantity"]) < 0) {
-    $_SESSION["message"] = "在庫数を減らすことはできません。";
-    $ok = false;
-    $negative_quantity = true;
+    redirect_with_error_with_form("./", "在庫を減らすことはできません。", null, "warning", $_POST);
 }
 
-if ($ok) {
-    $add_quantity = htmlspecialchars($_POST["add_quantity"]);
 
-    require_once $_SERVER['DOCUMENT_ROOT']."/../classes/products/product.php";
+$add_quantity = htmlspecialchars($_POST["add_quantity"]);
 
-    try {
-        $product = new Product();
-        $product = $product->get_from_item_id($id);
-        $now_quantity = $product->get_now_stock();
-        // 在庫が0未満にならないようにチェック
-        $new_quantity = $now_quantity + $add_quantity;
-        if ($new_quantity < 0) {
-            throw new Exception("在庫が0未満になるため、更新できません。");
-        }
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/products/product.php";
 
-        $product = $product->get_stock()->create($product->get_item_id(), $add_quantity);
-
-        $_SESSION["message"] = "在庫が追加されました。";
-        $_SESSION["message_type"] = "success";
-        session_write_close();
-        header("Location: ../../list/");
-        exit();
-    } catch (\Throwable $e) {
-        $_SESSION["message"] = "エラーが発生しました。";
-        $_SESSION["message_details"] = $e->getMessage();
-        $_SESSION["message_type"] = "danger";
+try {
+    $product = new Product();
+    $product = $product->get_from_item_id($id);
+    $now_quantity = $product->get_now_stock();
+    // 在庫が0未満にならないようにチェック
+    $new_quantity = $now_quantity + $add_quantity;
+    if ($new_quantity < 0) {
+        throw new Exception("在庫が0未満になるため、更新できません。");
     }
-} else {
-    if (!$negative_quantity) {
-        $_SESSION["message"] .= "の項目が空になっています。";
-    }
-    $_SESSION["message_type"] = "danger";
+
+    $product = $product->get_stock()->create($product->get_item_id(), $add_quantity);
+
+    redirect_with_error("../../list/", "在庫が追加されました。", "", "success");
+} catch (Throwable $e) {
+    redirect_with_error_with_form("./", "エラーが発生しました。", $e->getMessage(), "danger", $_POST);
 }
-?>
-<form action="./" method="post" id="post_form">
-    <input type="hidden" name="id" id="id" value="<?= $id ?>">
-</form>
-<script>document.getElementById("post_form").submit();</script>

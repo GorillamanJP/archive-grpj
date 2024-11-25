@@ -1,12 +1,10 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../functions/redirect_with_error.php";
+
 session_start();
 
 if (!isset($_SESSION["regi"]["order"]["id"]) || $_SESSION["regi"]["order"]["id"] === "") {
-    $_SESSION["message"] = "指定した注文はありません。";
-    $_SESSION["message_type"] = "warning";
-    session_write_close();
-    header("Location ../list/");
-    exit();
+    redirect_with_error("../list/", "指定した注文はありません。", "", "danger");
 }
 
 $order_id = $_SESSION["regi"]["order"]["id"];
@@ -20,14 +18,7 @@ try {
 
     $order->get_order_order()->receive();
 
-    $_SESSION["message"] = "注文番号 {$order->get_order_order()->get_id()} の受け取りが完了しました。";
-    $_SESSION["message_type"] = "success";
-} catch (\Throwable $e) {
-    $_SESSION["message"] = "エラーが発生しました。";
-    $_SESSION["message_details"] = $e->getMessage();
-    $_SESSION["message_type"] = "danger";
+    redirect_with_error("../list/", "注文番号 {$order->get_order_order()->get_id()} の受け取りが完了しました。", "", "success");
+} catch (Throwable $e) {
+    redirect_with_error("../list/", "エラーが発生しました。", $e->getMessage(), "danger");
 }
-
-session_write_close();
-header("Location: ../list/");
-exit();

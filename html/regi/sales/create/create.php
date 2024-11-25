@@ -1,5 +1,11 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../functions/redirect_with_error.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../functions/verify_int_value.php";
+
 session_start();
+
+$back_url_success = isset($_SESSION["regi"]["order"]["id"]) ? "/regi/order/receive/receive.php" : "/regi/";
+$back_url_fail = isset($_SESSION["regi"]["order"]["id"]) ? "/regi/order/list/" : "/regi/";
 
 $ok = true;
 $message = "";
@@ -39,11 +45,7 @@ if (!isset($_POST["returned_price"]) || $_POST["returned_price"] === "") {
 
 if (!$ok) {
     $message .= "の入力項目が空になっています。";
-    $_SESSION["message"] = $message;
-    $_SESSION["message_type"] = "danger";
-    session_write_close();
-    header("Location: /regi/");
-    exit();
+    redirect_with_error($back_url_fail, $message, "", "warning");
 }
 
 $product_ids = $_SESSION["regi"]["data"]["product_id"];
@@ -58,7 +60,11 @@ $total_price = $_SESSION["regi"]["data"]["total_price"];
 $received_price = $_POST["received_price"];
 $returned_price = $_POST["returned_price"];
 
+if (verify_int_value($total_amount, $total_price, $received_price, $returned_price) == false) {
+    redirect_with_error($back_url_fail, "数値エラー", "入力内容のうちいずれかが小数になっているか、あまりにも大きい数になっている可能性があります。", "danger");
+}
 unset($_SESSION["regi"]["data"]);
+
 
 try {
     require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/users/user.php";
@@ -70,19 +76,7 @@ try {
     $sale = new Sale();
     $sale->create($product_ids, $product_names, $product_prices, $quantities, $subtotals, $total_amount, $accountant_user_name, $total_price, $received_price, $returned_price);
     $id = $sale->get_accountant()->get_id();
-    $_SESSION["message"] = "会計番号 {$id}番 で処理を完了しました。";
-    $_SESSION["message_type"] = "success";
-} catch (\Throwable $e) {
-    $_SESSION["message"] = "エラーが発生しました。";
-    $_SESSION["message_details"] = $e->getMessage();
-    $_SESSION["message_type"] = "danger";
+    redirect_with_error($back_url_success, "会計番号 {$id}番 で処理を完了しました。", "", "success");
+} catch (Throwable $e) {
+    redirect_with_error($back_url_fail, "エラーが発生しました。", $e->getMessage(), "danger");
 }
-
-if (isset($_SESSION["regi"]["order"]["id"])) {
-    session_write_close();
-    header("Location: /regi/order/receive/receive.php");
-} else {
-    session_write_close();
-    header("Location: /regi/");
-}
-exit();

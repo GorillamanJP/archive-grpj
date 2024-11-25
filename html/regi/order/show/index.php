@@ -1,12 +1,10 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../functions/redirect_with_error.php";
+
 session_start();
 
 if (!isset($_POST["id"]) || $_POST["id"] === "") {
-    $_SESSION["message"] = "注文番号が指定されていません。";
-    $_SESSION["message_type"] = "warning";
-    session_write_close();
-    header("Location: ../list/");
-    exit();
+    redirect_with_error("../list/", "注文番号が指定されていません。", "", "warning");
 }
 
 $id = htmlspecialchars($_POST["id"]);
@@ -16,10 +14,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/orders/order.php";
 try {
     $order = new Order();
     $order = $order->get_from_order_id($id);
-} catch (Exception $e) {
-    $_SESSION["message"] = "指定した注文はありません。";
-    $_SESSION["message_details"] = "多分バグです。開発者までお問い合わせください。";
-    $_SESSION["message_type"] = "danger";
+} catch (Throwable $e) {
+    redirect_with_error("../list/", "エラーが発生しました。", $e->getMessage(), "danger");
 }
 ?>
 <!DOCTYPE html>

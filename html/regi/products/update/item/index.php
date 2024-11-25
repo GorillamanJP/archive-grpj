@@ -5,6 +5,12 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
 session_start();
 ?>
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../functions/redirect_with_error.php";
+
+if (!isset($_POST["id"]) || $_POST["id"] === "") {
+    redirect_with_error("../../list/", "商品IDが指定されていません。", "", "warning");
+}
+
 $id = htmlspecialchars($_POST["id"]);
 require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/products/product.php";
 

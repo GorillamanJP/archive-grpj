@@ -2,6 +2,8 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
 ?>
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../functions/redirect_with_error.php";
+
 session_start();
 
 $ok = true;
@@ -19,11 +21,7 @@ if (!isset($_POST["quantity"]) || $_POST["quantity"] === "") {
 
 if (!$ok) {
     $message .= "の項目が空になっています。";
-    $_SESSION["message"] = $message;
-    $_SESSION["message_type"] = "danger";
-    session_write_close();
-    header("Location: /regi/");
-    exit();
+    redirect_with_error("/regi/", $message, "", "warning");
 }
 
 // ファイルロックを使って決済画面は一つの端末で一つのタブしかアクセスできない状態を作り出す
@@ -87,12 +85,8 @@ try {
         $buy_quantity = $quantities[$i];
         $after_stock = $stock_left - $buy_quantity;
         if ($after_stock < 0) {
-            $_SESSION["message"] = "購入数に対し在庫が不足するため、購入処理ができませんでした。";
-            $_SESSION["message_type"] = "danger";
-            session_write_close();
             require "./unlock.php";
-            header("Location: /regi/");
-            exit();
+            redirect_with_error("/regi/", "購入数に対し在庫が不足するため、購入処理ができませんでした。", "", "danger");
         }
         $id = $product->get_item_id();
         $name = $product->get_item_name();
@@ -108,24 +102,20 @@ try {
         $total_price += $subtotal;
         $total_amount += $buy_quantity;
     }
-} catch (\Throwable $e) {
-    $_SESSION["message"] = "商品が見つかりませんでした。";
-    $_SESSION["message_details"] = "選ばれた商品が削除された可能性があります。" . $e->getMessage();
-    $_SESSION["message_type"] = "danger";
-    session_write_close();
+} catch (Throwable $th) {
     require "./unlock.php";
-    header("Location: /regi/");
-    exit();
+    redirect_with_error("/regi/", "エラーが発生しました。", $th->getMessage(), "danger");
 }
 
 if ($total_price < 0) {
-    $_SESSION["message"] = "合計金額が0円以下になります。";
-    $_SESSION["message_details"] = "選んだ商品を確認してください。クーポンなどの割引商品を選びすぎた可能性があります。";
-    $_SESSION["message_type"] = "danger";
-    session_write_close();
     require "./unlock.php";
-    header("Location: /regi/");
-    exit();
+    redirect_with_error("/regi/", "合計金額が０円以下になります。", "選んだ商品を確認してください。クーポンなどの割引商品を選びすぎた可能性があります。", "danger");
+}
+
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../functions/verify_int_value.php";
+if (verify_int_value($total_price, $total_amount) == false) {
+    require "./unlock.php";
+    redirect_with_error("/regi/", "数値エラー", "購入数または合計金額が最大値を超えている可能性があります。", "danger");
 }
 
 unset($_SESSION["regi"]["data"]);
