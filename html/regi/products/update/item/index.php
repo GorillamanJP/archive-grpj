@@ -140,7 +140,8 @@ $product = $product->get_from_item_id($id);
             myModal.show();
         }
 
-        document.getElementById('initialUpdateBtn').addEventListener('click', function () {
+        document.getElementById('initialUpdateBtn').addEventListener('click', function (event) {
+            event.preventDefault(); // デフォルトのフォーム送信を防ぐ
             showConfirmationModal();
         });
 
@@ -163,6 +164,18 @@ $product = $product->get_from_item_id($id);
                     console.log('initialUpdateBtnがEnterキーでクリックされました');
                 }
             }
+        });
+
+        // 確認モーダルを閉じるボタンにイベントリスナーを追加
+        document.querySelectorAll('.btn-close, .btn-secondary').forEach(button => {
+            button.addEventListener('click', function () {
+                var myModal = bootstrap.Modal.getInstance(document.getElementById('confirmModal'));
+                myModal.hide();
+            });
+        });
+
+        document.getElementById('updateForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // デフォルトのフォーム送信を防ぐ
         });
     </script>
 </body>
