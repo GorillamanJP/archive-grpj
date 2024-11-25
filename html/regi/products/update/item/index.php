@@ -122,18 +122,42 @@ $product = $product->get_from_item_id($id);
     </div>
     <script>
         function showConfirmationModal() {
-            document.getElementById('confirmItemName').textContent = document.getElementById('item_name').value;
-            document.getElementById('confirmPrice').textContent = document.getElementById('price').value;
+            const itemNameElement = document.getElementById('item_name');
+            const itemName = itemNameElement.value;
+            const priceElement = document.getElementById('price');
+            const price = priceElement.value;
+            const confirmItemNameElement = document.getElementById('confirmItemName');
+            const confirmPriceElement = document.getElementById('confirmPrice');
+
+            const currentItemName = "<?= $product->get_item_name() ?>";
+            const currentPrice = "<?= $product->get_price() ?>";
+
+            // 商品名の変更をチェックして表示
+            if (itemName !== currentItemName) {
+                confirmItemNameElement.textContent = `${currentItemName} → ${itemName}`;
+            } else {
+                confirmItemNameElement.textContent = itemName;
+            }
+
+            // 価格の変更をチェックして表示
+            if (price !== currentPrice) {
+                confirmPriceElement.textContent = `${currentPrice}円 → ${price}円`;
+            } else {
+                confirmPriceElement.textContent = `${price}円`;
+            }
+
             const newImage = document.getElementById('new_item_image').files[0];
+            const confirmItemImageElement = document.getElementById('confirmItemImage');
             if (newImage) {
                 const reader = new FileReader();
                 reader.onload = function (e) {
-                    document.getElementById('confirmItemImage').src = e.target.result;
+                    confirmItemImageElement.src = e.target.result;
                 };
                 reader.readAsDataURL(newImage);
             } else {
-                document.getElementById('confirmItemImage').src = document.getElementById('now_item_image').src;
+                confirmItemImageElement.src = document.getElementById('now_item_image').src;
             }
+
             var myModal = new bootstrap.Modal(document.getElementById('confirmModal'), {
                 keyboard: false
             });
@@ -171,14 +195,10 @@ $product = $product->get_from_item_id($id);
             button.addEventListener('click', function () {
                 var myModal = bootstrap.Modal.getInstance(document.getElementById('confirmModal'));
                 myModal.hide();
+                console.log('モーダルが閉じられました');
             });
-        });
-
-        document.getElementById('updateForm').addEventListener('submit', function (event) {
-            event.preventDefault(); // デフォルトのフォーム送信を防ぐ
         });
     </script>
 </body>
 <script src="./set_now_image.js"></script>
-
 </html>
