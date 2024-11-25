@@ -1,5 +1,6 @@
 <?php
-class User
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/BaseClass.php";
+class User extends BaseClass
 {
     # ユーザーID
     private int $id;
@@ -34,26 +35,6 @@ class User
             throw new Exception("Invalid Username or Password.");
         }
     }
-    # PDOオブジェクト
-    private PDO $pdo;
-    # 接続
-    public function open()
-    {
-        try {
-            $password = getenv("DB_PASSWORD");
-            $db_name = getenv("DB_DATABASE");
-            $dsn = "mysql:host=mariadb;dbname={$db_name}";
-            $this->pdo = new PDO($dsn, "root", $password);
-            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOException $e) {
-            throw new Exception($e->getMessage());
-        }
-    }
-    # 切断
-    public function close()
-    {
-        unset($this->pdo);
-    }
 
     #ユーザー登録
     public function create(string $user_name, string $password): User
@@ -76,9 +57,12 @@ class User
             $this->close();
 
             return $this->get_from_id($id);
-        } catch (PDOException $e) {
+        } catch (PDOException $pe) {
             $this->close();
-            throw new Exception($e->getMessage(), $e->getCode(), $e);
+            throw new Exception("データベースエラーです。", 1, $pe);
+        } catch (Throwable $th) {
+            $this->close();
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
 
@@ -99,9 +83,12 @@ class User
             } else {
                 throw new Exception("指定したユーザーは見つかりませんでした。");
             }
-        } catch (PDOException $e) {
+        } catch (PDOException $pe) {
             $this->close();
-            throw new Exception($e->getMessage(), $e->getCode(), $e);
+            throw new Exception("データベースエラーです。", 1, $pe);
+        } catch (Throwable $th) {
+            $this->close();
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
 
@@ -126,9 +113,12 @@ class User
             } else {
                 throw new Exception("指定したユーザーは見つかりませんでした。");
             }
-        } catch (PDOException $e) {
+        } catch (PDOException $pe) {
             $this->close();
-            throw new Exception($e->getMessage(), $e->getCode(), $e);
+            throw new Exception("データベースエラーです。", 1, $pe);
+        } catch (Throwable $th) {
+            $this->close();
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
 
@@ -154,9 +144,12 @@ class User
             } else {
                 return null;
             }
-        } catch (PDOException $e) {
+        } catch (PDOException $pe) {
             $this->close();
-            return null;
+            throw new Exception("データベースエラーです。", 1, $pe);
+        } catch (Throwable $th) {
+            $this->close();
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
 
@@ -181,8 +174,12 @@ class User
             $this->close();
 
             return $this->get_from_id($this->id);
-        } catch (PDOException $e) {
-            throw new Exception($e->getMessage(), $e->getCode(), $e);
+        } catch (PDOException $pe) {
+            $this->close();
+            throw new Exception("データベースエラーです。", 1, $pe);
+        } catch (Throwable $th) {
+            $this->close();
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
 
@@ -198,8 +195,12 @@ class User
 
             $stmt->execute();
             $this->close();
-        } catch (\Throwable $t) {
-            throw new Exception("予期しないエラーが発生しました。", -1, $t);
+        } catch (PDOException $pe) {
+            $this->close();
+            throw new Exception("データベースエラーです。", 1, $pe);
+        } catch (Throwable $th) {
+            $this->close();
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
 }

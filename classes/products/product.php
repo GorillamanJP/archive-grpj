@@ -1,7 +1,9 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/BaseClassGroup.php";
+
 require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/items/item.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/stocks/stock.php";
-class Product
+class Product extends BaseClassGroup
 {
     private Item $item;
     public function get_item_id(): int
@@ -64,8 +66,10 @@ class Product
             $this->item = $this->item->create($item_name, $price, $item_image);
             $this->stock = $this->stock->create($this->item->get_id(), $quantity);
             return $this;
-        } catch (\Throwable $e) {
+        } catch (Exception $e) {
             throw new Exception($e->getMessage(), $e->getCode(), $e);
+        } catch (Throwable $th) {
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
     public function get_from_item_id(int $item_id): Product
@@ -74,8 +78,10 @@ class Product
             $this->item = $this->item->get_from_id($item_id);
             $this->stocks = $this->stock->gets_from_item_id($this->item->get_id());
             return $this;
-        } catch (\Throwable $e) {
+        } catch (Exception $e) {
             throw new Exception($e->getMessage(), $e->getCode(), $e);
+        } catch (Throwable $th) {
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
     public function get_all(): array|null
@@ -92,16 +98,20 @@ class Product
             } else {
                 return null;
             }
-        } catch (\Throwable $e) {
-            throw new Exception("エラーが発生しました。" . $e->getMessage(), 1, $e);
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
+        } catch (Throwable $th) {
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
     public function delete(): void
     {
         try {
             $this->item->delete();
-        } catch (Throwable $t) {
-            throw $t;
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
+        } catch (Throwable $th) {
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
 
@@ -111,8 +121,10 @@ class Product
             require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/details/detail.php";
             $detail = new Detail();
             return $detail->get_total_sold($this->get_item_id());
-        } catch (\Throwable $th) {
-            throw new Exception($th->getMessage(), $th->getCode(), $th);
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
+        } catch (Throwable $th) {
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
 
@@ -122,8 +134,10 @@ class Product
             require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/details/detail.php";
             $detail = new Detail();
             return $detail->get_total_revenue($this->get_item_id());
-        } catch (\Throwable $th) {
-            throw new Exception($th->getMessage(), $th->getCode(), $th);
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
+        } catch (Throwable $th) {
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
 }

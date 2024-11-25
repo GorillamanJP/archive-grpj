@@ -1,8 +1,10 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/BaseClassGroup.php";
+
 require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/accountants/accountant.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/details/detail.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/transactions/transaction.php";
-class Sale
+class Sale extends BaseClassGroup
 {
     private Accountant $accountant;
     public function get_accountant(): Accountant
@@ -57,9 +59,12 @@ class Sale
             }
             $this->transaction = $this->transaction->create($accountant_id, $total_price, $received_price, $returned_price);
             return $this;
-        } catch (\Throwable $e) {
+        } catch (Exception $e) {
             $this->accountant->delete();
             throw new Exception($e->getMessage(), $e->getCode(), $e);
+        } catch (Throwable $th) {
+            $this->accountant->delete();
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
 
@@ -71,8 +76,10 @@ class Sale
             $this->details = $detail->gets_from_accountant_id($accountant_id);
             $this->transaction = $this->transaction->get_from_accountant_id($accountant_id);
             return $this;
-        } catch (\Throwable $e) {
+        } catch (Exception $e) {
             throw new Exception($e->getMessage(), $e->getCode(), $e);
+        } catch (Throwable $th) {
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
 
@@ -89,8 +96,10 @@ class Sale
                 $sales_array[] = $sale_obj->get_from_accountant_id($accountant->get_id());
             }
             return $sales_array;
-        } catch (\Throwable $e) {
+        } catch (Exception $e) {
             throw new Exception($e->getMessage(), $e->getCode(), $e);
+        } catch (Throwable $th) {
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
 
@@ -108,8 +117,8 @@ class Sale
             }
             return $sales_array;
         } catch (Exception $e) {
-            throw new Exception("エラーが発生しました。", 1, $e);
-        } catch (\Throwable $th) {
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
+        } catch (Throwable $th) {
             throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }

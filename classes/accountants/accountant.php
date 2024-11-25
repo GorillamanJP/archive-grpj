@@ -1,5 +1,6 @@
 <?php
-class Accountant
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/BaseClass.php";
+class Accountant extends BaseClass
 {
     private int $id;
     public function get_id(): int
@@ -30,33 +31,6 @@ class Accountant
     {
         return $this->accountant_user_name;
     }
-    private PDO $pdo;
-    # 接続
-    public function open()
-    {
-        try {
-            $password = getenv("DB_PASSWORD");
-            $db_name = getenv("DB_DATABASE");
-            $dsn = "mysql:host=mariadb;dbname={$db_name}";
-            $this->pdo = new PDO($dsn, "root", $password);
-            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOException $e) {
-            throw new Exception($e->getMessage());
-        }
-    }
-    # 切断
-    public function close()
-    {
-        unset($this->pdo);
-    }
-
-    # 通知を送る
-    private function send_notification(string $title, string $message)
-    {
-        require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/notifications/notification.php";
-        $notification = new Notification();
-        $notification->create($title, $message);
-    }
 
     public function create(int $total_amount, int $total_price, string $accountant_user_name): Accountant
     {
@@ -81,9 +55,12 @@ class Accountant
             $this->send_notification("会計", "{$id} 番の会計が処理されました！");
 
             return $this->get_from_id($id);
-        } catch (PDOException $e) {
+        } catch (PDOException $pe) {
             $this->close();
-            throw new Exception($e->getMessage());
+            throw new Exception("データベースエラーです。", 1, $pe);
+        } catch (Throwable $th) {
+            $this->close();
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
 
@@ -109,9 +86,12 @@ class Accountant
             } else {
                 throw new Exception("ID {$id} has not found.");
             }
-        } catch (PDOException $e) {
+        } catch (PDOException $pe) {
             $this->close();
-            throw new Exception($e->getMessage());
+            throw new Exception("データベースエラーです。", 1, $pe);
+        } catch (Throwable $th) {
+            $this->close();
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
 
@@ -138,9 +118,12 @@ class Accountant
             } else {
                 return null;
             }
-        } catch (\Throwable $e) {
+        } catch (PDOException $pe) {
             $this->close();
-            return null;
+            throw new Exception("データベースエラーです。", 1, $pe);
+        } catch (Throwable $th) {
+            $this->close();
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
 
@@ -173,7 +156,7 @@ class Accountant
         } catch (PDOException $pe) {
             $this->close();
             throw new Exception("データベースエラーです。", 1, $pe);
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             $this->close();
             throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
@@ -191,9 +174,12 @@ class Accountant
 
             $stmt->execute();
             $this->close();
-        } catch (Throwable $t) {
+        } catch (PDOException $pe) {
             $this->close();
-            throw $t;
+            throw new Exception("データベースエラーです。", 1, $pe);
+        } catch (Throwable $th) {
+            $this->close();
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
 }

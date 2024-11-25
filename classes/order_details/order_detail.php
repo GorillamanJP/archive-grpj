@@ -1,5 +1,6 @@
 <?php
-class Order_Detail
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/BaseClass.php";
+class Order_Detail extends BaseClass
 {
     private int $id;
     public function get_id(): int
@@ -43,32 +44,6 @@ class Order_Detail
         return $this->subtotal;
     }
 
-    private PDO $pdo;
-    # 接続
-    public function open()
-    {
-        try {
-            $password = getenv("DB_PASSWORD");
-            $db_name = getenv("DB_DATABASE");
-            $dsn = "mysql:host=mariadb;dbname={$db_name}";
-            $this->pdo = new PDO($dsn, "root", $password);
-            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOException $e) {
-            throw new Exception($e->getMessage());
-        }
-    }
-    public function close()
-    {
-        unset($this->pdo);
-    }
-    # 通知を送る
-    private function send_notification(string $title, string $message)
-    {
-        require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/notifications/notification.php";
-        $notification = new Notification();
-        $notification->create($title, $message);
-    }
-
     public function create(int $order_id, int $item_id, string $item_name, int $item_price, int $quantity, int $subtotal): Order_Detail
     {
         try {
@@ -96,7 +71,7 @@ class Order_Detail
         } catch (PDOException $pe) {
             $this->close();
             throw new Exception("データベースエラーです。", 1, $pe);
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             $this->close();
             throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
@@ -131,7 +106,7 @@ class Order_Detail
         } catch (PDOException $pe) {
             $this->close();
             throw new Exception("データベースエラーです。", 1, $pe);
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             $this->close();
             throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
@@ -164,7 +139,7 @@ class Order_Detail
         } catch (PDOException $pe) {
             $this->close();
             throw new Exception("データベースエラーです。", 1, $pe);
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             $this->close();
             throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
@@ -198,7 +173,7 @@ AND oo.is_received = 0;
         } catch (PDOException $pe) {
             $this->close();
             throw new Exception("データベースエラーです。", 1, $pe);
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             $this->close();
             throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
