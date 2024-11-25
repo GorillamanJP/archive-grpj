@@ -258,7 +258,7 @@ function adjustCartForStock() {
       cartUpdated = true;
       currentStock = 0; // 在庫をゼロに設定
       // カスタムアラートを表示
-      showCustomAlert("在庫不足のため、カートが更新されました。");
+      showCustomAlert("在庫不足のため、購入できません。");
     }
   });
 
