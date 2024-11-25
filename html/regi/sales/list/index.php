@@ -33,10 +33,8 @@ $detail = new Detail();
         }
 
         .custom-background {
-            background-color: #f8f9fa;
             padding: 20px;
             border-radius: 5px;
-            margin-top: 20px;
         }
 
         .table th,
@@ -54,31 +52,11 @@ $detail = new Detail();
 <body>
     <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/navbar.php"; ?>
     <div class="container custom-background">
-        <h1 class="text-center mb-4">総売上記録</h1>
-        <div class="table-responsive">
-            <table class="table">
-                <thead class="table-secondary">
-                    <tr>
-                        <th>商品名</th>
-                        <th>販売数</th>
-                        <th>売上</th>
-                    </tr>
-                </thead>
-                <tbody id="sales_table">
-                    <tr>
-                        <td colspan="3" class="text-center loading-message">
-                            <h2>読み込み中…</h2>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="container mt-4">
         <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
         <h1 class="text-center mb-4">会計一覧</h1>
         <p class="text-center my-3" style="font-size: 1.2em;">最終更新時刻:<span id="last-update">0000/0/0 00:00:00</span></p>
         <div class="text-center mb-3">
+            <a href="../total/" class="btn btn-outline-primary btn-lg-custom p-2 mx-1">総売上一覧</a>
             <a href="../../" class="btn btn-outline-success btn-lg-custom p-2 mx-1">レジ画面へ</a>
             <div class="alert alert-info mt-2">
                 詳細を見るには、項目を押してください。
