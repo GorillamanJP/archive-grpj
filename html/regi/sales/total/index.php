@@ -60,7 +60,7 @@ $detail = new Detail();
             <a href="../list/" class="btn btn-outline-primary btn-lg-custom p-2 mx-1">会計一覧</a>
             <a href="../../" class="btn btn-outline-success btn-lg-custom p-2 mx-1">レジ画面</a>
             <div class="table-responsive">
-                <table class="table">
+                <table class="table table-hover">
                     <thead class="table-secondary">
                         <tr>
                             <th>商品名</th>
