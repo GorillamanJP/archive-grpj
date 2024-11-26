@@ -1,3 +1,11 @@
+-- cash_registerデータベースの全テーブルのデータに対する操作権限を付与
+GRANT SELECT, INSERT, UPDATE, DELETE ON cash_register.* TO 'regi_db_user'@'%';
+
+-- データベースの他の操作を制限する
+REVOKE ALL PRIVILEGES ON *.* FROM 'regi_db_user'@'%';
+GRANT USAGE ON *.* TO 'regi_db_user'@'%';
+
+
 USE cash_register;
 
 -- レジのユーザーテーブル

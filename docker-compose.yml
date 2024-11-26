@@ -1,7 +1,5 @@
 # 資料はこれ
 # https://tt-computing.com/docker-nginx1_19-php7_4-mariadb10_5
-version: '3.8'
-
 services:
   nginx:
     image: nginx:latest
@@ -18,7 +16,6 @@ services:
       - MAX_FILESIZE=${MAX_FILESIZE}
     depends_on:
       - php-fpm
-      - mariadb
 
   php-fpm:
     build:
@@ -31,20 +28,26 @@ services:
       - ./php-fpm/conf.d/50-my-config.ini:/usr/local/etc/php/conf.d/50-my-config.ini
     environment:
       - DB_DATABASE=${DB_DATABASE}
-      - DB_PASSWORD=${DB_ROOT_PASSWORD}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_USER_PASSWORD}
       - TIMEZONE=${TIMEZONE}
       - MAX_FILESIZE=${MAX_FILESIZE}
       - PASS_PHRASE=${PASS_PHRASE}
+    depends_on:
+      - mariadb
 
   mariadb:
     image: mariadb:latest
-    ports:
-      - "3306:3306"
     volumes:
+      # init SQL script
       - ./mariadb/init.sql:/docker-entrypoint-initdb.d/init.sql
+      # Database Volume
+      - db_data:/var/lib/mysql
     environment:
       - MARIADB_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
       - MARIADB_DATABASE=${DB_DATABASE}
+      - MARIADB_USER=${DB_USER}
+      - MARIADB_PASSWORD=${DB_USER_PASSWORD}
 
   php-myadmin:
     image: phpmyadmin:latest
@@ -53,5 +56,11 @@ services:
     environment:
       - PMA_HOST=mariadb
       - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_USER_PASSWORD}
     depends_on:
       - mariadb
+
+volumes:
+  # Database Volume
+  db_data:

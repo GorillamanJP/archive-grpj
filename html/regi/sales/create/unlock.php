@@ -1,5 +1,7 @@
 <?php
-session_start();
+if(session_status() === PHP_SESSION_NONE){
+    session_start();
+}
 
 // ロック解除
 $lockfile_path = "/tmp/sales_create.lock";

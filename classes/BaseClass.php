@@ -5,10 +5,11 @@ abstract class BaseClass
     public function open(): void
     {
         try {
-            $password = getenv("DB_PASSWORD");
             $db_name = getenv("DB_DATABASE");
+            $db_user = getenv("DB_USER");
+            $password = getenv("DB_PASSWORD");
             $dsn = "mysql:host=mariadb;dbname={$db_name}";
-            $this->pdo = new PDO($dsn, "root", $password);
+            $this->pdo = new PDO($dsn, $db_user, $password);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             throw new Exception("データベースへの接続に失敗しました。", 1);
@@ -25,14 +26,5 @@ abstract class BaseClass
         require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/notifications/notification.php";
         $notification = new Notification();
         $notification->create($title, $message);
-    }
-    public function verify_int_value(...$values): bool
-    {
-        foreach ($values as $value) {
-            if ($value > 2147483647 || $value < -2147483648) {
-                return false;
-            }
-        }
-        return true;
     }
 }

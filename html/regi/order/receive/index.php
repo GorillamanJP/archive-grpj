@@ -2,14 +2,12 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
 ?>
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../functions/redirect_with_error.php";
+
 session_start();
 
 if (!isset($_POST["order_id"]) || $_POST["order_id"] === "") {
-    $_SESSION["message"] = "指定した注文はありません。";
-    $_SESSION["message_type"] = "warning";
-    session_write_close();
-    header("Location ../list/");
-    exit();
+    redirect_with_error("../list/", "指定した注文はありません。", "", "danger");
 }
 
 $order_id = $_POST["order_id"];
