@@ -38,21 +38,8 @@ try {
     }
     $page_end = $sales_count > 0 ? $sales_count : 1;
 
-    require_once $_SERVER['DOCUMENT_ROOT']."/../classes/products/product.php";
-    $product_obj = new Product();
-    $products = $product_obj->get_all();
-    $sales_page = "./no_sales_list.php";
-    if(!is_null($products)){
-        $sales_page = "./sales_list.php";
-    }
-    ob_start();
-    require $sales_page;
-    $sales_table = ob_get_contents();
-    ob_end_clean();
-
     echo json_encode([
         "accountants_table" => $accountants_table,
-        "sales_table" => $sales_table,
         "page_end" => $page_end,
         "last-update" => $last_update,
     ]);

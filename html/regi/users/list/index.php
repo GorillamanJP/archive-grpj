@@ -23,13 +23,19 @@ session_start();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="/common/list.css">
+    <style>
+        .custom-background {
+            padding: 20px;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 
 <body>
     <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/navbar.php"; ?>
     <!-- 残りのページ内容 -->
-    <div class="container">
-        <h1 class="text-center mt-3">ユーザー管理</h1>
+    <div class="container custom-background">
+        <h1 class="text-center mb-4">ユーザー管理</h1>
         <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
         <div class="text-center my-3">
             <a href="../create/" class="btn btn-outline-primary btn-lg p-2 mx-1">ユーザー登録</a>
@@ -38,7 +44,7 @@ session_start();
         <?php if (is_null($users)): ?>
             <p>ユーザーはいません</p>
         <?php else: ?>
-            <div class="table-responsive my-4">
+            <div class="table-responsive mb-3">
                 <table class="table table-bordered table-hover text-center align-middle">
                     <thead class="table-info">
                         <tr>

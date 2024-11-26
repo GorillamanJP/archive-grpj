@@ -53,6 +53,22 @@ $product = $product->get_from_item_id($id);
         .btn {
             border-radius: 25px;
         }
+
+        .custom-alert {
+            position: absolute;
+            top: 150px;
+            /* 入荷処理の下に表示 */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1050;
+            display: none;
+            padding: 10px 20px;
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 
@@ -91,6 +107,9 @@ $product = $product->get_from_item_id($id);
             </div>
         </form>
     </div>
+    <!-- カスタムアラートの要素 -->
+    <div id="customAlert" class="custom-alert"></div>
+
     <!-- 更新確認モーダル -->
     <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -114,7 +133,18 @@ $product = $product->get_from_item_id($id);
             </div>
         </div>
     </div>
+
     <script>
+        function showCustomAlert(message) {
+            const alertBox = document.getElementById('customAlert');
+            alertBox.innerText = message;
+            alertBox.style.display = 'block';
+
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 3000); // 3秒後に自動的に消える
+        }
+
         function updateNewStock() {
             const currentStock = parseInt(document.getElementById('currentStock').textContent);
             const addQuantity = parseInt(document.getElementById('add_quantity').value);
@@ -134,7 +164,7 @@ $product = $product->get_from_item_id($id);
             const addQuantity = parseInt(document.getElementById('add_quantity').value);
 
             if (isNaN(addQuantity) || addQuantity <= 0) {
-                document.getElementById('updateForm').submit();
+                showCustomAlert("エラー: 入荷数は1以上の数値を入力してください。");
             } else {
                 var myModal = new bootstrap.Modal(document.getElementById('confirmModal'), {
                     keyboard: false
