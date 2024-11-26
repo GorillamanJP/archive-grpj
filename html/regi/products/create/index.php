@@ -21,7 +21,7 @@ session_start();
     <h1 class="text-center my-3">商品登録</h1>
     <div class="container">
         <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
-        <form id="registerForm" action="create.php" method="post" enctype="multipart/form-data"
+        <form id="modal_required_form" action="create.php" method="post" enctype="multipart/form-data"
             onsubmit="return handleSubmit(event);">
             <table class="table table-bordered table-info table-hover">
                 <tr class="form-group">
@@ -63,11 +63,11 @@ session_start();
         </form>
     </div>
     <!-- 新モーダル -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">確認</h1>
+                    <h1 class="modal-title fs-5" id="ModalLabel">確認</h1>
                     <button type="button" class="btn-close" aria-label="Close" id="close_button"
                         data-bs-dismiss="modal"></button>
                 </div>

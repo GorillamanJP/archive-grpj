@@ -3,13 +3,13 @@ async function handleSubmit(event) {
     
     const result = await callModal();
     if (result) {
-        document.getElementById('registerForm').submit();
+        document.getElementById('modal_required_form').submit();
     }
     return false;
 }
 
 async function callModal() {
-    const modal = new bootstrap.Modal(document.getElementById("exampleModal"));
+    const modal = new bootstrap.Modal(document.getElementById("Modal"));
     modal.show();
 
     const buttonId = await waitForButtonPress(['confirm_button', 'cancel_button']);
