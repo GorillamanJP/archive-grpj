@@ -80,15 +80,36 @@ session_start();
     </div>
     <!-- 新モーダル -->
     <div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="ModalLabel">確認</h1>
                     <button type="button" class="btn-close" aria-label="Close" id="close_button"
                         data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body">
-                    本当に登録しますか？
+                <div class="modal-body fw-bold fs-4">
+                    こちらの内容でよろしいですか？
+                </div>
+                <div>
+                    <table class="table table-borderless">
+                        <tr>
+                            <th class="fs-5" style="width: 150px; text-align: right;"><strong>商品名:</strong></th>
+                            <td class="fs-5" style="text-align: left;"><span id="confirmItemName"></span></td>
+                        </tr>
+                        <tr>
+                            <th class="fs-5" style="width: 150px; text-align: right;"><strong>価格:</strong></th>
+                            <td class="fs-5" style="text-align: left;"><span id="confirmPrice"></span></td>
+                        </tr>
+                        <tr>
+                            <th class="fs-5" style="width: 150px; text-align: right;"><strong>在庫:</strong></th>
+                            <td class="fs-5" style="text-align: left;"><span id=""></span></td>
+                        </tr>
+                        <tr>
+                            <th class="fs-5" style="width: 150px; text-align: right;"><strong>商品イメージ:</strong></th>
+                            <td class="fs-5" style="text-align: left;"><img id="image_" style="width: 200px;">
+                            </td>
+                        </tr>
+                    </table>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" id="cancel_button"

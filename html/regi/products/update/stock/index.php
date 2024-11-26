@@ -76,8 +76,8 @@ $product = $product->get_from_item_id($id);
     <h1 class="text-center mt-3 my-3">入荷処理</h1>
     <div class="container">
         <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
-        <form id="updateForm" action="update.php" method="post"
-            onsubmit="event.preventDefault(); checkAndSubmitForm();">
+        <form id="modal_required_form" action="update.php" method="post"
+            onsubmit="return handleSubmit(event);">
             <table class="table table-bordered table-info table-hover">
                 <tr class="form-group">
                     <th class="align-middle">商品イメージ</th>
@@ -102,8 +102,8 @@ $product = $product->get_from_item_id($id);
             </table>
             <input type="hidden" name="id" value="<?= $product->get_item_id() ?>">
             <div class="text-center">
-                <button type="submit" class="btn btn-outline-primary">更新</button>
-                <a href="../../list/" class="btn btn-outline-secondary">戻る</a>
+                <button type="submit" id="submit_button" class="btn btn-outline-primary btn-lg">更新</button>
+                <a href="../../list/" class="btn btn-outline-secondary btn-lg">戻る</a>
             </div>
         </form>
     </div>
@@ -111,12 +111,12 @@ $product = $product->get_from_item_id($id);
     <div id="customAlert" class="custom-alert"></div>
 
     <!-- 更新確認モーダル -->
-    <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="confirmModalLabel">更新の確認</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
+                    <h5 class="modal-title" id="ModalLabel">更新の確認</h5>
+                    <button type="button" id="close_button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
                 </div>
                 <div class="modal-body">
                     <p class="fw-bold fs-4">本当に更新しますか？</p>
@@ -127,13 +127,13 @@ $product = $product->get_from_item_id($id);
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
-                    <button type="button" class="btn btn-primary" id="confirmUpdateBtnModal">更新</button>
+                    <button type="button" class="btn btn-secondary" id="cancel_button" data-bs-dismiss="modal">キャンセル</button>
+                    <button type="button" class="btn btn-primary" id="confirm_button">更新</button>
                 </div>
             </div>
         </div>
     </div>
-
+    <script src="/common/newModal.js"></script>
     <script>
         function showCustomAlert(message) {
             const alertBox = document.getElementById('customAlert');
@@ -155,42 +155,6 @@ $product = $product->get_from_item_id($id);
         }
 
         document.getElementById('add_quantity').addEventListener('input', updateNewStock);
-
-        document.getElementById('confirmUpdateBtnModal').addEventListener('click', function () {
-            document.getElementById('updateForm').submit();
-        });
-
-        function checkAndSubmitForm() {
-            const addQuantity = parseInt(document.getElementById('add_quantity').value);
-
-            if (isNaN(addQuantity) || addQuantity <= 0) {
-                showCustomAlert("エラー: 入荷数は1以上の数値を入力してください。");
-            } else {
-                var myModal = new bootstrap.Modal(document.getElementById('confirmModal'), {
-                    keyboard: false
-                });
-                myModal.show();
-            }
-        }
-
-        document.addEventListener('keydown', function (event) {
-            if (event.key === 'Enter' && event.target.nodeName !== 'TEXTAREA') {
-                event.preventDefault();
-
-                console.log('Enterキーが押されました');
-
-                const activeModal = document.querySelector('.modal.show');
-                if (activeModal) {
-                    if (activeModal.querySelector('#confirmUpdateBtnModal')) {
-                        activeModal.querySelector('#confirmUpdateBtnModal').click();
-                        console.log('confirmUpdateBtnModalがEnterキーでクリックされました');
-                    }
-                } else {
-                    checkAndSubmitForm();
-                    console.log('最初の更新ボタンがEnterキーでクリックされました');
-                }
-            }
-        });
     </script>
 </body>
 

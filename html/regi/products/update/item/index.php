@@ -61,8 +61,8 @@ $product = $product->get_from_item_id($id);
     <div class="container">
         <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
         <table class="table table-bordered table-info table-hover ">
-            <form id="updateForm" action="update.php" method="post" enctype="multipart/form-data"
-                onsubmit="event.preventDefault(); showConfirmationModal();">
+            <form id="modal_required_form" action="update.php" method="post" enctype="multipart/form-data"
+                onsubmit="return handleSubmit(event);">
                 <input type="hidden" name="id" value="<?= $product->get_item_id() ?>">
                 <tr class="form-group">
                     <th class="align-middle">商品名</th>
@@ -86,21 +86,22 @@ $product = $product->get_from_item_id($id);
                 </tr>
         </table>
         <div class="text-center">
-            <input type="submit" class="btn btn-outline-primary" id="initialUpdateBtn" value="更新">
-            <a href="../../list/" class="btn btn-outline-secondary">戻る</a>
+            <input type="submit" class="btn btn-outline-primary btn-lg" id="initialUpdateBtn" value="更新">
+            <a href="../../list/" class="btn btn-outline-secondary btn-lg">戻る</a>
         </div>
         </form>
     </div>
     <!-- 更新確認モーダル -->
-    <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="confirmModalLabel">更新の確認</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
+                    <h5 class="modal-title" id="ModalLabel">更新の確認</h5>
+                    <button type="button" class="btn-close" aria-label="Close" id="close_button"
+                        data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <p class="fw-bold fs-4">本当に更新しますか？</p>
+                    <p class="fw-bold fs-4">こちらの内容で更新しますか？</p>
                     <div>
                         <table class="table table-borderless">
                             <tr>
@@ -120,89 +121,25 @@ $product = $product->get_from_item_id($id);
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
-                    <button type="button" class="btn btn-primary" id="confirmUpdateBtn">更新</button>
+                    <button type="button" class="btn btn-secondary" id="cancel_button" data-bs-dismiss="modal">キャンセル</button>
+                    <button type="button" class="btn btn-primary" id="confirm_button">更新</button>
                 </div>
             </div>
         </div>
     </div>
+    <script src="/common/newModal.js"></script>
     <script>
-        function showConfirmationModal() {
-            const itemNameElement = document.getElementById('item_name');
-            const itemName = itemNameElement.value;
-            const priceElement = document.getElementById('price');
-            const price = priceElement.value;
-            const confirmItemNameElement = document.getElementById('confirmItemName');
-            const confirmPriceElement = document.getElementById('confirmPrice');
-
-            const currentItemName = "<?= $product->get_item_name() ?>";
-            const currentPrice = "<?= $product->get_price() ?>";
-
-            // 商品名の変更をチェックして表示
-            if (itemName !== currentItemName) {
-                confirmItemNameElement.textContent = `${currentItemName} → ${itemName}`;
-            } else {
-                confirmItemNameElement.textContent = itemName;
-            }
-
-            // 価格の変更をチェックして表示
-            if (price !== currentPrice) {
-                confirmPriceElement.textContent = `${currentPrice}円 → ${price}円`;
-            } else {
-                confirmPriceElement.textContent = `${price}円`;
-            }
-
-            const newImage = document.getElementById('new_item_image').files[0];
-            const confirmItemImageElement = document.getElementById('confirmItemImage');
-            if (newImage) {
+        document.getElementById('item_image').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (file) {
                 const reader = new FileReader();
                 reader.onload = function (e) {
-                    confirmItemImageElement.src = e.target.result;
-                };
-                reader.readAsDataURL(newImage);
-            } else {
-                confirmItemImageElement.src = document.getElementById('now_item_image').src;
-            }
-
-            var myModal = new bootstrap.Modal(document.getElementById('confirmModal'), {
-                keyboard: false
-            });
-            myModal.show();
-        }
-
-        document.getElementById('initialUpdateBtn').addEventListener('click', function (event) {
-            event.preventDefault(); // デフォルトのフォーム送信を防ぐ
-            showConfirmationModal();
-        });
-
-        document.getElementById('confirmUpdateBtn').addEventListener('click', function () {
-            document.getElementById('updateForm').submit();
-        });
-
-        document.addEventListener('keydown', function (event) {
-            if (event.key === 'Enter' && event.target.nodeName !== 'TEXTAREA') {
-                event.preventDefault();
-                console.log('Enterキーが押されました');
-                const activeModal = document.querySelector('.modal.show');
-                if (activeModal) {
-                    if (activeModal.querySelector('#confirmUpdateBtn')) {
-                        activeModal.querySelector('#confirmUpdateBtn').click();
-                        console.log('confirmUpdateBtnがEnterキーでクリックされました');
-                    }
-                } else {
-                    showConfirmationModal();
-                    console.log('initialUpdateBtnがEnterキーでクリックされました');
+                    const preview = document.getElementById('image_preview');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
                 }
+                reader.readAsDataURL(file);
             }
-        });
-
-        // 確認モーダルを閉じるボタンにイベントリスナーを追加
-        document.querySelectorAll('.btn-close, .btn-secondary').forEach(button => {
-            button.addEventListener('click', function () {
-                var myModal = bootstrap.Modal.getInstance(document.getElementById('confirmModal'));
-                myModal.hide();
-                console.log('モーダルが閉じられました');
-            });
         });
     </script>
 </body>
