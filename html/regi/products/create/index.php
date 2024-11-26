@@ -15,27 +15,45 @@ session_start();
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/common/create.css">
+    <style>
+        .custom-alert {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1050;
+            display: none;
+            padding: 10px 20px;
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 
 <body>
     <h1 class="text-center my-3">商品登録</h1>
     <div class="container">
-        <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
-        <table class="table table-bordered table-info table-hover ">
-            <form id="registerForm" action="create.php" method="post" enctype="multipart/form-data"
-                onsubmit="event.preventDefault(); showConfirmationModal();">
+        <!-- カスタムアラートの要素 -->
+        <div id="customAlert" class="custom-alert"></div>
+        <!-- フォーム内容 -->
+        <form id="registerForm" action="create.php" method="post" enctype="multipart/form-data"
+            onsubmit="event.preventDefault(); showConfirmationModal();">
+            <table class="table table-bordered table-info table-hover">
                 <tr class="form-group">
-                    <th class="aligin-middle">商品名</th>
+                    <th class="align-middle">商品名</th>
                     <td class="table-secondary"><input type="text" name="item_name" id="item_name" class="form-control"
                             required></td>
                 </tr>
                 <tr class="form-group">
-                    <th class="aligin-middle">価格</th>
+                    <th class="align-middle">価格</th>
                     <td class="table-secondary"><input type="number" name="price" id="price" class="form-control"
                             required></td>
                 </tr>
                 <tr class="form-group">
-                    <th class="aligin-middle">在庫</th>
+                    <th class="align-middle">在庫</th>
                     <td class="table-secondary"><input type="number" name="add_quantity" id="add_quantity"
                             class="form-control" required></td>
                 </tr>
@@ -45,17 +63,18 @@ session_start();
                             style="display:none; width: 200px;"></td>
                 </tr>
                 <tr class="form-group">
-                    <th class="aligin-middle">画像選択</th>
+                    <th class="align-middle">画像選択</th>
                     <td class="table-secondary"><input type="file" name="item_image" id="item_image" accept="image/jpeg"
                             class="form-control" required></td>
                 </tr>
-        </table>
-        <div class="text-center">
-            <input type="submit" class="btn btn-outline-primary btn-lg" id="initialRegisterBtn" value="登録">
-            <a href="../list/" class="btn btn-outline-secondary btn-lg">戻る</a>
-        </div>
+            </table>
+            <div class="text-center">
+                <input type="submit" class="btn btn-outline-primary btn-lg" id="initialRegisterBtn" value="登録">
+                <a href="../list/" class="btn btn-outline-secondary btn-lg">戻る</a>
+            </div>
         </form>
     </div>
+
     <!-- 登録確認モーダル -->
     <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -116,8 +135,23 @@ session_start();
             myModal.show();
         }
 
-        document.getElementById('initialRegisterBtn').addEventListener('click', function () {
-            showConfirmationModal();
+        function isFormComplete() {
+            const requiredFields = document.querySelectorAll('#registerForm input[required]');
+            for (let i = 0; i < requiredFields.length; i++) {
+                if (!requiredFields[i].value || requiredFields[i].value.trim() === '') {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        document.getElementById('initialRegisterBtn').addEventListener('click', function (event) {
+            event.preventDefault();
+            if (isFormComplete()) {
+                showConfirmationModal();
+            } else {
+                showCustomAlert('すべての入力フィールドを入力してください。');
+            }
         });
 
         document.getElementById('confirmRegisterBtn').addEventListener('click', function () {
@@ -127,16 +161,10 @@ session_start();
         document.addEventListener('keydown', function (event) {
             if (event.key === 'Enter' && event.target.nodeName !== 'TEXTAREA') {
                 event.preventDefault();
-                console.log('Enterキーが押されました');
-                const activeModal = document.querySelector('.modal.show');
-                if (activeModal) {
-                    if (activeModal.querySelector('#confirmRegisterBtn')) {
-                        activeModal.querySelector('#confirmRegisterBtn').click();
-                        console.log('confirmRegisterBtnがEnterキーでクリックされました');
-                    }
-                } else {
+                if (isFormComplete()) {
                     showConfirmationModal();
-                    console.log('initialRegisterBtnがEnterキーでクリックされました');
+                } else {
+                    showCustomAlert('すべての入力フィールドを入力してください。');
                 }
             }
         });
@@ -149,10 +177,29 @@ session_start();
                     const preview = document.getElementById('image_preview');
                     preview.src = e.target.result;
                     preview.style.display = 'block';
-                }
+                };
                 reader.readAsDataURL(file);
             }
         });
+
+        // ページ読み込み時にカスタムアラートを表示する処理
+        document.addEventListener('DOMContentLoaded', function () {
+            // 必要な場合のみアラートを表示
+            const customAlert = document.getElementById('customAlert');
+            const alertMessage = ""; // 表示するメッセージを設定
+            if (alertMessage && alertMessage.trim() !== "") {
+                showCustomAlert(alertMessage);
+            }
+        });
+
+        function showCustomAlert(message) {
+            const alertBox = document.getElementById('customAlert');
+            alertBox.innerText = message;
+            alertBox.style.display = 'block';
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 5000); // 5秒後に自動的に消える
+        }
     </script>
 </body>
 
