@@ -102,11 +102,11 @@ session_start();
                         </tr>
                         <tr>
                             <th class="fs-5" style="width: 150px; text-align: right;"><strong>在庫:</strong></th>
-                            <td class="fs-5" style="text-align: left;"><span id=""></span></td>
+                            <td class="fs-5" style="text-align: left;"><span id="confirmNewStock"></span></td>
                         </tr>
                         <tr>
                             <th class="fs-5" style="width: 150px; text-align: right;"><strong>商品イメージ:</strong></th>
-                            <td class="fs-5" style="text-align: left;"><img id="image_" style="width: 200px;">
+                            <td class="fs-5" style="text-align: left;"><img id="confirmItemImage" style="width: 200px;">
                             </td>
                         </tr>
                     </table>

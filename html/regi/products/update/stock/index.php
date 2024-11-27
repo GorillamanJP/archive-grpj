@@ -7,7 +7,7 @@ session_start();
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/../functions/redirect_with_error.php";
 
-if(!isset($_POST["id"]) || $_POST["id"] === ""){
+if (!isset($_POST["id"]) || $_POST["id"] === "") {
     redirect_with_error("../../list/", "商品IDが指定されていません。", "", "warning");
 }
 
@@ -76,8 +76,7 @@ $product = $product->get_from_item_id($id);
     <h1 class="text-center mt-3 my-3">入荷処理</h1>
     <div class="container">
         <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
-        <form id="modal_required_form" action="update.php" method="post"
-            onsubmit="return handleSubmit(event);">
+        <form id="modal_required_form" action="update.php" method="post" onsubmit="return handleSubmit(event);">
             <table class="table table-bordered table-info table-hover">
                 <tr class="form-group">
                     <th class="align-middle">商品イメージ</th>
@@ -116,7 +115,8 @@ $product = $product->get_from_item_id($id);
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="ModalLabel">更新の確認</h5>
-                    <button type="button" id="close_button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
+                    <button type="button" id="close_button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="閉じる"></button>
                 </div>
                 <div class="modal-body">
                     <p class="fw-bold fs-4">本当に更新しますか？</p>
@@ -127,7 +127,8 @@ $product = $product->get_from_item_id($id);
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="cancel_button" data-bs-dismiss="modal">キャンセル</button>
+                    <button type="button" class="btn btn-secondary" id="cancel_button"
+                        data-bs-dismiss="modal">キャンセル</button>
                     <button type="button" class="btn btn-primary" id="confirm_button">更新</button>
                 </div>
             </div>
@@ -144,17 +145,6 @@ $product = $product->get_from_item_id($id);
                 alertBox.style.display = 'none';
             }, 3000); // 3秒後に自動的に消える
         }
-
-        function updateNewStock() {
-            const currentStock = parseInt(document.getElementById('currentStock').textContent);
-            const addQuantity = parseInt(document.getElementById('add_quantity').value);
-            const newStock = currentStock + addQuantity;
-
-            document.getElementById('confirmCurrentStock').textContent = currentStock;
-            document.getElementById('confirmNewStock').textContent = newStock;
-        }
-
-        document.getElementById('add_quantity').addEventListener('input', updateNewStock);
     </script>
 </body>
 
