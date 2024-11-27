@@ -190,16 +190,16 @@ $_SESSION["regi"]["data"]["total_price"] = $total_price;
                     <?php foreach ($buy_items as $item): ?>
                         <tr>
                             <td>
-                                <span><?= $item["name"] ?></span>
+                                <span class="item_name"><?= $item["name"] ?></span>
                             </td>
                             <td>
-                                <span><?= $item["price"] ?></span>
+                                <span class="item_price"><?= $item["price"] ?></span>
                             </td>
                             <td>
-                                <span><?= $item["buy_quantity"] ?></span>
+                                <span class="item_buy_quantity"><?= $item["buy_quantity"] ?></span>
                             </td>
                             <td>
-                                <span><?= $item["subtotal"] ?></span>
+                                <span class="item_subtotal"><?= $item["subtotal"] ?></span>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -226,6 +226,7 @@ $_SESSION["regi"]["data"]["total_price"] = $total_price;
                 </tr>
             </table>
             <div class="text-center mt-4">
+                <input type="hidden" name="checksum" id="checksum" value="0">
                 <p><input type="submit" value="購入確定" class="btn btn-primary btn-lg round-button"></p>
                 <?php
                 // モバイルオーダー受け取りの場合戻る先が違うので判断
@@ -234,8 +235,10 @@ $_SESSION["regi"]["data"]["total_price"] = $total_price;
                     $back_url = "/regi/order/list/";
                 }
                 ?>
-                <p><a href="<?= $back_url ?>"><button type="button"
-                            class="btn btn-secondary btn-lg round-button">戻る</button></a>
+                <p>
+                    <a href="<?= $back_url ?>">
+                        <button type="button" class="btn btn-secondary btn-lg round-button">戻る</button>
+                    </a>
                 </p>
             </div>
         </div>
@@ -356,6 +359,8 @@ $_SESSION["regi"]["data"]["total_price"] = $total_price;
             const modal = new bootstrap.Modal(document.getElementById(modalId), { keyboard: false });
             modal.show();
 
+            calc_and_disp_transaction();
+
             console.log(`${modalId}が表示されました`);
 
             document.getElementById(modalId).addEventListener('shown.bs.modal', function () {
@@ -409,6 +414,7 @@ $_SESSION["regi"]["data"]["total_price"] = $total_price;
                         confirmChangeProcessing = false;
                     }, 1000);
                 } else {
+                    calc_and_disp_transaction();
                     console.log('フォームが送信されます');
                     document.getElementById('form').dispatchEvent(new Event('submit'));
                 }
@@ -432,6 +438,7 @@ $_SESSION["regi"]["data"]["total_price"] = $total_price;
                     console.log('confirmChangeModalが表示されました');
                 });
             } else {
+                calc_and_disp_transaction();
                 console.log('フォームが送信されます');
                 document.getElementById('form').submit();
             }
@@ -443,6 +450,8 @@ $_SESSION["regi"]["data"]["total_price"] = $total_price;
 
             console.log('confirmChangeBtnがクリックされました');
             console.log('フォーム送信の準備中...');
+
+            calc_and_disp_transaction();
 
             console.log('フォームが送信されます');
             document.getElementById('form').submit();
@@ -482,6 +491,35 @@ $_SESSION["regi"]["data"]["total_price"] = $total_price;
             const returned_price_value = input - document.getElementById("total_price_disp").innerText;
             document.getElementById("returned_price").value = returned_price_value;
             document.getElementById("returned_price_disp").innerText = returned_price_value;
+            calc_checksum();
+        }
+
+        // チェックサム計算
+        async function calc_checksum(){
+            let checksum_txt = "";
+            document.querySelectorAll(".item_name").forEach(element => {
+                checksum_txt += element.innerText;
+            });
+            document.querySelectorAll(".item_price").forEach(element => {
+                checksum_txt += element.innerText;
+            });
+            document.querySelectorAll(".item_buy_quantity").forEach(element => {
+                checksum_txt += element.innerText;
+            });
+            document.querySelectorAll(".item_subtotal").forEach(element => {
+                checksum_txt += element.innerText;
+            });
+            checksum_txt += document.getElementById("total_amount_disp").innerText;
+            checksum_txt += document.getElementById("total_price_disp").innerText;
+            checksum_txt += document.getElementById("received_price").value;
+            checksum_txt += document.getElementById("returned_price").value;
+
+            const encoder = new TextEncoder();
+            const data = encoder.encode(checksum_txt);
+            const hash_buffer = await crypto.subtle.digest("SHA-256", data);
+            const hash_array = Array.from(new Uint8Array(hash_buffer));
+            const checksum = hash_array.map(b => b.toString(16).padStart(2,"0")).join("");
+            document.getElementById("checksum").value = checksum;
         }
 
         document.getElementById("received_price_disp").addEventListener("input", calc_and_disp_transaction);

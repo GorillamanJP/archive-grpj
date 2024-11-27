@@ -41,13 +41,24 @@ class Sale extends BaseClassGroup
             $detail = new Detail();
             $product = new Product();
 
+            // 合計チェック
+            $check_total = 0;
+
             for ($i = 0; $i < count($product_ids); $i++) {
+                // 小計チェック
+                $check_subtotal = 0;
                 // 配列バラしゾーン
                 $id = $product_ids[$i];
                 $name = $product_names[$i];
                 $price = $product_prices[$i];
                 $quantity = $quantities[$i];
                 $subtotal = $subtotals[$i];
+
+                // 小計チェック処理
+                if ($price * $quantity != $subtotal) {
+                    throw new Exception("金額が合いません。", 0);
+                }
+                $check_total += $subtotal;
 
                 // 在庫チェック
                 $stock_left = $product->get_from_item_id($id)->get_now_stock();
@@ -57,6 +68,16 @@ class Sale extends BaseClassGroup
 
                 $this->details[] = $detail->create($accountant_id, $id, $name, $quantity, $price, $subtotal);
             }
+
+            // 合計チェック処理
+            if ($check_total != $total_price) {
+                throw new Exception("金額が合いません。", 0);
+            }
+            // お釣りチェック処理
+            if ($received_price - $total_price != $returned_price || $received_price - $total_price < 0) {
+                throw new Exception("お釣り金額が異常です。", 0);
+            }
+
             $this->transaction = $this->transaction->create($accountant_id, $total_price, $received_price, $returned_price);
             return $this;
         } catch (Exception $e) {
