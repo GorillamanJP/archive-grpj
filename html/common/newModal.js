@@ -11,7 +11,6 @@ async function handleSubmit(event) {
   return false;
 }
 
-// ここから追加
 function setModalContent(formData) {
   const itemNameElement = document.getElementById("confirmItemName");
   const priceElement = document.getElementById("confirmPrice");
@@ -57,27 +56,62 @@ function setModalContent(formData) {
     newStockElement.textContent = newStock;
   }
 }
-// ここまで
 
 async function callModal() {
   const modal = new bootstrap.Modal(document.getElementById("Modal"));
   modal.show();
 
-  const buttonId = await waitForButtonPress([
-    "confirm_button",
-    "cancel_button",
-  ]);
-  return buttonId === "confirm_button";
+  const result = await waitForButtonPress();
+  return result;
 }
 
-function waitForButtonPress(buttonIds) {
+function waitForButtonPress() {
   return new Promise((resolve) => {
-    buttonIds.forEach((buttonId) => {
-      const button = document.getElementById(buttonId);
-      button.addEventListener("click", function onClick() {
-        button.removeEventListener("click", onClick);
-        resolve(buttonId);
+    let isHandled = false; // 処理が実行されたかどうかを追跡
+
+    const keydownHandler = function (event) {
+      if (event.key === "Enter" && !isHandled) {
+        event.preventDefault(); // Enterキーのデフォルト動作を無効にする
+        const modal = document.getElementById("Modal");
+        if (modal && modal.classList.contains("show")) {
+          isHandled = true; // 処理が実行されたと記録
+          const confirmButton = document.getElementById("confirm_button");
+          if (confirmButton) {
+            confirmButton.click();
+            resolve(true);
+            document.removeEventListener("keydown", keydownHandler);
+          }
+        }
+      }
+    };
+
+    document.addEventListener("keydown", keydownHandler);
+
+    const confirmButton = document.getElementById("confirm_button");
+    const cancelButton = document.getElementById("cancel_button");
+
+    if (confirmButton) {
+      confirmButton.addEventListener("click", function onClick() {
+        if (!isHandled) {
+          isHandled = true;
+          document.removeEventListener("keydown", keydownHandler);
+          confirmButton.removeEventListener("click", onClick);
+          resolve(true);
+        }
       });
-    });
+    }
+
+    if (cancelButton) {
+      cancelButton.addEventListener("click", function onClick() {
+        if (!isHandled) {
+          isHandled = true;
+          document.removeEventListener("keydown", keydownHandler);
+          cancelButton.removeEventListener("click", onClick);
+          const closeButton = document.querySelector(".close");
+          if (closeButton) closeButton.click();
+          resolve(false);
+        }
+      });
+    }
   });
 }
