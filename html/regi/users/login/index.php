@@ -40,6 +40,7 @@ session_start();
                 </form>
             </div>
         </div>
+        <p><a href="/order/">モバイルオーダーはこちら</a></p>
     </div>
 </body>
 
