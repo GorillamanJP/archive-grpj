@@ -8,6 +8,7 @@ services:
     volumes:
       # nginx Config
       - ./nginx/conf.d/50-my-config.conf:/etc/nginx/conf.d/50-my-config.conf
+      - ./nginx/conf.d/nginx.conf:/etc/nginx/nginx.conf
       # nginx Logs
       - ./nginx/log:/var/log/nginx
       # source folder
