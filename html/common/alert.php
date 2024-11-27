@@ -47,6 +47,10 @@
         cursor: pointer;
         color: inherit;
         /* 親要素の色を継承 */
+        line-height: 1;
+        /* ボタン内の中央に「×」を配置 */
+        align-items: center;
+        justify-content: center;
     }
 </style>
 <?php
