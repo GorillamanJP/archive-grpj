@@ -65,16 +65,6 @@ $product = $product->get_from_item_id($id);
                 onsubmit="return handleSubmit(event);">
                 <input type="hidden" name="id" value="<?= $product->get_item_id() ?>">
                 <tr class="form-group">
-                    <th class="align-middle">商品名</th>
-                    <td class="table-secondary"><input type="text" name="item_name" id="item_name"
-                            value="<?= $product->get_item_name() ?>" class="form-control" required></td>
-                </tr>
-                <tr class="form-group">
-                    <th class="align-middle">価格</th>
-                    <td class="table-secondary"><input type="number" name="price" id="price"
-                            value="<?= $product->get_price() ?>" class="form-control" required></td>
-                </tr>
-                <tr class="form-group">
                     <th class="align-middle">商品イメージ</th>
                     <td class="table-secondary"><img src="data:image/jpeg;base64,<?= $product->get_item_image() ?>"
                             alt="商品画像　ID<?= $product->get_item_id() ?>番" id="now_item_image" style="width: 200px;"></td>
@@ -84,9 +74,19 @@ $product = $product->get_from_item_id($id);
                     <td class="table-secondary"><input type="file" name="new_item_image" id="new_item_image"
                             accept="image/jpeg" class="form-control" required></td>
                 </tr>
+                <tr class="form-group">
+                    <th class="align-middle">商品名</th>
+                    <td class="table-secondary"><input type="text" name="item_name" id="item_name"
+                            value="<?= $product->get_item_name() ?>" class="form-control" required></td>
+                </tr>
+                <tr class="form-group">
+                    <th class="align-middle">価格</th>
+                    <td class="table-secondary"><input type="number" name="price" id="price"
+                            value="<?= $product->get_price() ?>" class="form-control" required></td>
+                </tr>
         </table>
         <div class="text-center">
-            <input type="submit" class="btn btn-outline-primary btn-lg" id="initialUpdateBtn" value="更新">
+            <input type="submit" class="btn btn-outline-primary btn-lg" id="submit_button" value="更新">
             <a href="../../list/" class="btn btn-outline-secondary btn-lg">戻る</a>
         </div>
         </form>
@@ -121,7 +121,8 @@ $product = $product->get_from_item_id($id);
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="cancel_button" data-bs-dismiss="modal">キャンセル</button>
+                    <button type="button" class="btn btn-secondary" id="cancel_button"
+                        data-bs-dismiss="modal">キャンセル</button>
                     <button type="button" class="btn btn-primary" id="confirm_button">更新</button>
                 </div>
             </div>
@@ -144,4 +145,5 @@ $product = $product->get_from_item_id($id);
     </script>
 </body>
 <script src="./set_now_image.js"></script>
+
 </html>

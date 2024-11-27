@@ -41,6 +41,19 @@ session_start();
             onsubmit="return handleSubmit(event);">
             <table class="table table-bordered table-info table-hover">
                 <tr class="form-group">
+                    <th class="align-middle">商品イメージ</th>
+                    <td class="table-secondary">
+                        <img id="image_preview" src="#" alt="商品画像プレビュー" style="display:none; width: 200px;">
+                    </td>
+                </tr>
+                <tr class="form-group">
+                    <th class="aligin-middle">画像選択</th>
+                    <td class="table-secondary">
+                        <input type="file" name="item_image" id="item_image" accept="image/jpeg" class="form-control"
+                            required>
+                    </td>
+                </tr>
+                <tr class="form-group">
                     <th class="aligin-middle">商品名</th>
                     <td class="table-secondary">
                         <input type="text" name="item_name" id="item_name" class="form-control" required>
@@ -56,19 +69,6 @@ session_start();
                     <th class="aligin-middle">在庫</th>
                     <td class="table-secondary">
                         <input type="number" name="add_quantity" id="add_quantity" class="form-control" required>
-                    </td>
-                </tr>
-                <tr class="form-group">
-                    <th class="align-middle">商品イメージ</th>
-                    <td class="table-secondary">
-                        <img id="image_preview" src="#" alt="商品画像プレビュー" style="display:none; width: 200px;">
-                    </td>
-                </tr>
-                <tr class="form-group">
-                    <th class="aligin-middle">画像選択</th>
-                    <td class="table-secondary">
-                        <input type="file" name="item_image" id="item_image" accept="image/jpeg" class="form-control"
-                            required>
                     </td>
                 </tr>
             </table>
