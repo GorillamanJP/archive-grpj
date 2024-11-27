@@ -1,8 +1,8 @@
 <?php
-abstract class BaseClass
+class BaseClass
 {
     protected PDO $pdo;
-    public function open(): void
+    protected function open(): void
     {
         try {
             $db_name = getenv("DB_DATABASE");
@@ -17,14 +17,23 @@ abstract class BaseClass
             throw new Exception("予期しないエラーが発生しました。", -1);
         }
     }
-    public function close(): void
+    protected function close(): void
     {
         unset($this->pdo);
     }
-    public function send_notification(string $title, string $message)
+    protected function send_notification(string $title, string $message)
     {
         require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/notifications/notification.php";
         $notification = new Notification();
         $notification->create($title, $message);
+    }
+    public function run_query(string $sql, array $params):PDOStatement{
+        $this->open();
+
+        $stmt = $this->pdo->prepare($sql);
+
+        $stmt->execute($params);
+
+        return $stmt;
     }
 }

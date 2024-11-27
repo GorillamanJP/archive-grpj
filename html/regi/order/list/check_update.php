@@ -14,19 +14,16 @@ if (!isset($_SESSION["regi"]["order"]["list"]["last_update"]) || $_SESSION["regi
 $last_update = $_SESSION["regi"]["order"]["list"]["last_update"];
 
 try {
-    $password = getenv("DB_PASSWORD");
-    $db_name = getenv("DB_DATABASE");
-    $dsn = "mysql:host=mariadb;dbname={$db_name}";
-    $pdo = new PDO($dsn, "root", $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/BaseClass.php";
+    $bc = new BaseClass();
 
     $sql = "SELECT COUNT(*) FROM order_orders WHERE date >= :last_update";
 
-    $stmt = $pdo->prepare($sql);
+    $params = [
+        ":last_update" => $last_update,
+    ];
 
-    $stmt->bindValue(":last_update", $last_update);
-
-    $stmt->execute();
+    $stmt = $bc->run_query($sql, $params);
 
     $update_count = $stmt->fetchColumn();
 
