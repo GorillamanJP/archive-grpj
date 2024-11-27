@@ -11,6 +11,7 @@ async function handleSubmit(event) {
   return false;
 }
 
+// ここから追加
 function setModalContent(formData) {
   const itemNameElement = document.getElementById("confirmItemName");
   const priceElement = document.getElementById("confirmPrice");
@@ -56,6 +57,7 @@ function setModalContent(formData) {
     newStockElement.textContent = newStock;
   }
 }
+// ここまで
 
 async function callModal() {
   const modal = new bootstrap.Modal(document.getElementById("Modal"));
