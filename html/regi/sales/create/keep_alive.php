@@ -1,4 +1,11 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check_bool.php";
+if(!login_check()){
+    http_response_code(403);
+    exit();
+}
+?>
+<?php
 session_start();
 
 // ロックファイルのパス
