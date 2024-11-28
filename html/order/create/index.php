@@ -135,10 +135,10 @@ $_SESSION["order"]["data"]["total_price"] = $total_price;
                     <tbody>
                         <?php foreach ($order_items as $item): ?>
                             <tr>
-                                <td><?= $item["name"] ?></td>
-                                <td><?= $item["price"] ?></td>
-                                <td><?= $item["order_quantity"] ?></td>
-                                <td><?= $item["subtotal"] ?></td>
+                                <td class="item_name"><?= $item["name"] ?></td>
+                                <td class="item_price"><?= $item["price"] ?></td>
+                                <td class="item_buy_quantity"><?= $item["order_quantity"] ?></td>
+                                <td class="item_subtotal"><?= $item["subtotal"] ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
