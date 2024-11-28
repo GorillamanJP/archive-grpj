@@ -10,7 +10,7 @@ if (!isset($_POST["user_name"]) || $_POST["user_name"] === "") {
     $message .= "「ユーザー名」";
     $ok = false;
 }
-if (!isset($_POST["password"]) || $_POST["password"] === "") {
+if (!isset($_POST["password"]) || $_POST["password"] === "" || !isset($_POST["password_re_input"]) || $_POST["password_re_input"] === "") {
     $message .= "「パスワード」";
     $ok = false;
 }
@@ -22,6 +22,11 @@ if (!$ok) {
 
 $user_name = htmlspecialchars($_POST["user_name"]);
 $password = htmlspecialchars($_POST["password"]);
+$password_re_input = htmlspecialchars($_POST["password_re_input"]);
+
+if($password != $password_re_input){
+    redirect_with_error("./", "パスワードの入力内容が一致しません。", "", "warning");
+}
 
 require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/users/user.php";
 try {

@@ -27,13 +27,21 @@ session_start();
             <table class="table table-bordered table-info table-hover ">
                 <tr class="form-group">
                     <th class="align-middle">ユーザー名</th>
-                    <td class="table-secondary"><input type="text" name="user_name" id="user_name" class="form-control"
-                            required></td>
+                    <td class="table-secondary">
+                        <input type="text" name="user_name" id="user_name" class="form-control" required>
+                    </td>
                 </tr>
                 <tr class="form-group">
                     <th class="align-middle">パスワード</th>
-                    <td class="table-secondary"><input type="password" name="password" id="password"
-                            class="form-control" required></td>
+                    <td class="table-secondary">
+                        <input type="password" name="password" id="password" class="form-control" required>
+                    </td>
+                </tr>
+                <tr class="form-group">
+                    <th class="align-middle">パスワード再入力</th>
+                    <td class="table-secondary">
+                        <input type="password" name="password_re_input" id="password_re_input" class="form-control" required>
+                    </td>
                 </tr>
             </table>
 

@@ -38,6 +38,9 @@ function displayNotification(notification) {
     const toastElement = notificationContainer.querySelector('.toast');
     const toast = new bootstrap.Toast(toastElement);
     toast.show();
+
+    const audio = new Audio("/regi/notify/notify.mp3");
+    audio.play();
 }
 
 document.addEventListener("DOMContentLoaded", function () {

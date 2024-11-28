@@ -1,2 +1,2 @@
 nginx/log/
-.magic_char
+.env
