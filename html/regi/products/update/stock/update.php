@@ -1,4 +1,7 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
+?>
+<?php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/../functions/redirect_with_error.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/../functions/redirect_with_alert_with_form.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/../functions/verify_int_value.php";
