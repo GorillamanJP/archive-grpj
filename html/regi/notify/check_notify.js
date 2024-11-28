@@ -5,9 +5,6 @@ async function fetchNotifications() {
             const data = await response.json();
             if (data.hasData && data.notifications.length > 0) {
                 data.notifications.forEach(notification => displayNotification(notification));
-
-                const audio = new Audio("/regi/notify/notify.mp3");
-                audio.play();
             }
         } else {
             console.error("Error fetching notifications: " + response.statusText);
@@ -41,6 +38,9 @@ function displayNotification(notification) {
     const toastElement = notificationContainer.querySelector('.toast');
     const toast = new bootstrap.Toast(toastElement);
     toast.show();
+
+    const audio = new Audio("/regi/notify/notify.mp3");
+    audio.play();
 }
 
 document.addEventListener("DOMContentLoaded", function () {
