@@ -26,6 +26,18 @@ class Order_Order extends BaseClass
         return $this->total_price;
     }
 
+    private bool $is_call;
+    public function get_is_call(): bool
+    {
+        return $this->is_call;
+    }
+
+    private bool $is_cancel;
+    public function get_is_cancel(): bool
+    {
+        return $this->is_cancel;
+    }
+
     private bool $is_received;
     public function get_is_received(): bool
     {
@@ -36,13 +48,15 @@ class Order_Order extends BaseClass
     {
         try {
             $this->open();
-            $sql = "INSERT INTO order_orders (date, total_amount, total_price, is_received) VALUES (:date, :total_amount, :total_price, :is_received)";
+            $sql = "INSERT INTO order_orders (date, total_amount, total_price, is_call, is_cancel, is_received) VALUES (:date, :total_amount, :total_price, :is_call, :is_cancel, :is_received)";
 
             $stmt = $this->pdo->prepare($sql);
 
             $stmt->bindValue(":date", date("Y-m-d H:i:s"), PDO::PARAM_STR);
             $stmt->bindValue(":total_amount", $total_amount, PDO::PARAM_INT);
             $stmt->bindValue(":total_price", $total_price, PDO::PARAM_INT);
+            $stmt->bindValue(":is_call", false, PDO::PARAM_BOOL);
+            $stmt->bindValue(":is_cancel", false, PDO::PARAM_BOOL);
             $stmt->bindValue(":is_received", false, PDO::PARAM_BOOL);
 
             $stmt->execute();
@@ -82,6 +96,8 @@ class Order_Order extends BaseClass
                 $this->date = $order["date"];
                 $this->total_amount = $order["total_amount"];
                 $this->total_price = $order["total_price"];
+                $this->is_call = boolval($order["is_call"]);
+                $this->is_cancel = boolval($order["is_cancel"]);
                 $this->is_received = boolval($order["is_received"]);
                 return $this;
             } else {
@@ -100,7 +116,7 @@ class Order_Order extends BaseClass
     {
         try {
             $this->open();
-            $sql = "SELECT id FROM order_orders WHERE is_received = 0 ORDER BY id DESC";
+            $sql = "SELECT id FROM order_orders WHERE is_received = 0 AND is_cancel = 0 ORDER BY id DESC";
 
             $stmt = $this->pdo->prepare($sql);
 
@@ -233,6 +249,44 @@ class Order_Order extends BaseClass
             throw new Exception("データベースエラーです。", 1, $pe);
         } catch (Throwable $th) {
             $this->close();
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
+        }
+    }
+
+    public function call(): void
+    {
+        try {
+            $sql = "UPDATE order_orders SET is_call = 1 WHERE id = :id";
+
+            $params = [
+                ":id" => $this->id
+            ];
+
+            $stmt = $this->run_query($sql, $params);
+
+            $this->send_notification("注文", "注文番号 {$this->id} 番を呼び出しました！");
+        } catch (PDOException $pe) {
+            throw new Exception("データベースエラーです。", 1, $pe);
+        } catch (Throwable $th) {
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
+        }
+    }
+
+    public function cancel(): void
+    {
+        try {
+            $sql = "UPDATE order_orders SET is_cancel = 1 WHERE id = :id";
+
+            $params = [
+                ":id" => $this->id
+            ];
+
+            $stmt = $this->run_query($sql, $params);
+
+            $this->send_notification("注文", "注文番号 {$this->id} 番はキャンセルされました。");
+        } catch (PDOException $pe) {
+            throw new Exception("データベースエラーです。", 1, $pe);
+        } catch (Throwable $th) {
             throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }

@@ -25,6 +25,14 @@
                 <input type="hidden" name="order_id" id="order_id" value="<?= $order->get_order_order()->get_id() ?>">
                 <input type='submit' value='受け取り' btn class='btn btn-outline-success round-button'>
             </form>
+            <form action="../call/" method="post">
+                <input type="hidden" name="order_id" id="order_id" value="<?= $order->get_order_order()->get_id() ?>">
+                <button type="submit" class="btn btn-outline-primary round-button">呼び出し</button>
+            </form>
+            <form action="../cancel/" method="post">
+                <input type="hidden" name="order_id" id="order_id" value="<?= $order->get_order_order()->get_id() ?>">
+                <button type="submit" class="btn btn-outline-danger round-button">キャンセル</button>
+            </form>
         </td>
     </tr>
 <?php endforeach; ?>
