@@ -73,6 +73,8 @@ CREATE TABLE IF NOT EXISTS order_orders(
     date DATETIME NOT NULL,
     total_amount BIGINT NOT NULL,
     total_price BIGINT NOT NULL,
+    is_call BOOLEAN NOT NULL,
+    is_cancel BOOLEAN NOT NULL,
     is_received BOOLEAN NOT NULL
 );
 

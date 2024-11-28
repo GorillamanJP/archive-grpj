@@ -154,7 +154,8 @@ SELECT SUM(od.quantity) AS now_order_total
 FROM order_details od
 JOIN order_orders oo ON od.order_id = oo.id
 WHERE od.item_id = :item_id
-AND oo.is_received = 0;
+AND oo.is_received = 0
+AND oo.is_cancel = 0;
 ";
 
             $stmt = $this->pdo->prepare($sql);
