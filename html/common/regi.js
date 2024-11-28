@@ -2,11 +2,8 @@
 let cart = {};
 
 // グローバルに interval 変数を宣言
-let incrementInterval;
-let decrementInterval;
 let incrementTimeout;
 let decrementTimeout;
-
 let currentIncrementInterval = null;
 let currentDecrementInterval = null;
 
@@ -55,16 +52,28 @@ function updateCart() {
     totalCount += product.quantity;
     totalPrice += product.price * product.quantity;
 
+    // 在庫数の取得
+    const productElement = document.querySelector(`#product-${id}`);
+    const stockElement = productElement.querySelector("p span");
+    const originalStock = parseInt(
+      stockElement.getAttribute("data-original-stock"),
+      10
+    );
+
     // カートテーブルに追加
     const row = document.createElement("tr");
     row.innerHTML = `
       <td>${product.name}</td>
-      <td>${product.price}円</td>
       <td class="quantity-column">
-        <button class="btn btn-outline-success btn-lg quantity-button increment" data-product-id="${id}">＋</button>
-        <span>${product.quantity}個</span>
-        <button class="btn btn-outline-success btn-lg quantity-button decrement" data-product-id="${id}">－</button>
+      <button class="btn btn-outline-success btn-lg quantity-button decrement" data-product-id="${id}">
+        <i class="bi bi-caret-down-fill"></i>
+      </button>
+      <input type="number" class="quantity-input" data-product-id="${id}" value="${product.quantity}" style="width: 70px;" max="${originalStock}" min="1">
+      <button class="btn btn-outline-success btn-lg quantity-button increment" data-product-id="${id}">
+        <i class="bi bi-caret-up-fill"></i>
+      </button>
       </td>
+      <td>${product.price}円</td>
       <td class="delete-column">
         <button class="btn btn-outline-danger" data-product-id="${id}">削除</button>
       </td>
@@ -89,116 +98,7 @@ function updateCart() {
   totalPriceSpan.textContent = totalPrice;
 
   // 数量ボタンと削除ボタンにイベントリスナーを追加
-  document.querySelectorAll(".quantity-button.increment").forEach((button) => {
-    button.addEventListener("mousedown", function () {
-      if (currentIncrementInterval) {
-        clearTimeout(incrementTimeout);
-        clearInterval(currentIncrementInterval);
-      }
-      const id = this.getAttribute("data-product-id");
-      incrementTimeout = setTimeout(() => {
-        currentIncrementInterval = setInterval(() => {
-          incrementProductQuantity(id);
-        }, 100); // 長押しの間隔を100ミリ秒に設定
-      }, 500); // 長押しと判定されるまでの間隔を500ミリ秒に設定
-    });
-
-    button.addEventListener("mouseup", function () {
-      clearTimeout(incrementTimeout);
-      clearInterval(currentIncrementInterval);
-    });
-
-    button.addEventListener("mouseout", function () {
-      clearTimeout(incrementTimeout);
-      clearInterval(currentIncrementInterval);
-    });
-
-    button.addEventListener("touchstart", function () {
-      if (currentIncrementInterval) {
-        clearTimeout(incrementTimeout);
-        clearInterval(currentIncrementInterval);
-      }
-      const id = this.getAttribute("data-product-id");
-      incrementTimeout = setTimeout(() => {
-        currentIncrementInterval = setInterval(() => {
-          incrementProductQuantity(id);
-        }, 100); // 長押しの間隔を100ミリ秒に設定
-      }, 500); // 長押しと判定されるまでの間隔を500ミリ秒に設定
-    });
-
-    button.addEventListener("touchend", function () {
-      clearTimeout(incrementTimeout);
-      clearInterval(currentIncrementInterval);
-    });
-
-    button.addEventListener("touchcancel", function () {
-      clearTimeout(incrementTimeout);
-      clearInterval(currentIncrementInterval);
-    });
-
-    button.addEventListener("click", function () {
-      clearTimeout(incrementTimeout);
-      clearInterval(currentIncrementInterval); // クリックイベントの直前にインターバルをクリア
-      const id = this.getAttribute("data-product-id");
-      incrementProductQuantity(id);
-    });
-  });
-
-  document.querySelectorAll(".quantity-button.decrement").forEach((button) => {
-    button.addEventListener("mousedown", function () {
-      if (currentDecrementInterval) {
-        clearTimeout(decrementTimeout);
-        clearInterval(currentDecrementInterval);
-      }
-      const id = this.getAttribute("data-product-id");
-      decrementTimeout = setTimeout(() => {
-        currentDecrementInterval = setInterval(() => {
-          decrementProductQuantity(id);
-        }, 100); // 長押しの間隔を100ミリ秒に設定
-      }, 500); // 長押しと判定されるまでの間隔を500ミリ秒に設定
-    });
-
-    button.addEventListener("mouseup", function () {
-      clearTimeout(decrementTimeout);
-      clearInterval(currentDecrementInterval);
-    });
-
-    button.addEventListener("mouseout", function () {
-      clearTimeout(decrementTimeout);
-      clearInterval(currentDecrementInterval);
-    });
-
-    button.addEventListener("touchstart", function () {
-      if (currentDecrementInterval) {
-        clearTimeout(decrementTimeout);
-        clearInterval(currentDecrementInterval);
-      }
-      const id = this.getAttribute("data-product-id");
-      decrementTimeout = setTimeout(() => {
-        currentDecrementInterval = setInterval(() => {
-          decrementProductQuantity(id);
-        }, 100); // 長押しの間隔を100ミリ秒に設定
-      }, 500); // 長押しと判定されるまでの間隔を500ミリ秒に設定
-    });
-
-    button.addEventListener("touchend", function () {
-      clearTimeout(decrementTimeout);
-      clearInterval(currentDecrementInterval);
-    });
-
-    button.addEventListener("touchcancel", function () {
-      clearTimeout(decrementTimeout);
-      clearInterval(currentDecrementInterval);
-    });
-
-    button.addEventListener("click", function () {
-      clearTimeout(decrementTimeout);
-      clearInterval(currentDecrementInterval); // クリックイベントの直前にインターバルをクリア
-      const id = this.getAttribute("data-product-id");
-      decrementProductQuantity(id);
-    });
-  });
-
+  setupQuantityButtonEvents();
   document.querySelectorAll(".delete-column button").forEach((button) => {
     button.addEventListener("click", function () {
       const id = this.getAttribute("data-product-id");
@@ -206,9 +106,52 @@ function updateCart() {
     });
   });
 
+  // 数量入力フィールドにイベントリスナーを追加
+  document.querySelectorAll(".quantity-input").forEach((input) => {
+    input.addEventListener("input", function () {
+      const id = this.getAttribute("data-product-id");
+      const max = parseInt(this.getAttribute("max"), 10);
+      const value = parseInt(this.value, 10);
+
+      // 入力値が最大値を超えたら最大値に修正
+      if (value > max) {
+        this.value = max;
+      }
+    });
+
+    input.addEventListener("change", function () {
+      const id = this.getAttribute("data-product-id");
+      const newQuantity = parseInt(this.value, 10);
+      changeProductQuantity(id, newQuantity);
+    });
+  });
+
   // Adjust stock after updating the cart
   updateStock();
   adjustCartForStock();
+}
+
+// 商品の数量を変更
+function changeProductQuantity(id, quantity) {
+  const productElement = document.querySelector(`#product-${id}`);
+  const stockElement = productElement.querySelector("p span");
+  const originalStock = parseInt(
+    stockElement.getAttribute("data-original-stock"),
+    10
+  );
+  const currentQuantity = cart[id] ? cart[id].quantity : 0;
+  const remainingStock = originalStock;
+
+  if (quantity > originalStock) {
+    showCustomAlert("在庫数が不足しています。");
+    quantity = originalStock; // 最大値に修正
+    document.querySelector(`input[data-product-id="${id}"]`).value = quantity; // 入力フィールドの値を修正
+  }
+
+  if (cart[id]) {
+    cart[id].quantity = quantity;
+    updateCart();
+  }
 }
 
 // 在庫の更新処理
@@ -328,6 +271,25 @@ function decrementProductQuantity(id) {
   }
 }
 
+// 念のため残しています
+// // 商品の数量を変更
+// function changeProductQuantity(id, quantity) {
+//   const productStock = parseInt(
+//     document
+//       .querySelector(`#product-${id} p span`)
+//       .getAttribute("data-original-stock"),
+//     10
+//   );
+//   if (quantity > productStock) {
+//     showCustomAlert("在庫数が不足しています。");
+//     return;
+//   }
+//   if (cart[id]) {
+//     cart[id].quantity = quantity;
+//     updateCart();
+//   }
+// }
+
 // イベントハンドラの設定
 function setupEventHandlers() {
   const productElements = document.querySelectorAll(".product");
@@ -350,123 +312,125 @@ function setupEventHandlers() {
     });
   });
 
-  document.querySelectorAll(".quantity-button.increment").forEach((button) => {
-    button.addEventListener("mousedown", function () {
-      if (currentIncrementInterval) {
-        clearTimeout(incrementTimeout);
-        clearInterval(currentIncrementInterval);
-      }
-      const id = this.getAttribute("data-product-id");
-      incrementTimeout = setTimeout(() => {
-        currentIncrementInterval = setInterval(() => {
-          incrementProductQuantity(id);
-        }, 100); // 長押しの間隔を100ミリ秒に設定
-      }, 500); // 長押しと判定されるまでの間隔を500ミリ秒に設定
-    });
+  setupQuantityButtonEvents();
+}
 
-    button.addEventListener("mouseup", function () {
-      clearTimeout(incrementTimeout);
-      clearInterval(currentIncrementInterval);
-    });
-
-    button.addEventListener("mouseout", function () {
-      clearTimeout(incrementTimeout);
-      clearInterval(currentIncrementInterval);
-    });
-
-    button.addEventListener("touchstart", function () {
-      if (currentIncrementInterval) {
-        clearTimeout(incrementTimeout);
-        clearInterval(currentIncrementInterval);
-      }
-      const id = this.getAttribute("data-product-id");
-      incrementTimeout = setTimeout(() => {
-        currentIncrementInterval = setInterval(() => {
-          incrementProductQuantity(id);
-        }, 100); // 長押しの間隔を100ミリ秒に設定
-      }, 500); // 長押しと判定されるまでの間隔を500ミリ秒に設定
-    });
-
-    button.addEventListener("touchend", function () {
-      clearTimeout(incrementTimeout);
-      clearInterval(currentIncrementInterval);
-    });
-
-    button.addEventListener("touchcancel", function () {
-      clearTimeout(incrementTimeout);
-      clearInterval(currentIncrementInterval);
-    });
-
-    button.addEventListener("click", function () {
-      clearTimeout(incrementTimeout);
-      clearInterval(currentIncrementInterval); // クリックイベントの直前にインターバルをクリア
-      const id = this.getAttribute("data-product-id");
-      incrementProductQuantity(id);
-    });
-  });
-
-  document.querySelectorAll(".quantity-button.decrement").forEach((button) => {
-    button.addEventListener("mousedown", function () {
-      if (currentDecrementInterval) {
-        clearTimeout(decrementTimeout);
-        clearInterval(currentDecrementInterval);
-      }
-      const id = this.getAttribute("data-product-id");
-      decrementTimeout = setTimeout(() => {
-        currentDecrementInterval = setInterval(() => {
-          decrementProductQuantity(id);
-        }, 100); // 長押しの間隔を100ミリ秒に設定
-      }, 500); // 長押しと判定されるまでの間隔を500ミリ秒に設定
-    });
-
-    button.addEventListener("mouseup", function () {
-      clearTimeout(decrementTimeout);
-      clearInterval(currentDecrementInterval);
-    });
-
-    button.addEventListener("mouseout", function () {
-      clearTimeout(decrementTimeout);
-      clearInterval(currentDecrementInterval);
-    });
-
-    button.addEventListener("touchstart", function () {
-      if (currentDecrementInterval) {
-        clearTimeout(decrementTimeout);
-        clearInterval(currentDecrementInterval);
-      }
-      const id = this.getAttribute("data-product-id");
-      decrementTimeout = setTimeout(() => {
-        currentDecrementInterval = setInterval(() => {
-          decrementProductQuantity(id);
-        }, 100); // 長押しの間隔を100ミリ秒に設定
-      }, 500); // 長押しと判定されるまでの間隔を500ミリ秒に設定
-    });
-
-    button.addEventListener("touchend", function () {
-      clearTimeout(decrementTimeout);
-      clearInterval(currentDecrementInterval);
-    });
-
-    button.addEventListener("touchcancel", function () {
-      clearTimeout(decrementTimeout);
-      clearInterval(currentDecrementInterval);
-    });
-
-    button.addEventListener("click", function () {
-      clearTimeout(decrementTimeout);
-      clearInterval(currentDecrementInterval); // クリックイベントの直前にインターバルをクリア
-      const id = this.getAttribute("data-product-id");
-      decrementProductQuantity(id);
-    });
-  });
-
-  document.querySelectorAll(".delete-column button").forEach((button) => {
-    button.addEventListener("click", function () {
-      const id = this.getAttribute("data-product-id");
-      removeProductFromCart(id);
-    });
+// 数量ボタンのイベントを設定
+function setupQuantityButtonEvents() {
+  const buttons = document.querySelectorAll(".quantity-button");
+  buttons.forEach((button) => {
+    button.addEventListener("mousedown", handleMouseDown);
+    button.addEventListener("mouseup", handleMouseUp);
+    button.addEventListener("mouseout", handleMouseOut);
+    button.addEventListener("touchstart", handleTouchStart);
+    button.addEventListener("touchend", handleTouchEnd);
+    button.addEventListener("touchcancel", handleTouchCancel);
+    button.addEventListener("click", handleClick);
   });
 }
+
+function handleMouseDown(event) {
+  const id = event.currentTarget.getAttribute("data-product-id");
+  const isIncrement = event.currentTarget.classList.contains("increment");
+
+  if (isIncrement) {
+    if (currentIncrementInterval) {
+      clearTimeout(incrementTimeout);
+      clearInterval(currentIncrementInterval);
+    }
+    incrementTimeout = setTimeout(() => {
+      currentIncrementInterval = setInterval(() => {
+        incrementProductQuantity(id);
+      }, 100); // 長押しの間隔を100ミリ秒に設定
+    }, 500); // 長押しと判定されるまでの間隔を500ミリ秒に設定
+  } else {
+    if (currentDecrementInterval) {
+      clearTimeout(decrementTimeout);
+      clearInterval(currentDecrementInterval);
+    }
+    decrementTimeout = setTimeout(() => {
+      currentDecrementInterval = setInterval(() => {
+        decrementProductQuantity(id);
+      }, 100); // 長押しの間隔を100ミリ秒に設定
+    }, 500); // 長押しと判定されるまでの間隔を500ミリ秒に設定
+  }
+}
+
+function handleMouseUp() {
+  clearTimeout(incrementTimeout);
+  clearInterval(currentIncrementInterval);
+  clearTimeout(decrementTimeout);
+  clearInterval(currentDecrementInterval);
+}
+
+function handleMouseOut() {
+  clearTimeout(incrementTimeout);
+  clearInterval(currentIncrementInterval);
+  clearTimeout(decrementTimeout);
+  clearInterval(currentDecrementInterval);
+}
+
+function handleTouchStart(event) {
+  const id = event.currentTarget.getAttribute("data-product-id");
+  const isIncrement = event.currentTarget.classList.contains("increment");
+
+  if (isIncrement) {
+    if (currentIncrementInterval) {
+      clearTimeout(incrementTimeout);
+      clearInterval(currentIncrementInterval);
+    }
+    incrementTimeout = setTimeout(() => {
+      currentIncrementInterval = setInterval(() => {
+        incrementProductQuantity(id);
+      }, 100); // 長押しの間隔を100ミリ秒に設定
+    }, 500); // 長押しと判定されるまでの間隔を500ミリ秒に設定
+  } else {
+    if (currentDecrementInterval) {
+      clearTimeout(decrementTimeout);
+      clearInterval(currentDecrementInterval);
+    }
+    decrementTimeout = setTimeout(() => {
+      currentDecrementInterval = setInterval(() => {
+        decrementProductQuantity(id);
+      }, 100); // 長押しの間隔を100ミリ秒に設定
+    }, 500); // 長押しと判定されるまでの間隔を500ミリ秒に設定
+  }
+}
+
+function handleTouchEnd() {
+  clearTimeout(incrementTimeout);
+  clearInterval(currentIncrementInterval);
+  clearTimeout(decrementTimeout);
+  clearInterval(currentDecrementInterval);
+}
+
+function handleTouchCancel() {
+  clearTimeout(incrementTimeout);
+  clearInterval(currentIncrementInterval);
+  clearTimeout(decrementTimeout);
+  clearInterval(currentDecrementInterval);
+}
+
+function handleClick(event) {
+  clearTimeout(incrementTimeout);
+  clearInterval(currentIncrementInterval); // クリックイベントの直前にインターバルをクリア
+  clearTimeout(decrementTimeout);
+  clearInterval(currentDecrementInterval); // クリックイベントの直前にインターバルをクリア
+  const id = event.currentTarget.getAttribute("data-product-id");
+  if (event.currentTarget.classList.contains("increment")) {
+    incrementProductQuantity(id);
+  } else {
+    decrementProductQuantity(id);
+  }
+}
+
+// ドキュメント全体の mouseup イベント
+document.addEventListener("mouseup", () => {
+  clearTimeout(incrementTimeout);
+  clearInterval(currentIncrementInterval);
+  clearTimeout(decrementTimeout);
+  clearInterval(currentDecrementInterval);
+});
 
 // 初期化処理の呼び出し
 setupEventHandlers();

@@ -212,10 +212,7 @@ a {
 
 .quantity-column span {
   margin: 0 8px; /* ボタンと個数表示の間に余白を追加 */
-}
-
-.quantity-column span {
   display: inline-block;
-  width: 50px; /* 必要に応じて幅を調整 */
+  width: 25px; /* 必要に応じて幅を調整 */
   text-align: center;
 }
