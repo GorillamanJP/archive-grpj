@@ -244,6 +244,8 @@ class Order_Order extends BaseClass
             $this->close();
 
             $this->send_notification("注文", "注文番号 {$this->id} 番の注文が受け取られました！");
+
+            $this->get_from_id($this->id);
         } catch (PDOException $pe) {
             $this->close();
             throw new Exception("データベースエラーです。", 1, $pe);
@@ -256,17 +258,25 @@ class Order_Order extends BaseClass
     public function call(): void
     {
         try {
-            $sql = "UPDATE order_orders SET is_call = 1 WHERE id = :id";
+            $sql = "UPDATE order_orders SET is_call = :is_call WHERE id = :id";
 
             $params = [
-                ":id" => $this->id
+                ":id" => $this->id,
+                ":is_call" => !$this->is_call ? "1" : "0"
             ];
 
             $stmt = $this->run_query($sql, $params);
 
-            $this->send_notification("注文", "注文番号 {$this->id} 番を呼び出しました！");
+            $this->get_from_id($this->id);
+
+            if ($this->is_call) {
+                $this->send_notification("注文", "注文番号 {$this->id} 番を呼び出しました！");
+            }else{
+                $this->send_notification("注文", "注文番号 {$this->id} 番の呼び出しをキャンセルしました！");
+            }
+
         } catch (PDOException $pe) {
-            throw new Exception("データベースエラーです。", 1, $pe);
+            throw new Exception("データベースエラーです。" . $pe->getMessage(), 1, $pe);
         } catch (Throwable $th) {
             throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
@@ -284,6 +294,8 @@ class Order_Order extends BaseClass
             $stmt = $this->run_query($sql, $params);
 
             $this->send_notification("注文", "注文番号 {$this->id} 番はキャンセルされました。");
+
+            $this->get_from_id($this->id);
         } catch (PDOException $pe) {
             throw new Exception("データベースエラーです。", 1, $pe);
         } catch (Throwable $th) {

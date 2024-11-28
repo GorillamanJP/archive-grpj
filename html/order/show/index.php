@@ -90,8 +90,8 @@ if ($order->get_order_order()->get_is_received()) {
                 <td><?= $order->get_order_order()->get_total_price() ?></td>
             </tr>
             <tr>
-                <th class="text-end">呼び出し</th>
-                <td><?= $order->get_order_order()->get_is_call() ? "呼び出し中" : "-" ?></td>
+                <th class="text-end">呼び出し（これは分離して目立つようにしてほしい）</th>
+                <td id="call_status">-</td>
             </tr>
         </table>
     </div>
@@ -101,10 +101,12 @@ if ($order->get_order_order()->get_is_received()) {
             <p class="text-center">通知音を鳴らす<input type="checkbox" name="allow_sound" id="allow_sound"></p>
         </div>
         <div class="alert alert-danger alert-custom" role="alert">
-            <p class="text-center">長時間受け取りに来ない場合はこちらからオーダーをキャンセルさせていただく場合がございます。</p>
+            <p class="text-center">長時間受け取りに来られない場合、オーダーをキャンセルさせていただく場合がございます。</p>
         </div>
     </div>
 </body>
+<audio id="notificationSound" src="./bell.wav" preload="auto"></audio>
 <script src="./check_receive.js"></script>
+<script src="./check_call.js"></script>
 
 </html>

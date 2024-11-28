@@ -19,7 +19,14 @@ try {
     $order = $order->get_order_order()->get_from_id($id);
     $order->call();
 
-    redirect_with_error("../list/", "注文番号 {$id} 番を呼び出しました！", "", "success");
+    $message = "";
+    if($order->get_is_call()){
+        $message = "注文番号 {$id} 番を呼び出しました！";
+    }else{
+        $message = "注文番号 {$id} 番の呼び出しをキャンセルしました！";
+    }
+
+    redirect_with_error("../list/", $message, "", "success");
 } catch (Throwable $e) {
     redirect_with_error("../list/", "エラーが発生しました。", $e->getMessage(), "danger");
 }
