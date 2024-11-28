@@ -84,7 +84,7 @@ session_start();
     <!-- URL生成セクション -->
     <div class="link-container">
         <h2>モバイルオーダーのリンク</h2>
-        <pre><span id="url_domain"></span>/order/?magic_char=<?= get_magic_char(); ?></pre>
+        <pre id="magic_char"><span id="url_domain"></span>/order/?magic_char=<?= get_magic_char(); ?></pre>
         <button class="copy-button" onclick="copyToClipboard()">リンクをコピー</button>
     </div>
 
@@ -104,7 +104,7 @@ session_start();
 
         // コピー用の関数
         function copyToClipboard() {
-            const urlText = document.querySelector("#url_domain").innerText + "/order/?magic_char=<?= hash("SHA3-512", getenv("PASS_PHRASE")); ?>";
+            const urlText = document.getElementById("magic_char").innerText;
             navigator.clipboard.writeText(urlText)
                 .then(() => {
                     alert("リンクがコピーされました！");
