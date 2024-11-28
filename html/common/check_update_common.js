@@ -26,6 +26,9 @@ async function get_update() {
                 run_custom_function();
             }
         } else {
+            if (resp.status === 403) {
+                location.reload();
+            }
             console.error("Error: " + resp.statusText);
         }
     } catch (error) {
@@ -58,6 +61,9 @@ async function check_update() {
                 await get_update();
             }
         } else {
+            if (resp.status === 403) {
+                location.reload();
+            }
             console.error("Update Error: " + resp.statusText);
         }
     } catch (error) {
