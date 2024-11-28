@@ -20,6 +20,7 @@
                 <tbody>
             </table>
         </td>
+        <td><?= $order->get_order_order()->get_is_call() ? "呼び出し中" : "-" ?></td>
         <td>
             <form action="../receive/" method="post">
                 <input type="hidden" name="order_id" id="order_id" value="<?= $order->get_order_order()->get_id() ?>">
