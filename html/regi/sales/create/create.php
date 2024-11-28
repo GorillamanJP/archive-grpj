@@ -64,16 +64,16 @@ if (verify_int_value($total_amount, $total_price, $received_price, $returned_pri
     redirect_with_error($back_url_fail, "数値エラー", "入力内容のうちいずれかが小数になっているか、あまりにも大きい数になっている可能性があります。", "danger");
 }
 $checksum_txt = "";
-foreach($product_names as $name){
+foreach ($product_names as $name) {
     $checksum_txt .= $name;
 }
-foreach($product_prices as $price){
+foreach ($product_prices as $price) {
     $checksum_txt .= $price;
 }
-foreach($quantities as $quantity){
+foreach ($quantities as $quantity) {
     $checksum_txt .= $quantity;
 }
-foreach($subtotals as $subtotal){
+foreach ($subtotals as $subtotal) {
     $checksum_txt .= $subtotal;
 }
 $checksum_txt .= $total_amount;
@@ -83,7 +83,7 @@ $checksum_txt .= $returned_price;
 
 $checksum = hash("sha256", $checksum_txt);
 
-if(!isset($_POST["checksum"]) || $_POST["checksum"] != $checksum){
+if (!isset($_POST["checksum"]) || $_POST["checksum"] != $checksum) {
     redirect_with_error($back_url_fail, "チェックサムエラーです。", "入力が改ざんされている可能性があります。", "danger");
 }
 
