@@ -55,7 +55,7 @@ class Order extends BaseClassGroup
             throw new Exception($e->getMessage(), $e->getCode(), $e);
         } catch (Throwable $th) {
             $this->order_order->delete();
-            throw new Exception("予期しないエラーが発生しました。" . $th->getMessage(), -1, $th);
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
 

@@ -85,6 +85,18 @@ try {
                 <th class="text-end">合計</th>
                 <td>¥<?= $order->get_order_order()->get_total_price() ?></td>
             </tr>
+            <tr>
+                <th>呼び出し</th>
+                <td><?= $order->get_order_order()->get_is_call() ? "呼び出し中" : "-" ?></td>
+            </tr>
+            <tr>
+                <th>キャンセル</th>
+                <td><?= $order->get_order_order()->get_is_cancel() ? "キャンセル" : "-" ?></td>
+            </tr>
+            <tr>
+                <th>受け取り</th>
+                <td><?= $order->get_order_order()->get_is_received() ? "済" : "-" ?></td>
+            </tr>
         </table>
         <div class="text-center">
             <a href="../list/" class="btn btn-outline-secondary btn-lg mb-4">戻る</a>

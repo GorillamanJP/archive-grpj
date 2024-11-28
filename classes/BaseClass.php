@@ -27,12 +27,15 @@ class BaseClass
         $notification = new Notification();
         $notification->create($title, $message);
     }
-    public function run_query(string $sql, array $params):PDOStatement{
+    public function run_query(string $sql, array $params): PDOStatement
+    {
         $this->open();
 
         $stmt = $this->pdo->prepare($sql);
 
         $stmt->execute($params);
+
+        $this->close();
 
         return $stmt;
     }

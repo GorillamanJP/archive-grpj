@@ -49,12 +49,13 @@ $orders = $order_obj->get_all();
                     <th>注文番号</th>
                     <th>注文日時</th>
                     <th>詳細</th>
-                    <th>受け取り</th>
+                    <th>状態</th>
+                    <th>操作</th>
                 </tr>
             </thead>
             <tbody id="table">
                 <tr>
-                    <td colspan="4">
+                    <td colspan="5">
                         <h3>読み込み中…</h3>
                     </td>
                 </tr>

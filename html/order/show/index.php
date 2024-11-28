@@ -89,17 +89,24 @@ if ($order->get_order_order()->get_is_received()) {
                 <th class="text-end">合計</th>
                 <td><?= $order->get_order_order()->get_total_price() ?></td>
             </tr>
+            <tr>
+                <th class="text-end">呼び出し（これは分離して目立つようにしてほしい）</th>
+                <td id="call_status">-</td>
+            </tr>
         </table>
     </div>
     <div class="container mt-4">
-        <div class="alert alert-warning alert-custom" role="alert">
-            <p class="text-center">店頭にある表示用QRコードを使ってこの画面を再表示したうえで、店員にお見せください。</p>
+        <div class="alert alert-info alert-custom" role="alert">
+            <p class="text-center">この画面を開いたままにしておくと、出来上がりが分かって便利です。</p>
+            <p class="text-center">通知音を鳴らす<input type="checkbox" name="allow_sound" id="allow_sound"></p>
         </div>
         <div class="alert alert-danger alert-custom" role="alert">
-            <p class="text-center">なお、長時間受け取りに来ない場合はこちらからオーダーをキャンセルさせていただく場合がございます。</p>
+            <p class="text-center">長時間受け取りに来られない場合、オーダーをキャンセルさせていただく場合がございます。</p>
         </div>
     </div>
 </body>
+<audio id="notificationSound" src="./bell.wav" preload="auto"></audio>
 <script src="./check_receive.js"></script>
+<script src="./check_call.js"></script>
 
 </html>

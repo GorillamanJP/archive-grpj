@@ -97,5 +97,5 @@ try {
     setcookie("order", $enc_id, $expire, "/");
     redirect_with_error("../show/", "注文番号 {$id}番 で処理を完了しました。", "", "success");
 } catch (\Throwable $e) {
-    redirect_with_error("/order/", "エラーが発生しました。", $e->getMessage(), "danger");
+    redirect_with_error("/order/", "エラーが発生しました。".$e->getPrevious()->getMessage(), $e->getMessage(), "danger");
 }
