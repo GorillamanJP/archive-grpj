@@ -82,15 +82,15 @@ try {
                 <td>¥<?= $order->get_order_order()->get_total_price() ?></td>
             </tr>
             <tr>
-                <th>呼び出し</th>
+                <th class="text-end">呼び出し</th>
                 <td><?= $order->get_order_order()->get_is_call() ? "呼び出し中" : "-" ?></td>
             </tr>
             <tr>
-                <th>キャンセル</th>
+                <th class="text-end">キャンセル</th>
                 <td><?= $order->get_order_order()->get_is_cancel() ? "キャンセル" : "-" ?></td>
             </tr>
             <tr>
-                <th>受け取り</th>
+                <th class="text-end">受け取り</th>
                 <td><?= $order->get_order_order()->get_is_received() ? "済" : "-" ?></td>
             </tr>
         </table>

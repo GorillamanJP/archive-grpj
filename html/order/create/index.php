@@ -156,7 +156,7 @@ $_SESSION["order"]["data"]["total_price"] = $total_price;
         <div class="text-center mt-4">
             <form action="./create.php" method="post">
                 <input type="hidden" name="checksum" id="checksum" value="0">
-                <button type="submit" class="btn btn-outline-primary btn-lg round-button">注文確定</button>
+                <p><button type="submit" class="btn btn-outline-primary btn-lg round-button">注文確定</button></p>
                 <a href="/order/" class="btn btn-outline-secondary btn-lg round-button">戻る</a>
             </form>
         </div>

@@ -76,9 +76,9 @@ unset($_SESSION["order"]["order_items"]);
                     </tr>
                 </tbody>
             </table>
-            <form action="./create/" method="post" class="text-center">
+            <form action="./create/" method="post" class="text-center" id="form_cart">
                 <div id="form"></div>
-                <input type="submit" value="確認へ進む→" class="btn btn-success d-inline-block">
+                <input id="submit_btn" type="submit" value="確認へ進む→" class="btn btn-success d-inline-block" disabled>
             </form>
         </div>
     </div>
