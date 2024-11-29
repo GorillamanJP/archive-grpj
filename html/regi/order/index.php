@@ -87,14 +87,14 @@ session_start();
 
     <!-- 情報提供セクション -->
     <div class="alert-info">
-        <p>このリンクをコピーして、モバイルオーダーを開始することができます。モバイル端末でこのURLにアクセスし、注文を受け付けてください。</p>
+        <p class="text-center">このリンクをコピーして、モバイルオーダーを開始することができます。モバイル端末でこのURLにアクセスし、注文を受け付けてください。</p>
     </div>
 
     <div class="text-center my-3">
-    <a href="/regi/order/list/" class="btn btn-outline-primary btn-lg p-2 mx-1">準備中一覧</a>
-    <a href="/regi/order/history/" class="btn btn-outline-primary btn-lg p-2 mx-1">履歴一覧</a>
+        <a href="/regi/order/list/" class="btn btn-outline-primary btn-lg p-2 mx-1">受け取り待ち一覧</a>
+        <a href="/regi/order/history/" class="btn btn-outline-primary btn-lg p-2 mx-1">履歴一覧</a>
     </div>
-
+    <div id="notifications" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
     <script>
         // URLのホスト名を動的に挿入
         document.getElementById("url_domain").innerText = window.location.hostname;
@@ -111,6 +111,7 @@ session_start();
                 });
         }
     </script>
+    <script src="/regi/notify/check_notify.js"></script>
 </body>
 
 </html>
