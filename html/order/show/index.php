@@ -114,18 +114,18 @@ if ($order->get_order_order()->get_is_cancel()) {
     <div class="container mt-4">
         <div class="alert alert-info alert-custom" role="alert">
             <p class="text-center my-1">この画面を開いたままにしておくと、呼び出しが分かって便利です。</p>
-            <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-                <input type="checkbox" class="btn-check" id="allow_sound" autocomplete="off">
-                <label class="btn btn-outline-primary" for="allow_sound">通知音を鳴らす</label>
+            <div class="d-flex justify-content-center align-items-center form-check form-switch">
+                <label class="form-check-label me-5" for="allow_sound">呼び出し音を鳴らす</label>
+                <input class="form-check-input" type="checkbox" role="switch" id="allow_sound">
             </div>
         </div>
         <div class="alert alert-danger alert-custom" role="alert">
             <span class="text-center">長時間受け取りに来られない場合、オーダーをキャンセルさせていただく場合がございます。</span>
         </div>
     </div>
+    <audio id="notificationSound" src="./bell.wav" preload="auto"></audio>
+    <script src="./check_receive.js"></script>
+    <script src="./check_call.js"></script>
 </body>
-<audio id="notificationSound" src="./bell.wav" preload="auto"></audio>
-<script src="./check_receive.js"></script>
-<script src="./check_call.js"></script>
 
 </html>

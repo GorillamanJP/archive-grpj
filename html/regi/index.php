@@ -76,9 +76,9 @@ unset($_SESSION["regi"]["data"]);
                     </tr>
                 </tbody>
             </table>
-            <form action="./sales/create/" method="post" class="text-center">
+            <form action="./sales/create/" method="post" class="text-center" id="form_cart">
                 <div id="form"></div>
-                <input type="submit" value="支払いへ進む→" class="btn btn-success d-inline-block">
+                <input id="submit_btn" type="submit" value="支払いへ進む→" class="btn btn-success d-inline-block" disabled>
             </form>
         </div>
     </div>
