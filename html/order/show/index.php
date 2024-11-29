@@ -68,7 +68,7 @@ if ($order->get_order_order()->get_is_cancel()) {
 <body>
     <div class="container">
         <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
-        <h1 class="text-center my-3">注文番号：<?= $order_id ?></h1>
+        <h1 class="text-center mb-3">注文番号：<?= $order_id ?></h1>
         <h2 class="text-center my-3">注文内容</h2>
         <table class="table table-striped table-success">
             <tr>
@@ -113,7 +113,7 @@ if ($order->get_order_order()->get_is_cancel()) {
     </div>
     <div class="container mt-4">
         <div class="alert alert-info alert-custom" role="alert">
-            <p class="text-center my-1">この画面を開いたままにしておくと、出来上がりが分かって便利です。</p>
+            <p class="text-center my-1">この画面を開いたままにしておくと、呼び出しが分かって便利です。</p>
             <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
                 <input type="checkbox" class="btn-check" id="allow_sound" autocomplete="off">
                 <label class="btn btn-outline-primary" for="allow_sound">通知音を鳴らす</label>
