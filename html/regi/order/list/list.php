@@ -46,10 +46,12 @@
                 <input type="hidden" name="order_id" id="order_id" value="<?= $order->get_order_order()->get_id() ?>">
                 <button type="submit" class="btn btn-outline-primary round-button">呼出</button>
             </form>
-            <form action="../cancel/" method="post">
+            <form action="../cancel/" method="post" class="cancel-form">
                 <input type="hidden" name="order_id" id="order_id" value="<?= $order->get_order_order()->get_id() ?>">
-                <button type="submit" class="btn btn-outline-danger round-button">キャンセル</button>
+                <button type="button" class="btn btn-outline-danger round-button" data-bs-toggle="modal"
+                    data-bs-target="#cancelModal" data-id="<?= $order->get_order_order()->get_id() ?>">取消</button>
             </form>
+
         </td>
     </tr>
 <?php endforeach; ?>
