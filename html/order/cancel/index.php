@@ -38,11 +38,29 @@ setcookie("order", "", 0, "/");
     <title>モバイルオーダー/キャンセル</title>
     <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/header.php"; ?>
 </head>
+<style>
+    .custom-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        text-align: center;
+    }
+
+    .custom-image {
+        max-width: 100px;
+        margin-top: 20px;
+    }
+</style>
 
 <body>
-    <h1>注文はキャンセルされました。</h1>
-    <p><span id="back_second">30</span>秒後にトップページに戻ります。</p>
-    <p><a href="/order/">戻る</a></p>
+    <div class="container custom-container">
+        <h1 class="display-4">注文はキャンセルされました。</h1>
+        <p><span id="back_second">30</span>秒後にトップページに戻ります。</p>
+        <p><a href="/order/">戻る</a></p>
+        <img src="/order/receive/ojigi_tenin_man.png" alt="お辞儀している人物" class="custom-image">
+    </div>
 </body>
 
 <script>
