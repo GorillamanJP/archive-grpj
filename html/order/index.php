@@ -23,10 +23,15 @@ unset($_SESSION["order"]["order_items"]);
         -webkit-user-select: none;
         /* テキスト選択を無効にする */
     }
+
+    body {
+        /* パディング削減のため上書き */
+        padding-top: 1rem;
+    }
 </style>
 
 <body>
-    <h1 class="text-center my-3">モバイルオーダー</h1>
+    <h1 class="text-center mb-3">モバイルオーダー</h1>
     <div class="container regia">
         <div class="content1">
             <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
