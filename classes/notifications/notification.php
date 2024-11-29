@@ -151,4 +151,40 @@ class Notification extends BaseClass
             throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
+
+    public function gets_range(int $offset, int $limit): array|null
+    {
+        try {
+            $this->open();
+            $sql = "SELECT id FROM notifications ORDER BY id DESC LIMIT :limit OFFSET :offset";
+
+            $stmt = $this->pdo->prepare($sql);
+
+            $stmt->bindValue(":limit", $limit, PDO::PARAM_INT);
+            $stmt->bindValue(":offset", $offset, PDO::PARAM_INT);
+
+            $stmt->execute();
+
+            $this->close();
+
+            $notifications = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            if ($notifications) {
+                $notifications_array = [];
+                foreach ($notifications as $notification) {
+                    $notification_obj = new Notification();
+                    $notifications_array[] = $notification_obj->get_from_id($notification["id"]);
+                }
+                return $notifications_array;
+            } else {
+                return null;
+            }
+        } catch (PDOException $pe) {
+            $this->close();
+            throw new Exception("データベースエラーです。".$pe->getMessage(), 1, $pe);
+        } catch (Throwable $th) {
+            $this->close();
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
+        }
+    }
 }

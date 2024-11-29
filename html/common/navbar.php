@@ -26,6 +26,9 @@
                 <li class="nav-item">
                     <a class="nav-link text-white" href="/regi/users/list/"><i class="fas fa-user"></i> ユーザー管理</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="/regi/notify/history/"><i class="fas fa-bell"></i> 通知</a>
+                </li>
             </ul>
             <!-- 右寄せユーザー名とログアウトボタン -->
             <ul class="navbar-nav ms-auto">
