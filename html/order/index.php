@@ -16,11 +16,15 @@ unset($_SESSION["order"]["order_items"]);
     <link rel="stylesheet" href="/common/regi.css">
 </head>
 <style>
-html, body {
-    touch-action: pan-x pan-y; /* スクロールやスライドは有効にし、ズームは無効にする */
-    -webkit-user-select: none; /* テキスト選択を無効にする */
-}
+    html,
+    body {
+        touch-action: pan-x pan-y;
+        /* スクロールやスライドは有効にし、ズームは無効にする */
+        -webkit-user-select: none;
+        /* テキスト選択を無効にする */
+    }
 </style>
+
 <body>
     <h1 class="text-center my-3">モバイルオーダー</h1>
     <div class="container regia">
@@ -62,14 +66,14 @@ html, body {
                 </thead>
                 <tbody>
                     <tr>
-                        <td id="total-count">0個</td>
-                        <td id="total-price">0円</td>
+                        <td><span id="total-count">0</span>個</td>
+                        <td><span id="total-price">0</span>円</td>
                     </tr>
                 </tbody>
             </table>
-            <form action="./create/" method="post">
+            <form action="./create/" method="post" class="text-center">
                 <div id="form"></div>
-                <input type="submit" value="確認へ進む→" class="btn btn-success">
+                <input type="submit" value="確認へ進む→" class="btn btn-success d-inline-block">
             </form>
         </div>
     </div>

@@ -17,13 +17,22 @@ unset($_SESSION["regi"]["data"]);
     <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/header.php"; ?>
     <link rel="stylesheet" href="/common/regi.css">
 </head>
+<style>
+    html,
+    body {
+        touch-action: pan-x pan-y;
+        /* スクロールやスライドは有効にし、ズームは無効にする */
+        -webkit-user-select: none;
+        /* テキスト選択を無効にする */
+    }
+</style>
 
 <body>
     <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/navbar.php"; ?>
     <!-- 残りのページ内容 -->
     <h1 class="text-center my-3">レジ</h1>
     <div class="container regia">
-        
+
         <div class="content1">
             <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
             <h1 class="text-center">商品一覧</h1>
