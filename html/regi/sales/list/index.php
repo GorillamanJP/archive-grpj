@@ -51,7 +51,7 @@ $detail = new Detail();
         <p class="text-center my-3" style="font-size: 1.2em;">最終更新時刻:<span id="last-update">0000/0/0 00:00:00</span></p>
         <div class="text-center mb-3">
             <a href="../total/" class="btn btn-outline-primary btn-lg-custom p-2 mx-1">総売上一覧</a>
-            <a href="../../" class="btn btn-outline-success btn-lg-custom p-2 mx-1">レジ画面へ</a>
+            <a href="../../" class="btn btn-outline-success btn-lg-custom p-2 mx-1">レジ画面</a>
             <div class="alert alert-info mt-2">
                 詳細を見るには、項目を押してください。
             </div>

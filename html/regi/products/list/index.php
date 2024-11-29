@@ -33,7 +33,7 @@ $products = $product_obj->get_all();
         <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
         <div class="text-center mb-3">
             <a href="../create/" class="btn btn-outline-primary btn-lg-custom p-2 mx-1">商品登録</a>
-            <a href="../../" class="btn btn-outline-success btn-lg-custom p-2 mx-1">レジ画面へ</a>
+            <a href="../../" class="btn btn-outline-success btn-lg-custom p-2 mx-1">レジ画面</a>
         </div>
         <div class="table-responsive my-4">
             <table class="table table-bordered table-hover text-center align-middle">

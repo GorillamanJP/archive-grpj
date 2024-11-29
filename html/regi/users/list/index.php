@@ -33,7 +33,7 @@ session_start();
         <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
         <div class="text-center my-3">
             <a href="../create/" class="btn btn-outline-primary btn-lg p-2 mx-1">ユーザー登録</a>
-            <a href="../../" class="btn btn-outline-success btn-lg p-2 mx-1">レジ画面へ</a>
+            <a href="../../" class="btn btn-outline-success btn-lg p-2 mx-1">レジ画面</a>
         </div>
         <?php if (is_null($users)): ?>
             <p>ユーザーはいません</p>

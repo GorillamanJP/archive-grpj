@@ -33,8 +33,8 @@ $orders = $order_obj->get_all();
         <p class="text-center my-3" style="font-size: 1.2em;">最終更新時刻:<span id="last-update">0000/0/0 00:00:00</span></p>
 
         <div class="text-center mb-3">
-            <a href="../../" class="btn btn-outline-success btn-lg-custom p-2 mx-1">レジ画面へ</a>
-            <a href="../history/" class="btn btn-outline-success btn-lg-custom p-2 mx-1">履歴一覧へ</a>
+            <a href="../../" class="btn btn-outline-success btn-lg-custom p-2 mx-1">レジ画面</a>
+            <a href="../history/" class="btn btn-outline-success btn-lg-custom p-2 mx-1">履歴一覧</a>
         </div>
         <table class="table table-striped table-bordered table-hover text-center align-middle table-primary">
             <thead>

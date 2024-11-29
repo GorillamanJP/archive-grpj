@@ -34,8 +34,8 @@ $orders = $order_obj->get_all_all();
         <p class="text-center my-3" style="font-size: 1.2em;">最終更新時刻:<span id="last-update">0000/0/0 00:00:00</span></p>
 
         <div class="text-center mb-3">
-            <a href="../../" class="btn btn-outline-success btn-lg-custom p-2 mx-1">レジ画面へ</a>
-            <a href="../list/" class="btn btn-outline-success btn-lg-custom p-2 mx-1">準備中一覧へ</a>
+            <a href="../../" class="btn btn-outline-success btn-lg-custom p-2 mx-1">レジ画面</a>
+            <a href="../list/" class="btn btn-outline-success btn-lg-custom p-2 mx-1">準備中一覧</a>
         </div>
         <!-- ページネーション -->
         <div class="d-flex justify-content-center">
