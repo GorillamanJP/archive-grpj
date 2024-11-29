@@ -76,7 +76,7 @@ unset($_SESSION['message_type']);
                 </div>
             <?php endif ?>
         </div>
-        <button type="button" class="btn-close bi bi-x-circle" aria-label="Close" onclick="hideCustomAlert()"></button>
+        <button type="button" class="btn-close" aria-label="Close" onclick="hideCustomAlert()"><i class="bi bi-x-circle"></i></button>
     </div>
 <?php endif; ?>
 

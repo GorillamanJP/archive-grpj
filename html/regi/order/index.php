@@ -1,10 +1,6 @@
-<?php
-require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
-?>
-<?php
-require_once $_SERVER['DOCUMENT_ROOT'] . "/../functions/get_magic_char.php";
-session_start();
-?>
+<?php require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php"; ?>
+<?php require_once $_SERVER['DOCUMENT_ROOT'] . "/../functions/get_magic_char.php";
+session_start(); ?>
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -64,40 +60,7 @@ session_start();
             background-color: #218838;
         }
 
-        .custom-alert {
-            position: fixed;
-            top: 20%;
-            /* 表示位置を上に調整 */
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 1050;
-            display: none;
-            padding: 10px 40px 10px 10px;
-            border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 80%;
-            white-space: pre-wrap;
-        }
-
-        .custom-alert-success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .custom-alert-warning {
-            background-color: #fff3cd;
-            color: #856404;
-            border: 1px solid #ffeeba;
-        }
-
-        .custom-alert-danger {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
-        .custom-alert-info {
+        .alert-info {
             background-color: #d1ecf1;
             border-color: #bee5eb;
             color: #0c5460;
@@ -110,7 +73,7 @@ session_start();
 
 <body>
     <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/navbar.php"; ?>
-
+    <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
     <!-- URL生成セクション -->
     <div class="link-container">
         <h2>モバイルオーダーのリンク</h2>
@@ -120,54 +83,29 @@ session_start();
 
     <!-- 情報提供セクション -->
     <div class="alert-info">
-        <p class="text-center">このリンクをコピーして、モバイルオーダーを開始することができます。モバイル端末でこのURLにアクセスし、注文を受け付けてください。</p>
+        <p>このリンクをコピーして、モバイルオーダーを開始することができます。モバイル端末でこのURLにアクセスし、注文を受け付けてください。</p>
     </div>
 
     <div class="text-center my-3">
-        <a href="/regi/order/list/" class="btn btn-outline-primary btn-lg p-2 mx-1">受け取り待ち一覧</a>
-        <a href="/regi/order/history/" class="btn btn-outline-primary btn-lg p-2 mx-1">履歴一覧</a>
+        <a href="/regi/order/list/" class="btn btn-outline-primary btn-lg p-2 mx-1">準備中一覧へ</a>
+        <a href="/regi/order/history/" class="btn btn-outline-primary btn-lg p-2 mx-1">履歴一覧へ</a>
     </div>
-
-    <!-- カスタムアラート要素 -->
-    <div id="customAlert" class="custom-alert custom-alert-info">
-        <div class="message-content"></div>
-        <button type="button" class="btn-close" aria-label="Close" onclick="hideCustomAlert()"></button>
-    </div>
-    <div id="notifications" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
     <script>
-        // URLのホスト名を動的に挿入
+        // URLのホスト名を動的に挿入 
         document.getElementById("url_domain").innerText = window.location.hostname;
 
-        // コピー用の関数
+        // コピー用の関数 
         function copyToClipboard() {
             const urlText = document.getElementById("magic_char").innerText;
             navigator.clipboard.writeText(urlText)
                 .then(() => {
-                    showCustomAlert("リンクがコピーされました！", "info");
+                    alert("リンクがコピーされました！");
                 })
                 .catch((err) => {
-                    showCustomAlert("コピーに失敗しました。", "danger");
+                    alert("コピーに失敗しました。");
                 });
         }
-
-        function showCustomAlert(message, type) {
-            const alertBox = document.getElementById('customAlert');
-            alertBox.className = `custom-alert custom-alert-${type}`;
-            alertBox.querySelector('.message-content').innerHTML = message;
-            alertBox.style.display = 'block';
-            setTimeout(() => {
-                alertBox.style.display = 'none';
-            }, 5000); // 5秒後に自動的に消える
-        }
-
-        function hideCustomAlert() {
-            const alertBox = document.getElementById('customAlert');
-            if (alertBox) {
-                alertBox.style.display = 'none';
-            }
-        }
     </script>
-    <script src="/regi/notify/check_notify.js"></script>
 </body>
 
 </html>
