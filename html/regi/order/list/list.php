@@ -20,7 +20,19 @@
                 <tbody>
             </table>
         </td>
-        <td><?= $order->get_order_order()->get_is_call() ? "呼び出し中" : "-" ?></td>
+        <td>
+            <ul class="list-group list-group-flush">
+                <?php if ($order->get_order_order()->get_is_call()): ?>
+                    <li class="list-group-item">呼び出し中</li>
+                <?php endif ?>
+                <?php if ($order->get_order_order()->get_is_cancel()): ?>
+                    <li class="list-group-item">キャンセル済</li>
+                <?php endif ?>
+                <?php if ($order->get_order_order()->get_is_received()): ?>
+                    <li class="list-group-item">受け取り済</li>
+                <?php endif ?>
+            </ul>
+        </td>
         <td>
             <form action="../receive/" method="post">
                 <input type="hidden" name="order_id" id="order_id" value="<?= $order->get_order_order()->get_id() ?>">
