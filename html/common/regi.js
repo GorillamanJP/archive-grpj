@@ -126,6 +126,13 @@ function updateCart() {
     });
   });
 
+  // カートの中を見てボタンを入り切りする
+  if (document.getElementById("form").innerHTML == "") {
+    document.getElementById("submit_btn").disabled = true;
+  } else {
+    document.getElementById("submit_btn").disabled = false;
+  }
+
   // Adjust stock after updating the cart
   updateStock();
   adjustCartForStock();
