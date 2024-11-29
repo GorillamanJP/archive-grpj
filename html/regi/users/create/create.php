@@ -27,7 +27,7 @@ $user_name = htmlspecialchars($_POST["user_name"]);
 $password = htmlspecialchars($_POST["password"]);
 $password_re_input = htmlspecialchars($_POST["password_re_input"]);
 
-if($password != $password_re_input){
+if ($password != $password_re_input) {
     redirect_with_error("./", "パスワードの入力内容が一致しません。", "", "warning");
 }
 
