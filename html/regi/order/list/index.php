@@ -55,6 +55,41 @@ $orders = $order_obj->get_all();
             </tbody>
         </table>
     </div>
+
+    <!-- キャンセル確認モーダル -->
+    <div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cancelModalLabel">キャンセル確認</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    本当にこの注文を取り消しますか？
+                    <form id="confirmCancelForm" action="../cancel/" method="post">
+                        <input type="hidden" name="order_id" id="modalOrderId">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+                    <button type="submit" form="confirmCancelForm" class="btn btn-danger">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const cancelModal = document.getElementById('cancelModal');
+            cancelModal.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+                const orderId = button.getAttribute('data-id');
+                const modalOrderId = document.getElementById('modalOrderId');
+                modalOrderId.value = orderId;
+            });
+        });
+    </script>
+
     <!-- 通知領域 -->
     <div id="notifications" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
     <!-- 通知領域　ここまで -->

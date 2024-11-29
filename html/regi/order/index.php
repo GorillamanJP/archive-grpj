@@ -1,10 +1,6 @@
-<?php
-require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
-?>
-<?php
-require_once $_SERVER['DOCUMENT_ROOT'] . "/../functions/get_magic_char.php";
-session_start();
-?>
+<?php require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php"; ?>
+<?php require_once $_SERVER['DOCUMENT_ROOT'] . "/../functions/get_magic_char.php";
+session_start(); ?>
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -77,7 +73,7 @@ session_start();
 
 <body>
     <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/navbar.php"; ?>
-
+    <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
     <!-- URL生成セクション -->
     <div class="link-container">
         <h2>モバイルオーダーのリンク</h2>
@@ -87,19 +83,18 @@ session_start();
 
     <!-- 情報提供セクション -->
     <div class="alert-info">
-        <p class="text-center">このリンクをコピーして、モバイルオーダーを開始することができます。モバイル端末でこのURLにアクセスし、注文を受け付けてください。</p>
+        <p>このリンクをコピーして、モバイルオーダーを開始することができます。モバイル端末でこのURLにアクセスし、注文を受け付けてください。</p>
     </div>
 
     <div class="text-center my-3">
-        <a href="/regi/order/list/" class="btn btn-outline-primary btn-lg p-2 mx-1">受け取り待ち一覧</a>
-        <a href="/regi/order/history/" class="btn btn-outline-primary btn-lg p-2 mx-1">履歴一覧</a>
+        <a href="/regi/order/list/" class="btn btn-outline-primary btn-lg p-2 mx-1">準備中一覧へ</a>
+        <a href="/regi/order/history/" class="btn btn-outline-primary btn-lg p-2 mx-1">履歴一覧へ</a>
     </div>
-    <div id="notifications" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
     <script>
-        // URLのホスト名を動的に挿入
+        // URLのホスト名を動的に挿入 
         document.getElementById("url_domain").innerText = window.location.hostname;
 
-        // コピー用の関数
+        // コピー用の関数 
         function copyToClipboard() {
             const urlText = document.getElementById("magic_char").innerText;
             navigator.clipboard.writeText(urlText)
@@ -111,7 +106,6 @@ session_start();
                 });
         }
     </script>
-    <script src="/regi/notify/check_notify.js"></script>
 </body>
 
 </html>
