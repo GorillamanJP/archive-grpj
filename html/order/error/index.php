@@ -16,6 +16,7 @@ unset($_SESSION["order"]["warning"]);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>エラー</title>
+    <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/header.php"; ?>
 </head>
 <body>
     <h1>エラー</h1>

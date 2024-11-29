@@ -4,7 +4,7 @@ async function check_call() {
         if (response.ok) {
             const data = await response.json();
             if (data.is_call) {
-                document.getElementById("call_status").innerText = "呼び出し中";
+                document.getElementById("call_status").style = "";
                 if (document.getElementById('allow_sound').checked) {
                     const sound = document.getElementById('notificationSound');
                     if (sound) {
@@ -13,6 +13,8 @@ async function check_call() {
                         });
                     }
                 }
+            } else {
+                document.getElementById("call_status").style = "display: none;"
             }
         }
     } catch (error) {

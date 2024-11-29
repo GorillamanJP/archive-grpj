@@ -3,18 +3,30 @@ session_start();
 ?>
 <!DOCTYPE html>
 <html lang="ja">
+<style>
+    .alert-info {
+        text-align: center;
+        background-color: #d1ecf1; /* 背景色 */
+        border-color: #bee5eb; /* ボーダー色 */
+        color: #0c5460; /* 文字色 */
+        border-radius: 8px; /* 丸みを持たせた角 */
+        max-width: 600px; /* 最大横幅を指定 */
+        width: 90%; /* 横幅を親要素の90%に設定 */
+        margin: 0 auto; /* 左右自動マージンで中央揃え */
+        font-weight: bold; /* リンク文字を太字に */
+        padding: 5px ; /* 上下10px、左右25pxの余白 */
+        margin-top: 20px; /* 上部の余白 */
+    }
+</style>
+
+
+
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>レジログイン</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
-        crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <title>レジ/ログイン</title>
+    <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/header.php"; ?>
 </head>
 
 <body>
@@ -41,8 +53,10 @@ session_start();
                     </div>
                 </form>
             </div>
+        </div><br>
+        <div class="alert-info">
+            <p><a href="/order/">モバイルオーダーはこちら</a></p>
         </div>
-        <p><a href="/order/">モバイルオーダーはこちら</a></p>
     </div>
 </body>
 

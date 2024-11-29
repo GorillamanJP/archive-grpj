@@ -11,11 +11,8 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>モバイルオーダー@レジ</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <title>レジ/モバイルオーダー</title>
+    <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/header.php"; ?>
     <style>
         body {
             /*font-family: 'Arial', sans-serif;*/
@@ -123,12 +120,12 @@ session_start();
 
     <!-- 情報提供セクション -->
     <div class="alert-info">
-        <p>このリンクをコピーして、モバイルオーダーを開始することができます。モバイル端末でこのURLにアクセスし、注文を受け付けてください。</p>
+        <p class="text-center">このリンクをコピーして、モバイルオーダーを開始することができます。モバイル端末でこのURLにアクセスし、注文を受け付けてください。</p>
     </div>
 
     <div class="text-center my-3">
-        <a href="/regi/order/list/" class="btn btn-outline-primary btn-lg p-2 mx-1">準備中一覧へ</a>
-        <a href="/regi/order/history/" class="btn btn-outline-primary btn-lg p-2 mx-1">履歴一覧へ</a>
+        <a href="/regi/order/list/" class="btn btn-outline-primary btn-lg p-2 mx-1">受け取り待ち一覧</a>
+        <a href="/regi/order/history/" class="btn btn-outline-primary btn-lg p-2 mx-1">履歴一覧</a>
     </div>
 
     <!-- カスタムアラート要素 -->
@@ -136,7 +133,7 @@ session_start();
         <div class="message-content"></div>
         <button type="button" class="btn-close" aria-label="Close" onclick="hideCustomAlert()"></button>
     </div>
-
+    <div id="notifications" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
     <script>
         // URLのホスト名を動的に挿入
         document.getElementById("url_domain").innerText = window.location.hostname;
@@ -170,6 +167,7 @@ session_start();
             }
         }
     </script>
+    <script src="/regi/notify/check_notify.js"></script>
 </body>
 
 </html>

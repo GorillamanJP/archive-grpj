@@ -233,7 +233,7 @@ class Order_Order extends BaseClass
     {
         try {
             $this->open();
-            $sql = "UPDATE order_orders SET is_received = 1 WHERE id = :id";
+            $sql = "UPDATE order_orders SET is_received = 1, is_call = 0, is_cancel = 0 WHERE id = :id";
 
             $stmt = $this->pdo->prepare($sql);
 
@@ -285,7 +285,7 @@ class Order_Order extends BaseClass
     public function cancel(): void
     {
         try {
-            $sql = "UPDATE order_orders SET is_cancel = 1 WHERE id = :id";
+            $sql = "UPDATE order_orders SET is_cancel = 1, is_call = 0, is_received = 0 WHERE id = :id";
 
             $params = [
                 ":id" => $this->id

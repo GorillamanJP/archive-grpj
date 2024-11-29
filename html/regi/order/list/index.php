@@ -16,14 +16,8 @@ $orders = $order_obj->get_all();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>モバイル注文準備中</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
-        crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <title>レジ/モバイルオーダー/受け取り待ち一覧</title>
+    <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/header.php"; ?>
     <link rel="stylesheet" href="/common/list.css">
 </head>
 
@@ -33,16 +27,15 @@ $orders = $order_obj->get_all();
     <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/navbar.php"; ?>
     <!-- コンテナ開始 -->
     <div class="container mt-4">
-        <h1 class="text-center mb-4">モバイル注文準備中</h1>
+        <h1 class="text-center mb-4">受け取り待ち一覧</h1>
 
         <!-- ページネーション準備 -->
         <p class="text-center my-3" style="font-size: 1.2em;">最終更新時刻:<span id="last-update">0000/0/0 00:00:00</span></p>
 
         <div class="text-center mb-3">
-            <a href="../../" class="btn btn-outline-success btn-lg-custom p-2 mx-1">レジ画面へ</a>
-            <a href="../history/" class="btn btn-outline-success btn-lg-custom p-2 mx-1">履歴一覧へ</a>
+            <a href="../../" class="btn btn-outline-success btn-lg-custom p-2 mx-1">レジ画面</a>
+            <a href="../history/" class="btn btn-outline-success btn-lg-custom p-2 mx-1">履歴一覧</a>
         </div>
-        <h1>モバイル待機列</h1>
         <table class="table table-striped table-bordered table-hover text-center align-middle table-primary">
             <thead>
                 <tr>

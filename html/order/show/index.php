@@ -4,12 +4,10 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/order/protects/protect.php";
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/order/is_not_order.php";
 ?>
-<?php
-session_start();
-
+<?php session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/orders/order.php";
-require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/orders/decrypt_id.php";
-
+require_once
+    $_SERVER['DOCUMENT_ROOT'] . "/../classes/orders/decrypt_id.php";
 try {
     $order_id = decrypt_id($_COOKIE["order"]);
     $order = new Order();
@@ -26,6 +24,11 @@ if ($order->get_order_order()->get_is_received()) {
     header("Location: ../receive/");
     exit();
 }
+if ($order->get_order_order()->get_is_cancel()) {
+    session_write_close();
+    header("Location: ../cancel/");
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -33,17 +36,31 @@ if ($order->get_order_order()->get_is_received()) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>注文表示</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
-        crossorigin="anonymous"></script>
+    <title>モバイルオーダー/注文表示</title>
+    <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/header.php"; ?>
     <link rel="stylesheet" href="/common/list.css">
     <link rel="stylesheet" href="/common/create.css">
     <style>
         .alert-custom {
             text-align: center;
+        }
+
+        .call_flash {
+            animation: flash 1s infinite;
+        }
+
+        @keyframes flash {
+            0% {
+                background-color: yellow;
+            }
+
+            50% {
+                background-color: transparent;
+            }
+
+            100% {
+                background-color: yellow;
+            }
         }
     </style>
 </head>
@@ -51,7 +68,7 @@ if ($order->get_order_order()->get_is_received()) {
 <body>
     <div class="container">
         <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
-        <h1 class="text-center my-3">注文番号：<?= $order_id ?></h1>
+        <h1 class="text-center mb-3">注文番号：<?= $order_id ?></h1>
         <h2 class="text-center my-3">注文内容</h2>
         <table class="table table-striped table-success">
             <tr>
@@ -89,19 +106,21 @@ if ($order->get_order_order()->get_is_received()) {
                 <th class="text-end">合計</th>
                 <td><?= $order->get_order_order()->get_total_price() ?></td>
             </tr>
-            <tr>
-                <th class="text-end">呼び出し（これは分離して目立つようにしてほしい）</th>
-                <td id="call_status">-</td>
-            </tr>
         </table>
+    </div>
+    <div id="call_status" class="container call_flash" style="display: none;">
+        <h1 class="text-center py-5">呼び出されています！</h1>
     </div>
     <div class="container mt-4">
         <div class="alert alert-info alert-custom" role="alert">
-            <p class="text-center">この画面を開いたままにしておくと、出来上がりが分かって便利です。</p>
-            <p class="text-center">通知音を鳴らす<input type="checkbox" name="allow_sound" id="allow_sound"></p>
+            <p class="text-center my-1">この画面を開いたままにしておくと、呼び出しが分かって便利です。</p>
+            <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                <input type="checkbox" class="btn-check" id="allow_sound" autocomplete="off">
+                <label class="btn btn-outline-primary" for="allow_sound">通知音を鳴らす</label>
+            </div>
         </div>
         <div class="alert alert-danger alert-custom" role="alert">
-            <p class="text-center">長時間受け取りに来られない場合、オーダーをキャンセルさせていただく場合がございます。</p>
+            <span class="text-center">長時間受け取りに来られない場合、オーダーをキャンセルさせていただく場合がございます。</span>
         </div>
     </div>
 </body>

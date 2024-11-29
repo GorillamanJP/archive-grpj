@@ -1,5 +1,5 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT']."/regi/users/login_check.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check.php";
 ?>
 <?php
 session_start();
@@ -12,12 +12,12 @@ if (!isset($_POST["id"]) || $_POST["id"] === "") {
     exit();
 }
 
-require_once $_SERVER['DOCUMENT_ROOT']."/../classes/sales/sale.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/sales/sale.php";
 
 $sale = new Sale();
 $sale = $sale->get_from_accountant_id($_POST["id"]);
 
-require_once $_SERVER['DOCUMENT_ROOT']."/../classes/items/item.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/items/item.php";
 $item_obj = new Item();
 
 ?>
@@ -27,14 +27,10 @@ $item_obj = new Item();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>会計情報</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
-        crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="/common/list.css">
-        <link rel="stylesheet" href="/common/create.css">
+    <title>レジ/会計管理/会計情報</title>
+    <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/header.php"; ?>
+    <link rel="stylesheet" href="/common/list.css">
+    <link rel="stylesheet" href="/common/create.css">
 </head>
 
 <body>
@@ -53,26 +49,26 @@ $item_obj = new Item();
             <tr>
                 <th colspan="2" class="text-center">購入一覧</th>
             </tr>
-                <tr>
-                    <td colspan="2">
-                        <table class="table text-center">
+            <tr>
+                <td colspan="2">
+                    <table class="table text-center">
+                        <tr>
+                            <th>商品名</th>
+                            <th>価格</th>
+                            <th>購入数</th>
+                            <th>小計</th>
+                        </tr>
+                        <?php foreach ($sale->get_details() as $detail): ?>
                             <tr>
-                                <th>商品名</th>
-                                <th>価格</th>
-                                <th>購入数</th>
-                                <th>小計</th>
+                                <td><?= $detail->get_item_name() ?></td>
+                                <td>&#165;<?= $detail->get_item_price() ?></td>
+                                <td><?= $detail->get_quantity() ?></td>
+                                <td>&#165;<?= $detail->get_subtotal() ?></td>
                             </tr>
-                            <?php foreach ($sale->get_details() as $detail): ?>
-                                <tr>
-                                    <td><?= $detail->get_item_name() ?></td>
-                                    <td>&#165;<?= $detail->get_item_price() ?></td>
-                                    <td><?= $detail->get_quantity() ?></td>
-                                    <td>&#165;<?= $detail->get_subtotal() ?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </table>
-                    </td>
-                </tr>
+                        <?php endforeach; ?>
+                    </table>
+                </td>
+            </tr>
             <tr>
                 <th class="text-end">合計購入数</th>
                 <td><?= $sale->get_accountant()->get_total_amount() ?></td>

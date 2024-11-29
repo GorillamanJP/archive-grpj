@@ -14,13 +14,8 @@ $orders = $order_obj->get_all_all();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>モバイル注文履歴</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
-        crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>レジ/モバイルオーダー/注文履歴</title>
+    <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/header.php"; ?>
     <link rel="stylesheet" href="/common/list.css">
     <style>
         .clickable-row {
@@ -33,14 +28,14 @@ $orders = $order_obj->get_all_all();
     <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/navbar.php"; ?>
     <!-- コンテナ開始 -->
     <div class="container mt-4">
-        <h1 class="text-center mb-4">モバイル注文履歴</h1>
+        <h1 class="text-center mb-4">モバイルオーダー履歴</h1>
 
         <!-- ページネーション準備 -->
         <p class="text-center my-3" style="font-size: 1.2em;">最終更新時刻:<span id="last-update">0000/0/0 00:00:00</span></p>
 
         <div class="text-center mb-3">
-            <a href="../../" class="btn btn-outline-success btn-lg-custom p-2 mx-1">レジ画面へ</a>
-            <a href="../list/" class="btn btn-outline-success btn-lg-custom p-2 mx-1">準備中一覧へ</a>
+            <a href="../../" class="btn btn-outline-success btn-lg-custom p-2 mx-1">レジ画面</a>
+            <a href="../list/" class="btn btn-outline-success btn-lg-custom p-2 mx-1">準備中一覧</a>
         </div>
         <!-- ページネーション -->
         <div class="d-flex justify-content-center">
@@ -77,7 +72,7 @@ $orders = $order_obj->get_all_all();
                     <th>注文番号</th>
                     <th>注文日時</th>
                     <th>詳細</th>
-                    <th>受け取り</th>
+                    <th>状態</th>
                 </tr>
             </thead>
             <tbody id="table">
