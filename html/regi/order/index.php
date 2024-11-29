@@ -87,8 +87,8 @@ session_start(); ?>
     </div>
 
     <div class="text-center my-3">
-        <a href="/regi/order/list/" class="btn btn-outline-primary btn-lg p-2 mx-1">準備中一覧へ</a>
-        <a href="/regi/order/history/" class="btn btn-outline-primary btn-lg p-2 mx-1">履歴一覧へ</a>
+        <a href="/regi/order/list/" class="btn btn-outline-primary btn-lg p-2 mx-1">受け取り待ち一覧</a>
+        <a href="/regi/order/history/" class="btn btn-outline-primary btn-lg p-2 mx-1">履歴一覧</a>
     </div>
     <script>
         // URLのホスト名を動的に挿入 

@@ -123,7 +123,7 @@ if ($order->get_order_order()->get_is_cancel()) {
             <span class="text-center">長時間受け取りに来られない場合、オーダーをキャンセルさせていただく場合がございます。</span>
         </div>
     </div>
-    <audio id="notificationSound" src="./bell.wav" preload="auto"></audio>
+    <audio id="notificationSound" src="./bell.mp3" preload="auto"></audio>
     <script src="./check_receive.js"></script>
     <script src="./check_call.js"></script>
 </body>

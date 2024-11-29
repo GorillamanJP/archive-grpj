@@ -35,7 +35,7 @@ $orders = $order_obj->get_all_all();
 
         <div class="text-center mb-3">
             <a href="../../" class="btn btn-outline-success btn-lg-custom p-2 mx-1">レジ画面</a>
-            <a href="../list/" class="btn btn-outline-success btn-lg-custom p-2 mx-1">準備中一覧</a>
+            <a href="../list/" class="btn btn-outline-success btn-lg-custom p-2 mx-1">受け取り待ち一覧</a>
         </div>
         <!-- ページネーション -->
         <div class="d-flex justify-content-center">
