@@ -18,7 +18,7 @@ function displayNotification(notification) {
     const notificationContainer = document.getElementById("notifications");
 
     const toastHTML = `
-        <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="20000">
+        <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="10000">
             <div class="toast-header">
                 <i class="bi bi-info-circle-fill me-2 text-primary"></i>
                 <strong class="me-auto">${notification.title}</strong>
