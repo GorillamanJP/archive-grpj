@@ -26,6 +26,11 @@ if ($order->get_order_order()->get_is_received()) {
     header("Location: ../receive/");
     exit();
 }
+if($order->get_order_order()->get_is_cancel()){
+    session_write_close();
+    header("Location: ../cancel/");
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="ja">

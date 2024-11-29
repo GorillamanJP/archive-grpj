@@ -6,7 +6,7 @@ if (isset($_COOKIE["order"]) && $_COOKIE["order"] !== "") {
         $order = new Order();
         $id = decrypt_id($_COOKIE["order"]);
         $order->get_from_order_id($id);
-        echo json_encode(["is_receive" => $order->get_order_order()->get_is_received()]);
+        echo json_encode(["is_receive" => $order->get_order_order()->get_is_received(), "is_cancel" => $order->get_order_order()->get_is_cancel()]);
         exit();
     } catch (Exception $e) {
         http_response_code(404);

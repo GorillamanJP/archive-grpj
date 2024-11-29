@@ -72,7 +72,7 @@ $orders = $order_obj->get_all_all();
                     <th>注文番号</th>
                     <th>注文日時</th>
                     <th>詳細</th>
-                    <th>ステータス</th>
+                    <th>状態</th>
                 </tr>
             </thead>
             <tbody id="table">

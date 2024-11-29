@@ -23,13 +23,13 @@
         <td>
             <ul class="list-group list-group-flush">
                 <?php if ($order->get_order_order()->get_is_call()): ?>
-                    <li class="list-group-item">呼び出し中</li>
+                    <li class="list-group-item">呼出中</li>
                 <?php endif ?>
                 <?php if ($order->get_order_order()->get_is_cancel()): ?>
                     <li class="list-group-item">キャンセル済</li>
                 <?php endif ?>
                 <?php if ($order->get_order_order()->get_is_received()): ?>
-                    <li class="list-group-item">受け取り済</li>
+                    <li class="list-group-item">受取済</li>
                 <?php endif ?>
             </ul>
         </td>

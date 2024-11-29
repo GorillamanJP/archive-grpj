@@ -5,6 +5,8 @@ async function check_receive() {
             const data = await response.json();
             if (data.is_receive) {
                 location.href = "../receive/";
+            } else if (data.is_cancel) {
+                location.href = "../cancel/";
             }
         }
     } catch (error) {
