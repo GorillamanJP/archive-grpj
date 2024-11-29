@@ -55,7 +55,7 @@ session_start();
             </div>
         </div><br>
         <div class="alert-info">
-            <p><a href="/order/">モバイルオーダーはこちら</a></p>
+            <p class="my-3">モバイルオーダーご利用の方は、お近くのQRコードをスキャンしてご利用ください。</p>
         </div>
     </div>
 </body>
