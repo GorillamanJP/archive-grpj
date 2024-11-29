@@ -134,7 +134,7 @@ $_SESSION["regi"]["data"]["total_price"] = $total_price;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>お支払い</title>
+    <title>レジ/お支払い</title>
     <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/header.php"; ?>
     <link rel="stylesheet" href="/common/create.css">
     <style>

@@ -18,7 +18,7 @@ $detail = new Detail();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="title">会計一覧</title>
+    <title id="title">レジ/会計管理/会計一覧</title>
     <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/header.php"; ?>
     <link rel="stylesheet" href="/common/list.css">
     <style>

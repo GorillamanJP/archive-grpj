@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>アクセスエラー</title>
+    <title>モバイルオーダー/アクセスエラー</title>
     <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/header.php"; ?>
     <style>
         .custom-container {

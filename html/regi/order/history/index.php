@@ -14,7 +14,7 @@ $orders = $order_obj->get_all_all();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>モバイル注文履歴</title>
+    <title>レジ/モバイルオーダー/注文履歴</title>
     <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/header.php"; ?>
     <link rel="stylesheet" href="/common/list.css">
     <style>
@@ -28,7 +28,7 @@ $orders = $order_obj->get_all_all();
     <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/navbar.php"; ?>
     <!-- コンテナ開始 -->
     <div class="container mt-4">
-        <h1 class="text-center mb-4">モバイル注文履歴</h1>
+        <h1 class="text-center mb-4">モバイルオーダー履歴</h1>
 
         <!-- ページネーション準備 -->
         <p class="text-center my-3" style="font-size: 1.2em;">最終更新時刻:<span id="last-update">0000/0/0 00:00:00</span></p>

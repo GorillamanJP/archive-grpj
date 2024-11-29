@@ -33,7 +33,7 @@ if ($order->get_order_order()->get_is_received()) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>注文表示</title>
+    <title>モバイルオーダー/注文表示</title>
     <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/header.php"; ?>
     <link rel="stylesheet" href="/common/list.css">
     <link rel="stylesheet" href="/common/create.css">

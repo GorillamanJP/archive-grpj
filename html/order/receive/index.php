@@ -17,7 +17,7 @@ setcookie("order", "", 0, "/");
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>受け取り完了</title>
+    <title>モバイルオーダー/受け取り完了</title>
     <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/header.php"; ?>
     <style>
         .custom-container {
