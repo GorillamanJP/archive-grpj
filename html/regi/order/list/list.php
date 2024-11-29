@@ -34,6 +34,10 @@
             </ul>
         </td>
         <td>
+            <form action="../show/" method="post">
+                <input type="hidden" name="id" id="id" value="<?= $order->get_order_order()->get_id() ?>">
+                <button type="submit" btn class='btn btn-outline-info round-button'>詳細</button>
+            </form>
             <form action="../receive/" method="post">
                 <input type="hidden" name="order_id" id="order_id" value="<?= $order->get_order_order()->get_id() ?>">
                 <button type="submit" btn class='btn btn-outline-success round-button'>受取</button>
