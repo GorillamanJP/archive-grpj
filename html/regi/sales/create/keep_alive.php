@@ -18,5 +18,5 @@ try {
         echo "keepalive success";
     }
 } catch (Throwable $th) {
-    echo $th->getMessage();
+    http_response_code(500);
 }

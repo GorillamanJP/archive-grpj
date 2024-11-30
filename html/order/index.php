@@ -6,12 +6,16 @@ session_start();
 unset($_SESSION["order"]["order_items"]);
 ?>
 <?php
-if (isset($_SESSION["temp_purchase"])) {
-    require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/purchases/purchase.php";
-    $purchase_id = $_SESSION["temp_purchase"]["id"];
-    $purchase = new Purchases();
-    $purchase->get_from_temp_purchases_id($purchase_id);
-    $purchase->delete();
+try {
+    if (isset($_SESSION["temp_purchase"])) {
+        require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/purchases/purchase.php";
+        $purchase_id = $_SESSION["temp_purchase"]["id"];
+        $purchase = new Purchases();
+        $purchase->get_from_temp_purchases_id($purchase_id);
+        $purchase->delete();
+        unset($_SESSION["temp_purchase"]);
+    }
+} catch (Throwable $th) {
     unset($_SESSION["temp_purchase"]);
 }
 ?>

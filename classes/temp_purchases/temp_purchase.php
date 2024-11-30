@@ -131,7 +131,7 @@ class Temp_Purchases extends BaseClass
 
             $stmt = $this->pdo->prepare($sql);
 
-            $stmt->bindValue(":ttl", date("Y-m-d H:i:s", strtotime("+30 seconds", date("Y-m-d H:i:s"))), PDO::PARAM_STR);
+            $stmt->bindValue(":ttl", date("Y-m-d H:i:s", strtotime("+30 seconds", strtotime(date("Y-m-d H:i:s")))), PDO::PARAM_STR);
             $stmt->bindValue(":id", $this->id, PDO::PARAM_INT);
 
             $stmt->execute();
