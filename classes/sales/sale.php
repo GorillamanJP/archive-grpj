@@ -54,14 +54,21 @@ class Sale extends BaseClassGroup
                 $quantity = $quantities[$i];
                 $subtotal = $subtotals[$i];
 
+                $item = $product->get_from_item_id($id);
+
                 // 小計チェック処理
                 if ($price * $quantity != $subtotal) {
                     throw new Exception("金額が合いません。", 0);
                 }
                 $check_total += $subtotal;
 
+                // 注文可能数チェック
+                if($item->get_buy_available_count() < 0){
+                    throw new Exception("注文可能数が不足しています。", 0);
+                }
+
                 // 在庫チェック
-                $stock_left = $product->get_from_item_id($id)->get_now_stock();
+                $stock_left = $item->get_now_stock();
                 if ($stock_left - $quantity < 0) {
                     throw new Exception("在庫が不足しています。");
                 }

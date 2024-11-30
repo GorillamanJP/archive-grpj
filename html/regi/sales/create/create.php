@@ -63,6 +63,8 @@ $total_price = $_SESSION["regi"]["data"]["total_price"];
 $received_price = $_POST["received_price"];
 $returned_price = $_POST["returned_price"];
 
+unset($_SESSION["regi"]["data"]);
+
 if (verify_int_value($total_amount, $total_price, $received_price, $returned_price) == false) {
     redirect_with_error($back_url_fail, "数値エラー", "入力内容のうちいずれかが小数になっているか、あまりにも大きい数になっている可能性があります。", "danger");
 }
@@ -89,8 +91,6 @@ $checksum = hash("sha256", $checksum_txt);
 if (!isset($_POST["checksum"]) || $_POST["checksum"] != $checksum) {
     redirect_with_error($back_url_fail, "チェックサムエラーです。", "入力が改ざんされている可能性があります。", "danger");
 }
-
-unset($_SESSION["regi"]["data"]);
 
 
 try {

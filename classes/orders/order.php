@@ -41,9 +41,9 @@ class Order extends BaseClassGroup
                 $quantity = $quantities[$i];
                 $subtotal = $subtotals[$i];
 
-                $stock_left = $product->get_from_item_id($id)->get_buy_available_count();
+                $available_left = $product->get_from_item_id($id)->get_buy_available_count();
 
-                if ($stock_left - $quantity < 0) {
+                if ($available_left - $quantity < 0) {
                     throw new Exception("注文可能な商品数が不足しています。", 0);
                 }
 

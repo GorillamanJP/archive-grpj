@@ -90,9 +90,9 @@ if ($order->get_order_order()->get_is_cancel()) {
                         <?php foreach ($order->get_order_details() as $detail): ?>
                             <tr>
                                 <td><?= $detail->get_item_name() ?></td>
-                                <td><?= $detail->get_item_price() ?></td>
+                                <td>&yen;<?= $detail->get_item_price() ?></td>
                                 <td><?= $detail->get_quantity() ?></td>
-                                <td><?= $detail->get_subtotal() ?></td>
+                                <td>&yen;<?= $detail->get_subtotal() ?></td>
                             </tr>
                         <?php endforeach ?>
                     </table>
@@ -104,7 +104,7 @@ if ($order->get_order_order()->get_is_cancel()) {
             </tr>
             <tr>
                 <th class="text-end">合計</th>
-                <td><?= $order->get_order_order()->get_total_price() ?></td>
+                <td>&yen;<?= $order->get_order_order()->get_total_price() ?></td>
             </tr>
         </table>
     </div>
