@@ -72,7 +72,7 @@ async function check_update() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    setInterval(check_update, 10000);
+    setInterval(check_update, 5000);
 });
 
 get_update();

@@ -26,7 +26,7 @@ async function check_call() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    setInterval(check_call, 10000);
+    setInterval(check_call, 5000);
 });
 
 check_call();

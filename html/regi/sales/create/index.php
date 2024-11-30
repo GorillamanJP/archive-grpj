@@ -560,7 +560,7 @@ $_SESSION["regi"]["data"]["total_price"] = $total_price;
             setTimeout(() => controller.abort(), 10000);
         }
 
-        setInterval(sendKeepAlive, 10000);
+        setInterval(sendKeepAlive, 5000);
 
         function handleTimeout() {
             if (!timeoutOccurred) {
@@ -570,7 +570,7 @@ $_SESSION["regi"]["data"]["total_price"] = $total_price;
                     if (timeoutOccurred) {
                         window.location.href = "/regi/";
                     }
-                }, 20000);
+                }, 25000);
             }
         }
     </script>

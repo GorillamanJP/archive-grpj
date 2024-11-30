@@ -17,7 +17,7 @@ async function check_receive() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    setInterval(check_receive, 10000);
+    setInterval(check_receive, 5000);
 });
 
 check_receive();
