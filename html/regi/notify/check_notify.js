@@ -47,7 +47,7 @@ function displayNotification(notification) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    // 10秒おきにfetchNotificationsを実行
+    // 5秒おきにfetchNotificationsを実行
     setInterval(fetchNotifications, 5000);
 });
 fetchNotifications();
