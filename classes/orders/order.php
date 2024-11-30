@@ -41,14 +41,15 @@ class Order extends BaseClassGroup
                 $quantity = $quantities[$i];
                 $subtotal = $subtotals[$i];
 
-                $stock_left = $product->get_from_item_id($id)->get_now_stock();
+                $stock_left = $product->get_from_item_id($id)->get_buy_available_count();
 
                 if ($stock_left - $quantity < 0) {
-                    throw new Exception("在庫が不足しています。", 0);
+                    throw new Exception("注文可能な商品数が不足しています。", 0);
                 }
 
                 $this->order_details[] = $order_detail->create($order_id, $id, $name, $price, $quantity, $subtotal);
             }
+            $this->send_notification("注文", "新しい注文 {$order_id} 番があります！");
             return $this;
         } catch (Exception $e) {
             $this->order_order->delete();

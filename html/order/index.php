@@ -50,8 +50,8 @@ unset($_SESSION["order"]["order_items"]);
                 <thead>
                     <tr>
                         <th>商品名</th>
-                        <th>価格</th>
                         <th>個数</th>
+                        <th>価格</th>
                         <th>取消</th>
                     </tr>
                 </thead>

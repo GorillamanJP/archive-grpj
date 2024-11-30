@@ -52,8 +52,6 @@ class Accountant extends BaseClass
 
             $this->close();
 
-            $this->send_notification("会計", "{$id} 番の会計が処理されました！");
-
             return $this->get_from_id($id);
         } catch (PDOException $pe) {
             $this->close();

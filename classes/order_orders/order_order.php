@@ -65,8 +65,6 @@ class Order_Order extends BaseClass
 
             $this->close();
 
-            $this->send_notification("注文", "新しい注文 {$id} 番があります！");
-
             return $this->get_from_id($id);
         } catch (PDOException $pe) {
             $this->close();

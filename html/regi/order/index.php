@@ -90,6 +90,10 @@ session_start(); ?>
         <a href="/regi/order/list/" class="btn btn-outline-primary btn-lg p-2 mx-1">受け取り待ち一覧</a>
         <a href="/regi/order/history/" class="btn btn-outline-primary btn-lg p-2 mx-1">履歴一覧</a>
     </div>
+    <!-- 通知領域 -->
+    <div id="notifications" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+    <!-- 通知領域　ここまで -->
+    <script src="/regi/notify/check_notify.js"></script>
     <script>
         // URLのホスト名を動的に挿入 
         document.getElementById("url_domain").innerText = window.location.hostname;

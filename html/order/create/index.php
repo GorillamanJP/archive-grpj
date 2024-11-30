@@ -39,8 +39,11 @@ try {
     for ($i = 0; $i < count($product_ids); $i++) {
         $product = new Product();
         $product = $product->get_from_item_id($product_ids[$i]);
-        $stock_left = $product->get_now_stock();
+        $stock_left = $product->get_buy_available_count();
         $order_quantity = $quantities[$i];
+        if($order_quantity < 1){
+            redirect_with_error("/order/", "購入数が1個未満になっています。", "", "danger");
+        }
         $after_stock = $stock_left - $order_quantity;
         if ($after_stock < 0) {
             redirect_with_error("/order/", "注文数に対し在庫が不足するため、注文処理が出来ませんでした。", "", "danger");
