@@ -35,7 +35,7 @@
         border: 1px solid #bee5eb;
     }
 
-    .btn-close {
+    .btn-close-alert {
         position: absolute;
         top: 50%;
         right: 10px;
@@ -76,7 +76,7 @@ unset($_SESSION['message_type']);
                 </div>
             <?php endif ?>
         </div>
-        <button type="button" class="btn-close" aria-label="Close" onclick="hideCustomAlert()"><i class="bi bi-x-circle"></i></button>
+        <button type="button" class="btn-close-alert" aria-label="Close" onclick="hideCustomAlert()"><i class="bi bi-x-circle"></i></button>
     </div>
 <?php endif; ?>
 
