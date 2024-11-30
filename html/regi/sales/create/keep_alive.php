@@ -1,6 +1,6 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/regi/users/login_check_bool.php";
-if(!login_check()){
+if (!login_check()) {
     http_response_code(403);
     exit();
 }
@@ -8,21 +8,15 @@ if(!login_check()){
 <?php
 session_start();
 
-// ロックファイルのパス
-$lockFilePath = "/tmp/sales_create.lock";
-
-// ロックファイルが存在するかチェック
-if (file_exists($lockFilePath)) {
-    // ロックファイルのタイムスタンプを更新
-    $lockFile = fopen($lockFilePath, "r+");
-    $lock_data = json_decode(fread($lockFile, filesize($lockFilePath)), true);
-    fclose($lockFile);
-
-    // ロックをかけたユーザーが現在のユーザーと一致するか確認
-    if ($lock_data['user_id'] == $_SESSION["login"]['user_id']) {
-        $lockFile = fopen($lockFilePath, "w");
-        fwrite($lockFile, json_encode(['time' => time(), 'user_id' => $_SESSION["login"]['user_id']]));
-        fclose($lockFile);
+try {
+    require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/purchases/purchase.php";
+    $temp_purchase_id = isset($_SESSION["temp_purchase"]["id"]) ? $_SESSION["temp_purchase"]["id"] : null;
+    if (isset($temp_purchase_id)) {
+        $purchase = new Purchases();
+        $purchase = $purchase->get_from_temp_purchases_id($temp_purchase_id);
+        $purchase->get_temp_purchases()->extension();
         echo "keepalive success";
     }
+} catch (Throwable $th) {
+    echo $th->getMessage();
 }

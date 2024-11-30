@@ -8,7 +8,7 @@ try {
     require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/products/product.php";
     $product_obj = new Product();
     $products = $product_obj->get_all();
-    $page = "./no_list.php";
+    $page = $_SERVER['DOCUMENT_ROOT']."/common/index/no_list.php";
     if (!is_null($products)) {
         $page = "./list.php";
     }
@@ -24,5 +24,6 @@ try {
     exit();
 } catch (\Throwable $th) {
     http_response_code(500);
+    // echo json_encode(["Error" => $th->getMessage()]);
     exit();
 }

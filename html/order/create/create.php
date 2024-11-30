@@ -89,6 +89,15 @@ try {
     $order->create($product_ids, $product_names, $product_prices, $quantities, $subtotals, $total_amount, $total_price);
     $id = $order->get_order_order()->get_id();
 
+    if (isset($_SESSION["temp_purchase"])) {
+        require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/purchases/purchase.php";
+        $purchase_id = $_SESSION["temp_purchase"]["id"];
+        $purchase = new Purchases();
+        $purchase->get_from_temp_purchases_id($purchase_id);
+        $purchase->delete();
+        unset($_SESSION["temp_purchase"]);
+    }
+
     // 1か月後
     $expire = time() + (30 * 24 * 60 * 60);
 
@@ -97,5 +106,5 @@ try {
     setcookie("order", $enc_id, $expire, "/");
     redirect_with_error("../show/", "注文番号 {$id}番 で処理を完了しました。", "", "success");
 } catch (\Throwable $e) {
-    redirect_with_error("/order/", "エラーが発生しました。".$e->getPrevious()->getMessage(), $e->getMessage(), "danger");
+    redirect_with_error("/order/", "エラーが発生しました。" . $e->getPrevious()->getMessage(), $e->getMessage(), "danger");
 }

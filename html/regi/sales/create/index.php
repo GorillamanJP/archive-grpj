@@ -24,48 +24,59 @@ if (!$ok) {
     redirect_with_error("/regi/", $message, "", "warning");
 }
 
-// ファイルロックを使って決済画面は一つの端末で一つのタブしかアクセスできない状態を作り出す
-// ロックファイルの場所
-$lockfile_path = "/tmp/sales_create.lock";
-// タイムアウトまでの時間(秒)
-$timeout = 30;
-// ロック可否チェック(ファイルの有無)
-if (!file_exists($lockfile_path)) {
-    // ロックをかける
-    $lockfile = fopen($lockfile_path, "w");
-    fwrite($lockfile, json_encode(['time' => time(), 'user_id' => $_SESSION["login"]['user_id']]));
-    fclose($lockfile);
-} else {
-    // ロックそのものはかけられていたが…
-    // ロックファイルのタイムスタンプを確認
-    $lockfile = fopen($lockfile_path, "r+");
-    $lock_data = json_decode(fread($lockfile, filesize($lockfile_path)), true);
-    fclose($lockfile);
+// // ファイルロックを使って決済画面は一つの端末で一つのタブしかアクセスできない状態を作り出す
+// // ロックファイルの場所
+// $lockfile_path = "/tmp/sales_create.lock";
+// // タイムアウトまでの時間(秒)
+// $timeout = 30;
+// // ロック可否チェック(ファイルの有無)
+// if (!file_exists($lockfile_path)) {
+//     // ロックをかける
+//     $lockfile = fopen($lockfile_path, "w");
+//     fwrite($lockfile, json_encode(['time' => time(), 'user_id' => $_SESSION["login"]['user_id']]));
+//     fclose($lockfile);
+// } else {
+//     // ロックそのものはかけられていたが…
+//     // ロックファイルのタイムスタンプを確認
+//     $lockfile = fopen($lockfile_path, "r+");
+//     $lock_data = json_decode(fread($lockfile, filesize($lockfile_path)), true);
+//     fclose($lockfile);
 
-    // 現在の時間を取得
-    $current_time = time();
+//     // 現在の時間を取得
+//     $current_time = time();
 
-    // タイムアウトをチェック
-    if (($current_time - intval($lock_data['time'])) > $timeout) {
-        // タイムアウトが過ぎている場合、ロックを解除して再ロック
-        unlink($lockfile_path);
-        $lockfile = fopen($lockfile_path, "w");
-        fwrite($lockfile, json_encode(['time' => time(), 'user_id' => $_SESSION["login"]['user_id']]));
-        fclose($lockfile);
-        // この場合はロックを獲得できたので支払い要求画面に行ける
-    } else {
-        // ロック失敗(すでにロック済み)
-        $_SESSION["product_id"] = $_POST["product_id"];
-        $_SESSION["quantity"] = $_POST["quantity"];
-        session_write_close();
-        header("Location: ./wait.php");
-        exit();
-    }
-}
+//     // タイムアウトをチェック
+//     if (($current_time - intval($lock_data['time'])) > $timeout) {
+//         // タイムアウトが過ぎている場合、ロックを解除して再ロック
+//         unlink($lockfile_path);
+//         $lockfile = fopen($lockfile_path, "w");
+//         fwrite($lockfile, json_encode(['time' => time(), 'user_id' => $_SESSION["login"]['user_id']]));
+//         fclose($lockfile);
+//         // この場合はロックを獲得できたので支払い要求画面に行ける
+//     } else {
+//         // ロック失敗(すでにロック済み)
+//         $_SESSION["product_id"] = $_POST["product_id"];
+//         $_SESSION["quantity"] = $_POST["quantity"];
+//         session_write_close();
+//         header("Location: ./wait.php");
+//         exit();
+//     }
+// }
 
 
 $product_ids = $_POST["product_id"];
 $quantities = $_POST["quantity"];
+
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/purchases/purchase.php";
+try {
+    $temp_purchase = new Purchases();
+    $temp_purchase = $temp_purchase->create($product_ids, $quantities);
+    $_SESSION["temp_purchase"]["id"] = $temp_purchase->get_temp_purchases()->get_id();
+} catch (Throwable $th) {
+    redirect_with_error("/regi/", "1エラーが発生しました。".$th->getTraceAsString(), $th->getPrevious()->getPrevious()->getPrevious()->getMessage(), "danger");
+}
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/temp_purchase_details/temp_purchase_detail.php";
+$temp_purchase_detail = new Temp_Purchases_Detail();
 
 $total_price = 0;
 $total_amount = 0;
@@ -81,15 +92,14 @@ try {
         if ($product->get_delete_flag() == true) {
             throw new Exception("指定した商品は削除されました。", 0);
         }
-        if($product->get_buy_available_count() < 0){
-            redirect_with_error("/regi/", "残り注文可能数が0未満のため、購入処理ができませんでした。", "", "danger");
+        if ($product->get_buy_available_count() < 0) {
+            throw new Exception("残り注文可能数が0未満のため、購入処理ができませんでした。", 0);
         }
         $stock_left = $product->get_now_stock();
         $buy_quantity = $quantities[$i];
         $after_stock = $stock_left - $buy_quantity;
-        if ($after_stock < 0) {
-            require "./unlock.php";
-            redirect_with_error("/regi/", "購入数に対し在庫が不足するため、購入処理ができませんでした。", "", "danger");
+        if ($after_stock - $temp_purchase_detail->get_exists_temp_quantity_from_item_id($product->get_item_id()) < 0) {
+            throw new Exception("購入数に対し在庫が不足するため、購入処理ができませんでした。", 0);
         }
         $id = $product->get_item_id();
         $name = $product->get_item_name();
@@ -494,7 +504,7 @@ $_SESSION["regi"]["data"]["total_price"] = $total_price;
         }
 
         // チェックサム計算
-        async function calc_checksum(){
+        async function calc_checksum() {
             let checksum_txt = "";
             document.querySelectorAll(".item_name").forEach(element => {
                 checksum_txt += element.innerText;
@@ -517,7 +527,7 @@ $_SESSION["regi"]["data"]["total_price"] = $total_price;
             const data = encoder.encode(checksum_txt);
             const hash_buffer = await crypto.subtle.digest("SHA-256", data);
             const hash_array = Array.from(new Uint8Array(hash_buffer));
-            const checksum = hash_array.map(b => b.toString(16).padStart(2,"0")).join("");
+            const checksum = hash_array.map(b => b.toString(16).padStart(2, "0")).join("");
             document.getElementById("checksum").value = checksum;
         }
 

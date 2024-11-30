@@ -103,6 +103,14 @@ try {
     $sale = new Sale();
     $sale->create($product_ids, $product_names, $product_prices, $quantities, $subtotals, $total_amount, $accountant_user_name, $total_price, $received_price, $returned_price);
     $id = $sale->get_accountant()->get_id();
+    if (isset($_SESSION["temp_purchase"])) {
+        require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/purchases/purchase.php";
+        $purchase_id = $_SESSION["temp_purchase"]["id"];
+        $purchase = new Purchases();
+        $purchase->get_from_temp_purchases_id($purchase_id);
+        $purchase->delete();
+        unset($_SESSION["temp_purchase"]);
+    }
     redirect_with_error($back_url_success, "会計番号 {$id}番 で処理を完了しました。", "", "success");
 } catch (Throwable $e) {
     redirect_with_error($back_url_fail, "エラーが発生しました。", $e->getMessage(), "danger");

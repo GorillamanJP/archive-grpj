@@ -28,6 +28,17 @@ if (!$ok) {
 $product_ids = $_POST["product_id"];
 $quantities = $_POST["quantity"];
 
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/purchases/purchase.php";
+try {
+    $temp_purchase = new Purchases();
+    $temp_purchase = $temp_purchase->create($product_ids, $quantities);
+    $_SESSION["temp_purchase"]["id"] = $temp_purchase->get_temp_purchases()->get_id();
+} catch (Throwable $th) {
+    redirect_with_error("/regi/", "1エラーが発生しました。" . $th->getTraceAsString(), $th->getPrevious()->getPrevious()->getPrevious()->getMessage(), "danger");
+}
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/temp_purchase_details/temp_purchase_detail.php";
+$temp_purchase_detail = new Temp_Purchases_Detail();
+
 $total_price = 0;
 $total_amount = 0;
 
@@ -40,18 +51,18 @@ try {
         $product = new Product();
         $product = $product->get_from_item_id($product_ids[$i]);
         $available_left = $product->get_buy_available_count();
-        if($available_left < 0){
+        if ($available_left < 0) {
             redirect_with_error("/order/", "在庫が不足しています。", "", "danger");
         }
-        if($quantities[$i] > 10){
-            redirect_with_error("/order/", "購入数過多", "一つの商品につき10個まで注文ができます。それ以上お買い求めいただく場合は、店頭までお越しください。",  "warning");
+        if ($quantities[$i] > 10) {
+            redirect_with_error("/order/", "購入数過多", "一つの商品につき10個まで注文ができます。それ以上お買い求めいただく場合は、店頭までお越しください。", "warning");
         }
         $order_quantity = $quantities[$i];
-        if($order_quantity < 1){
+        if ($order_quantity < 1) {
             redirect_with_error("/order/", "購入数が1個未満になっています。", "", "danger");
         }
         $after_stock = $available_left - $order_quantity;
-        if ($after_stock < 0) {
+        if ($after_stock - $temp_purchase_detail->get_exists_temp_quantity_from_item_id($product->get_item_id()) < 0) {
             redirect_with_error("/order/", "注文数に対し在庫が不足するため、注文処理が出来ませんでした。", "", "danger");
         }
         $id = $product->get_item_id();

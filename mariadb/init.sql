@@ -99,6 +99,22 @@ CREATE TABLE IF NOT EXISTS notifications(
     sent_date DATETIME NOT NULL
 );
 
+-- 会計一時テーブル
+CREATE TABLE IF NOT EXISTS temp_purchases(
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    ttl DATETIME NOT NULL
+);
+
+-- 会計一時詳細テーブル
+CREATE TABLE IF NOT EXISTS temp_purchase_details(
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    temp_purchases_id BIGINT UNSIGNED NOT NULL,
+    item_id BIGINT UNSIGNED NOT NULL,
+    quantity BIGINT NOT NULL,
+    FOREIGN KEY (temp_purchases_id) REFERENCES temp_purchases(id) ON DELETE CASCADE,
+    FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE
+);
+
 -- 初期ユーザー作成
 INSERT INTO users ( user_name, password_hash, salt ) VALUES(
      "admin",
