@@ -14,7 +14,6 @@ function run_custom_function() {
   updateStock();
 }
 const custom_check_update_path = "/common/index/check_update.php";
-const custom_updated_data_path = "/common/index/updated_data.php";
 
 // 非同期更新で使うやつ　ここまで
 

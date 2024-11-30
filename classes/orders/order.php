@@ -41,6 +41,10 @@ class Order extends BaseClassGroup
                 $quantity = $quantities[$i];
                 $subtotal = $subtotals[$i];
 
+                if ($quantity > 10) {
+                    throw new Exception("一つの商品につき10個まで注文ができます。それ以上お買い求めいただく場合は、店頭までお越しください。", 0);
+                }
+
                 $available_left = $product->get_from_item_id($id)->get_buy_available_count();
 
                 if ($available_left - $quantity < 0) {

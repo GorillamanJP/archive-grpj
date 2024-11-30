@@ -32,6 +32,8 @@ unset($_SESSION["order"]["order_items"]);
 
 <body>
     <h1 class="text-center mb-3">モバイルオーダー</h1>
+    <p>一つの商品につき10個まで注文ができます。それ以上お買い求めいただく場合は、店頭までお越しください。</p>
+    <p>残り数が0になっている場合でも、店頭ではわずかに在庫が残っている場合がございます。</p>
     <div class="container regia">
         <div class="content1">
             <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>

@@ -43,6 +43,9 @@ try {
         if($available_left < 0){
             redirect_with_error("/order/", "在庫が不足しています。", "", "danger");
         }
+        if($quantities[$i] > 10){
+            redirect_with_error("/order/", "購入数過多", "一つの商品につき10個まで注文ができます。それ以上お買い求めいただく場合は、店頭までお越しください。",  "warning");
+        }
         $order_quantity = $quantities[$i];
         if($order_quantity < 1){
             redirect_with_error("/order/", "購入数が1個未満になっています。", "", "danger");
