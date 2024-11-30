@@ -15,7 +15,7 @@ if (!isset($_POST["id"]) || $_POST["id"] === "") {
 $id = htmlspecialchars($_POST["id"]);
 
 if (!isset($_POST["add_quantity"]) || $_POST["add_quantity"] === "") {
-    redirect_with_error_with_form("./", "在庫の追加数の項目が空になっています。", null, "warning", $_POST);
+    redirect_with_error_with_form("./", "在庫の追加数の項目が空になっています。", "", "warning", $_POST);
 }
 
 if (verify_int_value($_POST["add_quantity"]) == false) {
@@ -23,7 +23,7 @@ if (verify_int_value($_POST["add_quantity"]) == false) {
 }
 
 if (intval($_POST["add_quantity"]) < 0) {
-    redirect_with_error_with_form("./", "在庫を減らすことはできません。", null, "warning", $_POST);
+    redirect_with_error_with_form("./", "在庫を減らすことはできません。", "", "warning", $_POST);
 }
 
 

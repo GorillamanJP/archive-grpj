@@ -34,7 +34,7 @@ if (!isset($_FILES["new_item_image"]["tmp_name"]) || $_FILES["new_item_image"]["
 
 if (!$ok) {
     $message .= "の入力項目が空になっています。";
-    redirect_with_error_with_form("./", $message, null, "warning", $_POST);
+    redirect_with_error_with_form("./", $message, "", "warning", $_POST);
 }
 
 $item_name = htmlspecialchars($_POST["item_name"]);
