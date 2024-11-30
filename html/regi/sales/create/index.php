@@ -99,7 +99,7 @@ try {
         $buy_quantity = $quantities[$i];
         $after_stock = $stock_left - $buy_quantity;
         if ($after_stock - $temp_purchase_detail->get_exists_temp_quantity_from_item_id($product->get_item_id()) < 0) {
-            throw new Exception("購入数に対し在庫が不足するため、購入処理ができませんでした。", 0);
+            throw new Exception("購入数に対し在庫が不足するため、購入処理ができませんでした。誰かが会計中の場合にも、このエラーが出る場合があります。", 0);
         }
         $id = $product->get_item_id();
         $name = $product->get_item_name();

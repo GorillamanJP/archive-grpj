@@ -63,7 +63,7 @@ try {
         }
         $after_stock = $available_left - $order_quantity;
         if ($after_stock - $temp_purchase_detail->get_exists_temp_quantity_from_item_id($product->get_item_id()) < 0) {
-            redirect_with_error("/order/", "注文数に対し在庫が不足するため、注文処理が出来ませんでした。", "", "danger");
+            redirect_with_error("/order/", "注文数に対し在庫が不足するため、注文処理が出来ませんでした。誰かが注文中の場合も、このエラーが出る場合があります。", "", "danger");
         }
         $id = $product->get_item_id();
         $name = $product->get_item_name();
