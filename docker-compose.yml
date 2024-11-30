@@ -34,6 +34,7 @@ services:
       - TIMEZONE=${TIMEZONE}
       - MAX_FILESIZE=${MAX_FILESIZE}
       - PASS_PHRASE=${PASS_PHRASE}
+      - CAPTCHA_DISABLE=${CAPTCHA_DISABLE}
     depends_on:
       - mariadb
 
