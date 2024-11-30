@@ -67,14 +67,6 @@ if (!$ok) {
 $product_ids = $_POST["product_id"];
 $quantities = $_POST["quantity"];
 
-require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/purchases/purchase.php";
-try {
-    $temp_purchase = new Purchases();
-    $temp_purchase = $temp_purchase->create($product_ids, $quantities);
-    $_SESSION["temp_purchase"]["id"] = $temp_purchase->get_temp_purchases()->get_id();
-} catch (Throwable $th) {
-    redirect_with_error("/regi/", "1エラーが発生しました。".$th->getTraceAsString(), $th->getPrevious()->getPrevious()->getPrevious()->getMessage(), "danger");
-}
 require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/temp_purchase_details/temp_purchase_detail.php";
 $temp_purchase_detail = new Temp_Purchases_Detail();
 
@@ -116,19 +108,26 @@ try {
         $total_amount += $buy_quantity;
     }
 } catch (Throwable $th) {
-    require "./unlock.php";
     redirect_with_error("/regi/", "エラーが発生しました。", $th->getMessage(), "danger");
 }
 
 if ($total_price < 0) {
-    require "./unlock.php";
     redirect_with_error("/regi/", "合計金額が０円以下になります。", "選んだ商品を確認してください。クーポンなどの割引商品を選びすぎた可能性があります。", "danger");
 }
 
 require_once $_SERVER['DOCUMENT_ROOT'] . "/../functions/verify_int_value.php";
 if (verify_int_value($total_price, $total_amount) == false) {
-    require "./unlock.php";
     redirect_with_error("/regi/", "数値エラー", "購入数または合計金額が最大値を超えている可能性があります。", "danger");
+}
+
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/purchases/purchase.php";
+try {
+    $temp_purchase = new Purchases();
+    $temp_purchase = $temp_purchase->create($product_ids, $quantities);
+    $_SESSION["temp_purchase"]["id"] = $temp_purchase->get_temp_purchases()->get_id();
+} catch (Throwable $th) {
+    require "./unlock.php";
+    redirect_with_error("/regi/", "エラーが発生しました。", $th->getMessage(), "danger");
 }
 
 unset($_SESSION["regi"]["data"]);
