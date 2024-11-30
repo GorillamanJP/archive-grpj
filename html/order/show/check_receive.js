@@ -8,6 +8,8 @@ async function check_receive() {
             } else if (data.is_cancel) {
                 location.href = "../cancel/";
             }
+        } else if (response.status == 403) {
+            location.reload();
         }
     } catch (error) {
         console.error("Error: " + error);

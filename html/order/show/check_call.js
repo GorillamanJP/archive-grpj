@@ -14,6 +14,9 @@ async function check_call() {
                     }
                 }
             } else {
+                if (response.status == 403) {
+                    location.reload();
+                }
                 document.getElementById("call_status").style = "display: none;"
             }
         }

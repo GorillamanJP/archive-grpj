@@ -7,6 +7,9 @@ async function fetchNotifications() {
                 data.notifications.forEach(notification => displayNotification(notification));
             }
         } else {
+            if (response.status == 403) {
+                location.reload();
+            }
             console.error("Error fetching notifications: " + response.statusText);
         }
     } catch (error) {
