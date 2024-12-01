@@ -28,14 +28,6 @@ if (!$ok) {
 $product_ids = $_POST["product_id"];
 $quantities = $_POST["quantity"];
 
-require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/purchases/purchase.php";
-try {
-    $temp_purchase = new Purchases();
-    $temp_purchase = $temp_purchase->create($product_ids, $quantities);
-    $_SESSION["temp_purchase"]["id"] = $temp_purchase->get_temp_purchases()->get_id();
-} catch (Throwable $th) {
-    redirect_with_error("/regi/", "1エラーが発生しました。" . $th->getTraceAsString(), $th->getPrevious()->getPrevious()->getPrevious()->getMessage(), "danger");
-}
 require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/temp_purchase_details/temp_purchase_detail.php";
 $temp_purchase_detail = new Temp_Purchases_Detail();
 
@@ -85,6 +77,15 @@ try {
 
 if ($total_price < 0) {
     redirect_with_error("/order/", "合計金額が0円以下になります。", "選んだ商品を確認してください。クーポンなどの割引商品を選びすぎた可能性があります。", "danger");
+}
+
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/purchases/purchase.php";
+try {
+    $temp_purchase = new Purchases();
+    $temp_purchase = $temp_purchase->create($product_ids, $quantities);
+    $_SESSION["temp_purchase"]["id"] = $temp_purchase->get_temp_purchases()->get_id();
+} catch (Throwable $th) {
+    redirect_with_error("/order/", "エラーが発生しました。" , $th->getMessage(), "danger");
 }
 
 unset($_SESSION["order"]["data"]);
