@@ -114,7 +114,7 @@ class Order_Order extends BaseClass
     {
         try {
             $this->open();
-            $sql = "SELECT id FROM order_orders WHERE is_received = 0 AND is_cancel = 0 ORDER BY id DESC";
+            $sql = "SELECT id FROM order_orders WHERE is_received = 0 AND is_cancel = 0 ORDER BY id ASC";
 
             $stmt = $this->pdo->prepare($sql);
 
