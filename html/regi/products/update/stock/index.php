@@ -102,9 +102,7 @@ $product = $product->get_from_item_id($id);
             </div>
         </form>
     </div>
-    <!-- カスタムアラートの要素 -->
-    <div id="customAlert" class="custom-alert"></div>
-
+    
     <!-- 更新確認モーダル -->
     <div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
