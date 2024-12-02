@@ -8,7 +8,7 @@
         <p id="product-<?= $product->get_item_id() ?>-name"><?= htmlspecialchars($product->get_item_name()) ?></p>
         <p id="product-<?= $product->get_item_id() ?>-name"><?= $product->get_price() ?>円</p>
         <p>
-            <?php if ($product->get_buy_available_count() - 11 - $ptq < 0): ?>
+            <?php if ($product->get_buy_available_count() - 11 - $ptq <= 0): ?>
                 売り切れ
             <p style="display: none;">【残<span id="product-<?= $product->get_item_id() ?>-stock"
                     data-original-stock="0">0</span>個】</p>
