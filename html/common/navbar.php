@@ -1,33 +1,55 @@
-<nav class="navbar navbar-expand-lg bg-secondary fixed-top" data-bs-theme="dark">
+<nav class="navbar navbar-expand-xl bg-secondary fixed-top" data-bs-theme="dark">
     <div class="container-fluid">
         <!-- 狭い画面用のボタン -->
         <button onclick="toggleNavbar()" class="navbar-toggler" type="button">
             <span class="navbar-toggler-icon"></span>
         </button>
         <!-- 狭い画面用のFavicon -->
-        <a class="navbar-brand d-lg-none mx-auto nav-b-a"><img src="/favicon.ico" alt="Favicon"> レジ</a>
+        <a class="navbar-brand d-xl-none mx-auto nav-b-a"><img src="/favicon.ico" alt="Favicon"> レジ</a>
         <!-- 広い画面用のFavicon -->
-        <a class="navbar-brand d-none d-lg-block nav-b-b"><img src="/favicon.ico" alt="Favicon"> レジ</a>
+        <a class="navbar-brand d-none d-xl-block nav-b-b"><img src="/favicon.ico" alt="Favicon"> レジ</a>
         <!-- ナビゲーションメニュー -->
         <div class="navbar-collapse collapse justify-content-center" id="navbarNav">
             <ul class="navbar-nav mx-auto">
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="/regi/index.php"><i class="fas fa-cash-register"></i> レジ画面</a>
+                <li class="nav-item me-3">
+                    <a class="nav-link text-white position-relative" href="/regi/">
+                        <span><i class="fas fa-cash-register"></i> レジ画面</span>
+                    </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="/regi/order/"><i class="fas fa-shopping-cart"></i> モバイルオーダー</a>
+                <li class="nav-item me-3">
+                    <a class="nav-link text-white position-relative" href="/regi/order/">
+                        <span><i class="fas fa-shopping-cart"></i> モバイルオーダー</span>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                            id="order_count_badge" style="display: none;">
+                            <span id="order_count_badge_text">0</span>
+                            <span class="visually-hidden">注文あり</span>
+                        </span>
+                    </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="/regi/sales/list/"><i class="fas fa-list-alt"></i> 会計一覧</a>
+                <li class="nav-item  me-3">
+                    <a class="nav-link text-white position-relative" href="/regi/sales/list/">
+                        <span><i class="fas fa-list-alt"></i> 会計一覧</span>
+                    </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="/regi/products/list/"><i class="fas fa-cubes"></i> 商品管理</a>
+                <li class="nav-item me-3">
+                    <a class="nav-link text-white position-relative" href="/regi/products/list/">
+                        <span><i class="fas fa-cubes"></i> 商品管理</span>
+                    </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="/regi/users/list/"><i class="fas fa-user"></i> ユーザー管理</a>
+                <li class="nav-item me-3">
+                    <a class="nav-link text-white position-relative" href="/regi/users/list/">
+                        <span><i class="fas fa-user"></i> ユーザー管理</span>
+                    </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="/regi/notify/history/"><i class="fas fa-bell"></i> 通知</a>
+                <li class="nav-item me-3">
+                    <a class="nav-link text-white position-relative" href="/regi/notify/history/">
+                        <span><i class="fas fa-bell"></i> 通知</span>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                            id="notify_count_badge" style="display: none;">
+                            <span id="notify_count_badge_text">0</span>
+                            <span class="visually-hidden">通知あり</span>
+                        </span>
+                    </a>
                 </li>
             </ul>
             <!-- 右寄せユーザー名とログアウトボタン -->
@@ -97,4 +119,56 @@
         const navbar = document.getElementById('navbarNav');
         navbar.classList.remove('show');
     });
+
+    // 注文バッジの数字表示
+    async function get_order_count() {
+        try {
+            const resp = await fetch("/common/get_order_count.php");
+            if (resp.ok) {
+                const data = await resp.json();
+                const order_count = data.order_count;
+                if (order_count > 0) {
+                    document.getElementById("order_count_badge").style = "";
+                    document.getElementById("order_count_badge_text").innerText = order_count;
+                } else {
+                    document.getElementById("order_count_badge").style = "display: none;";
+                }
+            } else {
+                if (resp.status === 403) {
+                    location.reload();
+                }
+                console.error("Error: " + resp.statusText);
+            }
+        } catch (error) {
+            console.error("Error: " + error);
+        }
+    }
+    setInterval(get_order_count, 5000);
+    get_order_count();
+
+    // 通知バッジの数字表示
+    async function get_notify_count() {
+        try {
+            const resp = await fetch("/common/get_notify_count.php");
+            if (resp.ok) {
+                const data = await resp.json();
+                const notify_count = data.notify_count;
+                if (notify_count > 0) {
+                    document.getElementById("notify_count_badge").style = "";
+                    document.getElementById("notify_count_badge_text").innerText = notify_count;
+                } else {
+                    document.getElementById("notify_count_badge").style = "display: none;";
+                }
+            } else {
+                if (resp.status === 403) {
+                    location.reload();
+                }
+                console.error("Error: " + resp.statusText);
+            }
+        } catch (error) {
+            console.error("Error: " + error);
+        }
+    }
+    setInterval(get_notify_count, 5000);
+    get_notify_count();
 </script>
