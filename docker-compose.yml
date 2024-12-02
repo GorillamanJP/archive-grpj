@@ -15,6 +15,7 @@ services:
       - .:/var/www
     environment:
       - MAX_FILESIZE=${MAX_FILESIZE}
+      - TZ=${TIMEZONE}
     depends_on:
       - php-fpm
 
