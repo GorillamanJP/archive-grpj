@@ -148,7 +148,6 @@
             console.error("Error: " + error);
         }
     }
-    get_order_count();
 
     // 通知バッジの数字表示
     async function get_notify_count() {
@@ -173,7 +172,6 @@
             console.error("Error: " + error);
         }
     }
-    get_notify_count();
 
     async function set_common_badge() {
         await get_notify_count();
