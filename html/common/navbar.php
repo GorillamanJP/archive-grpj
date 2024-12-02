@@ -1,8 +1,13 @@
 <nav class="navbar navbar-expand-xl bg-secondary fixed-top" data-bs-theme="dark">
     <div class="container-fluid">
         <!-- 狭い画面用のボタン -->
-        <button onclick="toggleNavbar()" class="navbar-toggler" type="button">
+        <button onclick="toggleNavbar()" class="navbar-toggler position-relative" type="button">
             <span class="navbar-toggler-icon"></span>
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                id="common_badge" style="display: none;">
+                <span id="common_badge_text">0</span>
+                <span class="visually-hidden">通知/注文あり</span>
+            </span>
         </button>
         <!-- 狭い画面用のFavicon -->
         <a class="navbar-brand d-xl-none mx-auto nav-b-a"><img src="/favicon.ico" alt="Favicon"> レジ</a>
@@ -143,7 +148,6 @@
             console.error("Error: " + error);
         }
     }
-    setInterval(get_order_count, 5000);
     get_order_count();
 
     // 通知バッジの数字表示
@@ -169,6 +173,21 @@
             console.error("Error: " + error);
         }
     }
-    setInterval(get_notify_count, 5000);
     get_notify_count();
+
+    async function set_common_badge() {
+        await get_notify_count();
+        await get_order_count();
+        const notify_count = document.getElementById("notify_count_badge_text").innerText;
+        const order_count = document.getElementById("order_count_badge_text").innerText;
+        const common_count = parseInt(notify_count) + parseInt(order_count);
+        if (common_count > 0) {
+            document.getElementById("common_badge").style = "";
+        } else {
+            document.getElementById("common_badge").style = "display: none;";
+        }
+        document.getElementById("common_badge_text").innerText = common_count;
+    }
+    set_common_badge();
+    setInterval(set_common_badge, 5000);
 </script>
