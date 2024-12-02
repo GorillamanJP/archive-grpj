@@ -6,9 +6,8 @@ if (!login_check()) {
 }
 ?>
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+session_start();
+
 
 // // ロック解除
 // $lockfile_path = "/tmp/sales_create.lock";
@@ -34,6 +33,6 @@ try {
         unset($_SESSION["temp_purchase"]);
         session_write_close();
     }
-}catch(Throwable $th){
+} catch (Throwable $th) {
     http_response_code(500);
 }

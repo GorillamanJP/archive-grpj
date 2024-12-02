@@ -2,9 +2,7 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/users/user.php";
 function login_check(): bool
 {
-    if (session_status() == PHP_SESSION_NONE) {
-        session_start();
-    }
+    session_start();
     if (!isset($_SESSION["login"]["user_id"]) || $_SESSION["login"]["user_id"] === "") {
         session_write_close();
         return false;
