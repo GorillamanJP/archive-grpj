@@ -44,7 +44,7 @@ services:
       # init SQL script
       - ./mariadb/init.sql:/docker-entrypoint-initdb.d/init.sql
       # Database Volume
-      - db_data:/var/lib/mysql
+      - ./mariadb/data:/var/lib/mysql
     environment:
       - MARIADB_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
       - MARIADB_DATABASE=${DB_DATABASE}
@@ -57,12 +57,7 @@ services:
       - "8080:80"
     environment:
       - PMA_HOST=mariadb
-      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
-      - MYSQL_USER=${DB_USER}
-      - MYSQL_PASSWORD=${DB_USER_PASSWORD}
+      - PMA_USER=${DB_USER}
+      - PMA_PASSWORD=${DB_USER_PASSWORD}
     depends_on:
       - mariadb
-
-volumes:
-  # Database Volume
-  db_data:
