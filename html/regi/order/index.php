@@ -82,8 +82,8 @@ session_start(); ?>
     </div>
 
     <!-- 情報提供セクション -->
-    <div class="alert-info">
-        <p>このリンクをコピーして、モバイルオーダーを開始することができます。モバイル端末でこのURLにアクセスし、注文を受け付けてください。</p>
+    <div class="alert alert-info text-center">
+        <p class="mb-0">このリンクをコピー共有することで、モバイルオーダーを開始することができます。モバイル端末でこのURLにアクセスし、注文を受け付けてください。</p>
     </div>
 
     <div class="text-center my-3">

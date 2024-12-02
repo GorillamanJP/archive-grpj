@@ -17,7 +17,7 @@
                     </a>
                 </li>
                 <li class="nav-item me-3">
-                    <a class="nav-link text-white position-relative" href="/regi/order/">
+                    <a class="nav-link text-white position-relative" href="/regi/order/list/">
                         <span><i class="fas fa-shopping-cart"></i> モバイルオーダー</span>
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
                             id="order_count_badge" style="display: none;">

@@ -56,6 +56,12 @@ $orders = $order_obj->get_all();
         </table>
     </div>
 
+    <div class="container">
+        <div class="alert alert-info text-center" role="alert">
+            <a href="/regi/order/">モバイルオーダーを公開する</a>
+        </div>
+    </div>
+
     <!-- キャンセル確認モーダル -->
     <div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
