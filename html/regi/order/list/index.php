@@ -58,7 +58,9 @@ $orders = $order_obj->get_all();
 
     <div class="container">
         <div class="alert alert-info text-center" role="alert">
-            <a href="/regi/order/">モバイルオーダーを公開する</a>
+            <a href="/regi/order/">
+                <h4>モバイルオーダーを公開する</h4>
+            </a>
         </div>
     </div>
 
