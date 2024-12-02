@@ -65,7 +65,7 @@ if ($order->get_order_order()->get_is_cancel()) {
     </style>
 </head>
 
-<body>
+<body class="pt-0">
     <div class="container">
         <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
         <h1 class="text-center mb-3">注文番号：<?= $order_id ?></h1>
