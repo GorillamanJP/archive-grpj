@@ -14,18 +14,15 @@ if (!isset($_SESSION["regi"]["sales"]["total"]["last_update"]) || $_SESSION["reg
 $last_update = $_SESSION["regi"]["sales"]["total"]["last_update"];
 
 try {
-    require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/BaseClass.php";
-    $bc = new BaseClass();
+    require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/notifications/notification.php";
+    $nf = new Notification();
 
-    $sql = "SELECT COUNT(*) FROM order_orders WHERE date >= :last_update";
+    $nfs = $nf->gets_notifications_after($last_update);
 
-    $params = [
-        ":last_update" => $last_update,
-    ];
-
-    $stmt = $bc->run_query($sql, $params);
-
-    $update_count = $stmt->fetchColumn();
+    $update_count = 0;
+    if (!is_null($nfs)) {
+        $update_count = count($nfs);
+    }
 
     $is_update = false;
     if ($update_count > 0) {

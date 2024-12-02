@@ -13,7 +13,7 @@ $_SESSION["regi"]["sales"]["list"]["last_update"] = $last_update;
 try {
     require_once $_SERVER['DOCUMENT_ROOT']."/../classes/products/product.php";
     $product_obj = new Product();
-    $products = $product_obj->get_all();
+    $products = $product_obj->get_all_all();
     $sales_page = "./no_sales_list.php";
     if(!is_null($products)){
         $sales_page = "./sales_list.php";

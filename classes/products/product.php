@@ -104,6 +104,26 @@ class Product extends BaseClassGroup
             throw new Exception("予期しないエラーが発生しました。", -1, $th);
         }
     }
+    public function get_all_all(): array|null
+    {
+        try {
+            $items = $this->item->get_all_all();
+            if ($items) {
+                $products_array = [];
+                foreach ($items as $item) {
+                    $product = new Product();
+                    $products_array[] = $product->get_from_item_id($item->get_id());
+                }
+                return $products_array;
+            } else {
+                return null;
+            }
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
+        } catch (Throwable $th) {
+            throw new Exception("予期しないエラーが発生しました。", -1, $th);
+        }
+    }
     public function delete(): void
     {
         try {

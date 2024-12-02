@@ -7,6 +7,10 @@ if (!login_check()) {
 
 session_start();
 
+if (!isset($_SESSION["regi"]["notify"]["history"]["last_update"]) || $_SESSION["regi"]["notify"]["history"]["last_update"] === "") {
+    $_SESSION["regi"]["notify"]["history"]["last_update"] = date("Y/m/d H:i:s");
+}
+
 $last_update = $_SESSION["regi"]["notify"]["history"]["last_update"];
 
 try {

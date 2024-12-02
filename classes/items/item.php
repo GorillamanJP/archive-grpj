@@ -168,6 +168,34 @@ class Item extends BaseClass
         }
     }
 
+    # 消されたものも含めて完全にすべて取得
+    public function get_all_all(): array|null
+    {
+        try {
+            $this->open();
+            $sql = "SELECT id FROM items ORDER BY id ASC";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute();
+
+            $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $this->close();
+            if ($items) {
+                $items_array = [];
+                foreach ($items as $item) {
+                    $item_obj = new Item();
+                    $items_array[] = $item_obj->get_from_id($item["id"]);
+                    $item_obj->close();
+                }
+                return $items_array;
+            } else {
+                return null;
+            }
+        } catch (PDOException $e) {
+            $this->close();
+            throw new Exception("データベースエラーです。", 1, $e);
+        }
+    }
+
     # 商品更新
     public function update(string $item_name, int $price, string $item_image): Item
     {
