@@ -76,6 +76,9 @@ session_start();
         <?php endif ?>
     </div>
 
+    <div id="notifications" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+    <script src="/regi/notify/check_notify.js"></script>
+
     <!-- 削除確認モーダル -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">

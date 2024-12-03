@@ -532,11 +532,6 @@ $_SESSION["regi"]["data"]["total_price"] = $total_price;
 
         document.getElementById("received_price_disp").addEventListener("input", calc_and_disp_transaction);
 
-        // ロック解除スクリプト
-        window.addEventListener("beforeunload", function () {
-            navigator.sendBeacon("./unlock.php");
-        });
-
         // keep_alive処理
         let timeoutOccurred = false;
 
