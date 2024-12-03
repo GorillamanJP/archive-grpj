@@ -76,9 +76,6 @@ if ($order->get_order_order()->get_is_cancel()) {
                 <td><?= $order->get_order_order()->get_date() ?></td>
             </tr>
             <tr>
-                <th colspan="2" class="text-center">注文内容</th>
-            </tr>
-            <tr>
                 <td colspan="2">
                     <table class="table text-center">
                         <tr>
