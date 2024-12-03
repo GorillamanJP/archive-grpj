@@ -134,10 +134,10 @@
                 const order_count = data.order_count;
                 if (order_count > 0) {
                     document.getElementById("order_count_badge").style = "";
-                    document.getElementById("order_count_badge_text").innerText = order_count;
                 } else {
                     document.getElementById("order_count_badge").style = "display: none;";
                 }
+                document.getElementById("order_count_badge_text").innerText = order_count;
             } else {
                 if (resp.status === 403) {
                     location.reload();
@@ -158,10 +158,10 @@
                 const notify_count = data.notify_count;
                 if (notify_count > 0) {
                     document.getElementById("notify_count_badge").style = "";
-                    document.getElementById("notify_count_badge_text").innerText = notify_count;
                 } else {
                     document.getElementById("notify_count_badge").style = "display: none;";
                 }
+                document.getElementById("notify_count_badge_text").innerText = notify_count;
             } else {
                 if (resp.status === 403) {
                     location.reload();

@@ -33,6 +33,9 @@ class Stock extends BaseClass
     public function create(int $item_id, int $quantity): Stock
     {
         try {
+            $dt = new DateTime();
+            $now = $dt->format("Y-m-d H:i:s.u");
+
             $this->open();
             $sql = "INSERT INTO stocks (item_id, quantity, last_update) VALUES (:item_id, :quantity, :last_update)";
 
@@ -40,7 +43,7 @@ class Stock extends BaseClass
 
             $stmt->bindValue(":item_id", $item_id, PDO::PARAM_INT);
             $stmt->bindValue(":quantity", $quantity, PDO::PARAM_INT);
-            $stmt->bindValue(":last_update", date("Y-m-d H:i:s"), PDO::PARAM_STR);
+            $stmt->bindValue(":last_update", $now, PDO::PARAM_STR);
 
             $stmt->execute();
 

@@ -1,7 +1,10 @@
 <?php
 session_start();
 
-$last_update = date("Y/m/d H:i:s");
+$dt = new DateTime();
+$now = $dt->format("Y-m-d H:i:s.u");
+
+$last_update = $now;
 $_SESSION["list"]["last_update"] = $last_update;
 
 try {
@@ -19,7 +22,7 @@ try {
 
     echo json_encode([
         "table" => $table,
-        "last-update" => $last_update,
+        "last-update" => date_create($last_update)->format("Y/m/d H:i:s"),
     ]);
     exit();
 } catch (\Throwable $th) {

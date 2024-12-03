@@ -7,7 +7,10 @@ if (!login_check()) {
 
 session_start();
 
-$last_update = date("Y/m/d H:i:s");
+$dt = new DateTime();
+$now = $dt->format("Y-m-d H:i:s.u");
+
+$last_update = $now;
 $_SESSION["regi"]["order"]["list"]["last_update"] = $last_update;
 
 $data = "";
@@ -25,7 +28,7 @@ try {
     ob_end_clean();
 
     echo json_encode([
-        "last-update" => $last_update,
+        "last-update" => date_create($last_update)->format("Y/m/d H:i:s"),
         "table" => $data,
     ]);
     exit();

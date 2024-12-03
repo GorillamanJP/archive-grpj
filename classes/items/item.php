@@ -83,6 +83,9 @@ class Item extends BaseClass
     public function create(string $item_name, int $price, string $item_image): Item
     {
         try {
+            $dt = new DateTime();
+            $now = $dt->format("Y-m-d H:i:s.u");
+
             $this->open();
 
             $sql = "INSERT INTO items (item_name, price, item_image, last_update, delete_flag) VALUES (:item_name, :price, :item_image, :last_update, :delete_flag)";
@@ -92,7 +95,7 @@ class Item extends BaseClass
             $stmt->bindValue(":item_name", $item_name, PDO::PARAM_STR);
             $stmt->bindValue(":price", $price, PDO::PARAM_INT);
             $stmt->bindValue(":item_image", $this->resize_image($item_image), PDO::PARAM_LOB);
-            $stmt->bindValue(":last_update", date("Y-m-d H:i:s"), PDO::PARAM_STR);
+            $stmt->bindValue(":last_update", $now, PDO::PARAM_STR);
             $stmt->bindValue(":delete_flag", false, PDO::PARAM_BOOL);
 
             $stmt->execute();
@@ -200,6 +203,9 @@ class Item extends BaseClass
     public function update(string $item_name, int $price, string $item_image): Item
     {
         try {
+            $dt = new DateTime();
+            $now = $dt->format("Y-m-d H:i:s.u");
+
             $this->open();
             $sql = "UPDATE items SET item_name = :item_name, price = :price, item_image = :item_image, last_update = :last_update WHERE id = :id";
 
@@ -208,7 +214,7 @@ class Item extends BaseClass
             $stmt->bindValue(":item_name", $item_name, PDO::PARAM_STR);
             $stmt->bindValue(":price", $price, PDO::PARAM_INT);
             $stmt->bindValue(":item_image", $this->resize_image($item_image), PDO::PARAM_LOB);
-            $stmt->bindValue(":last_update", date("Y-m-d H:i:s"), PDO::PARAM_STR);
+            $stmt->bindValue(":last_update", $now, PDO::PARAM_STR);
 
             $stmt->execute();
 
@@ -227,13 +233,16 @@ class Item extends BaseClass
     public function delete(): void
     {
         try {
+            $dt = new DateTime();
+            $now = $dt->format("Y-m-d H:i:s.u");
+
             $this->open();
             $sql = "UPDATE items SET delete_flag = 1, last_update = :last_update WHERE id = :id";
 
             $stmt = $this->pdo->prepare($sql);
 
             $stmt->bindValue(":id", $this->id, PDO::PARAM_INT);
-            $stmt->bindValue(":last_update", date("Y-m-d H:i:s"));
+            $stmt->bindValue(":last_update", $now);
 
             $stmt->execute();
 

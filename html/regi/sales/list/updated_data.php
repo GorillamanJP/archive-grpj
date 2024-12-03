@@ -12,10 +12,13 @@ if (!isset($_POST["page_offset"]) || !isset($_POST["page_limit"])) {
     exit();
 }
 
+$dt = new DateTime();
+$now = $dt->format("Y-m-d H:i:s.u");
+
 $offset = htmlspecialchars($_POST["page_offset"]);
 $limit = htmlspecialchars($_POST["page_limit"]);
 
-$last_update = date("Y/m/d H:i:s");
+$last_update = $now;
 $_SESSION["regi"]["sales"]["list"]["last_update"] = $last_update;
 
 try {
@@ -41,7 +44,7 @@ try {
     echo json_encode([
         "accountants_table" => $accountants_table,
         "page_end" => $page_end,
-        "last-update" => $last_update,
+        "last-update" => date_create($last_update)->format("Y/m/d H:i:s"),
     ]);
     exit();
 } catch (\Throwable $th) {

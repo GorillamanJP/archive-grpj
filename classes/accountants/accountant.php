@@ -35,13 +35,16 @@ class Accountant extends BaseClass
     public function create(int $total_amount, int $total_price, string $accountant_user_name): Accountant
     {
         try {
+            $dt = new DateTime();
+            $now = $dt->format("Y-m-d H:i:s.u");
+
             $this->open();
 
             $sql = "INSERT INTO accountants (date, total_amount, total_price, accountant_user_name) VALUES (:date, :total_amount, :total_price, :accountant_user_name)";
 
             $stmt = $this->pdo->prepare($sql);
 
-            $stmt->bindValue(":date", date("Y-m-d H:i:s"), PDO::PARAM_STR);
+            $stmt->bindValue(":date", $now, PDO::PARAM_STR);
             $stmt->bindValue(":total_amount", $total_amount, PDO::PARAM_INT);
             $stmt->bindValue(":total_price", $total_price, PDO::PARAM_INT);
             $stmt->bindValue(":accountant_user_name", $accountant_user_name, PDO::PARAM_STR);
