@@ -7,8 +7,11 @@ if (!login_check()) {
 
 session_start();
 
+$dt = new DateTime();
+$now = $dt->format("Y-m-d H:i:s.u");
+
 if (!isset($_SESSION["notify"]["last_update"]) || $_SESSION["notify"]["last_update"] === "") {
-    $_SESSION["notify"]["last_update"] = date("Y-m-d H:i:s");
+    $_SESSION["notify"]["last_update"] = $now;
 }
 $datetime = $_SESSION["notify"]["last_update"];
 require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/notifications/notification.php";
@@ -28,7 +31,7 @@ if ($response['hasData']) {
             'sent_date' => $notify->get_sent_date()
         ];
     }
-    $_SESSION["notify"]["last_update"] = date("Y-m-d H:i:s");
+    $_SESSION["notify"]["last_update"] = $now;
 }
 
 echo json_encode($response);

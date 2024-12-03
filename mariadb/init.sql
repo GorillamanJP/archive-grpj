@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS items(
     item_name TEXT NOT NULL,
     price BIGINT NOT NULL,
     item_image LONGBLOB NOT NULL,
-    last_update DATETIME NOT NULL,
+    last_update DATETIME(6) NOT NULL,
     delete_flag BOOLEAN NOT NULL
 );
 
@@ -31,14 +31,14 @@ CREATE TABLE IF NOT EXISTS stocks(
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     item_id BIGINT UNSIGNED NOT NULL,
     quantity BIGINT NOT NULL,
-    last_update DATETIME NOT NULL,
+    last_update DATETIME(6) NOT NULL,
     FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE
 );
 
 -- 会計テーブル
 CREATE TABLE IF NOT EXISTS accountants(
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    date DATETIME NOT NULL,
+    date DATETIME(6) NOT NULL,
     total_amount BIGINT NOT NULL,
     total_price BIGINT NOT NULL,
     accountant_user_name TEXT NOT NULL
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS transactions(
 -- モバイルオーダーの注文情報
 CREATE TABLE IF NOT EXISTS order_orders(
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    date DATETIME NOT NULL,
+    date DATETIME(6) NOT NULL,
     total_amount BIGINT NOT NULL,
     total_price BIGINT NOT NULL,
     is_call BOOLEAN NOT NULL,
@@ -96,13 +96,13 @@ CREATE TABLE IF NOT EXISTS notifications(
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     title TEXT NOT NULL,
     message TEXT NOT NULL,
-    sent_date DATETIME NOT NULL
+    sent_date DATETIME(6) NOT NULL
 );
 
 -- 会計一時テーブル
 CREATE TABLE IF NOT EXISTS temp_purchases(
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    ttl DATETIME NOT NULL
+    ttl DATETIME(6) NOT NULL
 );
 
 -- 会計一時詳細テーブル

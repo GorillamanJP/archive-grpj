@@ -12,10 +12,13 @@ if (!isset($_POST["page_offset"]) || !isset($_POST["page_limit"])) {
     exit();
 }
 
+$dt = new DateTime();
+$now = $dt->format("Y-m-d H:i:s.u");
+
 $offset = htmlspecialchars($_POST["page_offset"]);
 $limit = htmlspecialchars($_POST["page_limit"]);
 
-$last_update = date("Y/m/d H:i:s");
+$last_update = $now;
 $_SESSION["regi"]["notify"]["history"]["last_update"] = $last_update;
 
 $data = "";
@@ -40,7 +43,7 @@ try {
     $page_end = $notification_count;
 
     echo json_encode([
-        "last-update" => $last_update,
+        "last-update" => date_create($last_update)->format("Y/m/d H:i:s"),
         "table" => $data,
         "page_end" => $page_end,
     ]);

@@ -1,8 +1,11 @@
 <?php
 session_start();
 
+$dt = new DateTime();
+$now = $dt->format("Y-m-d H:i:s.u");
+
 if (!isset($_SESSION["list"]["last_update"]) || $_SESSION["list"]["last_update"] === "") {
-    $_SESSION["list"]["last_update"] = date("Y/m/d H:i:s");
+    $_SESSION["list"]["last_update"] = $now;
 }
 
 $last_update = $_SESSION["list"]["last_update"];

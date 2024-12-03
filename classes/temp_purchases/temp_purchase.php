@@ -11,13 +11,16 @@ class Temp_Purchases extends BaseClass
     public function create(): Temp_Purchases
     {
         try {
+            $dt = new DateTime();
+            $sec_30 = $dt->modify("+30 seconds")->format("Y-m-d H:i:s.u");
+
             $this->open();
 
             $sql = "INSERT INTO temp_purchases (ttl) VALUES (:ttl)";
 
             $stmt = $this->pdo->prepare($sql);
 
-            $stmt->bindValue(":ttl", date("Y-m-d H:i:s", strtotime("+30 seconds", strtotime(date("Y-m-d H:i:s")))), PDO::PARAM_STR);
+            $stmt->bindValue(":ttl", $sec_30, PDO::PARAM_STR);
 
             $stmt->execute();
 
@@ -94,12 +97,15 @@ class Temp_Purchases extends BaseClass
     public function delete_at_ttl_ended(): void
     {
         try {
+            $dt = new DateTime();
+            $now = $dt->format("Y-m-d H:i:s.u");
+
             $this->open();
             $sql = "SELECT id FROM temp_purchases WHERE ttl <= :date";
 
             $stmt = $this->pdo->prepare($sql);
 
-            $stmt->bindValue(":date", date("Y-m-d H:i:s"), PDO::PARAM_STR);
+            $stmt->bindValue(":date", $now, PDO::PARAM_STR);
 
             $stmt->execute();
 
@@ -126,12 +132,15 @@ class Temp_Purchases extends BaseClass
     public function extension(): Temp_Purchases
     {
         try {
+            $dt = new DateTime();
+            $sec_30 = $dt->modify("+30 seconds")->format("Y-m-d H:i:s.u");
+
             $this->open();
             $sql = "UPDATE temp_purchases SET ttl = :ttl WHERE id = :id";
 
             $stmt = $this->pdo->prepare($sql);
 
-            $stmt->bindValue(":ttl", date("Y-m-d H:i:s", strtotime("+30 seconds", strtotime(date("Y-m-d H:i:s")))), PDO::PARAM_STR);
+            $stmt->bindValue(":ttl", $sec_30, PDO::PARAM_STR);
             $stmt->bindValue(":id", $this->id, PDO::PARAM_INT);
 
             $stmt->execute();

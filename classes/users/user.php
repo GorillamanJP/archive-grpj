@@ -30,8 +30,10 @@ class User extends BaseClass
     public function verify(string $password): User
     {
         if (password_verify($password . $this->salt, $this->password_hash)) {
+            $this->send_notification("ユーザー", "{$this->user_name}さんがログインしました！");
             return $this;
         } else {
+            $this->send_notification("ユーザー", "{$this->user_name}さんがログインに失敗しました。");
             throw new Exception("ユーザー名またはパスワードが違います。");
         }
     }
@@ -55,6 +57,8 @@ class User extends BaseClass
             $id = $this->pdo->lastInsertId();
 
             $this->close();
+
+            $this->send_notification("ユーザー", "「{$user_name}」さんが登録されました！");
 
             return $this->get_from_id($id);
         } catch (PDOException $pe) {
@@ -177,6 +181,8 @@ class User extends BaseClass
 
             $this->close();
 
+            $this->send_notification("ユーザー", "「{$this->user_name}」さんの情報が更新されました！");
+
             return $this->get_from_id($this->id);
         } catch (PDOException $pe) {
             $this->close();
@@ -199,6 +205,8 @@ class User extends BaseClass
 
             $stmt->execute();
             $this->close();
+
+            $this->send_notification("ユーザー", "{$this->user_name}さんが削除されました。");
         } catch (PDOException $pe) {
             $this->close();
             throw new Exception("データベースエラーです。", 1, $pe);

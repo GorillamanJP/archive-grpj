@@ -23,12 +23,15 @@ class Notification extends BaseClass
     private string $sent_date;
     public function get_sent_date(): string
     {
-        return $this->sent_date;
+        return date_create($this->sent_date)->format("Y/m/d H:i:s");
     }
 
     public function create(string $title, string $message): Notification
     {
         try {
+            $dt = new DateTime();
+            $now = $dt->format("Y-m-d H:i:s.u");
+
             $this->open();
             $sql = "INSERT INTO notifications (title, message, sent_date) VALUES (:title, :message, :sent_date)";
 
@@ -36,7 +39,7 @@ class Notification extends BaseClass
 
             $stmt->bindValue(":title", $title, PDO::PARAM_STR);
             $stmt->bindValue(":message", $message, PDO::PARAM_STR);
-            $stmt->bindValue(":sent_date", date("Y-m-d H:i:s"), PDO::PARAM_STR);
+            $stmt->bindValue(":sent_date", $now, PDO::PARAM_STR);
 
             $stmt->execute();
 
@@ -90,7 +93,7 @@ class Notification extends BaseClass
     {
         try {
             $this->open();
-            $sql = "SELECT id FROM notifications WHERE sent_date > :datetime ORDER BY sent_date ASC";
+            $sql = "SELECT id FROM notifications WHERE sent_date >= :datetime ORDER BY sent_date ASC";
 
             $stmt = $this->pdo->prepare($sql);
 
@@ -181,7 +184,7 @@ class Notification extends BaseClass
             }
         } catch (PDOException $pe) {
             $this->close();
-            throw new Exception("データベースエラーです。".$pe->getMessage(), 1, $pe);
+            throw new Exception("データベースエラーです。" . $pe->getMessage(), 1, $pe);
         } catch (Throwable $th) {
             $this->close();
             throw new Exception("予期しないエラーが発生しました。", -1, $th);

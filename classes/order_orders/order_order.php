@@ -11,7 +11,7 @@ class Order_Order extends BaseClass
     private string $date;
     public function get_date(): string
     {
-        return $this->date;
+        return date_create($this->date)->format("Y/m/d H:i:s");
     }
 
     private int $total_amount;
@@ -47,12 +47,15 @@ class Order_Order extends BaseClass
     public function create(int $total_amount, int $total_price): Order_Order
     {
         try {
+            $dt = new DateTime();
+            $now = $dt->format("Y-m-d H:i:s.u");
+
             $this->open();
             $sql = "INSERT INTO order_orders (date, total_amount, total_price, is_call, is_cancel, is_received) VALUES (:date, :total_amount, :total_price, :is_call, :is_cancel, :is_received)";
 
             $stmt = $this->pdo->prepare($sql);
 
-            $stmt->bindValue(":date", date("Y-m-d H:i:s"), PDO::PARAM_STR);
+            $stmt->bindValue(":date", $now, PDO::PARAM_STR);
             $stmt->bindValue(":total_amount", $total_amount, PDO::PARAM_INT);
             $stmt->bindValue(":total_price", $total_price, PDO::PARAM_INT);
             $stmt->bindValue(":is_call", false, PDO::PARAM_BOOL);
@@ -269,7 +272,7 @@ class Order_Order extends BaseClass
 
             if ($this->is_call) {
                 $this->send_notification("注文", "注文番号 {$this->id} 番を呼び出しました！");
-            }else{
+            } else {
                 $this->send_notification("注文", "注文番号 {$this->id} 番の呼び出しをキャンセルしました！");
             }
 
