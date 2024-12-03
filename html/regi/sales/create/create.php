@@ -113,5 +113,5 @@ try {
     }
     redirect_with_error($back_url_success, "会計番号 {$id}番 で処理を完了しました。", "", "success");
 } catch (Throwable $e) {
-    redirect_with_error($back_url_fail, "エラーが発生しました。", $e->getMessage(), "danger");
+    redirect_with_error($back_url_fail, "エラーが発生しました。".$e->getTraceAsString(), $e->getMessage(), "danger");
 }

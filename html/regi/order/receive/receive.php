@@ -23,5 +23,5 @@ try {
 
     redirect_with_error("../list/", "注文番号 {$order->get_order_order()->get_id()} の受け取りが完了しました。", "", "success");
 } catch (Throwable $e) {
-    redirect_with_error("../list/", "エラーが発生しました。", $e->getMessage(), "danger");
+    redirect_with_error("../list/", "エラーが発生しました。".$e->getTraceAsString(), $e->getMessage(), "danger");
 }
