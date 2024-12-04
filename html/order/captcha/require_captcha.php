@@ -1,5 +1,5 @@
 <?php
-if (getenv("CAPTCHA_DISABLE") != true) {
+if (getenv("CAPTCHA_DISABLE") !== "true") {
     session_start();
     if (!isset($_SESSION["order"]["captcha"]["success"]) || $_SESSION["order"]["captcha"]["success"] === false) {
         if (!empty($_POST)) {
