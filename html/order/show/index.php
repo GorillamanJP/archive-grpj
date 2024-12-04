@@ -104,11 +104,9 @@ if ($order->get_order_order()->get_is_cancel()) {
                 <td>&yen;<?= $order->get_order_order()->get_total_price() ?></td>
             </tr>
         </table>
-    </div>
-    <div id="call_status" class="container call_flash" style="display: none;">
-        <h1 class="text-center py-5">呼び出されています！</h1>
-    </div>
-    <div class="container mt-4">
+        <div id="call_status" class="container p-5 call_flash" style="display: none;">
+            <h1 class="text-center py-5 my-5">呼び出されています！</h1>
+        </div>
         <div class="alert alert-info alert-custom" role="alert">
             <p class="text-center my-1">この画面を開いたままにしておくと、呼び出しが分かって便利です。</p>
             <div class="d-flex justify-content-center align-items-center form-check form-switch">
