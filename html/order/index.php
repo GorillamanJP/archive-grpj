@@ -41,19 +41,19 @@ try {
     body {
         /* パディング削減のため上書き */
         padding-top: 1rem;
+
+        /* 日本語折り返し */
+        line-break: strict;
     }
 </style>
 
 <body>
     <h1 class="text-center mb-3">モバイルオーダー</h1>
-    <div class="alert alert-primary text-center mx-5" role="alert">
-            一つの商品につき10個まで注文ができます。<br>
-            それ以上お買い求めいただく場合は、店頭までお越しください。
-        </div>
-        <div class="alert alert-primary text-center mx-5" role="alert">
-            残り数が0になっている場合でも、<br>
-            店頭ではわずかに在庫が残っている場合がございます。
-        </div>
+    <div class="alert alert-primary mx-auto" role="alert">
+        <h4 class="text-center">ご案内</h4>
+            <p>一つの商品につき10個まで注文ができます。それ以上お買い求めいただく場合は、店頭までお越しください。</p>
+            <p>残り数が0になっている場合でも、店頭ではわずかに在庫が残っている場合がございます。</p>
+    </div>
     <div class="container regia">
 
         <div class="content1">
@@ -108,6 +108,11 @@ try {
     <div id="notifications" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
     <script src="/common/regi.js"></script>
     <script src="/common/check_update_common.js"></script>
+    <div class="alert alert-success text-center mx-auto" role="alert">
+        <h3>利用者アンケート実施中！</h3>
+        <p>モバイルオーダーを使ってみての評価をお願い致します！</p>
+        <p><a href="">アンケートを開く（Googleフォーム）</a></p>
+    </div>
 </body>
 
 </html>
