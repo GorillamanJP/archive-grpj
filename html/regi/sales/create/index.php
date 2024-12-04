@@ -126,7 +126,6 @@ try {
     $temp_purchase = $temp_purchase->create($product_ids, $quantities);
     $_SESSION["temp_purchase"]["id"] = $temp_purchase->get_temp_purchases()->get_id();
 } catch (Throwable $th) {
-    require "./unlock.php";
     redirect_with_error("/regi/", "エラーが発生しました。", $th->getMessage(), "danger");
 }
 
