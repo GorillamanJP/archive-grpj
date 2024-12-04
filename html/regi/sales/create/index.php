@@ -24,46 +24,6 @@ if (!$ok) {
     redirect_with_error("/regi/", $message, "", "warning");
 }
 
-// // ファイルロックを使って決済画面は一つの端末で一つのタブしかアクセスできない状態を作り出す
-// // ロックファイルの場所
-// $lockfile_path = "/tmp/sales_create.lock";
-// // タイムアウトまでの時間(秒)
-// $timeout = 30;
-// // ロック可否チェック(ファイルの有無)
-// if (!file_exists($lockfile_path)) {
-//     // ロックをかける
-//     $lockfile = fopen($lockfile_path, "w");
-//     fwrite($lockfile, json_encode(['time' => time(), 'user_id' => $_SESSION["login"]['user_id']]));
-//     fclose($lockfile);
-// } else {
-//     // ロックそのものはかけられていたが…
-//     // ロックファイルのタイムスタンプを確認
-//     $lockfile = fopen($lockfile_path, "r+");
-//     $lock_data = json_decode(fread($lockfile, filesize($lockfile_path)), true);
-//     fclose($lockfile);
-
-//     // 現在の時間を取得
-//     $current_time = time();
-
-//     // タイムアウトをチェック
-//     if (($current_time - intval($lock_data['time'])) > $timeout) {
-//         // タイムアウトが過ぎている場合、ロックを解除して再ロック
-//         unlink($lockfile_path);
-//         $lockfile = fopen($lockfile_path, "w");
-//         fwrite($lockfile, json_encode(['time' => time(), 'user_id' => $_SESSION["login"]['user_id']]));
-//         fclose($lockfile);
-//         // この場合はロックを獲得できたので支払い要求画面に行ける
-//     } else {
-//         // ロック失敗(すでにロック済み)
-//         $_SESSION["product_id"] = $_POST["product_id"];
-//         $_SESSION["quantity"] = $_POST["quantity"];
-//         session_write_close();
-//         header("Location: ./wait.php");
-//         exit();
-//     }
-// }
-
-
 $product_ids = $_POST["product_id"];
 $quantities = $_POST["quantity"];
 
