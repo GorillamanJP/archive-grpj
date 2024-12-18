@@ -91,6 +91,16 @@ CREATE TABLE IF NOT EXISTS order_details(
     FOREIGN KEY (item_id) REFERENCES items(id) ON DELETE CASCADE
 );
 
+-- モバイルオーダープッシュ通知管理テーブル
+CREATE TABLE IF NOT EXISTS order_notify(
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    order_id BIGINT UNSIGNED NOT NULL UNIQUE,
+    endpoint TEXT NOT NULL,
+    user_public_key TEXT NOT NULL,
+    user_auth_token TEXT NOT NULL,
+    FOREIGN KEY (order_id) REFERENCES order_orders(id) ON DELETE CASCADE
+);
+
 -- 通知テーブル
 CREATE TABLE IF NOT EXISTS notifications(
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,

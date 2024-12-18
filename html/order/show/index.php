@@ -4,7 +4,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/order/protects/protect.php";
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . "/order/is_not_order.php";
 ?>
-<?php session_start();
+<?php
+session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/orders/order.php";
 require_once
     $_SERVER['DOCUMENT_ROOT'] . "/../classes/orders/decrypt_id.php";
@@ -110,9 +111,13 @@ if ($order->get_order_order()->get_is_cancel()) {
         <div class="alert alert-info alert-custom" role="alert">
             <p class="text-center my-1">この画面を開いたままにしておくと、呼び出しが分かって便利です。</p>
             <div class="d-flex justify-content-center align-items-center form-check form-switch">
-                <label class="form-check-label me-5" for="allow_sound">呼び出し音を鳴らす</label>
-                <input class="form-check-input" type="checkbox" role="switch" id="allow_sound">
+                <label for="allow_sound">呼び出し音を有効にする</label>
+                <input type="checkbox" id="allow_sound">
             </div>
+            <div class="d-flex justify-content-center align-items-center form-check form-switch">
+                <button type="button" id="notify_button">プッシュ通知を<span id="notify_enable_text">有効</span>にする</button>
+            </div>
+            <p>状態: <span id="notify_status_text">許可が必要</span></p>
         </div>
         <div class="alert alert-danger alert-custom" role="alert">
             <span class="text-center">長時間受け取りに来られない場合、オーダーをキャンセルさせていただく場合がございます。</span>
@@ -121,6 +126,7 @@ if ($order->get_order_order()->get_is_cancel()) {
     <audio id="notificationSound" src="./bell.mp3" preload="auto"></audio>
     <script src="./check_receive.js"></script>
     <script src="./check_call.js"></script>
+    <script src="./index.js"></script>
 </body>
 
 </html>
