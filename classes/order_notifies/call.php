@@ -12,7 +12,7 @@ function call(Order_Notify $order_notify)
     $vapid_subject = $_SERVER['SERVER_NAME'];
 
     $public_key = "BBG6x0P_tAt4YvkdySqo_3WDtj1NY5luXecfMEcJ4VsLTttSAgABGFT5pEg1sbINrbG2DXbhtdu-O2mMCuYQFa4";
-    $private_key = "Wv0l22fh1f_Pz9_Xj6IraGMcdCQp3tZQKsxmBOmfPAs";
+    $private_key = "Wv0l22fh1f_Pz9_Xj6IraGMcdCQp3tZQKsxmBOmfPAs"; // 環境変数またはそのほかの方法で安全に自動生成できるようにしたい
 
     $auth = [
         "VAPID" => [
