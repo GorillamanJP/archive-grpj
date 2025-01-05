@@ -13,6 +13,7 @@ if (!isset($_POST["order_id"]) || $_POST["order_id"] === "") {
 $id = htmlspecialchars($_POST["order_id"]);
 
 require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/orders/order.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/order_notifies/order_notify.php";
 
 try {
     $order = new Order();
@@ -20,9 +21,21 @@ try {
     $order->call();
 
     $message = "";
-    if($order->get_is_call()){
+    if ($order->get_is_call()) {
         $message = "注文番号 {$id} 番を呼び出しました！";
-    }else{
+
+        $order_notify = new Order_Notify();
+        try {
+            $order_notify = $order_notify->get_from_order_id($order->get_id());
+            $order_notify->call();
+
+            $message .= "（プッシュ通知送信済み）";
+        } catch (Exception $e) {
+            if ($e->getCode() != 0) {
+                throw new Exception($e->getMessage(), $e->getCode(), $e);
+            }
+        }
+    } else {
         $message = "注文番号 {$id} 番の呼び出しをキャンセルしました！";
     }
 
