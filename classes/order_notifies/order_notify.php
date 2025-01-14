@@ -32,6 +32,26 @@ class Order_Notify extends BaseClass
         return $this->user_auth_token;
     }
 
+    private string $public_key;
+    public function get_public_key(): string
+    {
+        return $this->public_key;
+    }
+
+    private string $private_key;
+    public function get_private_key(): string
+    {
+        return $this->private_key;
+    }
+
+    public function __construct()
+    {
+        require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/order_notifies/create_key.php";
+        $keys = create_key();
+        $this->public_key = $keys['publickey'];
+        $this->private_key = $keys['privatekey'];
+    }
+
     public function create(int $order_id, string $endpoint, string $user_public_key, string $user_auth_token): Order_Notify
     {
         try {
@@ -163,7 +183,7 @@ class Order_Notify extends BaseClass
 
     public function call(): void
     {
-        require_once $_SERVER['DOCUMENT_ROOT']."/../classes/order_notifies/call.php";
+        require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/order_notifies/call.php";
         call($this);
     }
 }

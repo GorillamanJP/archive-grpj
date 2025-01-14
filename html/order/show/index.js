@@ -20,12 +20,9 @@ async function get_subscription() {
             return null;
         }
     }
-
-    const app_server_key = "BBG6x0P_tAt4YvkdySqo_3WDtj1NY5luXecfMEcJ4VsLTttSAgABGFT5pEg1sbINrbG2DXbhtdu-O2mMCuYQFa4";
+    const app_server_key = await fetch("./get_public_key.php").then(resp => resp.json()).then(data => data.key);
     const server_key = urlB64ToUint8Array(app_server_key);
-
     let subscription = undefined;
-
     try {
         subscription = await window.sw.pushManager.subscribe({
             userVisibleOnly: true,
@@ -33,17 +30,15 @@ async function get_subscription() {
         });
     } catch (e) {
         document.getElementById("notify_status_text").innerText = "登録エラー";
+        console.error(e);
         return null;
     }
-
     const key = subscription.getKey("p256dh");
     const token = subscription.getKey("auth");
-
     let obj = new Subscription();
     obj.Endpoint = subscription.endpoint;
     obj.UserPublicKey = btoa(String.fromCharCode.apply(null, new Uint8Array(key)));
     obj.UserAuthToken = btoa(String.fromCharCode.apply(null, new Uint8Array(token)));
-
     return obj;
 }
 

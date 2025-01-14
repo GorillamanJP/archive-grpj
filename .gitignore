@@ -1,5 +1,5 @@
 nginx/log/
 .env
 vendor/
-.vapid_public_key
-.vapid_private_key
+keys.json
+.rnd

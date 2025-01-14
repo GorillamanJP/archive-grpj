@@ -21,9 +21,6 @@ RUN docker-php-ext-install pdo_mysql
 
 RUN git config --global --add safe.directory /var/www
 
-RUN apt-get install -y openssl
-RUN openssl ecparam -name prime256v1 -genkey -noout -out /tmp/vapid_private_key.pem
-RUN openssl ec -in /tmp/vapid_private_key.pem -pubout -out /tmp/vapid_public_key.pem
+RUN chown -R www-data:www-data /var/www
 
-RUN openssl ec -in /tmp/vapid_private_key.pem -outform DER | base64 -w 0 > /var/www/.vapid_private_key
-RUN openssl ec -in /tmp/vapid_public_key.pem -pubout -outform DER | base64 -w 0 > /var/www/.vapid_public_key
+USER www-data
