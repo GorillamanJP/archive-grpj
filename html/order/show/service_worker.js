@@ -7,7 +7,6 @@ self.addEventListener('push', function (event) {
     event.waitUntil((async function () {
         let msg = event.data.text();
         msg = await base64Decode(msg);
-        console.log(msg);
         const data = JSON.parse(msg);
         const title = data.title;
         const options = {
