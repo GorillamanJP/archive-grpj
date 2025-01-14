@@ -1,5 +1,6 @@
 <?php
-function encrypt_id(int $id):string{
+function encrypt_id(int $id): string
+{
     $key = hash("SHA3-512", getenv("MAGIC_CHAR"));
     $hashed_key = base64_encode(hash("sha256", $key));
     $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length("aes-256-cbc"));
