@@ -36,7 +36,7 @@ class Purchases extends BaseClassGroup
 
             $this->delete_at_ttl_ended();
 
-            $this->send_notification("会計", "誰かが会計/注文の確認画面を表示中です。内部ID: {$temp_purchase_id}");
+            // $this->send_notification("会計", "誰かが会計/注文の確認画面を表示中です。内部ID: {$temp_purchase_id}");
 
             return $this->get_from_temp_purchases_id($temp_purchase_id);
         } catch (Exception $e) {
@@ -73,7 +73,7 @@ class Purchases extends BaseClassGroup
 
             $this->delete_at_ttl_ended();
 
-            $this->send_notification("会計", "会計/注文の確認画面が閉じられました。内部ID: {$id}");
+            // $this->send_notification("会計", "会計/注文の確認画面が閉じられました。内部ID: {$id}");
         } catch (Exception $e) {
             throw new Exception($e->getMessage(), $e->getCode(), $e);
         } catch (Throwable $th) {

@@ -53,7 +53,7 @@ class Order extends BaseClassGroup
 
                 $this->order_details[] = $order_detail->create($order_id, $id, $name, $price, $quantity, $subtotal);
             }
-            $this->send_notification("注文", "新しい注文 {$order_id} 番があります！");
+            // $this->send_notification("注文", "新しい注文 {$order_id} 番があります！");
             return $this;
         } catch (Exception $e) {
             $this->order_order->delete();

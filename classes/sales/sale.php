@@ -87,7 +87,7 @@ class Sale extends BaseClassGroup
 
             $this->transaction = $this->transaction->create($accountant_id, $total_price, $received_price, $returned_price);
 
-            $this->send_notification("会計", "{$accountant_id} 番の会計が処理されました！");
+            // $this->send_notification("会計", "{$accountant_id} 番の会計が処理されました！");
 
             return $this;
         } catch (Exception $e) {
