@@ -3,6 +3,7 @@
   "dockerComposeFile": "../docker-compose.yml",
   "service": "php-fpm",
   "workspaceFolder": "/var/www",
+  "containerUser": "root",
   "extensions": [
     //Docker
     "ms-azuretools.vscode-docker",

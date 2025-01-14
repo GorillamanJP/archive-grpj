@@ -38,6 +38,8 @@ services:
       - CAPTCHA_DISABLE=${CAPTCHA_DISABLE}
     depends_on:
       - mariadb
+    command: >
+      sh -c "chown -R www-data:www-data /var/www && php-fpm"
 
   mariadb:
     image: mariadb:latest
