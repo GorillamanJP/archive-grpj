@@ -5,14 +5,6 @@ async function check_call() {
             const data = await response.json();
             if (data.is_call) {
                 document.getElementById("call_status").style = "";
-                if (document.getElementById('allow_sound').checked) {
-                    const sound = document.getElementById('notificationSound');
-                    if (sound) {
-                        sound.play().catch(error => {
-                            console.error("Sound play error: ", error);
-                        });
-                    }
-                }
             } else {
                 if (response.status == 403) {
                     location.reload();

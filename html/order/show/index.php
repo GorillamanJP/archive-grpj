@@ -110,11 +110,15 @@ if ($order->get_order_order()->get_is_cancel()) {
         </div>
         <div class="alert alert-info alert-custom" role="alert">
             <p class="text-center my-1">この画面を開いたままにしておくと、呼び出しが分かって便利です。</p>
-            <div class="d-flex justify-content-center align-items-center form-check form-switch">
-                <label for="allow_sound">呼び出し音を有効にする</label>
-                <input type="checkbox" id="allow_sound">
-            </div>
-            <div class="d-flex justify-content-center align-items-center form-check form-switch">
+            <?php if (preg_match("/(iPad|iPhone|iPod)/i", $_SERVER['HTTP_USER_AGENT'])): ?>
+                <div class="container alert alert-warning alert-custom">
+                    <h4>iPhone/iPadご利用の方へ</h4>
+                    <p>通知を受け取るためには、ホーム画面へのブックマークが必要です。</p>
+                    <p>右上の <i class="bi bi-box-arrow-up"></i> から、"ホーム画面に追加"を押してください。</p>
+                    <p class="mb-1">その後、ホーム画面に追加された"モバイルオーダー"を開いてください。</p>
+                </div>
+            <?php endif ?>
+            <div class="d-flex justify-content-center align-items-center form-check form-switch mt-2">
                 <button type="button" id="notify_button">プッシュ通知を<span id="notify_enable_text">有効</span>にする</button>
             </div>
             <p>状態: <span id="notify_status_text">許可が必要</span></p>

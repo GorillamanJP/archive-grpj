@@ -2,6 +2,9 @@ self.addEventListener("load", async () => {
     if ("serviceWorker" in navigator) {
         window.sw = await navigator.serviceWorker.register("./service_worker.js", { scope: "./" });
     }
+
+    displayNotificationStatus();
+    checkPWAInstallation();
 });
 
 class Subscription {
@@ -102,6 +105,31 @@ async function de_subscribe_push() {
     }
 }
 
+function checkPWAInstallation() {
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgentData.platform);
+    if (isIOS) {
+        const isPWA = window.matchMedia('(display-mode: standalone)').matches;
+        if (!isPWA) {
+            document.getElementById("notify_status_text").innerText = "ホーム画面に追加してください";
+            document.getElementById("notify_button").disabled = true;
+        }
+    }
+}
+
+function displayNotificationStatus() {
+    if ("Notification" in window) {
+        let permission = Notification.permission;
+        if (permission === "granted") {
+            document.getElementById("notify_status_text").innerText = "許可";
+            document.getElementById("notify_enable_text").innerText = "無効";
+        } else if (permission === "denied") {
+            document.getElementById("notify_status_text").innerText = "拒否";
+        } else {
+            document.getElementById("notify_status_text").innerText = "未決定";
+        }
+    }
+}
+
 document.getElementById("notify_button").addEventListener("click", () => {
     const enable = document.getElementById("notify_enable_text").innerText === "有効";
     if (enable) {
@@ -109,4 +137,4 @@ document.getElementById("notify_button").addEventListener("click", () => {
     } else {
         de_subscribe_push();
     }
-})
+});
