@@ -9,7 +9,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/../functions/get_magic_char.php";
 
 function call(Order_Notify $order_notify)
 {
-    $vapid_subject = $_SERVER['SERVER_NAME'];
+    $vapid_subject = "https://" . $_SERVER['HTTP_HOST'];
 
     $public_key = $order_notify->get_public_key();
     $private_key = $order_notify->get_private_key();
@@ -40,5 +40,9 @@ function call(Order_Notify $order_notify)
         "authToken" => $order_notify->get_user_auth_token()
     ]);
 
-    $web_push->sendOneNotification($subscription, $message_encoded);
+    $result = $web_push->sendOneNotification($subscription, $message_encoded);
+
+    if(!$result->isSuccess()){
+        throw new Exception("プッシュ通知の送信に失敗しました。", -1);
+    }
 }
