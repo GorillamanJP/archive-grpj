@@ -1,0 +1,7 @@
+{
+    "name": "楽ちんぽん！レジシステム/モバイルオーダー",
+    "short_name": "モバイルオーダー",
+    "lang": "ja",
+    "display": "standalone",
+    "start_url": "/order/"
+}

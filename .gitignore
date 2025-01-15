@@ -3,3 +3,4 @@ nginx/log/
 vendor/
 keys.json
 .rnd
+.composer

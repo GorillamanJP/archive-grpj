@@ -11,8 +11,6 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN apt-get install -y libgmp-dev
 RUN docker-php-ext-install gmp
 
-RUN composer require minishlink/web-push
-
 RUN apt-get install zlib1g-dev libpng-dev libjpeg62-turbo-dev libfreetype6-dev -y
 
 RUN docker-php-ext-configure gd --with-jpeg --with-freetype

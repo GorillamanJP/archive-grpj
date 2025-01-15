@@ -1,17 +1,12 @@
-# 資料はこれ
-# https://tt-computing.com/docker-nginx1_19-php7_4-mariadb10_5
 services:
   nginx:
     image: nginx:latest
     ports:
       - "80:80"
     volumes:
-      # nginx Config
       - ./nginx/conf.d/50-my-config.conf:/etc/nginx/conf.d/50-my-config.conf
       - ./nginx/conf.d/nginx.conf:/etc/nginx/nginx.conf
-      # nginx Logs
       - ./nginx/log:/var/log/nginx
-      # source folder
       - .:/var/www
     environment:
       - MAX_FILESIZE=${MAX_FILESIZE}
@@ -24,9 +19,7 @@ services:
       context: ./php-fpm
       dockerfile: Dockerfile
     volumes:
-      # source folder
       - .:/var/www
-      # php-fpm Config
       - ./php-fpm/conf.d/50-my-config.ini:/usr/local/etc/php/conf.d/50-my-config.ini
     environment:
       - DB_DATABASE=${DB_DATABASE}
@@ -36,17 +29,14 @@ services:
       - MAX_FILESIZE=${MAX_FILESIZE}
       - PASS_PHRASE=${PASS_PHRASE}
       - CAPTCHA_DISABLE=${CAPTCHA_DISABLE}
+    command: bash -c "composer install && php-fpm"
     depends_on:
       - mariadb
-    command: >
-      sh -c "chown -R www-data:www-data /var/www && php-fpm"
 
   mariadb:
     image: mariadb:latest
     volumes:
-      # init SQL script
       - ./mariadb/init.sql:/docker-entrypoint-initdb.d/init.sql
-      # Database Volume
       - db_data:/var/lib/mysql
     environment:
       - MARIADB_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
