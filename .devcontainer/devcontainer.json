@@ -21,12 +21,13 @@
     // Other Extension
     "MS-CEINTL.vscode-language-pack-ja",
     "streetsidesoftware.code-spell-checker",
+    "TabNine.tabnine-vscode",
     // Github Copilot(Free)
     "GitHub.copilot"
   ],
   "settings": {
     "terminal.integrated.shell.linux": "/bin/bash",
-    "css.enabledLanguages": ["html"],
-    "php.version": "8.3"
+    "css.enabledLanguages": ["html","php"],
+    "php.version": "8.4"
   }
 }
