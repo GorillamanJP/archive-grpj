@@ -30,6 +30,8 @@ if ($order->get_order_order()->get_is_cancel()) {
     header("Location: ../cancel/");
     exit();
 }
+
+$ios = preg_match('/(iPhone|iPad|iPod|Android)/', $_SERVER['HTTP_USER_AGENT']);
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -110,7 +112,7 @@ if ($order->get_order_order()->get_is_cancel()) {
         </div>
         <div class="alert alert-info alert-custom" role="alert">
             <p class="text-center my-1">この画面を開いたままにしておくと、呼び出しが分かって便利です。</p>
-            <?php if (preg_match("/(iPad|iPhone|iPod)/i", $_SERVER['HTTP_USER_AGENT'])): ?>
+            <?php if ($ios): ?>
                 <div class="container alert alert-warning alert-custom">
                     <h4>iPhone/iPadご利用の方へ</h4>
                     <p>通知を受け取るためには、ホーム画面へのブックマークが必要です。</p>

@@ -4,7 +4,7 @@ self.addEventListener("load", async () => {
     }
 
     displayNotificationStatus();
-    checkPWAInstallation();
+    // checkPWAInstallation();
 });
 
 class Subscription {
@@ -105,16 +105,14 @@ async function de_subscribe_push() {
     }
 }
 
-function checkPWAInstallation() {
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgentData.platform);
-    if (isIOS) {
-        const isPWA = window.matchMedia('(display-mode: standalone)').matches;
-        if (!isPWA) {
-            document.getElementById("notify_status_text").innerText = "ホーム画面に追加してください";
-            document.getElementById("notify_button").disabled = true;
-        }
-    }
-}
+// function checkPWAInstallation() {
+//     const isPWA = window.matchMedia('(display-mode: standalone)').matches;
+//     if (!isPWA) {
+//         document.getElementById("notify_status_text").innerText = "ホーム画面に追加してください";
+//     } else {
+//         document.getElementById("notify_div").style = "";
+//     }
+// }
 
 function displayNotificationStatus() {
     if ("Notification" in window) {
@@ -124,8 +122,6 @@ function displayNotificationStatus() {
             document.getElementById("notify_enable_text").innerText = "無効";
         } else if (permission === "denied") {
             document.getElementById("notify_status_text").innerText = "拒否";
-        } else {
-            document.getElementById("notify_status_text").innerText = "未決定";
         }
     }
 }
