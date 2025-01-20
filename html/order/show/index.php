@@ -129,7 +129,6 @@ $ios = preg_match('/(iPhone|iPad|iPod|Android)/', $_SERVER['HTTP_USER_AGENT']);
             <span class="text-center">長時間受け取りに来られない場合、オーダーをキャンセルさせていただく場合がございます。</span>
         </div>
     </div>
-    <audio id="notificationSound" src="./bell.mp3" preload="auto"></audio>
     <script src="./check_receive.js"></script>
     <script src="./check_call.js"></script>
     <script src="./index.js"></script>
