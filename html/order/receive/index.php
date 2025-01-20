@@ -43,11 +43,6 @@ setcookie("order", "", 0, "/");
         <p><span id="back_second">30</span>秒後にトップページに戻ります。</p>
         <p><a href="/order/">戻る</a></p>
         <img src="/order/receive/ojigi_tenin_man.png" alt="お辞儀している人物" class="custom-image">
-        <div class="alert alert-success text-center mx-auto mt-3" role="alert">
-            <h3>利用者アンケート実施中！</h3>
-            <p>モバイルオーダーを使ってみての評価をお願い致します！</p>
-            <p><a href="">アンケートを開く（Googleフォーム）</a></p>
-        </div>
     </div>
 </body>
 <script>

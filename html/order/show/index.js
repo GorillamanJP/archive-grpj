@@ -78,7 +78,7 @@ async function subscribe_push() {
             })
         });
         if (resp.ok) {
-            document.getElementById("notify_status_text").innerText = "許可";
+            document.getElementById("notify_status_text").innerText = "有効";
             document.getElementById("notify_enable_text").innerText = "無効";
         }
     } catch (e) {
@@ -119,7 +119,6 @@ function displayNotificationStatus() {
         let permission = Notification.permission;
         if (permission === "granted") {
             document.getElementById("notify_status_text").innerText = "許可";
-            document.getElementById("notify_enable_text").innerText = "無効";
         } else if (permission === "denied") {
             document.getElementById("notify_status_text").innerText = "拒否";
         }
