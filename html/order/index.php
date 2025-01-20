@@ -108,11 +108,6 @@ try {
     <div id="notifications" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
     <script src="/common/regi.js"></script>
     <script src="/common/check_update_common.js"></script>
-    <div class="alert alert-success text-center mx-auto" role="alert">
-        <h3>利用者アンケート実施中！</h3>
-        <p>モバイルオーダーを使ってみての評価をお願い致します！</p>
-        <p><a href="">アンケートを開く（Googleフォーム）</a></p>
-    </div>
 </body>
 
 </html>
