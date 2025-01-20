@@ -6,21 +6,32 @@ session_start();
 <style>
     .alert-info {
         text-align: center;
-        background-color: #d1ecf1; /* 背景色 */
-        border-color: #bee5eb; /* ボーダー色 */
-        color: #0c5460; /* 文字色 */
-        border-radius: 8px; /* 丸みを持たせた角 */
-        max-width: 600px; /* 最大横幅を指定 */
-        width: 90%; /* 横幅を親要素の90%に設定 */
-        margin: 0 auto; /* 左右自動マージンで中央揃え */
-        font-weight: bold; /* リンク文字を太字に */
-        padding: 5px ; /* 上下10px、左右25pxの余白 */
-        margin-top: 20px; /* 上部の余白 */
+        background-color: #d1ecf1;
+        /* 背景色 */
+        border-color: #bee5eb;
+        /* ボーダー色 */
+        color: #0c5460;
+        /* 文字色 */
+        border-radius: 8px;
+        /* 丸みを持たせた角 */
+        max-width: 600px;
+        /* 最大横幅を指定 */
+        width: 90%;
+        /* 横幅を親要素の90%に設定 */
+        margin: 0 auto;
+        /* 左右自動マージンで中央揃え */
+        font-weight: bold;
+        /* リンク文字を太字に */
+        padding: 5px;
+        /* 上下10px、左右25pxの余白 */
+        margin-top: 20px;
+        /* 上部の余白 */
+    }
+    .container {
+        margin-top: 100px;
+        /* 上部の余白を追加して、全体を下に下げる */
     }
 </style>
-
-
-
 
 <head>
     <meta charset="UTF-8">
@@ -30,7 +41,7 @@ session_start();
 </head>
 
 <body>
-    <h1 class="text-center mt-3">レジログイン</h1>
+    <h1 class="text-center mt-4">レジログイン</h1>
     <div class="container">
         <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
         <div id="login-row" class="row justify-content-center align-items-center">

@@ -56,6 +56,11 @@
                         </span>
                     </a>
                 </li>
+                <li>
+                    <a class="nav-link text-white position-relative" href="/regi/manual/">
+                        <span><i class="fas fa-book"></i> 取扱説明</span>
+                    </a>
+                </li>
             </ul>
             <!-- 右寄せユーザー名とログアウトボタン -->
             <ul class="navbar-nav ms-auto">
