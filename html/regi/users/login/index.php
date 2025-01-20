@@ -28,7 +28,7 @@ session_start();
         /* 上部の余白 */
     }
     .container {
-        margin-top: 100px;
+        margin-top: 65px;
         /* 上部の余白を追加して、全体を下に下げる */
     }
 </style>
@@ -41,7 +41,7 @@ session_start();
 </head>
 
 <body>
-    <h1 class="text-center mt-4">レジログイン</h1>
+    <h1 class="text-center my-5">レジログイン</h1>
     <div class="container">
         <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
         <div id="login-row" class="row justify-content-center align-items-center">
