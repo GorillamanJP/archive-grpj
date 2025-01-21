@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <title>注文待ち画面</title>
     <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/header.php"; ?>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -39,7 +38,7 @@
         }
 
         .order-number {
-            font-size: 2em;
+            font-size: 4em;
             margin: 10px 0;
         }
 
@@ -54,17 +53,62 @@
     <div class="container container-fluid">
         <div class="column left">
             <div class="header text-center">注文待ち</div>
-            <div class="order-number">注文番号: 12345</div>
-            <div class="order-number">注文番号: 12346</div>
-            <!-- 追加の注文番号をここに挿入 -->
+            <div id="wait-numbers">
+                <!-- 追加の注文番号をここに挿入 -->
+            </div>
         </div>
         <div class="column right">
             <div class="header text-center">呼び出し中</div>
-            <div class="order-number">注文番号: 12340</div>
-            <div class="order-number">注文番号: 12341</div>
-            <!-- 追加の呼び出し中の番号をここに挿入 -->
+            <div id="call-numbers">
+                <!-- 追加の呼び出し中の番号をここに挿入 -->
+            </div>
         </div>
     </div>
 </body>
+<script>
+    // 定期的にデータ取得
+    async function check_order_status() {
+        const resp = await fetch("./get_order_status.php");
+        try {
+            if (resp.ok) {
+                const data = await resp.json();
+                const wait = data.wait;
+                const call = data.call;
+
+                const leftColumn = document.querySelector("#wait-numbers");
+                const rightColumn = document.querySelector("#call-numbers");
+
+                leftColumn.innerHTML = "";
+                rightColumn.innerHTML = "";
+
+                wait.forEach(function (orderNumber) {
+                    const orderNumberElement = document.createElement("div");
+                    orderNumberElement.classList.add("order-number");
+                    orderNumberElement.textContent = "注文番号: " + orderNumber;
+                    orderNumberElement.classList.add("order-number");
+                    leftColumn.appendChild(orderNumberElement);
+                });
+
+                call.forEach(function (orderNumber) {
+                    const orderNumberElement = document.createElement("div");
+                    orderNumberElement.classList.add("order-number");
+                    orderNumberElement.textContent = "注文番号: " + orderNumber;
+                    orderNumberElement.classList.add("order-number");
+                    rightColumn.appendChild(orderNumberElement);
+                });
+            } else {
+                console.error("データ取得に失敗しました。");
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }
+    setInterval(check_order_status, 5000); // 5秒ごとに更新する
+
+
+    // 最初に実行する
+    check_order_status();
+    // ここまで
+</script>
 
 </html>

@@ -78,8 +78,10 @@ async function subscribe_push() {
             })
         });
         if (resp.ok) {
-            document.getElementById("notify_status_text").innerText = "許可";
+            document.getElementById("notify_status_text").innerText = "有効";
             document.getElementById("notify_enable_text").innerText = "無効";
+            document.getElementById("notify_button").classList.remove("btn-success");
+            document.getElementById("notify_button").classList.add("btn-danger");
         }
     } catch (e) {
         document.getElementById("notify_status_text").innerText = "登録処理エラー";
@@ -98,6 +100,8 @@ async function de_subscribe_push() {
         if (resp.ok) {
             document.getElementById("notify_status_text").innerText = "登録解除";
             document.getElementById("notify_enable_text").innerText = "有効";
+            document.getElementById("notify_button").classList.remove("btn-danger");
+            document.getElementById("notify_button").classList.add("btn-success");
         }
     } catch (e) {
         document.getElementById("notify_status_text").innerText = "登録解除処理エラー";
@@ -119,7 +123,6 @@ function displayNotificationStatus() {
         let permission = Notification.permission;
         if (permission === "granted") {
             document.getElementById("notify_status_text").innerText = "許可";
-            document.getElementById("notify_enable_text").innerText = "無効";
         } else if (permission === "denied") {
             document.getElementById("notify_status_text").innerText = "拒否";
         }

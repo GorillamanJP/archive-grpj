@@ -22,12 +22,18 @@ try {
 
     $order->get_order_order()->receive();
 
-    $order_notify = new Order_Notify();
+    try {
+        $order_notify = new Order_Notify();
 
-    $order_notify = $order_notify->get_from_order_id($order->get_order_order()->get_id());
-    $order_notify->delete();
+        $order_notify = $order_notify->get_from_order_id($order->get_order_order()->get_id());
+        $order_notify->delete();
+    } catch (Exception $e) {
+        if ($e->getCode() != 0) {
+            throw new Exception($e->getMessage(), $e->getCode(), $e);
+        }
+    }
 
     redirect_with_error("../list/", "注文番号 {$order->get_order_order()->get_id()} の受け取りが完了しました。", "", "success");
 } catch (Throwable $e) {
-    redirect_with_error("../list/", "エラーが発生しました。" . $e->getTraceAsString(), $e->getMessage(), "danger");
+    redirect_with_error("../list/", "エラーが発生しました。", $e->getMessage(), "danger");
 }
