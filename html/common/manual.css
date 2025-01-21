@@ -1,0 +1,73 @@
+body {
+  line-height: 1.6;
+  margin: 0;
+  background-color: #f8f9fa;
+  padding-top: 36px; /* ナビゲーションバーの高さ分の余白を追加 */
+}
+
+.container {
+  max-width: 100%;
+  margin: auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border: 1px solid #e9ecef;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  font-family: "Arial", sans-serif;
+}
+
+h1,
+h2 {
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 10px;
+}
+
+/* ナビゲーションバーの高さを考慮したマージン */
+h1 {
+  margin-top: 0;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+ul li a {
+  text-decoration: none;
+  color: #007bff;
+}
+
+ul li a:hover {
+  text-decoration: underline;
+}
+
+.manual-section {
+  margin-bottom: 20px;
+}
+
+.section-content {
+  background-color: #e9ecef;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+/* スクロールマージンを使ってナビゲーションバーの高さを考慮 */
+.manual-section {
+  scroll-margin-top: 80px; /* ナビゲーションバーの高さに応じて調整 */
+}
+
+/* レスポンシブデザイン */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+
+  h1,
+  h2 {
+    font-size: 1.5em;
+  }
+
+  .section-content {
+    padding: 5px;
+  }
+}
