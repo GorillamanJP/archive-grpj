@@ -68,7 +68,7 @@
                     <p class="nav-link mb-0 text-white user-name">ユーザー名：<?= $user->get_user_name() ?></p>
                 </li>
                 <li class="nav-item">
-                    <button class="btn btn-danger"><a href="/regi/users/logout/" style="color: #fff;">ログアウト</a></button>
+                    <button class="btn btn-danger"><a href="/regi/users/logout/" class="btn-logout">ログアウト</a></button>
                 </li>
             </ul>
         </div>
@@ -115,6 +115,16 @@
         /* フォントを太字にして強調 */
         color: #ffeb3b;
         /* フォントカラーを変更 */
+    }
+
+    .btn-logout {
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .btn-logout:hover {
+        color: #fff;
+        text-decoration: none;
     }
 </style>
 
