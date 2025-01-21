@@ -121,7 +121,7 @@ $ios = preg_match('/(iPhone|iPad|iPod|Android)/', $_SERVER['HTTP_USER_AGENT']);
                 </div>
             <?php endif ?>
             <div class="d-flex justify-content-center align-items-center form-check form-switch mt-2">
-                <button type="button" id="notify_button">プッシュ通知を<span id="notify_enable_text">有効</span>にする</button>
+                <button class="btn btn-success" type="button" id="notify_button">プッシュ通知を<span id="notify_enable_text">有効</span>にする</button>
             </div>
             <p>状態: <span id="notify_status_text">許可が必要</span></p>
         </div>
