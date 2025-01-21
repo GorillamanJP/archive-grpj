@@ -58,7 +58,7 @@
                 </li>
                 <li>
                     <a class="nav-link text-white position-relative" href="/regi/manual/">
-                        <span><i class="fas fa-book"></i> 取扱説明</span>
+                        <span><i class="fas fa-book"></i> マニュアル</span>
                     </a>
                 </li>
             </ul>
