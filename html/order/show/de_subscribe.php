@@ -3,7 +3,6 @@ session_start();
 
 if (!isset($_COOKIE["order"])) {
     http_response_code(400);
-    var_dump($_COOKIE, $_POST);
     exit();
 }
 
@@ -15,7 +14,7 @@ try {
     $order_notify = new Order_Notify();
     $order_notify = $order_notify->get_from_order_id($order_id);
     $order_notify->delete();
-    
+
     http_response_code(200);
     exit();
 } catch (Throwable $th) {
