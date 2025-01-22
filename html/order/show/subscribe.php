@@ -3,7 +3,6 @@ session_start();
 
 if (!isset($_COOKIE["order"]) || !isset($_POST["endpoint"]) || !isset($_POST["userPublicKey"]) || !isset($_POST["userAuthToken"])) {
     http_response_code(400);
-    var_dump($_COOKIE, $_POST);
     exit();
 }
 
