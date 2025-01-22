@@ -111,7 +111,7 @@ $ios = preg_match('/(iPhone|iPad|iPod|Android)/', $_SERVER['HTTP_USER_AGENT']);
             <h1 class="text-center py-5 my-5">呼び出されています！</h1>
         </div>
         <div class="alert alert-info alert-custom" role="alert">
-            <p class="text-center my-1">この画面を開いたままにしておくと、呼び出しが分かって便利です。</p>
+            <p class="text-center mb-3">この画面を開いたままにしておくと、呼び出しが分かって便利です。</p>
             <?php if ($ios): ?>
                 <div class="container alert alert-warning alert-custom">
                     <h4>iPhone/iPadご利用の方へ</h4>
