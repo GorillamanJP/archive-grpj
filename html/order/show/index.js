@@ -82,7 +82,7 @@ async function subscribe_push() {
             document.getElementById("notify_status_text").innerText = "有効";
             document.getElementById("notify_enable_text").innerText = "無効";
             document.getElementById("notify_button").classList.remove("btn-success");
-            document.getElementById("notify_button").classList.add("btn-danger");
+            document.getElementById("notify_button").classList.add("btn-outline-danger");
         }
     } catch (e) {
         document.getElementById("notify_status_text").innerText = "登録処理エラー";
@@ -101,7 +101,7 @@ async function de_subscribe_push() {
         if (resp.ok) {
             document.getElementById("notify_status_text").innerText = "登録解除";
             document.getElementById("notify_enable_text").innerText = "有効";
-            document.getElementById("notify_button").classList.remove("btn-danger");
+            document.getElementById("notify_button").classList.remove("btn-outline-danger");
             document.getElementById("notify_button").classList.add("btn-success");
         }
     } catch (e) {
