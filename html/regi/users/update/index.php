@@ -21,6 +21,7 @@ $user = $user->get_from_id($id);
 <body>
     <h1 class="text-center mt-3">ユーザー情報更新</h1>
     <div class="container">
+        <p>パスワードは12文字以上にしてください。</p>
         <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
         <table class="table table-bordered table-info table-hover">
             <form action="update.php" method="post" enctype="multipart/form-data">
@@ -35,13 +36,13 @@ $user = $user->get_from_id($id);
                 <tr class="form-group">
                     <th class="align-middle">新しいパスワード</th>
                     <td class="table-secondary">
-                        <input type="password" name="password" id="password" class="form-control" required>
+                        <input type="password" name="password" id="password" class="form-control" minlength="12" required>
                     </td>
                 </tr>
                 <tr class="form-group">
                     <th class="align-middle">新しいパスワード（確認）</th>
                     <td class="table-secondary">
-                        <input type="password" name="password_re_input" id="password_re_input" class="form-control" required>
+                        <input type="password" name="password_re_input" id="password_re_input" class="form-control" minlength="12" required>
                     </td>
                 </tr>
                 <div class="text-center">

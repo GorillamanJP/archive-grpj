@@ -11,7 +11,7 @@ if (!isset($_SESSION["order"]["captcha"]["after"]["url"]) || $_SESSION["order"][
     $after_url = $_SESSION["order"]["captcha"]["after"]["url"];
 }
 
-if (isset($_POST['captcha']) && $_POST['captcha'] == $_SESSION["order"]["captcha"]["code"]) {
+if (isset($_POST['captcha']) && htmlspecialchars($_POST['captcha']) == $_SESSION["order"]["captcha"]["code"]) {
     unset($_SESSION["order"]["captcha"]["code"]);
     $_SESSION["message"] = "認証に成功しました。";
     $_SESSION["message_type"] = "success";

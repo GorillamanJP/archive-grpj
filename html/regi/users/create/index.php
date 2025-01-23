@@ -18,6 +18,7 @@ session_start();
 <body>
     <h1 class="text-center my-3">ユーザー登録</h1>
     <div class="container">
+        <p>パスワードは12文字以上にしてください。</p>
         <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
         <form action="./create.php" method="post">
             <table class="table table-bordered table-info table-hover ">
@@ -30,13 +31,13 @@ session_start();
                 <tr class="form-group">
                     <th class="align-middle">パスワード</th>
                     <td class="table-secondary">
-                        <input type="password" name="password" id="password" class="form-control" required>
+                        <input type="password" name="password" id="password" class="form-control" minlength="12" required>
                     </td>
                 </tr>
                 <tr class="form-group">
                     <th class="align-middle">パスワード（確認）</th>
                     <td class="table-secondary">
-                        <input type="password" name="password_re_input" id="password_re_input" class="form-control" required>
+                        <input type="password" name="password_re_input" id="password_re_input" class="form-control" minlength="12" required>
                     </td>
                 </tr>
             </table>

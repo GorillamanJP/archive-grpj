@@ -10,7 +10,7 @@ if (!isset($_POST["order_id"]) || $_POST["order_id"] === "") {
     redirect_with_error("../list/", "指定した注文はありません。", "", "danger");
 }
 
-$order_id = $_POST["order_id"];
+$order_id = htmlspecialchars($_POST["order_id"]);
 
 require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/orders/order.php";
 try {

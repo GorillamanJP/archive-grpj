@@ -39,8 +39,11 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/products/product.php";
 // 在庫チェックしつつ購入内容のデータを組み立てる
 try {
     for ($i = 0; $i < count($product_ids); $i++) {
+        $pid = htmlspecialchars($product_ids[$i]);
+        $qts = htmlspecialchars($quantities[$i]);
+
         $product = new Product();
-        $product = $product->get_from_item_id($product_ids[$i]);
+        $product = $product->get_from_item_id($pid);
         if ($product->get_delete_flag() == true) {
             throw new Exception("指定した商品は削除されました。", 0);
         }
@@ -48,22 +51,23 @@ try {
             throw new Exception("残り注文可能数が0未満のため、購入処理ができませんでした。", 0);
         }
         $stock_left = $product->get_now_stock();
-        $buy_quantity = $quantities[$i];
+        $buy_quantity = $qts;
         $after_stock = $stock_left - $buy_quantity;
         if ($after_stock - $temp_purchase_detail->get_exists_temp_quantity_from_item_id($product->get_item_id()) < 0) {
             throw new Exception("購入数に対し在庫が不足するため、購入処理ができませんでした。誰かが会計中の場合にも、このエラーが出る場合があります。", 0);
         }
+        
         $id = $product->get_item_id();
         $name = $product->get_item_name();
         $price = $product->get_price();
         $subtotal = $buy_quantity * $price;
-        $buy_items[] = array(
+        $buy_items[] = [
             "id" => $id,
             "name" => $name,
             "price" => $price,
             "buy_quantity" => $buy_quantity,
             "subtotal" => $subtotal,
-        );
+        ];
         $total_price += $subtotal;
         $total_amount += $buy_quantity;
     }

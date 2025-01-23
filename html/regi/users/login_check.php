@@ -31,6 +31,7 @@ if (isset($_SESSION["login"]["user_id"])) {
                 $_SESSION["message_details"] = "ユーザー名またはパスワードが変更された可能性があります。";
                 login_fail("再ログインが必要です。", "warning", $_SERVER['REQUEST_URI'], $_POST);
             }
+            session_regenerate_id();
             $_SESSION["login"]["last_activity"] = time();
         } catch (\Throwable $e) {
             $_SESSION["message_details"] = "ログイン中のユーザーを削除した可能性があります。";

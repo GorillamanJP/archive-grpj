@@ -11,7 +11,7 @@ try {
     $user_public_key = htmlspecialchars($_POST["userPublicKey"]);
     $user_auth_token = htmlspecialchars($_POST["userAuthToken"]);
     require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/orders/decrypt_id.php";
-    $order_id = decrypt_id($_COOKIE["order"]);
+    $order_id = decrypt_id(htmlspecialchars($_COOKIE["order"]));
 
     require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/order_notifies/order_notify.php";
     $order_notify = new Order_Notify();

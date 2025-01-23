@@ -10,7 +10,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/orders/order.php";
 require_once
     $_SERVER['DOCUMENT_ROOT'] . "/../classes/orders/decrypt_id.php";
 try {
-    $order_id = decrypt_id($_COOKIE["order"]);
+    $order_id = decrypt_id(htmlspecialchars($_COOKIE["order"]));
     $order = new Order();
     $order = $order->get_from_order_id($order_id);
 } catch (Exception $e) {
@@ -110,7 +110,7 @@ $ios = preg_match('/(iPhone|iPad|iPod|Android)/', $_SERVER['HTTP_USER_AGENT']);
         <div id="call_status" class="container p-5 call_flash" style="display: none;">
             <h1 class="text-center py-5 my-5">呼び出されています！</h1>
         </div>
-        <div class="alert alert-info alert-custom" role="alert">
+        <div class="alert alert-info alert-custom mt-3" role="alert">
             <p class="text-center mb-3">この画面を開いたままにしておくと、呼び出しが分かって便利です。</p>
             <?php if ($ios): ?>
                 <div class="container alert alert-warning alert-custom">
