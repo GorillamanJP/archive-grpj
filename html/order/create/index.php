@@ -40,16 +40,20 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/products/product.php";
 // 在庫チェックしつつ購入内容のデータを組み立てる
 try {
     for ($i = 0; $i < count($product_ids); $i++) {
+        $pid = htmlspecialchars($product_ids[$i]);
+        $qts = htmlspecialchars($quantities[$i]);
+
         $product = new Product();
-        $product = $product->get_from_item_id($product_ids[$i]);
+        $product = $product->get_from_item_id($pid);
+
         $available_left = $product->get_buy_available_count();
         if ($available_left < 0) {
             redirect_with_error("/order/", "在庫が不足しています。", "", "danger");
         }
-        if ($quantities[$i] > 10) {
+        if ($qts > 10) {
             redirect_with_error("/order/", "購入数過多", "一つの商品につき10個まで注文ができます。それ以上お買い求めいただく場合は、店頭までお越しください。", "warning");
         }
-        $order_quantity = $quantities[$i];
+        $order_quantity = $qts;
         if ($order_quantity < 1) {
             redirect_with_error("/order/", "購入数が1個未満になっています。", "", "danger");
         }
@@ -57,17 +61,18 @@ try {
         if ($after_stock - $temp_purchase_detail->get_exists_temp_quantity_from_item_id($product->get_item_id()) < 0) {
             redirect_with_error("/order/", "注文数に対し在庫が不足するため、注文処理が出来ませんでした。誰かが注文中の場合も、このエラーが出る場合があります。", "", "danger");
         }
+
         $id = $product->get_item_id();
         $name = $product->get_item_name();
         $price = $product->get_price();
         $subtotal = $order_quantity * $price;
-        $order_items[] = array(
+        $order_items[] = [
             "id" => $id,
             "name" => $name,
             "price" => $price,
             "order_quantity" => $order_quantity,
             "subtotal" => $subtotal,
-        );
+        ];
         $total_price += $subtotal;
         $total_amount += $order_quantity;
     }
@@ -85,7 +90,7 @@ try {
     $temp_purchase = $temp_purchase->create($product_ids, $quantities);
     $_SESSION["temp_purchase"]["id"] = $temp_purchase->get_temp_purchases()->get_id();
 } catch (Throwable $th) {
-    redirect_with_error("/order/", "エラーが発生しました。" , $th->getMessage(), "danger");
+    redirect_with_error("/order/", "エラーが発生しました。", $th->getMessage(), "danger");
 }
 
 unset($_SESSION["order"]["data"]);

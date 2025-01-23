@@ -56,7 +56,7 @@ $before_url = isset($_SESSION["order"]["captcha"]["before"]["url"]) && $_SESSION
     <div class="container mt-5">
         <div class="captcha-container bg-white shadow-sm">
             <h1 class="h4 text-center">暗号を解いてください。</h1>
-            <p class="text-center">ヒント: ひらがな+半角数字、8文字</p>
+            <p class="text-center">ヒント: ひらがな&amp;半角数字、8文字</p>
             <form method="post" action="../captcha/verify_captcha.php">
                 <div class="mb-3 text-center captcha-area">
                     <div class="position-relative">

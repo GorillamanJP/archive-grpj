@@ -15,7 +15,7 @@ if (!isset($_POST["id"]) || $_POST["id"] === "") {
 require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/sales/sale.php";
 
 $sale = new Sale();
-$sale = $sale->get_from_accountant_id($_POST["id"]);
+$sale = $sale->get_from_accountant_id(htmlspecialchars($_POST["id"]));
 
 require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/items/item.php";
 $item_obj = new Item();

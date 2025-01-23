@@ -10,7 +10,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/orders/order.php";
 require_once
     $_SERVER['DOCUMENT_ROOT'] . "/../classes/orders/decrypt_id.php";
 try {
-    $order_id = decrypt_id($_COOKIE["order"]);
+    $order_id = decrypt_id(htmlspecialchars($_COOKIE["order"]));
     $order = new Order();
     $order = $order->get_from_order_id($order_id);
 } catch (Exception $e) {
@@ -110,8 +110,8 @@ $ios = preg_match('/(iPhone|iPad|iPod|Android)/', $_SERVER['HTTP_USER_AGENT']);
         <div id="call_status" class="container p-5 call_flash" style="display: none;">
             <h1 class="text-center py-5 my-5">呼び出されています！</h1>
         </div>
-        <div class="alert alert-info alert-custom" role="alert">
-            <p class="text-center my-1">この画面を開いたままにしておくと、呼び出しが分かって便利です。</p>
+        <div class="alert alert-info alert-custom mt-3" role="alert">
+            <p class="text-center mb-3">この画面を開いたままにしておくと、呼び出しが分かって便利です。</p>
             <?php if ($ios): ?>
                 <div class="container alert alert-warning alert-custom">
                     <h4>iPhone/iPadご利用の方へ</h4>
@@ -120,7 +120,7 @@ $ios = preg_match('/(iPhone|iPad|iPod|Android)/', $_SERVER['HTTP_USER_AGENT']);
                     <p class="mb-1">その後、ホーム画面に追加された"モバイルオーダー"を開いてください。</p>
                 </div>
             <?php endif ?>
-            <div class="d-flex justify-content-center align-items-center form-check form-switch mt-2">
+            <div class="d-flex justify-content-center align-items-center my-2">
                 <button class="btn btn-success" type="button" id="notify_button">プッシュ通知を<span id="notify_enable_text">有効</span>にする</button>
             </div>
             <p>状態: <span id="notify_status_text">許可が必要</span></p>

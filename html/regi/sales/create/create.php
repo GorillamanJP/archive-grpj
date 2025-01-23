@@ -60,8 +60,8 @@ $subtotals = $_SESSION["regi"]["data"]["subtotal"];
 $total_amount = $_SESSION["regi"]["data"]["total_amount"];
 $total_price = $_SESSION["regi"]["data"]["total_price"];
 
-$received_price = $_POST["received_price"];
-$returned_price = $_POST["returned_price"];
+$received_price = htmlspecialchars($_POST["received_price"]);
+$returned_price = htmlspecialchars($_POST["returned_price"]);
 
 unset($_SESSION["regi"]["data"]);
 

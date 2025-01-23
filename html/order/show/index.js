@@ -4,7 +4,6 @@ self.addEventListener("load", async () => {
     }
 
     displayNotificationStatus();
-    // checkPWAInstallation();
 });
 
 class Subscription {
@@ -16,10 +15,12 @@ class Subscription {
 }
 
 async function get_subscription() {
+    const notify_status_text = document.getElementById("notify_status_text");
+    notify_status_text.innerText = "処理中";
     if ("Notification" in window) {
         let permission = Notification.permission;
         if (permission === "denied") {
-            document.getElementById("notify_status_text").innerText = "拒否";
+            notify_status_text.innerText = "拒否";
             return null;
         }
     }
@@ -32,7 +33,7 @@ async function get_subscription() {
             applicationServerKey: server_key
         });
     } catch (e) {
-        document.getElementById("notify_status_text").innerText = "登録エラー";
+        notify_status_text.innerText = "登録エラー";
         console.error(e);
         return null;
     }
@@ -81,7 +82,7 @@ async function subscribe_push() {
             document.getElementById("notify_status_text").innerText = "有効";
             document.getElementById("notify_enable_text").innerText = "無効";
             document.getElementById("notify_button").classList.remove("btn-success");
-            document.getElementById("notify_button").classList.add("btn-danger");
+            document.getElementById("notify_button").classList.add("btn-outline-danger");
         }
     } catch (e) {
         document.getElementById("notify_status_text").innerText = "登録処理エラー";
@@ -100,7 +101,7 @@ async function de_subscribe_push() {
         if (resp.ok) {
             document.getElementById("notify_status_text").innerText = "登録解除";
             document.getElementById("notify_enable_text").innerText = "有効";
-            document.getElementById("notify_button").classList.remove("btn-danger");
+            document.getElementById("notify_button").classList.remove("btn-outline-danger");
             document.getElementById("notify_button").classList.add("btn-success");
         }
     } catch (e) {
@@ -108,15 +109,6 @@ async function de_subscribe_push() {
         console.error(e);
     }
 }
-
-// function checkPWAInstallation() {
-//     const isPWA = window.matchMedia('(display-mode: standalone)').matches;
-//     if (!isPWA) {
-//         document.getElementById("notify_status_text").innerText = "ホーム画面に追加してください";
-//     } else {
-//         document.getElementById("notify_div").style = "";
-//     }
-// }
 
 function displayNotificationStatus() {
     if ("Notification" in window) {

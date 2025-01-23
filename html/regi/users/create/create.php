@@ -31,6 +31,10 @@ if ($password != $password_re_input) {
     redirect_with_error("./", "パスワードの入力内容が一致しません。", "", "warning");
 }
 
+if (mb_strlen($password) < 12 || mb_strlen($password_re_input) < 12) {
+    redirect_with_error("./", "パスワードは12文字以上にしてください。", "", "warning");
+}
+
 require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/users/user.php";
 try {
     $user = new User();

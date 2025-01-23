@@ -41,6 +41,10 @@ if (verify_int_value($price, $quantity) == false) {
     redirect_with_error("./", "数値エラー", "価格または在庫の数値が小数になっているか、値が大きすぎる可能性があります。", "danger");
 }
 
+if (!getimagesize($item_image) || getimagesize($item_image)["mime"] !== "image/jpeg") {
+    throw new Exception("jpeg画像以外の画像がアップロードされました。");
+}
+
 require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/products/product.php";
 try {
     $product = new Product();

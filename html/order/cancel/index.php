@@ -11,9 +11,17 @@ require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/orders/order.php";
 require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/orders/decrypt_id.php";
 
 try {
-    $order_id = decrypt_id($_COOKIE["order"]);
+    $order_id = decrypt_id(htmlspecialchars($_COOKIE["order"]));
     $order = new Order();
     $order = $order->get_from_order_id($order_id);
+
+    if ($order->get_order_order()->get_is_cancel() == false) {
+        session_write_close();
+        header("Location: ../show/");
+        exit();
+    }
+
+    setcookie("order", "", 0, "/");
 } catch (Exception $e) {
     $_SESSION["order"]["warning"]["message"] = "注文番号が読み取れませんでした。";
     $_SESSION["order"]["warning"]["message_details"] = "クッキーに保存した注文番号が改ざんされた可能性があります。恐れ入りますが、店頭スタッフまでお尋ねください。";
@@ -21,13 +29,6 @@ try {
     header("Location: /order/error/");
     exit();
 }
-if ($order->get_order_order()->get_is_cancel() == false) {
-    session_write_close();
-    header("Location: ../show/");
-    exit();
-}
-
-setcookie("order", "", 0, "/");
 ?>
 <!DOCTYPE html>
 <html lang="ja">

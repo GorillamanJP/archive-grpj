@@ -18,16 +18,16 @@ if (!isset($_POST["add_quantity"]) || $_POST["add_quantity"] === "") {
     redirect_with_error_with_form("./", "在庫の追加数の項目が空になっています。", "", "warning", $_POST);
 }
 
-if (verify_int_value($_POST["add_quantity"]) == false) {
+$add_quantity = htmlspecialchars($_POST["add_quantity"]);
+
+if (verify_int_value($add_quantity) == false) {
     redirect_with_error_with_form("./", "数値エラー", "価格または在庫の数値が小数になっているか、値が大きすぎる可能性があります。", "danger", $_POST);
 }
 
-if (intval($_POST["add_quantity"]) < 0) {
+if (intval($add_quantity) < 0) {
     redirect_with_error_with_form("./", "在庫を減らすことはできません。", "", "warning", $_POST);
 }
 
-
-$add_quantity = htmlspecialchars($_POST["add_quantity"]);
 
 require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/products/product.php";
 
