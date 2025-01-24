@@ -15,6 +15,7 @@ session_start();
 
 <body>
     <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/navbar.php"; ?>
+    <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
     <div class="container mt-4">
         <h1 class="text-center mb-4">レジ機能ユーザーマニュアル</h1>
         <div class="row">

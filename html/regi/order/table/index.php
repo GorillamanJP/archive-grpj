@@ -53,6 +53,7 @@
 </head>
 
 <body>
+    <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
     <h3 class="text-center">モバイルオーダー</h3>
     <div class="flex">
         <div class="container container-fluid p-0">

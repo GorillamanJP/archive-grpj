@@ -22,6 +22,7 @@ session_start();
 
 <body>
     <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/navbar.php"; ?>
+    <?php require $_SERVER['DOCUMENT_ROOT'] . "/common/alert.php"; ?>
     <!-- コンテナ開始 -->
     <div class="container mt-4">
         <h1 class="text-center mb-4">通知履歴</h1>
