@@ -28,6 +28,7 @@ session_start();
                         <li><a href="#sales">会計一覧</a></li>
                         <li><a href="#order">モバイルオーダー</a></li>
                         <li><a href="#notify">通知の確認</a></li>
+                        <li><a href="#credit">クレジット</a></li>
                     </ul>
                 </div>
                 <div class="manual-section" id="user">
@@ -95,6 +96,13 @@ session_start();
             <h2>通知の確認</h2>
             <p>・通知画面からシステムからの通知を確認できます。</p>
             <p>・新しい通知がある場合、通知アイコンにバッジが表示されます。</p>
+        </div>
+        <div class="manual-section" id="credit">
+            <h2>クレジット</h2>
+            <p>開発：穴吹ビジネス専門学校　情報システム学科　チーム裏林</p>
+            <p>イラスト：<i class="bi bi-twitter-x"></i><a href="https://x.com/mipo_00516">みぽ（@mipo_00516）</a>様</p>
+            <p>効果音：<a href="https://soundeffect-lab.info/">効果音ラボ</a>様</p>
+            <p>&copy; 2024-25　穴吹ビジネス専門学校　情報システム学科　チーム裏林</p>
         </div>
     </div>
 </body>
