@@ -9,10 +9,13 @@
         body {
             font-family: Arial, sans-serif;
             background-color: #f8f8f8;
+        }
+
+        .flex {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            height: 93vh;
             margin: 0;
         }
 
@@ -50,17 +53,20 @@
 </head>
 
 <body>
-    <div class="container container-fluid">
-        <div class="column left">
-            <div class="header text-center">注文待ち</div>
-            <div id="wait-numbers">
-                <!-- 追加の注文番号をここに挿入 -->
+    <h3 class="text-center">モバイルオーダー</h3>
+    <div class="flex">
+        <div class="container container-fluid p-0">
+            <div class="column left">
+                <div class="header text-center">注文待ち</div>
+                <div id="wait-numbers">
+                    <!-- 追加の注文番号をここに挿入 -->
+                </div>
             </div>
-        </div>
-        <div class="column right">
-            <div class="header text-center">呼び出し中</div>
-            <div id="call-numbers">
-                <!-- 追加の呼び出し中の番号をここに挿入 -->
+            <div class="column right">
+                <div class="header text-center">呼び出し中</div>
+                <div id="call-numbers">
+                    <!-- 追加の呼び出し中の番号をここに挿入 -->
+                </div>
             </div>
         </div>
     </div>
