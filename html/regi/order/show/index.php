@@ -31,6 +31,13 @@ try {
     <?php require_once $_SERVER['DOCUMENT_ROOT'] . "/common/header.php"; ?>
     <link rel="stylesheet" href="/common/list.css">
     <link rel="stylesheet" href="/common/create.css">
+    <style>
+        li{
+            list-style: none !important;
+            background-color: transparent !important;
+            border: none !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -82,16 +89,20 @@ try {
                 <td>¥<?= $order->get_order_order()->get_total_price() ?></td>
             </tr>
             <tr>
-                <th class="text-end">呼び出し</th>
-                <td><?= $order->get_order_order()->get_is_call() ? "呼び出し中" : "-" ?></td>
-            </tr>
-            <tr>
-                <th class="text-end">キャンセル</th>
-                <td><?= $order->get_order_order()->get_is_cancel() ? "キャンセル" : "-" ?></td>
-            </tr>
-            <tr>
-                <th class="text-end">受け取り</th>
-                <td><?= $order->get_order_order()->get_is_received() ? "済" : "-" ?></td>
+                <th class="text-end">状態</th>
+                <td>
+                    <ul class="list-group list-group-horizontal m-0 p-0">
+                        <?php if ($order->get_order_order()->get_is_call()): ?>
+                            <li class="list-group-item py-0 ps-0">呼出中</li>
+                        <?php endif ?>
+                        <?php if ($order->get_order_order()->get_is_cancel()): ?>
+                            <li class="list-group-item py-0 ps-0">キャンセル済</li>
+                        <?php endif ?>
+                        <?php if ($order->get_order_order()->get_is_received()): ?>
+                            <li class="list-group-item py-0 ps-0">受取済</li>
+                        <?php endif ?>
+                    </ul>
+                </td>
             </tr>
         </table>
         <div class="text-center">
