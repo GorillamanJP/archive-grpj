@@ -19,6 +19,11 @@ RUN docker-php-ext-install pdo_mysql
 
 RUN git config --global --add safe.directory /var/www
 
-RUN chown -R www-data:www-data /var/www
+# エントリーポイントスクリプトをコピー
+COPY entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 USER www-data
+
+# エントリーポイントを設定
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
