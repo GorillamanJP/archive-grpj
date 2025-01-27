@@ -1,6 +1,4 @@
 nginx/log/
 .env
 vendor/
-keys.json
 .rnd
-.composer
