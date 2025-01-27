@@ -34,7 +34,7 @@ services:
       - MAX_FILESIZE=${MAX_FILESIZE}
       - PASS_PHRASE=${PASS_PHRASE}
       - CAPTCHA_DISABLE=${CAPTCHA_DISABLE}
-    command: bash -c "composer install && php-fpm"
+    command: bash -c "composer install && chown -R www-data /var/www && php-fpm"
     depends_on:
       - mariadb
 
