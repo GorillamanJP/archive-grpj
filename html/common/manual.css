@@ -56,6 +56,28 @@ ul li a:hover {
   scroll-margin-top: 80px; /* ナビゲーションバーの高さに応じて調整 */
 }
 
+/* トップに戻るボタンのスタイル */
+#back-to-top {
+    position: fixed;
+    bottom: 30px; /* 少し上に移動 */
+    right: 30px; /* 少し中央寄りに移動 */
+    display: none;
+    z-index: 100;
+    border: none;
+    outline: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    width: 50px; /* 正方形にするための幅 */
+    height: 50px; /* 正方形にするための高さ */
+    border-radius: 50%; /* 丸みを持たせる */
+    font-size: 20px; /* アイコンを大きくする */
+}
+
+#back-to-top:hover {
+    background-color: #0056b3;
+}
+
 /* レスポンシブデザイン */
 @media (max-width: 768px) {
   .container {

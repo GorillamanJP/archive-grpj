@@ -107,7 +107,24 @@ session_start();
         </div>
     </div>
     <div id="notifications" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+    <button id="back-to-top" class="btn btn-primary" title="トップに戻る"><i class="fa-solid fa-angle-up"></i></button>
     <script src="/regi/notify/check_notify.js"></script>
+    <script>
+        // スクロールイベントを監視してボタンの表示/非表示を切り替える
+        window.onscroll = function() {
+            const backToTopButton = document.getElementById("back-to-top");
+            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                backToTopButton.style.display = "block";
+            } else {
+                backToTopButton.style.display = "none";
+            }
+        };
+
+        // ボタンクリックでトップに戻る
+        document.getElementById("back-to-top").onclick = function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+    </script>
 </body>
 
 </html>
