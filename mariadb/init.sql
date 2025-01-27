@@ -101,6 +101,13 @@ CREATE TABLE IF NOT EXISTS order_notify(
     FOREIGN KEY (order_id) REFERENCES order_orders(id) ON DELETE CASCADE
 );
 
+-- プッシュ通知鍵ペアテーブル
+CREATE TABLE IF NOT EXISTS notify_keys(
+    id BIGINT UNSIGNED PRIMARY KEY,
+    public_key TEXT NOT NULL UNIQUE,
+    private_key TEXT NOT NULL UNIQUE
+);
+
 -- 通知テーブル
 CREATE TABLE IF NOT EXISTS notifications(
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,

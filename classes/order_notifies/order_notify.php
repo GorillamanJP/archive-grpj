@@ -46,10 +46,11 @@ class Order_Notify extends BaseClass
 
     public function __construct()
     {
-        require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/order_notifies/create_key.php";
-        $keys = create_key();
-        $this->public_key = $keys['publickey'];
-        $this->private_key = $keys['privatekey'];
+        require_once $_SERVER['DOCUMENT_ROOT'] . "/../classes/order_notify_keys/order_notify_key.php";
+        $key_obj = new Order_Notify_Key();
+        $keys = $key_obj->create();
+        $this->public_key = $keys->get_public_key();
+        $this->private_key = $keys->get_private_key();
     }
 
     public function create(int $order_id, string $endpoint, string $user_public_key, string $user_auth_token): Order_Notify
