@@ -106,6 +106,8 @@ session_start();
             <p>&copy; 2024-25　穴吹ビジネス専門学校　情報システム学科　チーム裏林</p>
         </div>
     </div>
+    <div id="notifications" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+    <script src="/regi/notify/check_notify.js"></script>
 </body>
 
 </html>
