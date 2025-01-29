@@ -11,7 +11,8 @@ self.addEventListener('push', function (event) {
         const title = data.title;
         const options = {
             body: data.message,
-            data: { url: data.url } // 送信元のリンクを保存
+            data: { url: data.url }, // 送信元のリンクを保存
+            icon: "/favicon.ico"
         };
         await self.registration.showNotification(title, options);
     })());
